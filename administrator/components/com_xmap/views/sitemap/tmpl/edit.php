@@ -1,7 +1,7 @@
 <?php
 /**
  * @version             $Id$
- * @copyright		Copyright (C) 2005 - 2009 Joomla! Vargas. All rights reserved.
+ * @copyright		Copyright (C) 2007 - 2009 Joomla! Vargas. All rights reserved.
  * @license             GNU General Public License version 2 or later; see LICENSE.txt
  * @author              Guillermo Vargas (guille@vargas.co.cr)
  */
@@ -35,7 +35,7 @@ JHtml::_('behavior.formvalidation');
 
 	<div class="width-60 fltlft">
 		<fieldset class="adminform">
-                <legend><?php echo JText::_('ARTICLE_DETAILS'); ?></legend>
+                <legend><?php echo JText::_('Xmap_Sitemap_Details_Fieldset'); ?></legend>
 		<?php echo $this->form->getLabel('title'); ?>
 		<?php echo $this->form->getInput('title'); ?>
 
@@ -45,6 +45,8 @@ JHtml::_('behavior.formvalidation');
                 <?php echo $this->form->getLabel('state'); ?>
 		<?php echo $this->form->getInput('state'); ?>
 
+                <?php echo $this->form->getLabel('access'); ?>
+		<?php echo $this->form->getInput('access'); ?>
 
 		<div class="clr"></div>
 		<?php echo $this->form->getLabel('introtext'); ?><br />

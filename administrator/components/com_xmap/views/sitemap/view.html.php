@@ -1,7 +1,7 @@
 <?php
 /**
 * @version             $Id$
- * @copyright   Copyright (C) 2005 - 2009 Joomla! Vargas. All rights reserved.
+ * @copyright   Copyright (C) 2007 - 2009 Joomla! Vargas. All rights reserved.
  * @license             GNU General Public License version 2 or later; see LICENSE.txt
  * @author              Guillermo Vargas (guille@vargas.co.cr)
  */
@@ -35,6 +35,7 @@ class XmapViewSitemap extends JView
 			return false;
 		}
 
+		JHTML::stylesheet('xmap.css','administrator/components/com_xmap/css/');
 		// Convert dates from UTC
 		$offset	= $app->getCfg('offset');
 		if (intval($item->created)) {
@@ -130,7 +131,7 @@ class XmapViewSitemap extends JView
 				$node->expandible = true;
 				$node->selectable = false;
 				//$node->name = $this->getMenuTitle($menutype,@$menu->module);	// get the mod_mainmenu title from modules table
-	
+
 				$list[] = $node;
 			}
 		} else {

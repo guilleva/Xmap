@@ -105,7 +105,7 @@
 		<field
 			id="access"
 			name="access"
-			type="accesslevels"
+			type="accesslevel"
 			label="JField_Access_Label"
 			description="JField_Access_Desc"
 			class="inputbox"
@@ -159,7 +159,7 @@
 		<field
 			id="selections"
 			name="selections"
-			type="menus"
+			type="xmapmenus"
 			label="Xmap_MenuAssigment_Label"
 			description="Xmap_MenuAssigment_Desc"
 			class="inputbox"

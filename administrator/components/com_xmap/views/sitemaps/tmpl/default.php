@@ -1,7 +1,7 @@
 <?php
 /**
  * @version             $Id$
- * @copyright   Copyright (C) 2005 - 2009 Joomla! Vargas. All rights reserved.
+ * @copyright   Copyright (C) 2007 - 2009 Joomla! Vargas. All rights reserved.
  * @license             GNU General Public License version 2 or later; see LICENSE.txt
  * @author              Guillermo Vargas (guille@vargas.co.cr)
  */
@@ -84,7 +84,9 @@ $n = count($this->items);
 		<?php foreach ($this->items as $i => $item) :
 
 			$now = JFactory::getDate()->toUnix();
-			if ( $item->lastvisit_html > ($now-3600)) { // Less than one hour
+			if ( !$item->lastvisit_html ) {
+				$htmlDate = JText::_('Date_Never');
+			}elseif ( $item->lastvisit_html > ($now-3600)) { // Less than one hour
 				$htmlDate = JText::sprintf('Date_Minutes_Ago',intval(($now-$item->lastvisit_html)/60));
 			} elseif ( $item->lastvisit_html > ($now-86400)) { // Less than one day
 				$hours = intval (($now-$item->lastvisit_html)/3600 );
@@ -97,7 +99,9 @@ $n = count($this->items);
 				$htmlDate = $date->toFormat('%Y-%m-%d %H:%M');
 			}
 
-			if ( $item->lastvisit_xml > ($now-3600)) { // Less than one hour
+			if ( !$item->lastvisit_xml ) {
+				$xmlDate = JText::_('Date_Never');
+			} elseif ( $item->lastvisit_xml > ($now-3600)) { // Less than one hour
 				$xmlDate = JText::sprintf('Date_Minutes_Ago',intval(($now-$item->lastvisit_xml)/60));
 			} elseif ( $item->lastvisit_xml > ($now-86400)) { // Less than one day
 				$hours = intval (($now-$item->lastvisit_xml)/3600 );

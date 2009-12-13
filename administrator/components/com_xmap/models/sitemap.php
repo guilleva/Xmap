@@ -1,7 +1,7 @@
 <?php
 /**
  * @version		$Id$
- * @copyright   Copyright (C) 2005 - 2009 Joomla! Vargas. All rights reserved.
+ * @copyright   Copyright (C) 2007 - 2009 Joomla! Vargas. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  * @author		Guillermo Vargas (guille@vargas.co.cr)
  */
@@ -106,10 +106,10 @@ class XmapModelSitemap extends JModelForm
 
 		$value = JArrayHelper::toObject($table->getProperties(1), 'JObject');
 
-		
+
 		return $value;
 	}
-	
+
 	/**
 	 * Method to get the row form.
 	 *
@@ -171,6 +171,14 @@ class XmapModelSitemap extends JModelForm
 		if (!$table->check()) {
 			$this->setError($table->getError());
 			return false;
+		}
+
+		// Check if there is no default sitemap. Then, set it as default if not
+		$query = 'SELECT COUNT(id) FROM `#__xmap_sitemap` where is_default=1';
+		$this->_db->setQuery($query);
+		$result = $this->_db->loadResult();
+		if (!$result) {
+			$table->is_default=1;
 		}
 
 		// Store the data.

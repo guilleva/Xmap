@@ -48,8 +48,10 @@
 			<filename>index.html</filename>
 			<filename>LICENSE.txt</filename>
 			<folder>adapters</folder>
+			<folder>css</folder>
 			<folder>elements</folder>
 			<folder>extensions</folder>
+			<folder>images</folder>
 			<folder>install</folder>
 			<folder>helpers</folder>
 			<folder>controllers</folder>

@@ -10,7 +10,7 @@
 */
 
 
-defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' ); 
+defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );
 
 require_once (JPATH_SITE.DS.'components'.DS.'com_content'.DS.'router.php');
 
@@ -49,6 +49,8 @@ class xmap_com_content {
 		$db	=& JFactory::getDBO();
 		$user	=& JFactory::getUser();
 		$result = null;
+
+echo "getTree";exit;
 
                 $link_query = parse_url( $parent->link );
                 parse_str( html_entity_decode($link_query['query']), $link_vars);
@@ -94,7 +96,7 @@ class xmap_com_content {
 
 		$params['art_priority'] = $priority;
 		$params['art_changefreq'] = $changefreq;
-		
+
 		$params['max_art'] = intval(JArrayHelper::getValue($params,'max_art',0));
 		$params['max_art_age'] = intval(JArrayHelper::getValue($params,'max_art_age',0));
 
@@ -130,7 +132,7 @@ class xmap_com_content {
 	}
 
 
-	/** 
+	/**
 	 * Get all content items within a content category.
 	 * Returns an array of all contained content items.
 	 *
@@ -146,7 +148,7 @@ class xmap_com_content {
 			 (!$params['show_unauth']? ' AND a.access IN ('.$params['groups'].') ' : '').
 			 ( $xmap->view != 'xml'?"\n ORDER BY ". $orderby ."": '' );
 
-		
+
 		$db->setQuery( $query );
 		// echo $db->getQuery();
 		$db->getQuery(  );
@@ -168,7 +170,7 @@ class xmap_com_content {
 				$node->newsItem = 1;
 
 				// For the google news we should use te publication date instead
-				// the last modification date. See 
+				// the last modification date. See
 				if ( $xmap->isNews || !$item->modified )
 					$item->modified = $item->created;
 
@@ -186,7 +188,7 @@ class xmap_com_content {
 	    	return true;
 	}
 
-	/** 
+	/**
 	 * Get all content items within a content category.
 	 * Returns an array of all contained content items.
 	 *
@@ -208,7 +210,7 @@ class xmap_com_content {
 			 ( $xmap->view != 'xml'?"\n ORDER BY $orderby  ": '' ).
 			 ( $params['max_art'] ? "\n LIMIT {$params['max_art']}" : '');
 
-		
+
 		$db->setQuery( $query );
 		// echo $db->getQuery();
 		$items = $db->loadObjectList();
@@ -229,7 +231,7 @@ class xmap_com_content {
 				$node->newsItem = 1;
 
 				// For the google news we should use te publication date instead
-				// the last modification date. See 
+				// the last modification date. See
 				if ( $xmap->isNews || !$item->modified )
 					$item->modified = $item->created;
 
@@ -253,15 +255,15 @@ class xmap_com_content {
 			case 'alpha':
 				$orderby = 'cc.title, ';
 				break;
-	
+
 			case 'ralpha':
 				$orderby = 'cc.title DESC, ';
 				break;
-	
+
 			case 'order':
 				$orderby = 'cc.ordering, ';
 				break;
-	
+
 			default:
 				$orderby = '';
 				break;
@@ -276,43 +278,43 @@ class xmap_com_content {
 			case 'date':
 				$orderby = 'a.created';
 				break;
-	
+
 			case 'rdate':
 				$orderby = 'a.created DESC';
 				break;
-	
+
 			case 'alpha':
 				$orderby = 'a.title';
 				break;
-	
+
 			case 'ralpha':
 				$orderby = 'a.title DESC';
 				break;
-	
+
 			case 'hits':
 				$orderby = 'a.hits';
 				break;
-	
+
 			case 'rhits':
 				$orderby = 'a.hits DESC';
 				break;
-	
+
 			case 'order':
 				$orderby = 'a.ordering';
 				break;
-	
+
 			case 'author':
 				$orderby = 'a.created_by_alias, u.name';
 				break;
-	
+
 			case 'rauthor':
 				$orderby = 'a.created_by_alias DESC, u.name DESC';
 				break;
-	
+
 			case 'front':
 				$orderby = 'f.ordering';
 				break;
-	
+
 			default:
 				$orderby = 'a.ordering';
 				break;
@@ -323,10 +325,10 @@ class xmap_com_content {
 	/** @param int 0 = Archives, 1 = Section, 2 = Category */
 	function where( $type=1, &$access, &$noauth, $gid, $id, $now=NULL, $year=NULL, $month=NULL ) {
 		$db = & JFactory::getDBO();
-		
+
 		$nullDate = $db->getNullDate();
 		$where = array();
-	
+
 		// normal
 		if ( $type > 0) {
 			$where[] = "a.state = '1'";

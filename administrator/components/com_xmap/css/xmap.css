@@ -1,0 +1,26 @@
+.xmap-menu-options {
+border-bottom: 1px solid #CCC;
+padding:10px 0 10px 40px;
+}
+.xmap-menu-options label {
+min-width: 135px;
+float: left;
+clear: left;
+margin: 5px 5px 2px 0px;
+}
+.xmap-menu-options input,  .xmap-menu-options select {
+margin: 5px 5px 2px 0px;
+}
+ul.ul_sortable {
+list-style:none;
+margin:0;
+padding:0;
+}
+ul.ul_sortable li {
+cursor:move;
+background-color: #eee;
+margin:5px;
+}
+ul.ul_sortable li label.menu_label{
+font-weight: bold;
+}

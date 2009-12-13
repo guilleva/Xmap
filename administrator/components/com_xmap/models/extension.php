@@ -1,7 +1,7 @@
 <?php
 /**
  * @version		$Id$
- * @copyright   Copyright (C) 2005 - 2009 Joomla! Vargas. All rights reserved.
+ * @copyright   	Copyright (C) 2007 - 2009 Joomla! Vargas. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  * @author		Guillermo Vargas (guille@vargas.co.cr)
  */
@@ -116,7 +116,7 @@ class XmapModelExtension extends JModelForm
 		$value->authorUrl = $data['authorUrl'];
 		$value->version = $data['version'];
 
-		
+
 		$this->_item = $value;
 		return $this->_item;
 	}
@@ -139,7 +139,7 @@ class XmapModelExtension extends JModelForm
 		return $params;
 	}
 
-	
+
 	/**
 	 * Method to get the row form.
 	 *

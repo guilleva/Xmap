@@ -1,8 +1,9 @@
 <?php
 /**
- * @version		$Id$
- * @copyright	Copyright (C) 2005 - 2009 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * @version             $Id$
+ * @copyright			Copyright (C) 2007 - 2009 Joomla! Vargas. All rights reserved.
+ * @license             GNU General Public License version 2 or later; see LICENSE.txt
+ * @author              Guillermo Vargas (guille@vargas.co.cr)
  */
 
 defined('JPATH_BASE') or die;
@@ -17,7 +18,7 @@ require_once JPATH_LIBRARIES.DS.'joomla'.DS.'form'.DS.'fields'.DS.'list.php';
  * @subpackage		com_xmap
  * @since		2.0
  */
-class JFormFieldMenus extends JFormFieldList
+class JFormFieldXmapmenus extends JFormFieldList
 {
 	/**
 	 * The field type.
@@ -36,13 +37,31 @@ class JFormFieldMenus extends JFormFieldList
 		$db		= &JFactory::getDbo();
 		$query	= new JQuery;
 
+		$currentMenus = array_keys(get_object_vars($this->value));
+
 		$query->select('menutype As value, title As text');
 		$query->from('#__menu_types AS a');
 		$query->order('a.title');
 
 		// Get the options.
 		$db->setQuery($query);
-		$options = $db->loadObjectList();
+		$menus = $db->loadObjectList('value');
+		$options = array();
+
+		// Add the current sitemap menus in the defined order to the list
+		foreach ($currentMenus as $menutype){
+			if (!empty($menus[$menutype])){
+
+				$options[] = $menus[$menutype];
+			}
+		}
+
+		// Add the rest of the menus to the list (if any)
+		foreach ($menus as $menutype => $menu){
+			if (!in_array($menutype,$currentMenus)){
+				$options[] = $menu;
+			}
+		}
 
 		// Check for a database error.
 		if ($db->getErrorNum()) {
@@ -82,13 +101,26 @@ class JFormFieldMenus extends JFormFieldList
 			$type = 'checkbox';
 		}
 
+		$doc =& JFactory::getDocument();
+		$doc->addScriptDeclaration("
+		window.addEvent('domready',function(){
+			new Sortables(\$('ul_".$this->inputId."'),{
+				clone:true,
+				revert: true,
+				onStart: function(el) {
+					el.setStyle('background','#bbb');
+				},
+				onComplete: function(el) {
+					el.setStyle('background','#eee');
+				}
+			});
+		});");
+
 		if ($disabled || $readonly) {
 			$attributes .= 'disabled="disabled"';
 		}
 		$options	= (array)$this->_getOptions();
-		$return	 = '';
-
-
+		$return	 = '<ul id="ul_'.$this->inputId.'" class="ul_sortable">';
 
 		// Create a regular list.
 		$i=0;
@@ -97,15 +129,15 @@ class JFormFieldMenus extends JFormFieldList
 			$changefreqName = preg_replace('/(jform\[[^\]]+)(\].*)/','$1_changefreq$2',$this->inputName);
 			$selected = (isset($this->value->{$option->value})?' checked="checked"' : '');
 			$i++;
-			$return .= '<div id="menu_'.$i.'">';
-			$return .= '  <input type="'.$type.'" id="'.$this->inputId.'_'.$i.'" name="'.$this->inputName.'" value="'.$option->value.'"'.$attributes.$selected.' /><label for="'.$this->inputId.'_'.$i.'">'.$option->text.'</label> <a href="#" onclick="showMenuOptions('.$i.');">Options</a>';
+			$return .= '<li id="menu_'.$i.'">';
+			$return .= '  <input type="'.$type.'" id="'.$this->inputId.'_'.$i.'" name="'.$this->inputName.'" value="'.$option->value.'"'.$attributes.$selected.' /><label for="'.$this->inputId.'_'.$i.'" class="menu_label">'.$option->text.'</label>';
 			$return .= '  <div class="xmap-menu-options" id="menu_options_'.$i.'">'.
-				      JText::_('Xmap_Priority').': '.JHTML::_('xmap.priorities', $prioritiesName,($selected?$this->value->{$option->value}->priority:''),$i). '<br />' .
-				      JText::_('Xmap_Change_Frequency').': '.JHTML::_('xmap.changefrequency', $changefreqName,($selected?$this->value->{$option->value}->changefreq:''),$i).
+				     '<label>'. JText::_('Xmap_Priority').'</label> '.JHTML::_('xmap.priorities', $prioritiesName,($selected?$this->value->{$option->value}->priority:''),$i). '<br />' .
+				     '<label>'. JText::_('Xmap_Change_Frequency').'</label> '.JHTML::_('xmap.changefrequency', $changefreqName,($selected?$this->value->{$option->value}->changefreq:''),$i).
                                      '</div>';
-			$return .= '</div>';
+			$return .= '</li>';
 		}
-
+		$return .= "</ul>";
 		return $return;
 	}
 /*

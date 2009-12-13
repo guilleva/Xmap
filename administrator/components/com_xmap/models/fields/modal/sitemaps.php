@@ -1,7 +1,7 @@
 <?php
 /**
  * @version             $Id$
- * @copyright			Copyright (C) 2005 - 2009 Joomla! Vargas. All rights reserved.
+ * @copyright			Copyright (C) 2007 - 2009 Joomla! Vargas. All rights reserved.
  * @license             GNU General Public License version 2 or later; see LICENSE.txt
  * @author              Guillermo Vargas (guille@vargas.co.cr)
  */
@@ -33,19 +33,27 @@ class JFormFieldModal_Sitemaps extends JFormField
 	 */
 	protected function _getInput()
 	{
-		$db			=& JFactory::getDBO();
+		// Initialise variables.
+		$db		=& JFactory::getDBO();
 		$doc 		=& JFactory::getDocument();
 
-		// Get the title of the linked chart
-		$db->setQuery(
-			'SELECT title' .
-			' FROM #__xmap_sitemap' .
-			' WHERE id = '.(int) $this->value
-		);
-		$title = $db->loadResult();
+		// Load the modal behavior.
+		JHtml::_('behavior.modal', 'a.modal');
 
-		if ($error = $db->getErrorMsg()) {
-			JError::raiseWarning(500, $error);
+		// Get the title of the linked chart
+		if ($this->value){
+			$db->setQuery(
+				'SELECT title' .
+				' FROM #__xmap_sitemap' .
+				' WHERE id = '.(int) $this->value
+			);
+			$title = $db->loadResult();
+
+			if ($error = $db->getErrorMsg()) {
+				JError::raiseWarning(500, $error);
+			}
+		} else {
+			$title = '';
 		}
 
 		if (empty($title)) {
