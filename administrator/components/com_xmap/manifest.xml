@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- $Id$ -->
+<install method="upgrade" version="1.5" type="component">
+	<name>Xmap</name>
+	<creationDate>2009-08-01</creationDate>
+	<author>Guillermo Vargas</author>
+	<copyright>This component is released under the GNU/GPL License</copyright>
+	<authorEmail>guille@vargas.co.cr</authorEmail>
+	<authorUrl>http://joomla.vargas.co.cr</authorUrl>
+	<version>2.0</version>
+	<license>GNU/GPL</license>
+	<description>Xmap - Sitemap Generator for Joomla!</description>
+	<install folder="admin">
+		<sql>
+			<file driver="mysql" charset="utf8">install/install.utf8.sql</file>
+		</sql>
+	</install>
+	<uninstall>
+		<sql>
+			<file driver="mysql" charset="utf8">install/uninstall.utf8.sql</file>
+		</sql>
+	</uninstall>
+	<installfile>install/install.xmap.php</installfile>
+	<uninstallfile>install/uninstall.xmap.php</uninstallfile>
+	<files folder="front">
+		<filename>xmap.php</filename>
+		<filename>controller.php</filename>
+		<filename>router.php</filename>
+		<filename>index.html</filename>
+		<filename>metadata.xml</filename>
+		<folder>views</folder>
+		<folder>models</folder>
+		<folder>helpers</folder>
+		<folder>assets</folder>
+	</files>
+	<languages folder="front/language">
+	<language tag="en-GB">en-GB.com_xmap.ini</language>
+	<language tag="es-ES">es-ES.com_xmap.ini</language>
+	</languages>
+	<images folder="admin">
+		<folder>images</folder>
+	</images>
+	<administration>
+		<menu>Xmap</menu>
+		<files folder="admin">
+			<filename>xmap.php</filename>
+			<filename>controller.php</filename>
+			<filename>index.html</filename>
+			<filename>LICENSE.txt</filename>
+			<folder>adapters</folder>
+			<folder>elements</folder>
+			<folder>extensions</folder>
+			<folder>install</folder>
+			<folder>helpers</folder>
+			<folder>controllers</folder>
+			<folder>tables</folder>
+			<folder>views</folder>
+			<folder>models</folder>
+			<folder>extensions</folder>
+		</files>
+		<languages folder="admin/language">
+			<language tag="en-GB">en-GB.com_xmap.ini</language>
+			<language tag="es-ES">es-ES.com_xmap.ini</language>
+		</languages>
+		<images folder="admin">
+			<folder>images</folder>
+		</images>
+	</administration>
+</install>

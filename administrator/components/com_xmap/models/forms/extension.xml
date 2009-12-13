@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<!-- $Id$ -->
+<form>
+	<fields addpath="administrator/components/com_xmap/elements">
+		<field
+			id="id"
+			name="id"
+			type="hidden"
+			class="inputbox"
+			label="Xmap_Id_Label"
+			size="10"
+			default="0"
+			required="true"
+			readonly="true"/>
+
+		<field
+			id="name"
+			name="name"
+			type="text"
+			label="JField_Title_Label"
+			description="JField_Title_Desc"
+			class="inputbox"
+			size="29"
+			required="true"
+			/>
+
+		<field
+			name="enabled"
+			type="list"
+			label="JField_Published_Label"
+			description="JField_Published_Desc"
+			default="1">
+			<option
+				value="0">No</option>
+			<option
+				value="1">Yes</option>
+		</field>
+	</fields>
+	<fields
+                group="params"
+                array="true"
+                label="Xmap_Options">
+	</fields>
+</form>

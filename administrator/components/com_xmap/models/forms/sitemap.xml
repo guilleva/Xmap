@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<!-- $Id$ -->
+<form>
+	<fields addpath="administrator/components/com_xmap/elements">
+		<field
+			id="id"
+			name="id"
+			type="hidden"
+			class="inputbox"
+			label="Xmap_Id_Label"
+			size="10"
+			default="0"
+			required="true"
+			readonly="true"/>
+
+		<field
+			id="title"
+			name="title"
+			type="text"
+			label="JField_Title_Label"
+			description="JField_Title_Desc"
+			class="inputbox"
+			size="30"
+			required="true"
+			/>
+
+		<field
+			id="alias"
+			name="alias"
+			type="text"
+			label="JField_Alias_Label"
+			description="JField_Alias_Desc"
+			class="inputbox"
+			size="30"
+			default=""/>
+
+		<field
+			id="introtext"
+			name="introtext"
+			type="editor"
+			class="inputbox"
+			label="Xmap_Introtext_Label"
+			description="Xmap_Introtext_Desc"
+			filter="safehtml"
+			default=""/>
+
+		<field
+			id="is_default"
+			name="is_default"
+			type="hidden"
+			class="inputbox"
+			size="1"
+			default="0" />
+
+		<field
+			id="state"
+			name="state"
+			type="list"
+			label="JField_Published_Label"
+			description="JField_Published_Desc"
+			class="inputbox"
+			size="1"
+			default="1">
+			<option
+				value="1">
+				JOption_Published</option>
+			<option
+				value="0">
+				JOption_UnPublished</option>
+		</field>
+
+		<field
+			id="created"
+			name="created"
+			type="calendar"
+			label="Xmap_Created_Label"
+			description="Xmap_Created_Desc"
+			class="inputbox"
+			size="16"
+			format="%Y-%m-%d %H-%M-%S"
+			/>
+
+		<field
+			id="metakey"
+			name="metakey"
+			type="textarea"
+			label="JField_Meta_Keywords_Label"
+			description="JField_Meta_Keywords_Desc"
+			class="inputbox"
+			rows="3"
+			cols="30"
+			default=""/>
+
+		<field
+			id="metadesc"
+			name="metadesc"
+			type="textarea"
+			label="JField_Meta_Description_Label"
+			description="JField_Meta_Description_Desc"
+			class="inputbox"
+			rows="3"
+			cols="30"
+			default=""/>
+
+		<field
+			id="access"
+			name="access"
+			type="accesslevels"
+			label="JField_Access_Label"
+			description="JField_Access_Desc"
+			class="inputbox"
+			size="1"
+			default=""/>
+
+		<field
+			id="count_html"
+			name="hits"
+			type="text"
+			label="Xmap_HitsHtml_Label"
+			description="Xmap_Hits_Desc"
+			class="readonly"
+			size="6"
+			readonly="true"
+			filter="unset"/>
+
+		<field
+			id="count_xml"
+			name="hits"
+			type="text"
+			label="Xmap_HitsXml_Label"
+			description="Xmap_Hits_Desc"
+			class="readonly"
+			size="6"
+			readonly="true"
+			filter="unset"/>
+
+		<field
+			id="visits_html"
+			name="visits_html"
+			type="text"
+			label="Xmap_VisitsHtml_Label"
+			description="Xmap_Hits_Desc"
+			class="readonly"
+			size="6"
+			readonly="true"
+			filter="unset"/>
+
+		<field
+			id="visits_xml"
+			name="visits_xml"
+			type="text"
+			label="Xmap_VisitsXml_Label"
+			description="Xmap_Hits_Desc"
+			class="readonly"
+			size="6"
+			readonly="true"
+			filter="unset"/>
+
+		<field
+			id="selections"
+			name="selections"
+			type="menus"
+			label="Xmap_MenuAssigment_Label"
+			description="Xmap_MenuAssigment_Desc"
+			class="inputbox"
+			multiple="multiple"
+			size="5"/>
+
+		<field
+			id="selections_priority"
+			name="selections_priority"
+			type="hidden"
+			class="inputbox"
+			multiple="multiple"
+			size="5"/>
+
+		<field
+			id="selections_changefreq"
+			name="selections_changefreq"
+			type="hidden"
+			class="inputbox"
+			multiple="multiple"
+			size="5"/>
+
+	</fields>
+
+	<fields
+		group="attribs"
+		array="true"
+		label="Xmap_Options">
+
+		<field
+			name="showintro"
+			type="list"
+			label="Xmap_Attribs_Show_Intro_Label"
+			description="Xmap_Attribs_Show_Intro_Desc"
+			default="1">
+			<option
+				value="0">No</option>
+			<option
+				value="1">Yes</option>
+		</field>
+
+		<field
+			name="show_menutitle"
+			type="list"
+			label="Xmap_Attribs_Show_Menu_Title_Label"
+			description="Xmap_Attribs_Show_Menu_Title_Desc"
+			default="1">
+			<option
+				value="0">No</option>
+			<option
+				value="1">Yes</option>
+		</field>
+
+		<field
+			name="classname"
+			type="text"
+			default=""
+			label="Xmap_Attribs_Classname_Label"
+			description="Xmap_Attribs_Classname_Desc"></field>
+
+		<field
+			name="columns"
+			type="text"
+			default=""
+			label="Xmap_Attribs_Columns_Label"
+			description="Xmap_Attribs_Columns_Desc"></field>
+
+		<field
+			name="exlinks"
+			type="list"
+			label="Xmap_Attribs_External_Links_Label"
+			description="Xmap_Attribs_External_Links_Desc"
+			default="1">
+			<option
+				value="0">No</option>
+			<option
+				value="1">Yes</option>
+		</field>
+
+		<field
+			name="exlinks"
+			type="list"
+			label="Xmap_Attribs_External_Links_Image_Label"
+			description="Xmap_Attribs_External_Links_Image_Desc"
+			default="1">
+			<option
+				value="img_blue.gif">img_blue.gif</option>
+			<option
+				value="img_green.gif">img_green.gif</option>
+			<option
+				value="img_grey.gif">img_grey.gif</option>
+			<option
+				value="img_orange.gif">img_orange.gif</option>
+			<option
+				value="img_red.gif">img_red.gif</option>
+			<option
+				value="txt_blue.gif">txt_blue.gif</option>
+			<option
+				value="txt_green.gif">txt_green.gif</option>
+			<option
+				value="txt_grey.gif">txt_grey.gif</option>
+			<option
+				value="txt_orange.gif">txt_orange.gif</option>
+			<option
+				value="txt_red.gif">txt_red.gif</option>
+		</field>
+
+		<field
+			name="compress_xml"
+			type="list"
+			label="Xmap_Attribs_Compress_Xml_Label"
+			description="Xmap_Attribs_Compress_Xml_Desc"
+			default="1">
+			<option
+				value="0">No</option>
+			<option
+				value="1">Yes</option>
+		</field>
+	</fields>
+
+</form>
