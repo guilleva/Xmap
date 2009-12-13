@@ -34,8 +34,8 @@
 		<folder>assets</folder>
 	</files>
 	<languages folder="front/language">
-	<language tag="en-GB">en-GB.com_xmap.ini</language>
-	<language tag="es-ES">es-ES.com_xmap.ini</language>
+		<language tag="en-GB">en-GB.com_xmap.ini</language>
+		<language tag="es-ES">es-ES.com_xmap.ini</language>
 	</languages>
 	<images folder="admin">
 		<folder>images</folder>
@@ -62,7 +62,9 @@
 		</files>
 		<languages folder="admin/language">
 			<language tag="en-GB">en-GB.com_xmap.ini</language>
+			<language tag="en-GB">en-GB.com_xmap.menu.ini</language>
 			<language tag="es-ES">es-ES.com_xmap.ini</language>
+			<language tag="es-ES">es-ES.com_xmap.menu.ini</language>
 		</languages>
 		<images folder="admin">
 			<folder>images</folder>

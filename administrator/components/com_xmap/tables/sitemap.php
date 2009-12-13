@@ -136,7 +136,7 @@ class XmapTableSitemap extends JTable
 				$registry->loadArray($array['attribs']);
 				$array['attribs'] = $registry->toString();
 		}
-		
+
 		if (isset($array['selections']) && is_array($array['selections']))
 		{
 				$selections = array();
@@ -144,7 +144,7 @@ class XmapTableSitemap extends JTable
 					$selections[$menu] =array(
 						'priority' => $array['selections_priority'][$i],
 						'changefreq' => $array['selections_changefreq'][$i],
-						'ordering' => $i 
+						'ordering' => $i
 					);
 				}
 
@@ -152,17 +152,17 @@ class XmapTableSitemap extends JTable
 				$registry->loadArray($selections);
 				$array['selections'] = $registry->toString();
 		}
-		
+
 		if (isset($array['metadata']) && is_array($array['metadata']))
 		{
 				$registry = new JRegistry();
 				$registry->loadArray($array['metadata']);
 				$array['metadata'] = $registry->toString();
 		}
-		
+
 		return parent::bind($array, $ignore);
 	}
-	
+
 	/**
 	 * Overloaded check function
 	 *
@@ -180,22 +180,22 @@ class XmapTableSitemap extends JTable
 		$this->introtext = trim($filter->clean($this->introtext));
 		$this->fulltext =  trim($filter->clean($this->fulltext));
 		*/
-		
+
 		if (empty($this->title)) {
 				$this->setError(JText::_('Sitemap must have a title'));
 				return false;
 		}
-		
+
 		if (empty($this->alias)) {
 				$this->alias = $this->title;
 		}
 		$this->alias = JFilterOutput::stringURLSafe($this->alias);
-		
+
 		if (trim(str_replace('-','',$this->alias)) == '') {
 				$datenow = &JFactory::getDate();
 				$this->alias = $datenow->toFormat("%Y-%m-%d-%H-%M-%S");
 		}
-		
+
 		// clean up keywords -- eliminate extra spaces between phrases
 		// and cr (\r) and lf (\n) characters from string
 		if (!empty($this->metakey)) { // only process if not empty
@@ -210,16 +210,16 @@ class XmapTableSitemap extends JTable
 				}
 				$this->metakey = implode(", ", $clean_keys); // put array back together delimited by ", "
 		}
-		
+
 		// clean up description -- eliminate quotes and <> brackets
 		if (!empty($this->metadesc)) { // only process if not empty
 				$bad_characters = array("\"", "<", ">");
 				$this->metadesc = JString::str_ireplace($bad_characters, "", $this->metadesc);
 		}
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * Overriden JTable::store to set modified data and user id.
 	 *
@@ -236,8 +236,8 @@ class XmapTableSitemap extends JTable
 		}
 		return parent::store($updateNulls);
 	}
-	
-	
+
+
 	/**
 	 * Method to set the publishing state for a row or list of rows in the database
 	 * table.
@@ -253,12 +253,12 @@ class XmapTableSitemap extends JTable
 	{
 		// Initialize variables.
 		$k = $this->_tbl_key;
-		
+
 		// Sanitize input.
 		JArrayHelper::toInteger($pks);
 		$userId = (int) $userId;
 		$state  = (int) $state;
-		
+
 		// If there are no primary keys set check to see if the instance key is set.
 		if (empty($pks))
 		{
@@ -271,11 +271,11 @@ class XmapTableSitemap extends JTable
 						return false;
 				}
 		}
-		
+
 		// Build the WHERE clause for the primary keys.
 		$where = $k.'='.implode(' OR '.$k.'=', $pks);
-		
-	
+
+
 		// Update the publishing state for rows with the given primary keys.
 		$this->_db->setQuery(
 				'UPDATE `'.$this->_tbl.'`' .
@@ -284,7 +284,7 @@ class XmapTableSitemap extends JTable
 				$checkin
 		);
 		$this->_db->query();
-		
+
 		// Check for a database error.
 		if ($this->_db->getErrorNum()) {
 				$this->setError($this->_db->getErrorMsg());
@@ -295,7 +295,7 @@ class XmapTableSitemap extends JTable
 		if (in_array($this->$k, $pks)) {
 				$this->state = $state;
 		}
-		
+
 		$this->setError('');
 		return true;
 	}

@@ -50,8 +50,6 @@ class xmap_com_content {
 		$user	=& JFactory::getUser();
 		$result = null;
 
-echo "getTree";exit;
-
                 $link_query = parse_url( $parent->link );
                 parse_str( html_entity_decode($link_query['query']), $link_vars);
 		$view = JArrayHelper::getValue($link_vars,'view','');
