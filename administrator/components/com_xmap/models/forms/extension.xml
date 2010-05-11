@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 	<!-- $Id$ -->
 <form>
-	<fields addpath="administrator/components/com_xmap/elements">
-		<field
-			id="id"
-			name="id"
-			type="hidden"
-			class="inputbox"
-			label="Xmap_Id_Label"
-			size="10"
-			default="0"
-			required="true"
-			readonly="true"/>
+	<fieldset addpath="administrator/components/com_xmap/elements">
+        <field
+            name="extension_id"
+            label="JGLOBAL_FIELD_ID_LABEL"
+            description ="JGLOBAL_FIELD_ID_DESC"
+            type="text"
+            default="0"
+            required="true"
+            readonly="true"
+            class="readonly" />
 
 		<field
 			id="name"
@@ -35,10 +34,27 @@
 			<option
 				value="1">Yes</option>
 		</field>
-	</fields>
-	<fields
-                group="params"
-                array="true"
-                label="Xmap_Options">
-	</fields>
+        
+        <field
+            name="folder"
+            type="hidden"
+            class="readonly"
+            size="20"
+            label="COM_PLUGINS_FIELD_FOLDER_LABEL"
+            description="COM_PLUGINS_FIELD_FOLDER_DESC"
+            readonly="true" />
+
+        <field
+            name="element"
+            type="hidden"
+            class="readonly"
+            size="20"
+            label="COM_PLUGINS_FIELD_ELEMENT_LABEL"
+            description="COM_PLUGINS_FIELD_ELEMENT_DESC"
+            readonly="true" />
+        
+        <field
+            name="params"
+            type="hidden" />
+	</fieldset>
 </form>

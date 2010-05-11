@@ -35,7 +35,7 @@ class XmapViewSitemap extends JView
 			return false;
 		}
 
-		JHTML::stylesheet('xmap.css','administrator/components/com_xmap/css/');
+		JHTML::stylesheet('administrator/components/com_xmap/css/xmap.css');
 		// Convert dates from UTC
 		$offset	= $app->getCfg('offset');
 		if (intval($item->created)) {

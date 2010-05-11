@@ -16,19 +16,7 @@ class XmapViewExtensions extends JView
 {
 	function display($tpl = null)
 	{
-		JToolBarHelper::title( JText::_('Extension Manager'), 'generic.png' );
-
-
 		$ftp = &JClientHelper::setCredentialsFromRequest('ftp');
-
-		$bar =& JToolBar::getInstance();
-
-		JToolBarHelper::spacer();
-		JToolBarHelper::editList();
-		JToolBarHelper::trash('trash');
-		# JToolBarHelper::deleteList(JText::_('Are you sure you want to delete selected Items?'));
-		JToolBarHelper::spacer();
-		JToolBarHelper::back('Back', 'index.php?option=com_xmap');
 
 		// Get data from the model
 		$this->assignRef('items', $this->get('Items'));
@@ -42,6 +30,7 @@ class XmapViewExtensions extends JView
 
 		JHTML::_('behavior.tooltip');
 
+        $this->_setToolbar();
 		parent::display($tpl);
 	}
 
@@ -75,17 +64,26 @@ class XmapViewExtensions extends JView
 		parent::display($tpl);
 	}
 	
-	function loadItem($index=0)
-	{
-			$item = &$this->items[$index];
-			$item->index    = $index;
-			$item->img		= $item->enabled ? 'tick.png' : 'publish_x.png';
-			$item->task 	= $item->enabled ? 'disable' : 'enable';
-			$item->alt 		= $item->enabled ? JText::_('Enabled') : JText::_('Disabled');
-			$item->action	= $item->enabled ? JText::_('disable') : JText::_('enable');
-			$item->author_info = @$item->authorEmail .'<br />'. @$item->authorUrl;
-			$item->link = JRoute::_( 'index.php?option=com_xmap&view=extension&task=extension.edit&cid[]='. $item->id );
-	
-			$this->assignRef('item', $item);
-	}
+    /**
+     * Setup the Toolbar
+     *
+     * @since    2.0
+     */
+    protected function _setToolbar()
+    {
+        JToolBarHelper::title( JText::_('Extension Manager'), 'generic.png' );
+
+        JToolBarHelper::divider();
+        JToolBarHelper::editList();
+        JToolBarHelper::custom('extensions.publish', 'publish.png', 'publish_f2.png', 'JTOOLBAR_PUBLISH', true);
+        JToolBarHelper::custom('extensions.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
+        JToolBarHelper::divider();
+        JToolBarHelper::custom('extensions.refresh', 'refresh', 'refresh','JTOOLBAR_REFRESH_CACHE',true);
+        JToolBarHelper::divider();
+        JToolBarHelper::deleteList('', 'extension.remove','JTOOLBAR_UNINSTALL');
+        # JToolBarHelper::deleteList(JText::_('Are you sure you want to delete selected Items?'));
+        JToolBarHelper::divider();
+        JToolBarHelper::back('Back', 'index.php?option=com_xmap');
+
+    }
 }

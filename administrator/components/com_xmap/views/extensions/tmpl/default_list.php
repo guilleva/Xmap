@@ -8,6 +8,10 @@
 
 // no direct access
 defined('_JEXEC') or die;
+
+$user = JFactory::getUser();
+$canChange  = $user->authorise('core.edit.state',    'com_plugins');
+$canEdit    = $user->authorise('core.edit',          'com_plugins');
 ?>
 <form action="index.php" method="post" name="adminForm">
 	<?php if ($this->ftp) : ?>
@@ -41,12 +45,36 @@ defined('_JEXEC') or die;
 			</tr>
 		</tfoot>
 		<tbody>
-		<?php for ($i=0, $n=count($this->items), $rc=0; $i < $n; $i++, $rc = 1 - $rc) : ?>
-			<?php
-				$this->loadItem($i);
-				echo $this->loadTemplate('item');
-			?>
-		<?php endfor; ?>
+		<?php foreach ($this->items as $i => $item): ?>
+            <tr class="row<?php echo $i % 2; ?>">
+                <td class="center">
+                    <?php echo JHtml::_('grid.id', $i, $item->id); ?>
+                </td>
+                <td>
+                    <?php if ($canEdit) : ?>
+                        <a href="<?php echo JRoute::_('index.php?option=com_xmap&task=extension.edit&id='.(int) $item->id); ?>">
+                            <?php echo $item->name; ?></a>
+                    <?php else : ?>
+                            <?php echo $item->name; ?>
+                    <?php endif; ?>
+                </td>
+                <td class="center">
+                    <?php echo $this->escape($item->folder); ?>
+                </td>
+                <td class="center">
+                    <?php echo JHtml::_('jgrid.published', $item->enabled, $i, 'extensions.', $canChange); ?>
+                </td>
+                <td class="nowrap center<?php if (@$item->legacy) echo ' legacy-mode'; ?>">
+                    <?php echo @$item->version != '' ? $item->version : '&nbsp;'; ?>
+                </td>
+                <td class="nowrap center">
+                    <?php echo @$item->creationDate != '' ? $item->creationDate : '&nbsp;'; ?>
+                </td>
+                <td class="center">
+                    <?php echo @$item->authorEmail .'<br />'. @$item->authorUrl; ?>
+                </td>
+            </tr>
+		<?php endforeach; ?>
 		</tbody>
 	</table>
 	<?php else : ?>
@@ -56,6 +84,7 @@ defined('_JEXEC') or die;
 	<input type="hidden" name="view" value="extensions" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="option" value="com_xmap" />
-	<input type="hidden" name="type" value="plugins" />
+	<input type="hidden" name="type" value="xmap_ext" />
+    <input type="hidden" name="task" value="" />
 	<?php echo JHtml::_('form.token'); ?>
 </form>

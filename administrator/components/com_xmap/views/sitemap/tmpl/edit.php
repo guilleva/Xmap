@@ -69,7 +69,9 @@ JHtml::_('behavior.formvalidation');
 					<?php echo $this->form->getInput('access'); ?>
 				</td>
 			</tr>
-		<?php foreach($this->form->getFields('attribs') as $field): ?>
+		<?php 
+        $fieldSets = $this->form->getFieldsets('attribs');
+        foreach($fieldSets as $field): ?>
 			<?php if ($field->hidden): ?>
 				<?php echo $field->input; ?>
 			<?php else: ?>

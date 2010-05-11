@@ -35,10 +35,5 @@ class XmapHelper
 			JText::_('Xmap_Submenu_Extensions'),
 			'index.php?option=com_xmap&view=extensions',
 			$vName == 'extensions');
-		JSubMenuHelper::addEntry(
-			JText::_('Xmap_Submenu_Settings'),
-			'index.php?option=com_xmap&view=settings',
-			$vName == 'settings'
-		);
 	}
 }

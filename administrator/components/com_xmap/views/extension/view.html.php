@@ -27,7 +27,6 @@ class XmapViewExtension extends JView
 		$app	= &JFactory::getApplication();
 		$state	= $this->get('State');
 		$item	= $this->get('Item');
-		$params	= $this->get('Params');
 		$form 	= $this->get('Form');
 
 		// Check for errors.
@@ -36,15 +35,12 @@ class XmapViewExtension extends JView
 			return false;
 		}
 
-		// Convert dates from UTC
-		$offset	= $app->getCfg('offset');
+        // Bind the record to the form.
+        $form->bind($item);
 
-		$form->bind($item);
-
-		$this->assignRef('state',	$state);
+		$this->assignRef('state',	    $state);
 		$this->assignRef('extension',	$item);
-		$this->assignRef('params',	$params);
-		$this->assignRef('form',	$form);
+		$this->assignRef('form',	    $form);
 
 		$this->_setToolbar();
 		parent::display($tpl);

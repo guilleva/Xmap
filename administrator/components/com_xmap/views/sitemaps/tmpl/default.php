@@ -52,24 +52,24 @@ $n = count($this->items);
 					<?php echo JHtml::_('grid.sort', 'Xmap_Heading_Sitemap', 'a.title', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
 				</th>
 				<th width="5%">
-					<?php echo JHtml::_('grid.sort', 'JGrid_Heading_Published', 'a.state', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
+					<?php echo JHtml::_('grid.sort', 'Xmap_Heading_Published', 'a.state', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
 				</th>
 				<th width="10%">
-					<?php echo JHtml::_('grid.sort',  'JGrid_Heading_Access', 'access_level', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
+					<?php echo JHtml::_('grid.sort',  'Xmap_Heading_Access', 'access_level', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
 				</th>
 				<th width="5%">
 					<?php echo JHtml::_('grid.sort', 'Xmap_Heading_Default', 'a.is_default', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
 				</th>
-				<th width="10%" nowrap="nowrap">
+				<th width="10%" class="nowrap">
 					<?php echo JText::_('Xmap_Heading_Html_Stats'); ?><br />
 					(<?php echo JText::_('Xmap_Heading_Num_Links') . ' / '. JText::_('Xmap_Heading_Num_Hits') . ' / ' . JText::_('Xmap_Heading_Last_Visit'); ?>)
 				</th>
-				<th width="10%" nowrap="nowrap">
+				<th width="10%" class="nowrap">
 					<?php echo JText::_('Xmap_Heading_Xml_Stats'); ?><br />
 					<?php echo JText::_('Xmap_Heading_Num_Links') . '/'. JText::_('Xmap_Heading_Num_Hits') . '/' . JText::_('Xmap_Heading_Last_Visit'); ?>
 				</th>
-				<th width="1%" nowrap="nowrap">
-					<?php echo JHtml::_('grid.sort', 'JGrid_Heading_ID', 'a.id', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
+				<th width="1%" class="nowrap">
+					<?php echo JHtml::_('grid.sort', 'Xmap_Heading_ID', 'a.id', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
 				</th>
 			</tr>
 		</thead>
@@ -116,19 +116,19 @@ $n = count($this->items);
 
 			?>
 			<tr class="row<?php echo $i % 2; ?>">
-				<td style="text-align:center">
+				<td class="center">
 					<?php echo JHtml::_('grid.id', $i, $item->id); ?>
 				</td>
 				<td>
-					<a href="<?php echo JRoute::_('index.php?option=com_xmap&task=sitemap.edit&cid[]='.$item->id);?>">
+					<a href="<?php echo JRoute::_('index.php?option=com_xmap&task=sitemap.edit&id='.$item->id);?>">
 						<?php echo $this->escape($item->title); ?></a>
 					<br /><small>
 						(<?php echo $this->escape($item->alias); ?>)</small>
 				</td>
-				<td align="center">
+				<td class="center">
 					<?php echo JHtml::_('jgrid.published', $item->state, $i, 'sitemaps.'); ?>
 				</td>
-				<td align="center">
+				<td class="center">
 					<?php echo $this->escape($item->access_level); ?>
 				</td>
 				<td class="center">
@@ -138,13 +138,13 @@ $n = count($this->items);
 						&nbsp;
 					<?php endif; ?>
 				</td>
-				<td align="center">
+				<td class="center">
 					<?php echo $item->count_html .' / '.$item->views_html. ' / ' . $htmlDate; ?>
 				</td>
-				<td align="center">
+				<td class="center">
 					<?php echo $item->count_xml .' / '.$item->views_xml. ' / ' . $xmlDate; ?>
 				</td>
-				<td align="center">
+				<td class="center">
 					<?php echo (int) $item->id; ?>
 				</td>
 			</tr>

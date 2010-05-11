@@ -164,6 +164,7 @@
 			description="Xmap_MenuAssigment_Desc"
 			class="inputbox"
 			multiple="multiple"
+            array="true"
 			size="5"/>
 
 		<field

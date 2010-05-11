@@ -65,10 +65,11 @@ class XmapModelSitemaps extends JModelList
 	 *
 	 * @return      string
 	 */
-	function _getListQuery($resolveFKs = true)
+	protected function getListQuery($resolveFKs = true)
 	{
+        $db =& JFactory::getDBO();
 		// Create a new query object.
-		$query = new JQuery;
+		$query = $db->getQuery(true);
 
 		// Select the required fields from the table.
 		$query->select(

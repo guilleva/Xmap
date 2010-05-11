@@ -87,16 +87,17 @@ class XmapModelExtensions extends JModelList
 	 *
 	 * @return	string
 	 */
-	function _getListQuery()
+	protected function getListQuery()
 	{
-		// Create a new query object.
-		$query = new JQuery;
+        $db =& JFactory::getDBO();
+        // Create a new query object.
+        $query = $db->getQuery(true);
 
 		// Select the required fields from the table.
 		$query->select(
 			$this->getState(
 				'list.select',
-				'a.extension_id id,a.name,a.element,a.params,a.enabled,a.folder')
+				'a.extension_id id,a.name,a.element,a.params,a.enabled,a.folder,a.manifest_cache')
 		);
 		$query->from('#__extensions AS a');
 		$query->where('a.type = \'xmap_ext\'');
@@ -132,23 +133,39 @@ class XmapModelExtensions extends JModelList
 		$rows   =& parent::getItems();
 
 		// Get the plugin base path
-		$baseDir = JPATH_COMPONENT.DS.'extensions';
+		$baseDir = JPATH_COMPONENT_ADMINISTRATOR.DS.'extensions';
 
 		$numRows = count($rows);
 		for ($i = 0; $i < $numRows; $i ++) {
 			$row = & $rows[$i];
 
-			// Get the plugin xml file
-			$xmlfile = $baseDir.DS.$row->folder.DS.$row->element.".xml";
 
-			if ( file_exists($xmlfile) ) {
-				if ($data = JApplicationHelper::parseXMLInstallFile($xmlfile)) {
-					foreach($data as $key => $value)
-					{
-						$row->$key = $value;
-					}
-				}
-			}
+            if (strlen($row->manifest_cache)) {
+                $data = unserialize($row->manifest_cache);
+                if ($data) {
+                    foreach($data as $key => $value) {
+                        if ($key == 'type') {
+                            // ignore the type field
+                            continue;
+
+                            
+                        }
+                        $row->$key = $value;
+                    }
+                }
+            } else {
+                // Get the plugin xml file
+                $xmlfile = $baseDir.DS.$row->folder.DS.preg_replace('/^xmap_/','',$row->element).".xml";
+
+			    if ( file_exists($xmlfile) ) {
+				    if ($data = JApplicationHelper::parseXMLInstallFile($xmlfile)) {
+					    foreach($data as $key => $value)
+					    {
+						    $row->$key = $value;
+					    }
+				    }
+			    }
+            }
 		}
 		return $rows;
 	}
@@ -187,7 +204,7 @@ class XmapModelExtensions extends JModelList
 		//$db = & JFactory::getDbo();
 
 		// Get an installer instance
-		$installer = &XmapInstaller::getInstance();
+		$installer =& XmapInstaller::getInstance();
 
 		// Install the package
 		if (!$installer->install($package['dir'])) {
@@ -218,6 +235,33 @@ class XmapModelExtensions extends JModelList
 
 		return $result;
 	}
+    
+    /**
+     * Refreshes the cached manifest information for an extension
+     * @param int extension identifier (key in #__extensions)
+     * @return boolean result of refresh
+     * @since 2.0
+     */
+    function refresh($eid) {
+        if (!is_array($eid)) {
+            $eid = array($eid => 0);
+        }
+
+        // Get a database connector
+        $db = & JFactory::getDBO();
+
+        // Get an installer object for the extension type
+        jimport('joomla.installer.installer');
+        $installer = & XmapInstaller::getInstance();
+        $row = & JTable::getInstance('extension');
+        $result = 0;
+
+        // Uninstall the chosen extensions
+        foreach($eid as $id) {
+            $result|= $installer->refreshManifestCache($id);
+        }
+        return $result;
+    }
 
 	/**
 	 * @param string The class name for the installer
@@ -342,39 +386,47 @@ class XmapModelExtensions extends JModelList
 		return $package;
 	}
 	
-	/**
-	 * Enable/Disable an extension
-	 *
-	 * @return boolean True on success
-	 * @since 2.0
-	 */
-	function enableDisable($eid,$state)
-	{
-		// Initialize variables
-		$result		= false;
+    /**
+     * Enable/Disable an extension
+     *
+     * @static
+     * @return boolean True on success
+     * @since 2.0
+     */
+    function publish($eid = array(), $value = 1) {
 
-		/*
-		 * Ensure eid is an array of extension ids
-		 */
-		if (!is_array($eid)) {
-			$eid = array ($eid);
-		}
+        // Initialise variables.
+        $user = JFactory::getUser();
+        if ($user->authorise('core.edit.state', 'com_installer')) {
+            $result = true;
 
-		// Get a database connector
-		$db =& JFactory::getDBO();
-		
+            /*
+            * Ensure eid is an array of extension ids
+            * TODO: If it isn't an array do we want to set an error and fail?
+            */
+            if (!is_array($eid)) {
+                $eid = array($eid);
+            }
 
-		// Get a table object for the extension type
-		$table = & JTable::getInstance('Extension');
+            // Get a database connector
+            $db = & JFactory::getDBO();
 
-		// Disable the extension in the table and store it in the database
-		foreach ($eid as $id)
-		{
-			$table->load($id);
-			$table->enabled = $state;
-			$result |= $table->store();
-		}
+            // Get a table object for the extension type
+            $table = & JTable::getInstance('Extension');
 
-		return $result;
-	}
+            // Enable the extension in the table and store it in the database
+            foreach($eid as $id) {
+                $table->load($id);
+                $table->enabled = $value || $table->protected;
+                if (!$table->store()) {
+                    $this->setError($table->getError());
+                    $result = false;
+                }
+            }
+        } else {
+            $result = false;
+            JError::raiseWarning(403, JText::_('JERROR_CORE_EDIT_STATE_NOT_PERMITTED'));
+        }
+        return $result;
+    }
 }

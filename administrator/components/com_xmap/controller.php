@@ -31,13 +31,15 @@ class XmapController extends JController
 	 */
 	function display()
 	{
+        require_once JPATH_COMPONENT.DS.'helpers'.DS.'xmap.php';
+
 		// Get the document object.
-		$document       = &JFactory::getDocument();
+		$document   = &JFactory::getDocument();
 
 		// Set the default view name and format from the Request.
-		$vName	  = JRequest::getWord('view', 'sitemaps');
-		$vFormat	= $document->getType();
-		$lName	  = JRequest::getWord('layout', 'default');
+		$vName      = JRequest::getWord('view', 'sitemaps');
+		$vFormat    = $document->getType();
+		$lName      = JRequest::getWord('layout', 'default');
 
 		// Get and render the view.
 		if ($view = &$this->getView($vName, $vFormat))
@@ -55,7 +57,6 @@ class XmapController extends JController
 			$view->display();
 
 			// Load the submenu.
-			require_once JPATH_COMPONENT.DS.'helpers'.DS.'xmap.php';
 			XmapHelper::addSubmenu($vName);
 		}
 	}

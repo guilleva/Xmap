@@ -24,18 +24,18 @@ class JFormFieldModal_Sitemaps extends JFormField
 	 *
 	 * @var		string
 	 */
-	public $type = 'Modal_Sitemaps';
+	protected $type = 'Modal_Sitemaps';
 
 	/**
 	 * Method to get a list of options for a sitemaps list input.
 	 *
 	 * @return	array		An array of JHtml options.
 	 */
-	protected function _getInput()
+	protected function getInput()
 	{
 		// Initialise variables.
 		$db		=& JFactory::getDBO();
-		$doc 		=& JFactory::getDocument();
+		$doc 	=& JFactory::getDocument();
 
 		// Load the modal behavior.
 		JHtml::_('behavior.modal', 'a.modal');
@@ -61,20 +61,19 @@ class JFormFieldModal_Sitemaps extends JFormField
 		}
 
 		$doc->addScriptDeclaration(
-		"function jSelectSitemap_".$this->inputId."(id, title, object) {
-			$('".$this->inputId."_id').value = id;
-			$('".$this->inputId."_name').value = title;
+		"function jSelectSitemap_".$this->id."(id, title, object) {
+			$('".$this->id."_id').value = id;
+			$('".$this->id."_name').value = title;
 			SqueezeBox.close();
 		}"
 		);
 
-		$link = 'index.php?option=com_xmap&amp;view=sitemaps&amp;layout=modal&amp;tmpl=component&amp;function=jSelectSitemap_'.$this->inputId;
+		$link = 'index.php?option=com_xmap&amp;view=sitemaps&amp;layout=modal&amp;tmpl=component&amp;function=jSelectSitemap_'.$this->id;
 
 		JHTML::_('behavior.modal', 'a.modal');
-		$html = "\n".'<div style="float: left;"><input style="background: #ffffff;" type="text" id="'.$this->inputId.'_name" value="'.htmlspecialchars($title, ENT_QUOTES, 'UTF-8').'" disabled="disabled" /></div>';
+		$html = "\n".'<div style="float: left;"><input style="background: #ffffff;" type="text" id="'.$this->id.'_name" value="'.htmlspecialchars($title, ENT_QUOTES, 'UTF-8').'" disabled="disabled" /></div>';
 		$html .= '<div class="button2-left"><div class="blank"><a class="modal" title="'.JText::_('Xmap_Change_Sitemap').'"  href="'.$link.'" rel="{handler: \'iframe\', size: {x: 800, y: 450}}">'.JText::_('Xmap_Change_Sitemap_button').'</a></div></div>'."\n";
-		$html .= "\n".'<input type="hidden" id="'.$this->inputId.'_id" name="'.$this->inputName.'" value="'.(int) $this->value.'" />';
-
+		$html .= "\n".'<input type="hidden" id="'.$this->id.'_id" name="'.$this->name.'" value="'.(int)$this->value.'" />';
 		return $html;
 	}
 }

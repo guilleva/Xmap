@@ -25,7 +25,7 @@ class JFormFieldXmapmenus extends JFormFieldList
 	 *
 	 * @var		string
 	 */
-	public $type = 'Menus';
+	public $type = 'Xmapmenus';
 
 	/**
 	 * Method to get a list of options for a list input.
@@ -35,9 +35,10 @@ class JFormFieldXmapmenus extends JFormFieldList
 	protected function _getOptions()
 	{
 		$db		= &JFactory::getDbo();
-		$query	= new JQuery;
+		$query	= $db->getQuery(true);
 
-		$currentMenus = array_keys(get_object_vars($this->value));
+		//$currentMenus = array_keys(get_object_vars($this->value));
+        $currentMenus = array();
 
 		$query->select('menutype As value, title As text');
 		$query->from('#__menu_types AS a');
@@ -45,6 +46,7 @@ class JFormFieldXmapmenus extends JFormFieldList
 
 		// Get the options.
 		$db->setQuery($query);
+        // echo $db->getQuery();
 		$menus = $db->loadObjectList('value');
 		$options = array();
 
@@ -69,7 +71,7 @@ class JFormFieldXmapmenus extends JFormFieldList
 		}
 
 		$options = array_merge(
-			parent::_getOptions(),
+			parent::getOptions(),
 			$options
 		);
 		return $options;
@@ -80,27 +82,35 @@ class JFormFieldXmapmenus extends JFormFieldList
 	 *
 	 * @return      string	  The field input.
 	 */
-	protected function _getInput()
+	protected function getInput()
 	{
-		$disabled       = $this->_element->attributes('disabled') == 'true' ? true : false;
-		$readonly       = $this->_element->attributes('readonly') == 'true' ? true : false;
+		$disabled       = $this->element['disabled'] == 'true' ? true : false;
+		$readonly       = $this->element['readonly'] == 'true' ? true : false;
 		$attributes     = ' ';
 
 		$type = 'radio';
-		if ($v = $this->_element->attributes('size')) {
+		if ($v = $this->element['size']) {
 			$attributes     .= 'size="'.$v.'" ';
 		}
-		if ($v = $this->_element->attributes('class')) {
+		if ($v = $this->element['class']) {
 			$attributes     .= 'class="'.$v.'" ';
 		}
 		else {
 			$attributes     .= 'class="inputbox" ';
 		}
-		if ($m = $this->_element->attributes('multiple'))
+		if ($m = $this->element['multiple'])
 		{
 			$type = 'checkbox';
 		}
-
+        
+        $value = $this->value;
+        if (!is_array($value)) {
+            // Convert the selections field to an array.
+            $registry = new JRegistry;
+            $registry->loadJSON($value);
+            $value = $registry->toArray();
+        }
+       
 		$doc =& JFactory::getDocument();
 		$doc->addScriptDeclaration("
 		window.addEvent('domready',function(){
@@ -125,15 +135,15 @@ class JFormFieldXmapmenus extends JFormFieldList
 		// Create a regular list.
 		$i=0;
 		foreach ($options as $option) {
-			$prioritiesName = preg_replace('/(jform\[[^\]]+)(\].*)/','$1_priority$2',$this->inputName);
-			$changefreqName = preg_replace('/(jform\[[^\]]+)(\].*)/','$1_changefreq$2',$this->inputName);
-			$selected = (isset($this->value->{$option->value})?' checked="checked"' : '');
+			$prioritiesName = preg_replace('/(jform\[[^\]]+)(\].*)/','$1_priority$2',$this->name);
+			$changefreqName = preg_replace('/(jform\[[^\]]+)(\].*)/','$1_changefreq$2',$this->name);
+			$selected = (isset($value[$option->value])?' checked="checked"' : '');
 			$i++;
 			$return .= '<li id="menu_'.$i.'">';
-			$return .= '  <input type="'.$type.'" id="'.$this->inputId.'_'.$i.'" name="'.$this->inputName.'" value="'.$option->value.'"'.$attributes.$selected.' /><label for="'.$this->inputId.'_'.$i.'" class="menu_label">'.$option->text.'</label>';
+			$return .= '  <input type="'.$type.'" id="'.$this->id.'_'.$i.'" name="'.$this->name.'" value="'.$option->value.'"'.$attributes.$selected.' /><label for="'.$this->id.'_'.$i.'" class="menu_label">'.$option->text.'</label>';
 			$return .= '  <div class="xmap-menu-options" id="menu_options_'.$i.'">'.
-				     '<label>'. JText::_('Xmap_Priority').'</label> '.JHTML::_('xmap.priorities', $prioritiesName,($selected?$this->value->{$option->value}->priority:''),$i). '<br />' .
-				     '<label>'. JText::_('Xmap_Change_Frequency').'</label> '.JHTML::_('xmap.changefrequency', $changefreqName,($selected?$this->value->{$option->value}->changefreq:''),$i).
+				     '<label>'. JText::_('Xmap_Priority').'</label> '.JHTML::_('xmap.priorities', $prioritiesName,($selected?$value[$option->value]['priority']:'0.5'),$i). '<br />' .
+				     '<label>'. JText::_('Xmap_Change_Frequency').'</label> '.JHTML::_('xmap.changefrequency', $changefreqName,($selected?$value[$option->value]['changefreq']:'weekly'),$i).
                                      '</div>';
 			$return .= '</li>';
 		}
