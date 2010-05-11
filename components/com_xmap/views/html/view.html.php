@@ -39,7 +39,6 @@ class XmapViewHtml extends JView
 		$item	= $this->get('Item');
 		$items	= $this->get('Items');
 		$extensions	= $this->get('Extensions');
-
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
 			JError::raiseWarning(500, implode("\n", $errors));

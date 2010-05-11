@@ -36,7 +36,7 @@ class XmapModelSitemap extends JModelItem
 	 *
 	 * @return	void
 	 */
-	protected function _populateState()
+	protected function populateState()
 	{
 		$app = &JFactory::getApplication('site');
 
@@ -66,7 +66,7 @@ class XmapModelSitemap extends JModelItem
 	public function &getItem($pk = null)
 	{
 		// Initialize variables.
-		$pk = (!empty($pk)) ? $pk : (int) $this->getState('sitemap.id');
+        $pk = (!empty($pk)) ? $pk : (int) $this->getState('sitemap.id');
 
 		if ($this->_item === null) {
 			$this->_item = array();
@@ -76,7 +76,8 @@ class XmapModelSitemap extends JModelItem
 		{
 			try
 			{
-				$query = new JQuery;
+                $db = $this->getDbo();
+				$query = $db->getQuery(true);
 
 				$query->select($this->getState('item.select', 'a.*'));
 				$query->from('#__xmap_sitemap AS a');
@@ -102,7 +103,7 @@ class XmapModelSitemap extends JModelItem
 				$data = $this->_db->loadObject();
 
 				if ($error = $this->_db->getErrorMsg()) {
-					throw new Exception($error);
+                	throw new Exception($error);
 				}
 
 				if (empty($data)) {
@@ -155,42 +156,15 @@ class XmapModelSitemap extends JModelItem
 		return $this->_item[$pk];
 	}
 
-	public function &getItems()
+	public function getItems()
 	{
 		$item =& $this->getItem();
 		return XmapHelper::getMenuItems($item->selections);
 	}
 
 
-	function &getExtensions( ) {
-		if ($this->_extensions != null) {
-			return $this->_extensions;
-		}
-		$db = & JFactory::getDBO();
-
-		$list = array();
-		ini_set('display_errors','Off');
-
-		// Get the menu items as a tree.
-		$query = new JQuery;
-		$query->select('*');
-		$query->from('#__extensions AS n');
-		$query->where('n.type = \'xmap_ext\'');
-		$query->where('n.enabled = 1');
-
-		// Get the list of menu items.
-		$db->setQuery($query);
-		$this->_extensions = $db->loadObjectList('element');
-
-		foreach ($this->_extensions as $element => &$extension) {
-			require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'extensions'.DS.$extension->folder.DS.$element.'.php');
-			$xmlPath = JPATH_COMPONENT_ADMINISTRATOR.DS.'extensions'.DS.$extension->folder.DS.$element.'.xml';
-
-			$params = new JParameter($extension->params,$xmlPath);
-			$extension->params = $params->toArray();
-		}
-
-		return $this->_extensions;
+	function getExtensions( ) {
+        return XmapHelper::getExtensions();
 	}
 
 	private function prepareMenuItem(&$item)
