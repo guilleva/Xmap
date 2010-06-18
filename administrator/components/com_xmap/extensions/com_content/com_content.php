@@ -12,7 +12,7 @@
 
 defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );
 
-require_once (JPATH_SITE.DS.'components'.DS.'com_content'.DS.'router.php');
+require_once (JPATH_SITE.DS.'components'.DS.'com_content'.DS.'helpers'.DS.'route.php');
 
 /** Handles standard Joomla Content */
 class xmap_com_content {
@@ -21,9 +21,13 @@ class xmap_com_content {
     * This function is called before a menu item is printed. We use it to set the
     * proper uniqueid for the item
     */
-    function prepareMenuItem(&$node) {
-
+    function prepareMenuItem(&$node)
+    {
         $link_query = parse_url( $node->link );
+        if ( !isset($link_query['query']) ) {
+            return;
+        }
+
         parse_str( html_entity_decode($link_query['query']), $link_vars);
         $view = JArrayHelper::getValue($link_vars,'view','');
         $layout = JArrayHelper::getValue($link_vars,'layout','');
@@ -45,16 +49,19 @@ class xmap_com_content {
     }
 
     /** return a node-tree */
-    function &getTree(&$xmap, &$parent, &$params) {
+    function getTree(&$xmap, &$parent, &$params) {
         $db	=& JFactory::getDBO();
         $user	=& JFactory::getUser();
         $result = null;
 
         $link_query = parse_url( $parent->link );
+        if ( !isset($link_query['query']) ) {
+            return;
+        }
+        
         parse_str( html_entity_decode($link_query['query']), $link_vars);
         $view = JArrayHelper::getValue($link_vars,'view','');
         $id = intval(JArrayHelper::getValue($link_vars,'id',''));
-echo $view;
         
         /***
         * Parameters Initialitation
@@ -147,10 +154,8 @@ echo $view;
         (!$params['show_unauth']? ' AND a.access IN ('.$params['groups'].') ' : '').
         ( $xmap->view != 'xml'?"\n ORDER BY ". $orderby ."": '' );
 
-
         $db->setQuery( $query );
         // echo $db->getQuery();
-        $db->getQuery(  );
         $items = $db->loadObjectList();
 
         if ( count($items) > 0 ) {
@@ -174,7 +179,7 @@ echo $view;
                     $item->modified = $item->created;
 
                 $node->slug	= $item->route ? ($item->id.':'.$item->route) : $item->id;
-                $node->link	= ContentRoute::category($node->slug);
+                $node->link	= ContentHelperRoute::getCategoryRoute($node->slug);
                 if ( $xmap->printNode($node) ) {
                     xmap_com_content::expandCategory($xmap, $parent, $item->id,$params, $menuparams);
                 }
@@ -236,7 +241,7 @@ echo $view;
 
                 $node->slug		= $item->alias ? ($item->id.':'.$item->alias) : $item->id;
                 $node->catslug		= $item->category_route ? ($catid.':'.$item->category_route) : $catid;
-                $node->link = ContentRoute::article($node->slug, $node->catslug);
+                $node->link = ContentHelperRoute::getArticleRoute($node->slug, $node->catslug);
                 $xmap->printNode($node);
             }
             $xmap->changeLevel(-1);
