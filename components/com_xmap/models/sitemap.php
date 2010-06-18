@@ -163,7 +163,8 @@ class XmapModelSitemap extends JModelItem
 	}
 
 
-	function getExtensions( ) {
+	function getExtensions( )
+    {
         return XmapHelper::getExtensions();
 	}
 

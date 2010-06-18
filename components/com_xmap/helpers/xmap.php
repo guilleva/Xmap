@@ -95,12 +95,12 @@ class XmapHelper
 
 
     public static function &getExtensions( ) {
-        static $extensions;
+        static $list;
         
         jimport('joomla.html.parameter');
         
-        if ($extensions != null) {
-            return $extensions;
+        if ($list != null) {
+            return $list;
         }
         $db = & JFactory::getDBO();
 
@@ -118,7 +118,7 @@ class XmapHelper
         $db->setQuery($query);
         $extensions = $db->loadObjectList('element');
 
-        foreach ($extensions as $element => &$extension) {
+        foreach ($extensions as $element => $extension) {
             $element = preg_replace('/^xmap_/','',$element);
             require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'extensions'.DS.$extension->folder.DS.$element.'.php');
             $xmlPath = JPATH_COMPONENT_ADMINISTRATOR.DS.'extensions'.DS.$extension->folder.DS.$element.'.xml';

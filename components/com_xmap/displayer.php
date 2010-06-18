@@ -119,6 +119,7 @@ class XmapDisplayer {
             $node->home             = $item->home;			// If it's a home menu entry
             // $node->link             = isset( $item->link ) ? htmlspecialchars( $item->link ) : '';
             $node->link             = $item->link;
+            $node->option           = $item->option;
             
             switch ($item->type)
             {
@@ -146,16 +147,18 @@ class XmapDisplayer {
                     }
                     break;
             }
-
             $this->printNode($node);
+            
+            //Restore the original link
+            $node->link             = $item->link;
             $this->printMenuTree($node,$item->items);
             $matches=array();
-            if ( preg_match('#^/?index.php.*option=(com_[^&]+)#',$node->link,$matches) ) {
-                $option = $matches[1];
-                if ( !empty($this->_extensions[$option]) ) {
-                    $node->uid = $option;
-                    $className = 'xmap_'.$option;
-                    $result = call_user_func_array(array($className, 'getTree'),array(&$this,&$node,$this->_extensions[$option]->params));
+            //if ( preg_match('#^/?index.php.*option=(com_[^&]+)#',$node->link,$matches) ) {
+            if ( $node->option ) {
+                if ( !empty($this->_extensions[$node->option]) ) {
+                     $node->uid = $node->option;
+                    $className = 'xmap_'.$node->option;
+                    $result = call_user_func_array(array($className, 'getTree'),array(&$this,&$node,&$this->_extensions[$node->option]->params));
                 }
             }
             //XmapPlugins::printTree( $this, $node, $this->_extensions );    // Determine the menu entry's type and call it's handler
