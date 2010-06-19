@@ -45,9 +45,9 @@ if ($this->displayer->_isAdmin) {
 			if (response.result == 'OK') {
 				var state = response.state;
 				if (state==0) {
-					imgs[0].src='{$live_site}administrator/images/publish_x.png';
+					imgs[0].src='{$live_site}/components/com_xmap/assets/images/unpublished.png';
 				} else {
-					imgs[0].src='{$live_site}administrator/images/tick.png';
+					imgs[0].src='{$live_site}/components/com_xmap/assets/images/tick.png';
 				}
 			} else {
 				alert('The element couldn\\'t be published or upublished!');

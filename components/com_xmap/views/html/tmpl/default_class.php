@@ -100,10 +100,10 @@ class XmapHtmlDisplayer extends XmapDisplayer {
 
         if ($this->_isAdmin) {
             if ( $this->isExcluded($node->id,$node->uid) ) {
-                $img = '<img src="'.$this->live_site.'/administrator/images/publish_x.png" alt="v" title="'.JText::_('Unpublished').'">';
+                $img = '<img src="'.$this->live_site.'/components/com_xmap/assets/images/unpublished.png" alt="v" title="'.JText::_('JUNPUBLISHED').'">';
                 $class= 'xmapexclon';
             } else {
-                $img = '<img src="'.$this->live_site.'/administrator/images/tick.png" alt="x" title="'.JText::_('Unpublished').'" />';
+                $img = '<img src="'.$this->live_site.'/components/com_xmap/assets/images/tick.png" alt="x" title="'.JText::_('JPUBLISHED').'" />';
                 $class= 'xmapexcloff';
             }
             echo ' <a href= "#" class="xmapexcl '.$class.'" rel="{uid:\''.$node->uid.'\',itemid:'.$node->id.'}">'.$img.'</a>';
@@ -145,54 +145,6 @@ class XmapHtmlDisplayer extends XmapDisplayer {
     /** Print component heading, etc. Then call getHtmlList() to print list */
     function startOutput(&$menus,&$config) {
         $sitemap = &$this->sitemap;
-
-        $user = &JFactory::getUser();
-
-        if ($this->_isAdmin) {
-            JHTML::_('behavior.mootools');
-            $ajaxurl = "{$this->live_site}/index.php?option=com_xmap&tmpl=component&task=editElement&action=toggleElement";
-
-            $css = '.xmapexcl img{ border:0px; }'."\n";
-            $css .= '.xmapexcloff { text-decoration:line-through; }';
-            //$css .= "\n.".$this->sitemap->classname .' li {float:left;}';
-
-            $js = "
-            window.addEvent('domready',function (){
-            $$('.xmapexcl').each(function(el){
-            el.onclick = function(){
-            if (this && this.rel) {
-            options = Json.evaluate(this.rel);
-            this.onComplete = checkExcludeResult
-            var myAjax = new Ajax('{$ajaxurl}&sitemap={$this->sitemap->id}&uid='+options.uid+'&itemid='+options.itemid,{
-            onComplete: checkExcludeResult.bind(this)
-            }).request();
-            }
-            return false;
-            };
-
-            });
-            });
-            checkExcludeResult = function (txtresponse,xmlresponse) {
-            //this.set('class','xmapexcl xmapexcloff');
-            var imgs = this.getElementsByTagName('img');
-            var response = xmlresponse.getElementsByTagName('response')[0];
-            var result = response.getElementsByTagName('result')[0].firstChild.nodeValue;
-            if (result == 'OK') {
-            var state = response.getElementsByTagName('state')[0].firstChild.nodeValue;
-            if (state==0) {
-            imgs[0].src='{$this->live_site}/administrator/images/publish_x.png';
-            } else {
-            imgs[0].src='{$live_site}/administrator/images/tick.png';
-            }
-            } else {
-            alert('The element couldn\\'t be published or upublished!');
-            }
-            }";
-
-            $doc = JFactory::getDocument();
-            $doc->addStyleDeclaration ($css);
-            $doc->addScriptDeclaration ($js);
-        }
 
         $menu = &JTable::getInstance('Menu');
         $menu->load( $Itemid );			// Load params for the Xmap menu-item
