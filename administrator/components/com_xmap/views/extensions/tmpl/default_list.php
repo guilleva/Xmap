@@ -30,13 +30,13 @@ $canEdit    = $user->authorise('core.edit',          'com_plugins');
 	<table class="adminlist" cellspacing="1">
 		<thead>
 			<tr>
-				<th class="title" width="10px"><?php echo JText::_('Num'); ?></th>
-				<th class="title"><?php echo JText::_('Plugin'); ?></th>
-				<th class="title" width="10%"><?php echo JText::_('Folder'); ?></th>
-				<th class="title" width="10%"><?php echo JText::_('Published'); ?></th>
-				<th class="title" width="10%" align="center"><?php echo JText::_('Version'); ?></th>
-				<th class="title" width="15%"><?php echo JText::_('Date'); ?></th>
-				<th class="title" width="25%"><?php echo JText::_('Author'); ?></th>
+				<th class="title" width="10px"><?php echo JText::_('XMAP_HEADING_NUM'); ?></th>
+				<th class="title"><?php echo JText::_('XMAP_HEADING_PLUGIN'); ?></th>
+				<th class="title" width="10%"><?php echo JText::_('XMAP_HEADING_FOLDER'); ?></th>
+				<th class="title" width="10%"><?php echo JText::_('XMAP_HEADING_PUBLISHED'); ?></th>
+				<th class="title" width="10%" align="center"><?php echo JText::_('XMAP_HEADING_VERSION'); ?></th>
+				<th class="title" width="15%"><?php echo JText::_('XMAP_HEADING_DATE'); ?></th>
+				<th class="title" width="25%"><?php echo JText::_('XMAP_HEADING_AUTHOR'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>

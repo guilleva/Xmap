@@ -35,7 +35,7 @@
 
     <div class="width-40" style="float:left">
         <fieldset class="adminform">
-            <legend><?php echo JText::_( 'Details' ); ?></legend>
+            <legend><?php echo JText::_( 'XMAP_EXTENSION_DETAILS' ); ?></legend>
 
             <table class="admintable">
                 <tr>
@@ -44,22 +44,22 @@
                 </tr>
 
                 <tr>
-                    <td width="100" class="key"><label><?php echo JText::_( 'Author' ); ?></label></td>
+                    <td width="100" class="key"><label><?php echo JText::_( 'XMAP_EXTENSION_AUTHOR' ); ?></label></td>
                     <td><?php echo $this->extension->author; ?></td>
                 </tr>
 
                 <tr>
-                    <td width="100" class="key"><label><?php echo JText::_( 'Author_Email' ); ?></label></td>
+                    <td width="100" class="key"><label><?php echo JText::_( 'XMAP_EXTENSION_AUTHOR_EMAIL' ); ?></label></td>
                     <td><?php echo $this->extension->authorEmail; ?></td>
                 </tr>
 
                 <tr>
-                    <td width="100" class="key"><label><?php echo JText::_( 'Author_Website' ); ?></label></td>
+                    <td width="100" class="key"><label><?php echo JText::_( 'XMAP_EXTENSION_AUTHOR_WEBSITE' ); ?></label></td>
                     <td><?php echo $this->extension->authorUrl; ?></td>
                 </tr>
 
                 <tr>
-                    <td width="100" class="key"><label><?php echo JText::_( 'Description' ); ?></label></td>
+                    <td width="100" class="key"><label><?php echo JText::_( 'XMAP_EXTENSION_DESCRIPTION' ); ?></label></td>
                     <td><?php echo $this->extension->description; ?></td>
                 </tr>
                 <?php if ($this->extension->extension_id) : ?>

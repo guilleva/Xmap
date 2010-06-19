@@ -110,33 +110,38 @@ class XmapModelSitemap extends JModelAdmin
     /**
      * Method to get the record form.
      *
-     * @return    mixed    JForm object on success, false on failure.
-     * @since    1.6
+     * @param    array    $data        Data for the form.
+     * @param    boolean    $loadData    True if the form is to load its own data (default case), false if not.
+     * @return    mixed    A JForm object on success, false on failure
+     * @since    2.0
      */
-    public function getForm()
+    public function getForm($data = array(), $loadData = true)
     {
-        // Initialise variables.
-        $app    = JFactory::getApplication();
-
         // Get the form.
-        $form = parent::getForm('com_xmap.sitemap', 'sitemap', array('control' => 'jform'));
-
-        // Check for an error.
-        if (JError::isError($form)) {
-            $this->setError($form->getMessage());
+        $form = $this->loadForm('com_xmap.sitemap', 'sitemap', array('control' => 'jform', 'load_data' => $loadData));
+        if (empty($form)) {
             return false;
         }
 
-        // Check the session for previously entered form data.
-        $data = $app->getUserState('com_xmap.edit.sitemap.data', array());
-
-        // Bind the form data if present.
-        if (!empty($data)) {
-            $form->bind($data);
-        }
 
         return $form;
     }
+
+    /**
+     * Method to get the data that should be injected in the form.
+     *
+     * @return    mixed    The data for the form.
+     * @since    1.6
+     */
+    protected function loadFormData()
+    {
+        // Check the session for previously entered form data.
+        $data = JFactory::getApplication()->getUserState('com_xmap.edit.sitemap.data', array());
+
+        
+        return $data;
+    }
+
 
     /**
      * Method to save the form data.

@@ -18,7 +18,7 @@ class XmapInstaller extends JInstaller
 {
 		public function __construct()
         {
-			JAdapter::__construct(JPATH_COMPONENT,'JInstaller');
+			JAdapter::__construct(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_xmap','JInstaller');
 		}
 
         /**

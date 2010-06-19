@@ -46,7 +46,7 @@ class XmapViewExtensions extends JView
 
 		$item =& $this->get('Item');
 
-		JToolBarHelper::title(  JText::_( 'Gateways' ).': <small><small>[ ' . $text.' ]</small></small>' );
+		JToolBarHelper::title(  JText::_( 'XMAP_EXTENSIONS_TITLE' ).': <small><small>[ ' . $text.' ]</small></small>' );
 		JToolBarHelper::save();
 		JToolBarHelper::apply();
 		if ($edit) {
@@ -71,10 +71,10 @@ class XmapViewExtensions extends JView
      */
     protected function _setToolbar()
     {
-        JToolBarHelper::title( JText::_('Extension Manager'), 'generic.png' );
+        JToolBarHelper::title( JText::_('XMAP_EXTENSION_MANAGER_TITLE'), 'generic.png' );
 
         JToolBarHelper::divider();
-        JToolBarHelper::editList();
+        JToolBarHelper::editList('extension.edit', 'JTOOLBAR_EDIT');
         JToolBarHelper::custom('extensions.publish', 'publish.png', 'publish_f2.png', 'JTOOLBAR_PUBLISH', true);
         JToolBarHelper::custom('extensions.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
         JToolBarHelper::divider();

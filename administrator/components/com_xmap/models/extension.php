@@ -21,20 +21,19 @@ jimport('joomla.database.query');
  */
 class XmapModelExtension extends JModelAdmin
 {
-	/**
-	 * Model context string.
-	 *
-	 * @var		string
-	 */
-	 protected $_context = 'com_xmap';
-	 protected $_xml		= null;
+    /**
+     * @var     string    The prefix to use with controller messages.
+     * @since   2.0
+     */
+    protected $text_prefix = 'COM_CONTENT';
+	protected $_xml		= null;
 
-        /**
-         * extension data
-         *
-         * @var array
-         */
-        var $_item = null;
+    /**
+     * extension data
+     *
+     * @var array
+     */
+    var $_item = null;
 
 	/**
 	 * Returns a reference to the a Table object, always creating it
@@ -44,9 +43,9 @@ class XmapModelExtension extends JModelAdmin
 	 * @param	array	$options Configuration array for model. Optional.
 	 * @return	JTable	A database object
 	*/
-	public function getTable($type = 'Sitemap', $prefix = 'XmapTable', $config = array())
+	public function getTable($type = 'Extension', $prefix = 'JTable', $config = array())
 	{
-		return JTable::getInstance('extension');
+		return JTable::getInstance($type,$prefix,$config);
 	}
 
 	/**
@@ -54,7 +53,7 @@ class XmapModelExtension extends JModelAdmin
 	 *
 	 * @return	void
 	 */
-	protected function _populateState()
+	protected function populateState()
 	{
 		$app	= &JFactory::getApplication('administrator');
 
@@ -62,8 +61,19 @@ class XmapModelExtension extends JModelAdmin
 		if (!($pk = (int) $app->getUserState('com_xmap.edit.extension.id'))) {
 			$pk = (int) JRequest::getInt('item_id');
 		}
+        
+
 		$this->setState('extension.id',			$pk);
 
+        $item       = $this->getItem($pk);
+        $folder     = $item->folder;
+        $element    = $item->element;
+        $element = preg_replace('/^xmap_/','',$element);
+
+        // These variables are used to add data from the plugin XML files.
+        $this->setState('item.folder',    $folder);
+        $this->setState('item.element',   $element);
+        
 		// Load the parameters.
 		$params	= &JComponentHelper::getParams('com_xmap');
 		$this->setState('params', $params);
@@ -143,55 +153,47 @@ class XmapModelExtension extends JModelAdmin
 		return $params;
 	}
 
-
-	/**
-	 * Method to get the row form.
-	 *
-	 * @return	mixed	JForm object on success, false on failure.
-	 * @since	1.6
-	 */
-	public function getForm($data = null)
-	{
-		// Initialize variables.
-		$app	= &JFactory::getApplication();
-       
-        // The folder and element vars are passed when saving the form.
-        if (empty($data)) {
-            $item       = $this->getItem();
-            $folder     = $item->folder;
-            $element    = $item->element;
-        } else {
-            $folder        = JArrayHelper::getValue($data, 'folder', '', 'word');
-            $element    = JArrayHelper::getValue($data, 'element', '', 'word');
-        }
-        $element = preg_replace('/^xmap_/','',$element);
-
-        // These variables are used to add data from the plugin XML files.
-        $this->setState('item.folder',    $folder);
-        $this->setState('item.element',   $element);
-
+    /**
+     * Method to get the record form.
+     *
+     * @param    array    $data        Data for the form.
+     * @param    boolean    $loadData    True if the form is to load its own data (default case), false if not.
+     * @return    mixed    A JForm object on success, false on failure
+     * @since    2.0
+     */
+    public function getForm($data = array(), $loadData = true)
+    {
         // Get the form.
-        $form = parent::getForm('com_xmap.extension', 'extension', array('control' => 'jform'));
-
-        // Check for an error.
-        if (JError::isError($form)) {
-            $this->setError($form->getMessage());
+        $form = $this->loadForm('com_xmap.extension', 'extension', array('control' => 'jform', 'load_data' => $loadData));
+        if (empty($form)) {
             return false;
         }
+
+
+        return $form;
+    }
+
+    /**
+     * Method to get the data that should be injected in the form.
+     *
+     * @return    mixed    The data for the form.
+     * @since    1.6
+     */
+    protected function loadFormData()
+    {
+        // Check the session for previously entered form data.
+        $data = JFactory::getApplication()->getUserState('com_xmap.edit.extension.data', array());
+
         
-		// Check the session for previously entered form data.
-		$data = $app->getUserState('com_xmap.edit.extension.data', array());
+        return $data;
+    }
 
-		// Bind the form data if present.
-		if (!empty($data)) {
-			$form->bind($data);
-		}
-
-		return $form;
-	}
     
     protected function preprocessForm(JForm $form, $data, $group = 'content')
     {
+        
+       // $this->populateState();
+
         jimport('joomla.filesystem.file');
         jimport('joomla.filesystem.folder');
 
@@ -202,6 +204,7 @@ class XmapModelExtension extends JModelAdmin
 
         // Try format: /components/com_xmap/extensions/folder/element.xml
         $formFile = JPath::clean(JPATH_COMPONENT_ADMINISTRATOR.'/extensions/'.$folder.'/'.$element.'/'.$element.'.xml');
+       // echo $formFile;exit;
         if (!file_exists($formFile)) {
             // Try 1.5 format: /components/com_xmap/extensions/element.xml
             $formFile = JPath::clean(JPATH_COMPONENT_ADMINISTRATOR.'/extensions/'.$folder.'/'.$element.'.xml');

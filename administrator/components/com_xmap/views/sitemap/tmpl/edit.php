@@ -42,9 +42,12 @@ JHtml::_('behavior.formvalidation');
 		<?php echo $this->form->getLabel('alias'); ?>
 		<?php echo $this->form->getInput('alias'); ?>
 
-                <?php echo $this->form->getLabel('state'); ?>
+        <?php echo $this->form->getLabel('state'); ?>
 		<?php echo $this->form->getInput('state'); ?>
 
+        <?php echo $this->form->getLabel('access'); ?>
+        <?php echo $this->form->getInput('access'); ?>
+        
 		<div class="clr"></div>
 		<?php echo $this->form->getLabel('introtext'); ?><br />
 		<div class="clr"></div>
@@ -53,42 +56,29 @@ JHtml::_('behavior.formvalidation');
 	</div>
 
 	<div class="width-40" style="float:left">
-		<?php echo $pane->startPane('xmap-pane'); ?>
-
-		<?php echo $pane->startPanel(JText::_('Xmap_Fieldset_Menus'), 'menus-details'); ?>
+		<?php echo JHtml::_('sliders.start','xmap-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
+        <?php echo JHtml::_('sliders.panel',JText::_('XMAP_FIELDSET_MENUS'), 'menus-details'); ?>
 				<?php echo $this->form->getInput('selections'); ?>
-		<?php echo $pane->endPanel(); ?>
 
-		<?php echo $pane->startPanel(JText::_('Xmap_Fieldset_Options'), 'basic-options'); ?>
-		<table>
-			<tr>
-				<td class="paramlist_key" width="40%">
-					<?php echo $this->form->getLabel('access'); ?>
-				</td>
-				<td class="paramlist_value">
-					<?php echo $this->form->getInput('access'); ?>
-				</td>
-			</tr>
-		<?php 
+        <?php
         $fieldSets = $this->form->getFieldsets('attribs');
-        foreach($fieldSets as $field): ?>
-			<?php if ($field->hidden): ?>
-				<?php echo $field->input; ?>
-			<?php else: ?>
-				<tr>
-					<td class="paramlist_key" width="40%">
-						<?php echo $field->label; ?>
-					</td>
-					<td class="paramlist_value">
-						<?php echo $field->input; ?>
-					</td>
-				</tr>
-			<?php endif; ?>
-		<?php endforeach; ?>
-		</table>
-		<?php echo $pane->endPanel(); ?>
+        foreach ($fieldSets as $name => $fieldSet) :
+            echo JHtml::_('sliders.panel',JText::_($fieldSet->label), $name.'-options');
+            if (isset($fieldSet->description) && trim($fieldSet->description)) :
+                echo '<p class="tip">'.$this->escape(JText::_($fieldSet->description)).'</p>';
+            endif;
+            ?>
+            <fieldset class="panelform">
+                <ul class="adminformlist">
+                <?php foreach ($this->form->getFieldset($name) as $field) : ?>
+                    <li><?php echo $field->label; ?>
+                    <?php echo $field->input; ?></li>
+                <?php endforeach; ?>
+                </ul>
+            </fieldset>
+        <?php endforeach; ?>
 
-		<?php echo $pane->startPanel(JText::_('Xmap_Fieldset_Metadata'), 'meta-options'); ?>
+        <?php echo JHtml::_('sliders.panel',JText::_('XMAP_FIELDSET_METADATA'), 'menus-details'); ?>
 		<ol>
 			<li>
 				<?php echo $this->form->getLabel('metadesc'); ?><br />
@@ -99,9 +89,8 @@ JHtml::_('behavior.formvalidation');
 				<?php echo $this->form->getInput('metakey'); ?>
 			</li>
 		</ol>
-		<?php echo $pane->endPanel(); ?>
 
-		<?php echo $pane->endPane(); ?>
+		<?php echo JHtml::_('sliders.end'); ?>
 	</div>
 
 

@@ -14,12 +14,11 @@ class JElementSitemap extends JElement
 	/**
 	 * Element name
 	 *
-	 * @access	protected
 	 * @var		string
 	 */
 	var	$_name = 'Sitemap';
 
-	function fetchElement($name, $value, &$node, $control_name)
+	public function fetchElement($name, $value, &$node, $control_name)
 	{
 		global $mainframe;
 

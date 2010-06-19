@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
 
 		// do field validation
 		if (form.install_directory.value == ""){
-			alert("<?php echo JText::_('Please select a directory', true); ?>");
+			alert("<?php echo JText::_('XMAP_PLEASE_SELECT_A_DIRECTORY', true); ?>");
 		} else {
 			form.installtype.value = 'folder';
 			form.submit();
@@ -28,7 +28,7 @@ defined('_JEXEC') or die;
 
 		// do field validation
 		if (form.install_url.value == "" || form.install_url.value == "http://"){
-			alert("<?php echo JText::_('Please enter a URL', true); ?>");
+			alert("<?php echo JText::_('XMAP_PLEASE_ENTER_A_URL', true); ?>");
 		} else {
 			form.installtype.value = 'url';
 			form.submit();
@@ -40,14 +40,14 @@ defined('_JEXEC') or die;
 
 		// do field validation
 		if (form.install_package.value == ""){
-			alert("<?php echo JText::_('Please select a file to upload', true); ?>");
+			alert("<?php echo JText::_('XMAP_PLEASE_SELECT_A_FILE_TO_UPLOAD', true); ?>");
 		} else {
 			form.submit();
 		}
 	}
 //-->
 </script>
-<h2><?php echo JText::_('Install new Extension'); ?></h2>
+<h2><?php echo JText::_('XMAP_INSTALL_NEW_EXTENSION'); ?></h2>
 <form enctype="multipart/form-data" action="index.php" method="post" name="installForm">
 	<?php if ($this->ftp) : ?>
 		<?php echo $this->loadTemplate('ftp'); ?>
@@ -55,45 +55,45 @@ defined('_JEXEC') or die;
 
 	<table class="adminform">
 	<tr>
-		<th colspan="2"><?php echo JText::_('Upload Package File'); ?></th>
+		<th colspan="2"><?php echo JText::_('XMAP_UPLOAD_PACKAGE_FILE'); ?></th>
 	</tr>
 	<tr>
 		<td width="120">
-			<label for="install_package"><?php echo JText::_('Package File'); ?>:</label>
+			<label for="install_package"><?php echo JText::_('XMAP_PACKAGE_FILE'); ?>:</label>
 		</td>
 		<td>
 			<input class="input_box" id="install_package" name="install_package" type="file" size="57" />
-			<input class="button" type="button" value="<?php echo JText::_('Upload File'); ?> &amp; <?php echo JText::_('Install'); ?>" onclick="submitbutton5()" />
+			<input class="button" type="button" value="<?php echo JText::_('XMAP_UPLOAD_FILE'); ?> &amp; <?php echo JText::_('XMAP_INSTALL'); ?>" onclick="submitbutton5()" />
 		</td>
 	</tr>
 	</table>
 
 	<table class="adminform">
 	<tr>
-		<th colspan="2"><?php echo JText::_('Install from directory'); ?></th>
+		<th colspan="2"><?php echo JText::_('XMAP_INSTALL_FROM_DIRECTORY'); ?></th>
 	</tr>
 	<tr>
 		<td width="120">
-			<label for="install_directory"><?php echo JText::_('Install directory'); ?>:</label>
+			<label for="install_directory"><?php echo JText::_('XMAP_INSTALL_DIRECTORY'); ?>:</label>
 		</td>
 		<td>
 			<input type="text" id="install_directory" name="install_directory" class="input_box" size="70" value="<?php echo $this->state->get('install.directory'); ?>" />
-			<input type="button" class="button" value="<?php echo JText::_('Install'); ?>" onclick="submitbutton3()" />
+			<input type="button" class="button" value="<?php echo JText::_('XMAP_INSTALL'); ?>" onclick="submitbutton3()" />
 		</td>
 	</tr>
 	</table>
 
 	<table class="adminform">
 	<tr>
-		<th colspan="2"><?php echo JText::_('Install from URL'); ?></th>
+		<th colspan="2"><?php echo JText::_('XMAP_INSTALL_FROM_URL'); ?></th>
 	</tr>
 	<tr>
 		<td width="120">
-			<label for="install_url"><?php echo JText::_('Install URL'); ?>:</label>
+			<label for="install_url"><?php echo JText::_('XMAP_INSTALL_URL'); ?>:</label>
 		</td>
 		<td>
 			<input type="text" id="install_url" name="install_url" class="input_box" size="70" value="http://" />
-			<input type="button" class="button" value="<?php echo JText::_('Install'); ?>" onclick="submitbutton4()" />
+			<input type="button" class="button" value="<?php echo JText::_('XMAP_INSTALL'); ?>" onclick="submitbutton4()" />
 		</td>
 	</tr>
 	</table>

@@ -16,8 +16,8 @@
 			id="name"
 			name="name"
 			type="text"
-			label="JField_Title_Label"
-			description="JField_Title_Desc"
+			label="JGLOBAL_TITLE"
+			description="JFIELD_TITLE_DESC"
 			class="inputbox"
 			size="29"
 			required="true"
@@ -26,8 +26,8 @@
 		<field
 			name="enabled"
 			type="list"
-			label="JField_Published_Label"
-			description="JField_Published_Desc"
+			label="JFIELD_PUBLISHED_LABEL"
+			description="JFIELD_PUBLISHED_DESC"
 			default="1">
 			<option
 				value="0">No</option>

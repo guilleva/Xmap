@@ -56,21 +56,21 @@ class XmapViewSitemaps extends JView
 		$doc =& JFactory::getDocument();
 
 		$doc->addStyleDeclaration('.icon-48-sitemap {background-image: url(components/com_xmap/images/sitemap-icon.png);}');
-		JToolBarHelper::title(JText::_('Xmap_sitemaps_Title'), 'sitemap.png');
-		JToolBarHelper::custom('sitemaps.publish', 'publish.png', 'publish_f2.png', 'Publish', true);
-		JToolBarHelper::custom('sitemaps.unpublish', 'unpublish.png', 'unpublish_f2.png', 'Unpublish', true);
-                JToolBarHelper::custom('sitemaps.setdefault', 'default.png', 'default_f2.png', 'Xmap_Toolbar_Set_Default', true);
+		JToolBarHelper::title(JText::_('XMAP_SITEMAPS_TITLE'), 'sitemap.png');
+		JToolBarHelper::custom('sitemaps.publish', 'publish.png', 'publish_f2.png', 'JTOOLBAR_Publish', true);
+		JToolBarHelper::custom('sitemaps.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
+                JToolBarHelper::custom('sitemaps.setdefault', 'default.png', 'default_f2.png', 'XMAP_TOOLBAR_SET_DEFAULT', true);
 		if ($state->get('filter.published') == -2) {
-			JToolBarHelper::deleteList('', 'sitemaps.delete');
+			JToolBarHelper::deleteList('', 'sitemaps.delete','JTOOLBAR_DELETE');
 		}
 		else {
-			JToolBarHelper::trash('sitemaps.trash');
+			JToolBarHelper::trash('sitemaps.trash','JTOOLBAR_TRASH');
 		}
 		JToolBarHelper::divider();
-		JToolBarHelper::custom('sitemap.edit', 'edit.png', 'edit_f2.png', 'Edit', true);
-		JToolBarHelper::custom('sitemap.edit', 'new.png', 'new_f2.png', 'New', false);
-		JToolBarHelper::divider();
-		JToolBarHelper::preferences('com_xmap');
-		JToolBarHelper::help('screen.xmap.sitemaps');
+		JToolBarHelper::custom('sitemap.edit', 'edit.png', 'edit_f2.png', 'JTOOLBAR_EDIT', true);
+		JToolBarHelper::custom('sitemap.edit', 'new.png', 'new_f2.png', 'JTOOLBAR_New', false);
+		//JToolBarHelper::divider();
+		//JToolBarHelper::preferences('com_xmap');
+		//JToolBarHelper::help('screen.xmap.sitemaps');
 	}
 }

@@ -127,7 +127,7 @@ class XmapControllerExtensions extends JController
                 } else if ($value == 0) {
                     $ntext = 'XMAP_N_EXTENSIONS_UNPUBLISHED';
                 }
-                $this->setMessage(JText::__($ntext, count($ids)));
+                $this->setMessage(JText::sprintf($ntext, count($ids)));
             }
         }
 

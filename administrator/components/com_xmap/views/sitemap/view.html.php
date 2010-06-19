@@ -176,17 +176,17 @@ class XmapViewSitemap extends JView
 		$user		= &JFactory::getUser();
 		$isNew		= ($this->item->id == 0);
 
-		JToolBarHelper::title(JText::_('Xmap_Page_'.($isNew ? 'Add_Sitemap' : 'Edit_Sitemap')), 'article-add.png');
+		JToolBarHelper::title(JText::_('XMAP_PAGE_'.($isNew ? 'ADD_SITEMAP' : 'EDIT_SITEMAP')), 'article-add.png');
 
 		// If an existing item, can save to a copy.
 		if (!$isNew) {
-			JToolBarHelper::custom('sitemap.save2copy', 'copy.png', 'copy_f2.png', 'JToolbar_Save_as_Copy', false);
+			JToolBarHelper::custom('sitemap.save2copy', 'copy.png', 'copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
 		}
 
-		JToolBarHelper::custom('sitemap.save2new', 'new.png', 'new_f2.png', 'JToolbar_Save_and_new', false);
-		JToolBarHelper::save('sitemap.save');
-		JToolBarHelper::apply('sitemap.apply');
-		JToolBarHelper::cancel('sitemap.cancel');
+		JToolBarHelper::custom('sitemap.save2new', 'new.png', 'new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+		JToolBarHelper::save('sitemap.save','JTOOLBAR_SAVE');
+		JToolBarHelper::apply('sitemap.apply','JTOOLBAR_APPLY');
+		JToolBarHelper::cancel('sitemap.cancel','JTOOLBAR_CANCEL');
 		JToolBarHelper::divider();
 		JToolBarHelper::help('screen.xmap.sitemap');
 	}

@@ -56,12 +56,12 @@ class XmapViewExtension extends JView
 	{
 		$user		= &JFactory::getUser();
 
-		JToolBarHelper::title(JText::_('Xmap_Page_Edit_Extension'), 'article-add.png');
+		JToolBarHelper::title(JText::_('Xmap_Page_Edit_Extension'), 'article-edit.png');
 		
-		JToolBarHelper::save('extension.save');
-		JToolBarHelper::apply('extension.apply');
-		JToolBarHelper::cancel('extension.cancel');
-		JToolBarHelper::divider();
-		JToolBarHelper::help('screen.xmap.extension');
+		JToolBarHelper::save('extension.save','JTOOLBAR_SAVE');
+		JToolBarHelper::apply('extension.apply','JTOOLBAR_APPLY');
+		JToolBarHelper::cancel('extension.cancel','JTOOLBAR_CANCEL');
+		//JToolBarHelper::divider();
+		//JToolBarHelper::help('screen.xmap.extension');
 	}
 }
