@@ -25,7 +25,7 @@ class XmapDisplayer {
     {
         jimport('joomla.utilities.date');
         jimport('joomla.user.helper');
-        $user =& JFactory::getUser();
+        $user = JFactory::getUser();
         $groups = array_keys(JUserHelper::getUserGroups($user->get('id')));
         $date = new JDate();
 
@@ -60,7 +60,7 @@ class XmapDisplayer {
 
             $node = new stdclass();
 
-            $node->uid = $menu->uid = "menu-".$menutype;
+            $node->uid = "menu-".$menutype;
             $node->menutype = $menutype;
             $node->priority = null;
             $node->changefreq = null; 

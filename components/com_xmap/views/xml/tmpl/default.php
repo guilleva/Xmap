@@ -17,11 +17,10 @@ $live_site = substr_replace(JURI::root(), "", -1, 1);
 $this->isNews = JRequest::getInt('news',0);
 
 header('Content-type: application/xml; charset=utf-8');
-?>
-<?xml version="1.0" encoding="UTF-8"?>
-<?php
+
+echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 if (!$this->item->params->get('exclude_xsl') && !$this->displayer->isNews ) {
-	$user =& JFactory::getUser();
+	$user = JFactory::getUser();
 	if ( $this->displayer->_isAdmin) {
 		echo '<?xml-stylesheet type="text/xsl" href="'. $live_site.'/index.php?option=com_xmap&amp;view=xml&amp;layout=adminxsl&amp;tmpl=component"?>'."\n";
 	} else {

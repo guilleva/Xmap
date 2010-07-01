@@ -1,35 +1,35 @@
 <?php
-/**
-* @version       $Id$
-* @copyright     Copyright (C) 2005 - 2009 Joomla! Vargas. All rights reserved.
-* @license       GNU General Public License version 2 or later; see LICENSE.txt
-* @author	Guillermo Vargas (guille@vargas.co.cr)
-*/
 
+/**
+ * @version       $Id$
+ * @copyright     Copyright (C) 2005 - 2009 Joomla! Vargas. All rights reserved.
+ * @license       GNU General Public License version 2 or later; see LICENSE.txt
+ * @author	Guillermo Vargas (guille@vargas.co.cr)
+ */
 // No direct access
 defined('_JEXEC') or die;
 
-require_once(JPATH_SITE.DS.'includes'.DS.'application.php');
+require_once(JPATH_SITE . DS . 'includes' . DS . 'application.php');
 jimport('joomla.database.query');
 
 /**
-* Xmap Component Sitemap Model
-*
-* @package		Xmap
-* @subpackage		com_xmap
-* @since 2.0
-*/
+ * Xmap Component Sitemap Model
+ *
+ * @package		Xmap
+ * @subpackage		com_xmap
+ * @since 2.0
+ */
 class XmapHelper
 {
+
     public static function &getMenuItems($selections)
     {
-        $db		= JFactory::getDbo();
-        $user	= JFactory::getUser();
-        $list	= array();
+        $db = JFactory::getDbo();
+        $user = JFactory::getUser();
+        $list = array();
 
-        foreach ( $selections as $menutype => $menuOptions) {
+        foreach ($selections as $menutype => $menuOptions) {
             // Initialize variables.
-
             // Get the menu items as a tree.
             $query = $db->getQuery(true);
             $query->select('n.id, n.title, n.alias, n.path, n.level, n.link, n.type, n.browserNav, n.params, n.home, n.parent_id');
@@ -40,11 +40,11 @@ class XmapHelper
             $query->order('n.lft');
 
             // Filter over the appropriate menu.
-            $query->where('n.menutype = '.$db->quote($menutype));
+            $query->where('n.menutype = ' . $db->quote($menutype));
 
             // Filter over authorized access levels and publishing state.
             $query->where('n.published = 1');
-            $query->where('n.access IN ('.implode(',', (array) $user->authorisedLevels()).')');
+            $query->where('n.access IN (' . implode(',', (array) $user->authorisedLevels()) . ')');
 
             // Get the list of menu items.
             $db->setQuery($query);
@@ -53,17 +53,16 @@ class XmapHelper
 
             // Check for a database error.
             if ($db->getErrorNum()) {
-                JError::raiseWarning(021,$db->getErrorMsg());
+                JError::raiseWarning(021, $db->getErrorMsg());
                 return array();
             }
 
             // Set some values to make nested HTML rendering easier.
-            foreach($tmpList as  $id => $item)
-            {
+            foreach ($tmpList as $id => $item) {
                 $item->items = array();
 
                 $item->params = new JObject(json_decode($item->params));
-                if ( preg_match('#^/?index.php.*option=(com_[^&]+)#',$item->link,$matches) ) {
+                if (preg_match('#^/?index.php.*option=(com_[^&]+)#', $item->link, $matches)) {
                     $item->option = $matches[1];
                 } else {
                     $item->option = null;
@@ -93,20 +92,19 @@ class XmapHelper
         return $list;
     }
 
-
-    public static function &getExtensions( ) {
+    public static function &getExtensions()
+    {
         static $list;
-        
+
         jimport('joomla.html.parameter');
-        
+
         if ($list != null) {
             return $list;
         }
-        $db = & JFactory::getDBO();
+        $db = JFactory::getDBO();
 
         $list = array();
         //ini_set('display_errors','Off');
-
         // Get the menu items as a tree.
         $query = $db->getQuery(true);
         $query->select('*');
@@ -119,11 +117,11 @@ class XmapHelper
         $extensions = $db->loadObjectList('element');
 
         foreach ($extensions as $element => $extension) {
-            $element = preg_replace('/^xmap_/','',$element);
-            require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'extensions'.DS.$extension->folder.DS.$element.'.php');
-            $xmlPath = JPATH_COMPONENT_ADMINISTRATOR.DS.'extensions'.DS.$extension->folder.DS.$element.'.xml';
+            $element = preg_replace('/^xmap_/', '', $element);
+            require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'extensions' . DS . $extension->folder . DS . $element . '.php');
+            $xmlPath = JPATH_COMPONENT_ADMINISTRATOR . DS . 'extensions' . DS . $extension->folder . DS . $element . '.xml';
 
-            $params = new JParameter($extension->params,$xmlPath);
+            $params = new JParameter($extension->params, $xmlPath);
             $extension->params = $params->toArray();
             $list[$element] = $extension;
         }
@@ -132,19 +130,19 @@ class XmapHelper
     }
 
     /**
-    * Call the function prepareMenuItem of the extension for the item (if any)
-    *
-    * @param	object		Menu item object
-    *
-    * @return	void
-    */
+     * Call the function prepareMenuItem of the extension for the item (if any)
+     *
+     * @param	object		Menu item object
+     *
+     * @return	void
+     */
     public static function prepareMenuItem($item)
     {
-        $extensions =& XmapHelper::getExtensions();
-        if ( !empty($extensions[$item->option]) ) {
-            $className = 'xmap_'.$item->option;
+        $extensions = & XmapHelper::getExtensions();
+        if (!empty($extensions[$item->option])) {
+            $className = 'xmap_' . $item->option;
             $obj = new $className;
-            if (method_exists($obj,'prepareMenuItem')) {
+            if (method_exists($obj, 'prepareMenuItem')) {
                 $obj->prepareMenuItem($item);
             }
         }

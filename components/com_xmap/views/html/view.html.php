@@ -27,9 +27,8 @@ class XmapViewHtml extends JView
 	function display($tpl = null)
 	{
 		// Initialise variables.
-		$app		= &JFactory::getApplication();
-		$user		= &JFactory::getUser();
-		// $dispatcher	= &JDispatcher::getInstance();
+		$app		= JFactory::getApplication();
+		$user		= JFactory::getUser();
 
 		// Get view related request variables.
 		$print	= JRequest::getBool('print');
@@ -49,8 +48,6 @@ class XmapViewHtml extends JView
 		// Add router helpers.
 		$item->slug		= $item->alias ? ($item->id.':'.$item->alias) : $item->id;
 
-		// TODO: Change based on shownoauth
-		//$item->rlink	= JRoute::_(ContentRoute::article($item->slug, $item->catslug));
 		$item->rlink	= JRoute::_('index.php?option=com_xmap&view=html&id='.$item->slug);
 
 		// Create a shortcut to the paramemters.
@@ -100,7 +97,7 @@ class XmapViewHtml extends JView
 		$this->_prepareDocument();
 		parent::display($tpl);
 
-		$model = &$this->getModel(  );
+		$model = $this->getModel(  );
 		$model->hit( $displayer->getCount() );
 	}
 
@@ -109,9 +106,9 @@ class XmapViewHtml extends JView
 	 */
 	protected function _prepareDocument()
 	{
-		$app		= &JFactory::getApplication();
-		$pathway	= &$app->getPathway();
-		$menus		= &JSite::getMenu();
+		$app		= JFactory::getApplication();
+		$pathway	= $app->getPathway();
+		$menus		= $app->getMenu();
 		$title		= null;
 
 		// Because the application sets a default page title,

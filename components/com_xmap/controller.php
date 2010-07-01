@@ -23,10 +23,10 @@ class XmapController extends JController
 	/**
 	 * Display the view
 	 */
-	function display()
+	public function display($cachable = false, $urlparams = false)
 	{
 		// Initialise variables.
-		$document	= &JFactory::getDocument();
+		$document	= JFactory::getDocument();
 
 		// Set the default view name and format from the Request.
 		$vName		= JRequest::getWord('view', 'html');
@@ -34,10 +34,10 @@ class XmapController extends JController
 		$lName		= JRequest::getWord('layout', 'default');
 
 		// Get and render the view.
-		if ($view = &$this->getView($vName, $vFormat))
+		if ($view = $this->getView($vName, $vFormat))
 		{
 			// Get the model for the view.
-			$model	= &$this->getModel('Sitemap');
+			$model	= $this->getModel('Sitemap');
 
 			// Push the model into the view (as default).
 			$view->setModel($model, true);
@@ -55,7 +55,7 @@ class XmapController extends JController
 
                 jimport('joomla.utilities.date');
                 jimport('joomla.user.helper');
-                $user =& JFactory::getUser();
+                $user = JFactory::getUser();
                 $groups = array_keys(JUserHelper::getUserGroups($user->get('id')));
 	 	$registry = new JRegistry('_default');
 
