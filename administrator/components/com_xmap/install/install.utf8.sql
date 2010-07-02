@@ -22,4 +22,15 @@ CREATE TABLE `#__xmap_sitemap` (
   `lastvisit_xml` int(11) DEFAULT NULL,
   `lastvisit_html` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__xmap_items` (
+  `uid` varchar(100) NOT NULL,
+  `itemid` int(11) NOT NULL,
+  `view` varchar(10) NOT NULL,
+  `sitemap_id` int(11) NOT NULL,
+  `properties` varchar(300) DEFAULT NULL,
+  PRIMARY KEY (`uid`,`itemid`,`view`,`sitemap_id`),
+  KEY `uid` (`uid`,`itemid`),
+  KEY `view` (`view`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8

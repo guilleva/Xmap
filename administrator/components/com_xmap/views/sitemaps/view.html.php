@@ -1,7 +1,7 @@
 <?php
 /**
  * @version		$Id$
- * @copyright   Copyright (C) 2007 - 2009 Joomla! Vargas. All rights reserved.
+ * @copyright           Copyright (C) 2007 - 2009 Joomla! Vargas. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  * @author		Guillermo Vargas (guille@vargas.co.cr)
  */
@@ -53,7 +53,7 @@ class XmapViewSitemaps extends JView
 	protected function _setToolbar()
 	{
 		$state = $this->get('State');
-		$doc =& JFactory::getDocument();
+		$doc = JFactory::getDocument();
 
 		$doc->addStyleDeclaration('.icon-48-sitemap {background-image: url(components/com_xmap/images/sitemap-icon.png);}');
 		JToolBarHelper::title(JText::_('XMAP_SITEMAPS_TITLE'), 'sitemap.png');

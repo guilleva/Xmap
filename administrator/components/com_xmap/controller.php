@@ -5,7 +5,6 @@
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  * @author		Guillermo Vargas (guille@vargas.co.cr)
  */
-
 // no direct access
 defined('_JEXEC') or die;
 
@@ -20,109 +19,110 @@ jimport('joomla.application.component.controller');
 class XmapController extends JController
 {
 
-	function __construct()
-	{
-		parent::__construct();
+    function __construct()
+    {
+        parent::__construct();
 
-		$this->registerTask('navigator-links',        'navigatorLinks');
-	}
-	/**
-	 * Display the view
-	 */
-	function display()
-	{
-        require_once JPATH_COMPONENT.DS.'helpers'.DS.'xmap.php';
+        $this->registerTask('navigator-links', 'navigatorLinks');
+    }
 
-		// Get the document object.
-		$document   = &JFactory::getDocument();
+    /**
+     * Display the view
+     */
+    public function display($cachable = false, $urlparams = false)
+    {
+        require_once JPATH_COMPONENT . DS . 'helpers' . DS . 'xmap.php';
 
-		// Set the default view name and format from the Request.
-		$vName      = JRequest::getWord('view', 'sitemaps');
-		$vFormat    = $document->getType();
-		$lName      = JRequest::getWord('layout', 'default');
+        // Get the document object.
+        $document = JFactory::getDocument();
 
-		// Get and render the view.
-		if ($view = &$this->getView($vName, $vFormat))
-		{
-			// Get the model for the view.
-			$model = &$this->getModel($vName);
+        // Set the default view name and format from the Request.
+        $vName = JRequest::getWord('view', 'sitemaps');
+        $vFormat = $document->getType();
+        $lName = JRequest::getWord('layout', 'default');
 
-			// Push the model into the view (as default).
-			$view->setModel($model, true);
-			$view->setLayout($lName);
+        // Get and render the view.
+        if ($view = $this->getView($vName, $vFormat)) {
+            // Get the model for the view.
+            $model = $this->getModel($vName);
 
-			// Push document object into the view.
-			$view->assignRef('document', $document);
+            // Push the model into the view (as default).
+            $view->setModel($model, true);
+            $view->setLayout($lName);
 
-			$view->display();
+            // Push document object into the view.
+            $view->assignRef('document', $document);
 
-			// Load the submenu.
-			XmapHelper::addSubmenu($vName);
-		}
-	}
+            $view->display();
 
-	function navigator()
-	{
-		$db		= &JFactory::getDBO();
-		$document	= &JFactory::getDocument();
-		$app		= &JFactory::getApplication('administrator');
+            // Load the submenu.
+            XmapHelper::addSubmenu($vName);
+        }
+    }
 
-		$id = JRequest::getInt('sitemap',0);
-		$link = urldecode(JRequest::getVar('link',''));
-		$name = JRequest::getCmd('e_name','');
-		if (!$id) {
-			$db->setQuery('SELECT id from `#__xmap_sitemap` where is_default=1');
-			$id = $db->loadResult();
-		}
+    function navigator()
+    {
+        $db = JFactory::getDBO();
+        $document = JFactory::getDocument();
+        $app = JFactory::getApplication('administrator');
 
-		if (!$id) {
-			JError::raiseWarning(500,JText::_('Xmap_Not_Sitemap_Selected'));
-			return false;
-		}
+        $id = JRequest::getInt('sitemap', 0);
+        $link = urldecode(JRequest::getVar('link', ''));
+        $name = JRequest::getCmd('e_name', '');
+        if (!$id) {
+            $db->setQuery('SELECT id from `#__xmap_sitemap` where is_default=1');
+            $id = $db->loadResult();
+        }
 
-		$app->setUserState('com_xmap.edit.sitemap.id',$id);
+        if (!$id) {
+            JError::raiseWarning(500, JText::_('Xmap_Not_Sitemap_Selected'));
+            return false;
+        }
 
-		$view = &$this->getView('sitemap', $document->getType());
-		$model = $this->getModel('Sitemap');
-		$view->setLayout('navigator');
-		$view->setModel($model,true);
+        $app->setUserState('com_xmap.edit.sitemap.id', $id);
 
-		// Push document object into the view.
-		$view->assignRef('document', $document);
+        $view = $this->getView('sitemap', $document->getType());
+        $model = $this->getModel('Sitemap');
+        $view->setLayout('navigator');
+        $view->setModel($model, true);
 
-		$view->navigator();
-	}
+        // Push document object into the view.
+        $view->assignRef('document', $document);
 
-	function navigatorLinks()
-	{
+        $view->navigator();
+    }
 
-		$db		= &JFactory::getDBO();
-		$document	= &JFactory::getDocument();
-		$app		= &JFactory::getApplication('administrator');
+    function navigatorLinks()
+    {
 
-		$id = JRequest::getInt('sitemap',0);
-		$link = urldecode(JRequest::getVar('link',''));
-		$name = JRequest::getCmd('e_name','');
-		if (!$id) {
-			$db->setQuery('SELECT id from `#__xmap_sitemap` where is_default=1');
-			$id = $db->loadResult();
-		}
+        $db = JFactory::getDBO();
+        $document = JFactory::getDocument();
+        $app = JFactory::getApplication('administrator');
 
-		if (!$id) {
-			JError::raiseWarning(500,JText::_('Xmap_Not_Sitemap_Selected'));
-			return false;
-		}
+        $id = JRequest::getInt('sitemap', 0);
+        $link = urldecode(JRequest::getVar('link', ''));
+        $name = JRequest::getCmd('e_name', '');
+        if (!$id) {
+            $db->setQuery('SELECT id from `#__xmap_sitemap` where is_default=1');
+            $id = $db->loadResult();
+        }
 
-		$app->setUserState('com_xmap.edit.sitemap.id',$id);
+        if (!$id) {
+            JError::raiseWarning(500, JText::_('Xmap_Not_Sitemap_Selected'));
+            return false;
+        }
 
-		$view = &$this->getView('sitemap', $document->getType());
-		$model = $this->getModel('Sitemap');
-		$view->setLayout('navigator');
-		$view->setModel($model,true);
+        $app->setUserState('com_xmap.edit.sitemap.id', $id);
 
-		// Push document object into the view.
-		$view->assignRef('document', $document);
+        $view = $this->getView('sitemap', $document->getType());
+        $model = $this->getModel('Sitemap');
+        $view->setLayout('navigator');
+        $view->setModel($model, true);
 
-		$view->navigatorLinks();
-	}
+        // Push document object into the view.
+        $view->assignRef('document', $document);
+
+        $view->navigatorLinks();
+    }
+
 }

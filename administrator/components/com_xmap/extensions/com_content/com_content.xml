@@ -37,10 +37,20 @@
                     <option value="2">XMAP_OPTION_XML_ONLY</option>
                     <option value="3">XMAP_OPTION_HTML_ONLY</option>
                 </field>
+                <field name="add_pagebreaks" type="list" default="1" label="XMAP_SETTING_ADD_PAGEBREAKS_LABEL" description="XMAP_SETTING_ADD_PAGEBREAKS_DESC">
+                    <option value="0">XMAP_OPTION_NEVER</option>
+                    <option value="1">XMAP_OPTION_ALWAYS</option>
+                    <option value="2">XMAP_OPTION_XML_ONLY</option>
+                    <option value="3">XMAP_OPTION_HTML_ONLY</option>
+                </field>
                 <field name="max_art" type="text" default="0" label="XMAP_SETTING_MAX_ART_CAT" description="XMAP_SETTING_MAX_ART_CAT_DESC" />
                 <field name="max_art_age" type="text" default="0" label="XMAP_SETTING_MAX_ART_AGE" description="XMAP_SETTING_MAX_ART_AGE_DESC" />
             </fieldset>
             <fieldset name="xml">
+                <field name="add_images" type="list" default="0" label="XMAP_SETTING_ADD_IMAGES_LABEL" description="XMAP_SETTING_ADD_IMAGES_DESC">
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
                 <field name="cat_priority" type="list" default="-1" label="XMAP_SETTING_CAT_PRIORITY" description="XMAP_SETTING_CAT_PRIORITY_DESC">
                     <option value="-1">XMAP_OPTION_USE_PARENT_MENU</option>
                     <option value="0.0">0.0</option>
@@ -88,6 +98,14 @@
                     <option value="monthly">XMAP_OPTION_MONTHLY</option>
                     <option value="yearly">XMAP_OPTION_YEARLY</option>
                     <option value="never">XMAP_OPTION_NEVER</option>
+                </field>
+            </fieldset>
+            <fieldset name="news">
+                <field name="keywords" type="list" default="1" label="XMAP_SETTING_NEWS_KEYWORDS_LABEL" description="XMAP_SETTING_NEWS_KEYWORDS_DESC">
+                    <option value="metakey">XMAP_SETTING_NEWS_KEYWORDS_METAKEYS</option>
+                    <option value="category">XMAP_SETTING_NEWS_KEYWORDS_CATTITLE</option>
+                    <option value="both">XMAP_SETTING_NEWS_KEYWORDS_METAKEYS_CATTITLE</option>
+                    <option value="none">XMAP_SETTING_NEWS_KEYWORDS_NONE</option>
                 </field>
             </fieldset>
         </fields>

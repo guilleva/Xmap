@@ -11,10 +11,10 @@ defined('_JEXEC') or die;
 jimport('joomla.application.component.modeladmin');
 
 /**
- * Article model.
+ * Sitemap model.
  *
- * @package        Joomla.Administrator
- * @subpackage    com_content
+ * @package       Xmap
+ * @subpackage    com_xmap
  */
 class XmapModelSitemap extends JModelAdmin
 {
@@ -58,7 +58,7 @@ class XmapModelSitemap extends JModelAdmin
      * @param    type    The table type to instantiate
      * @param    string    A prefix for the table class name. Optional.
      * @param    array    Configuration array for model. Optional.
-     * @return    JTable    A database object
+     * @return    XmapTableSitemap    A database object
     */
     public function getTable($type = 'Sitemap', $prefix = 'XmapTable', $config = array())
     {
@@ -72,14 +72,14 @@ class XmapModelSitemap extends JModelAdmin
      *
      * @return    mixed    Object on success, false on failure.
      */
-    public function &getItem($pk = null)
+    public function getItem($pk = null)
     {
         // Initialise variables.
         $pk = (!empty($pk)) ? $pk : (int)$this->getState('sitemap.id');
         $false    = false;
 
         // Get a row instance.
-        $table = &$this->getTable();
+        $table = $this->getTable();
 
         // Attempt to load the row.
         $return = $table->load($pk);
@@ -97,7 +97,8 @@ class XmapModelSitemap extends JModelAdmin
         }
 
         // Convert to the JObject before adding other data.
-        $value = JArrayHelper::toObject($table->getProperties(1), 'JObject');
+        $value = $table->getProperties(1);
+        $value = JArrayHelper::toObject($value, 'JObject');
 
         // Convert the params field to an array.
         $registry = new JRegistry;

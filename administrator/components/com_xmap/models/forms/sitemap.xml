@@ -81,28 +81,6 @@
             />
 
         <field
-            id="metakey"
-            name="metakey"
-            type="textarea"
-            label="JFIELD_META_KEYWORDS_LABEL"
-            description="JFIELD_META_KEYWORDS_DESC"
-            class="inputbox"
-            rows="3"
-            cols="30"
-            default=""/>
-
-        <field
-            id="metadesc"
-            name="metadesc"
-            type="textarea"
-            label="JFIELD_META_DESCRIPTION_LABEL"
-            description="JFIELD_META_DESCRIPTION_DESC"
-            class="inputbox"
-            rows="3"
-            cols="30"
-            default=""/>
-
-        <field
             id="access"
             name="access"
             type="accesslevel"

@@ -1,12 +1,10 @@
 <?php
 /**
  * @version		$Id$
- * @copyright   Copyright (C) 2007 - 2009 Joomla! Vargas. All rights reserved.
+ * @copyright           Copyright (C) 2007 - 2009 Joomla! Vargas. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  * @author		Guillermo Vargas (guille@vargas.co.cr)
  */
-
-
 // no direct access
 defined('_JEXEC') or die;
 
@@ -16,91 +14,90 @@ jimport('joomla.database.query');
 /**
  * Sitemaps Model Class
  *
- * @package	     Xmap
- * @subpackage  com_xmap
- * @since	       2.0
+ * @package         Xmap
+ * @subpackage      com_xmap
+ * @since           2.0
  */
 class XmapModelSitemaps extends JModelList
 {
-	/**
-	 * Model context string.
-	 *
-	 * @var	 string
-	 */
-	public $_context = 'com_xmap.sitemaps';
 
-	/**
-	 * Method to auto-populate the model state.
-	 *
-	 * @since       1.6
-	 */
-	protected function _populateState()
-	{
-		$app = &JFactory::getApplication();
+    /**
+     * Model context string.
+     *
+     * @var	 string
+     */
+    public $_context = 'com_xmap.sitemaps';
 
-		$access = $app->getUserStateFromRequest($this->_context.'.filter.access', 'filter_access', 0, 'int');
-		$this->setState('filter.access', $access);
+    /**
+     * Method to auto-populate the model state.
+     *
+     * @since       2.0
+     */
+    protected function _populateState()
+    {
+        $app = JFactory::getApplication();
 
-		$published = $app->getUserStateFromRequest($this->_context.'.published', 'filter_published', '');
-		$this->setState('filter.published', $published);
+        $access = $app->getUserStateFromRequest($this->_context . '.filter.access', 'filter_access', 0, 'int');
+        $this->setState('filter.access', $access);
 
-		// List state information
-		$limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'));
-		$this->setState('list.limit', $limit);
+        $published = $app->getUserStateFromRequest($this->_context . '.published', 'filter_published', '');
+        $this->setState('filter.published', $published);
 
-		$limitstart = $app->getUserStateFromRequest($this->_context.'.limitstart', 'limitstart', 0);
-		$this->setState('list.limitstart', $limitstart);
+        // List state information
+        $limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'));
+        $this->setState('list.limit', $limit);
 
-		$orderCol = $app->getUserStateFromRequest($this->_context.'.ordercol', 'filter_order', 'a.title');
-		$this->setState('list.ordering', $orderCol);
+        $limitstart = $app->getUserStateFromRequest($this->_context . '.limitstart', 'limitstart', 0);
+        $this->setState('list.limitstart', $limitstart);
 
-		$orderDirn = $app->getUserStateFromRequest($this->_context.'.orderdirn', 'filter_order_Dir', 'asc');
-		$this->setState('list.direction', $orderDirn);
-	}
-		
-		
+        $orderCol = $app->getUserStateFromRequest($this->_context . '.ordercol', 'filter_order', 'a.title');
+        $this->setState('list.ordering', $orderCol);
 
-	/**
-	 * @param       boolean True to join selected foreign information
-	 *
-	 * @return      string
-	 */
-	protected function getListQuery($resolveFKs = true)
-	{
-        $db =& JFactory::getDBO();
-		// Create a new query object.
-		$query = $db->getQuery(true);
+        $orderDirn = $app->getUserStateFromRequest($this->_context . '.orderdirn', 'filter_order_Dir', 'asc');
+        $this->setState('list.direction', $orderDirn);
+    }
 
-		// Select the required fields from the table.
-		$query->select(
-			$this->getState(
-				'list.select',
-				'a.*')
-		);
-		$query->from('#__xmap_sitemap AS a');
+    /**
+     * @param       boolean True to join selected foreign information
+     *
+     * @return      string
+     */
+    protected function getListQuery($resolveFKs = true)
+    {
+        $db = JFactory::getDBO();
+        // Create a new query object.
+        $query = $db->getQuery(true);
 
-		// Join over the asset groups.
-		$query->select('ag.title AS access_level');
-		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
+        // Select the required fields from the table.
+        $query->select(
+                $this->getState(
+                        'list.select',
+                        'a.*')
+        );
+        $query->from('#__xmap_sitemap AS a');
 
-		// Filter by access level.
-		if ($access = $this->getState('filter.access')) {
-			$query->where('a.access = ' . (int) $access);
-		}
+        // Join over the asset groups.
+        $query->select('ag.title AS access_level');
+        $query->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
 
-		// Filter by published state
-		$published = $this->getState('filter.published');
-		if (is_numeric($published)) {
-			$query->where('a.state = ' . (int) $published);
-		}
-		else if ($published === '') {
-			$query->where('(a.state = 0 OR a.state = 1)');
-		}
+        // Filter by access level.
+        if ($access = $this->getState('filter.access')) {
+            $query->where('a.access = ' . (int) $access);
+        }
 
-		// Add the list ordering clause.
-		$query->order($this->_db->getEscaped($this->getState('list.ordering', 'a.title')).' '.$this->_db->getEscaped($this->getState('list.direction', 'ASC')));
+        // Filter by published state
+        $published = $this->getState('filter.published');
+        if (is_numeric($published)) {
+            $query->where('a.state = ' . (int) $published);
+        } else if ($published === '') {
+            $query->where('(a.state = 0 OR a.state = 1)');
+        }
 
-		//echo nl2br(str_replace('#__','jos_',$query));
-		return $query;
-	}
+        // Add the list ordering clause.
+        $query->order($this->_db->getEscaped($this->getState('list.ordering', 'a.title')) . ' ' . $this->_db->getEscaped($this->getState('list.direction', 'ASC')));
+
+        //echo nl2br(str_replace('#__','jos_',$query));
+        return $query;
+    }
+
 }
