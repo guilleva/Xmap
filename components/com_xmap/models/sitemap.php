@@ -31,6 +31,7 @@ class XmapModelSitemap extends JModelItem
     protected $_context = 'com_xmap.sitemap';
     protected $_extensions = null;
 
+    static $items = array();
     /**
      * Method to auto-populate the model state.
      *
@@ -206,28 +207,59 @@ class XmapModelSitemap extends JModelItem
         return true;
     }
 
+    public function getSitemapItems($view=null)
+    {
+        if (!isset($view)) {
+            $view = JRequest::getCmd('view');
+        }
+        $db = JFactory::getDBO();
+        $pk = (int) $this->getState('sitemap.id');
+
+        if (self::$items !== NULL && isset(self::$items[$view])) {
+            return;
+        }
+        $query = "select * from #__xmap_items where view='$view' and sitemap_id=" . $pk;
+        $db->setQuery($query);
+        $rows = $db->loadObjectList();
+        self::$items[$view] = array();
+        foreach ($rows as $row) {
+            self::$items[$view][$row->itemid] = array();
+            self::$items[$view][$row->itemid][$row->uid] = array();
+            $pairs = explode(';', $row->properties);
+            foreach ($pairs as $pair) {
+                if (strpos($pair, '=') !== FALSE) {
+                    list($property, $value) = explode('=', $pair);
+                    self::$items[$view][$row->itemid][$row->uid][$property] = $value;
+                }
+            }
+        }
+        return self::$items;
+    }
+
     function chageItemPropery($uid, $itemid, $view, $property, $value)
     {
-        $this->loadItems($view, $itemid);
+        $items = $this->getSitemapItems($view);
         $db = JFactory::getDBO();
+        $pk = (int) $this->getState('sitemap.id');
+        
         $isNew = false;
-        if (empty($this->_items[$view][$itemid][$uid])) {
-            $this->_items[$view][$itemid][$uid] = array();
+        if (empty($items[$view][$itemid][$uid])) {
+            $items[$view][$itemid][$uid] = array();
             $isNew = true;
         }
-        $this->_items[$view][$itemid][$uid][$property] = $value;
+        $items[$view][$itemid][$uid][$property] = $value;
         $sep = $properties = '';
-        foreach ($this->_items[$view][$itemid][$uid] as $k => $v) {
+        foreach ($items[$view][$itemid][$uid] as $k => $v) {
             $properties .= $sep . $k . '=' . $v;
             $sep = ';';
         }
         if (!$isNew) {
-            $query = 'UPDATE #__xmap_items SET properties=\'' . $db->getEscaped($properties) . "' where uid='" . $db->getEscaped($uid) . "' and itemid=$itemid and view='$view' and sitemap_id=" . $this->id;
+            $query = 'UPDATE #__xmap_items SET properties=\'' . $db->getEscaped($properties) . "' where uid='" . $db->getEscaped($uid) . "' and itemid=$itemid and view='$view' and sitemap_id=" . $pk;
         } else {
-            $query = 'INSERT #__xmap_items (uid,itemid,view,sitemap_id,properties) values ( \'' . $db->getEscaped($uid) . "',$itemid,'$view',{$this->id},'" . $db->getEscaped($properties) . "')";
+            $query = 'INSERT #__xmap_items (uid,itemid,view,sitemap_id,properties) values ( \'' . $db->getEscaped($uid) . "',$itemid,'$view',$pk,'" . $db->getEscaped($properties) . "')";
         }
         $db->setQuery($query);
-        echo $db->getQuery();
+        //echo $db->getQuery();exit;
         if ($db->query()) {
             return true;
         } else {

@@ -22,7 +22,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 if (!$this->item->params->get('exclude_xsl') && !$this->displayer->isNews ) {
 	$user = JFactory::getUser();
 	if ( $this->displayer->_isAdmin) {
-		echo '<?xml-stylesheet type="text/xsl" href="'. $live_site.'/index.php?option=com_xmap&amp;view=xml&amp;layout=adminxsl&amp;tmpl=component"?>'."\n";
+		echo '<?xml-stylesheet type="text/xsl" href="'. $live_site.'/index.php?option=com_xmap&amp;view=xml&amp;layout=xsl&amp;admin=1&amp;tmpl=component"?>'."\n";
 	} else {
 		echo '<?xml-stylesheet type="text/xsl" href="'. $live_site.'/index.php?option=com_xmap&amp;view=xml&amp;layout=xsl&amp;tmpl=component"?>'."\n";
 	}

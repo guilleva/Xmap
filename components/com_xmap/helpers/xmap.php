@@ -32,7 +32,11 @@ class XmapHelper
             // Initialize variables.
             // Get the menu items as a tree.
             $query = $db->getQuery(true);
-            $query->select('n.id, n.title, n.alias, n.path, n.level, n.link, n.type, n.browserNav, n.params, n.home, n.parent_id');
+            $query->select(
+                    'n.id, n.title, n.alias, n.path, n.level, n.link, '
+                  . 'n.type, n.browserNav, n.params, n.home, n.parent_id'
+                  //. ',n.params'
+                  );
             $query->from('#__menu AS n');
             $query->join('INNER', ' #__menu AS p ON p.lft = 0');
             $query->where('n.lft > p.lft');
@@ -61,13 +65,19 @@ class XmapHelper
             foreach ($tmpList as $id => $item) {
                 $item->items = array();
 
-                $item->params = new JObject(json_decode($item->params));
+                $params = new JRegistry($item->params);
+
                 if (preg_match('#^/?index.php.*option=(com_[^&]+)#', $item->link, $matches)) {
                     $item->option = $matches[1];
+                    $componentParams = clone(JComponentHelper::getParams($item->option));
+                    $componentParams->merge($params);
+                    //$params->merge($componentParams);
+                    $params = $componentParams;
                 } else {
                     $item->option = null;
                 }
 
+                $item->params = $params;
 
                 if ($item->type != 'separator') {
                     if ($item->home == 1) {
@@ -104,7 +114,6 @@ class XmapHelper
         $db = JFactory::getDBO();
 
         $list = array();
-        //ini_set('display_errors','Off');
         // Get the menu items as a tree.
         $query = $db->getQuery(true);
         $query->select('*');
@@ -138,7 +147,7 @@ class XmapHelper
      */
     public static function prepareMenuItem($item)
     {
-        $extensions = & XmapHelper::getExtensions();
+        $extensions = XmapHelper::getExtensions();
         if (!empty($extensions[$item->option])) {
             $className = 'xmap_' . $item->option;
             $obj = new $className;
@@ -148,4 +157,73 @@ class XmapHelper
         }
     }
 
+
+    static function getImages($text,$max)
+    {
+        if (!isset($urlBase)) {
+            $urlBase = JURI::base();
+            $urlBaseLen = strlen($urlBase);
+        }
+
+        $images = null;
+        $matches = $matches1 = $matches2 = array();
+        // Look <img> tags
+        preg_match_all('/<img[^>]*?(?:(?:[^>]*src="(?P<src>[^"]+)")|(?:[^>]*alt="(?P<alt>[^"]+)")|(?:[^>]*title="(?P<title>[^"]+)"))+[^>]*>/i', $text, $matches1, PREG_SET_ORDER);
+        // Loog for <a> tags with href to images
+        preg_match_all('/<a[^>]*?(?:(?:[^>]*href="(?P<src>[^"]+\.(gif|png|jpg|jpeg))")|(?:[^>]*alt="(?P<alt>[^"]+)")|(?:[^>]*title="(?P<title>[^"]+)"))+[^>]*>/i', $text, $matches2, PREG_SET_ORDER);
+        $matches = array_merge($matches1,$matches2);
+        if (count($matches)) {
+            $images = array();
+
+            $count = count($matches);
+            $j = 0;
+            for ($i = 0; $i < $count && $j < $max; $i++) {
+                if (trim($matches[$i]['src']) && (substr($matches[$i]['src'], 0, 1) == '/' || !preg_match('/^https?:\/\//i', $matches[$i]['src']) || substr($matches[$i]['src'], 0, $urlBaseLen) == $urlBase)) {
+                    $src = $matches[$i]['src'];
+                    if (substr($src, 0, 1) == '/') {
+                        $src = substr($src, 1);
+                    }
+                    if (!preg_match('/^https?:\//i', $src)) {
+                        $src = $urlBase . $src;
+                    }
+                    $image = new stdClass;
+                    $image->src = $src;
+                    $image->title = (isset($matches[$i]['title']) ? $matches[$i]['title'] : @$matches[$i]['alt']);
+                    $images[] = $image;
+                    $j++;
+                }
+            }
+        }
+        return $images;
+    }
+
+    static function getPagebreaks($text,$baseLink)
+    {
+        $matches = $subnodes = array();
+        if (preg_match_all('/<hr\s*[^>]*?(?:(?:\s*alt="(?P<alt>[^"]+)")|(?:\s*title="(?P<title>[^"]+)"))+[^>]*>/i', $text, $matches, PREG_SET_ORDER)) {
+            $i = 2;
+            foreach ($matches as $match) {
+                if (strpos($match[0], 'class="system-pagebreak"') !== FALSE) {
+                    $link = $baseLink . '&limitstart=' . ($i - 1);
+
+                    if (@$match['alt']) {
+                        $title = stripslashes($match['alt']);
+                    } elseif (@$match['title']) {
+                        $title = stripslashes($match['title']);
+                    } else {
+                        $title = JText::sprintf('Page #', $i);
+                    }
+                    $subnode = new stdclass();
+                    $subnode->uid = $parent->uid . 'a' . $item->id . 'p' . $i;
+                    $subnode->name = $title;
+                    $subnode->expandible = false;
+                    $subnode->link = $link;
+                    $subnodes[] = $subnode;
+                    $i++;
+                }
+            }
+
+        }
+        return $subnodes;
+    }
 }

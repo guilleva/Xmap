@@ -12,14 +12,30 @@ defined('_JEXEC') or die;
 
 class XmapDisplayer {
 
-    protected $_menuItems;
-    protected $_extensions;
-    protected $_count;
+    /**
+     *
+     * @var int  Counter for the number of links on the sitemap
+     */
+    protected $count;
+    /**
+     *
+     * @var JView
+     */
+    protected $jview;
 
     public $config;
     public $sitemap;
+    /**
+     *
+     * @var int   Current timestamp
+     */
     public $now;
     public $userLevels;
+    /**
+     *
+     * @var string  The current value for the request var "view" (eg. html, xml)
+     */
+    public $view;
 
     function __construct(&$config,&$sitemap)
     {
@@ -36,7 +52,7 @@ class XmapDisplayer {
         $this->config	= &$config;
         $this->sitemap	= &$sitemap;
         $this->isNews	= false;
-        $this->_count	= 0;
+        $this->count	= 0;
         $this->_isAdmin	= in_array(8,$groups);  // TODO: Change to use ACLs
     }
 
@@ -44,19 +60,10 @@ class XmapDisplayer {
         return false;
     }
 
-    public function setMenuItems($menuItems)
-    {
-        $this->_menuItems = $menuItems;
-    }
-
-    public function setExtensions($extensions)
-    {
-        $this->_extensions = $extensions;
-    }
 
     public function printSitemap()
     {
-        foreach ($this->_menuItems as $menutype => &$items) {
+        foreach ($this->jview->items as $menutype => &$items) {
 
             $node = new stdclass();
 
@@ -74,6 +81,11 @@ class XmapDisplayer {
             $this->printMenuTree($node, $items);
             $this->endMenu($node);	
         }
+    }
+
+    public function setJView($view)
+    {
+        $this->jview = $view;
     }
 
     public function getMenuTitle($menutype,$module='mod_menu')
@@ -120,7 +132,10 @@ class XmapDisplayer {
             // $node->link             = isset( $item->link ) ? htmlspecialchars( $item->link ) : '';
             $node->link             = $item->link;
             $node->option           = $item->option;
-            
+
+            // New on Xmap 2.0: send the menu params
+            $node->params =& $item->params;
+
             switch ($item->type)
             {
                 case 'separator':
@@ -155,13 +170,13 @@ class XmapDisplayer {
             $matches=array();
             //if ( preg_match('#^/?index.php.*option=(com_[^&]+)#',$node->link,$matches) ) {
             if ( $node->option ) {
-                if ( !empty($this->_extensions[$node->option]) ) {
+                if ( !empty($this->jview->extensions[$node->option]) ) {
                      $node->uid = $node->option;
                     $className = 'xmap_'.$node->option;
-                    $result = call_user_func_array(array($className, 'getTree'),array(&$this,&$node,&$this->_extensions[$node->option]->params));
+                    $result = call_user_func_array(array($className, 'getTree'),array(&$this,&$node,&$this->jview->extensions[$node->option]->params));
                 }
             }
-            //XmapPlugins::printTree( $this, $node, $this->_extensions );    // Determine the menu entry's type and call it's handler
+            //XmapPlugins::printTree( $this, $node, $this->jview->extensions );    // Determine the menu entry's type and call it's handler
         }
         $this->changeLevel(-1);
     }

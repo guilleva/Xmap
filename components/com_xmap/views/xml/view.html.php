@@ -44,6 +44,7 @@ class XmapViewXml extends JView
         $state = $this->get('State');
         $item = $this->get('Item');
         $items = $this->get('Items');
+        $sitemapItems = $this->get('SitemapItems');
         $extensions = $this->get('Extensions');
 
         // Check for errors.
@@ -85,15 +86,15 @@ class XmapViewXml extends JView
         $this->loadTemplate('class');
         $displayer = new XmapXmlDisplayer($params, $item);
 
-        $displayer->setMenuItems($items);
-        $displayer->setExtensions($extensions);
+        $displayer->setJView($this);
 
         $this->assignRef('state', $state);
         $this->assignRef('item', $item);
+        $this->assignRef('items', $items);
+        $this->assignRef('sitemapItems', $sitemapItems);
+        $this->assignRef('extensions', $extensions);
         $this->assignRef('user', $user);
         $this->assignRef('displayer', $displayer);
-
-        ini_set('display_errors',0);
 
         $doCompression = ($this->item->params->get('compress_xml') && !ini_get('zlib.output_compression') && ini_get('output_handler') != 'ob_gzhandler');
         @ob_end_clean();
@@ -117,8 +118,12 @@ class XmapViewXml extends JView
 
     function displayXSL()
     {
-        @ob_end_clean();
+        $item = $this->get('Item');
+
         $this->setLayout('default');
+        $this->assignRef('item', $item);
+
+        @ob_end_clean();
         parent::display('xsl');
         exit;
     }

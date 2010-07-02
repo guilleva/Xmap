@@ -12,6 +12,8 @@ defined('_JEXEC') or die;
 header('Content-Type: application/xml; charset="utf-8"');
 header('Content-Disposition: inline');
 
+$candEdit = JRequest::getInt('admin',0);
+
 echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 ?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xna="http://www.sitemaps.org/schemas/sitemap/0.9" exclude-result-prefixes="xna">
@@ -20,7 +22,10 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 <html>
 <head>
 <title>Google Sitemap File</title>
-<script src="media/system/js/mootools.js" type="text/javascript"></script>
+<?php if ($candEdit): ?>
+<script src="media/system/js/mootools-core.js" type="text/javascript"></script>
+<script src="media/system/js/mootools-more.js" type="text/javascript"></script>
+<?php endif; ?>
 <style type="text/css">
     <![CDATA[
   	<!--
@@ -266,7 +271,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 		div.style.top = (myCell.getTop()+20)+'px';
 		div.style.left = myCell.getLeft()+'px';
 		var dimensions = myCell.getSize();
-		div.style.width=dimensions.size.x+'px';
+		div.style.width=dimensions.x+'px';
 		div.style.display='';
 		div.uid=uid;
 		div.itemid=itemid;
@@ -280,9 +285,11 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 	}
 
 	function changeProperty(el,property) {
-		var myAjax = new Ajax('index.php?option=com_xmap&tmpl=component&task=editElement&action=changeProperty&sitemap='+sitemapid+'&uid='+divOptions.uid+'&itemid='+divOptions.itemid+'&property='+property+'&value='+el.innerHTML,{
-                                      onComplete: checkChangeResult.bind(divOptions)
-                }).request();
+		var myAjax = new Request({
+                    url: 'index.php?option=com_xmap&format=json&task=ajax.editElement&action=changeProperty',
+                    onComplete: checkChangeResult.bind(divOptions),
+                    method: 'get'
+                }).send('id='+sitemapid+'&uid='+divOptions.uid+'&itemid='+divOptions.itemid+'&property='+property+'&value='+el.innerHTML);
 		divOptions.cell.innerHTML=el.innerHTML;
 		divOptions.style.display='none';
 		return false;
@@ -300,7 +307,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
   		else
     			return results[1];
 	}
-	var sitemapid=getURLparam('sitemap');
+	var sitemapid=getURLparam('id');
 
     ]]>
 </script>
@@ -322,8 +329,13 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 <td><xsl:variable name="sitemapURL"><xsl:value-of select="xna:loc"/></xsl:variable>
     <a href="{$sitemapURL}" target="_blank" ref="nofollow"><xsl:value-of select="$sitemapURL"></xsl:value-of></a></td>
 <td><xsl:value-of select="xna:lastmod"/></td>
+<?php if ($candEdit): ?>
 <td class="editable" onClick="showOptions(this,'changefreq','{$UID}','{$ItemID}',event);" ><xsl:value-of select="xna:changefreq"/></td>
 <td class="editable" onClick="showOptions(this,'priority','{$UID}','{$ItemID}',event);"><xsl:value-of select="xna:priority"/></td>
+<?php else: ?>
+<td><xsl:value-of select="xna:changefreq"/></td>
+<td><xsl:value-of select="xna:priority"/></td>
+<?php endif; ?>
 </tr>
 </xsl:for-each>
 </table>
