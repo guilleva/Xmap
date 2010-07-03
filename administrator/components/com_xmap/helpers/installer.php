@@ -33,7 +33,7 @@ class XmapInstaller extends JInstaller
         static $instance;
 
         if (!isset($instance)) {
-            $instance = new XmapInstaller();
+            $instance = new XmapInstaller('');
         }
         return $instance;
     }

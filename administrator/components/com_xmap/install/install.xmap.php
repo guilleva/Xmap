@@ -3,29 +3,39 @@
     
 // Install any extension in the extensions folder
 class com_xmapInstallerScript {
-    private $_installer = null;
 
-    function __construct($installer) {
-        $this->_installer = $intaller;
-        
-        // Load Xmap's language file
-        $lang = JFactory::getLanguage();
-        $lang->load('com_xmap');
+    function __construct($adapter) {
+        $this->_loadLanguage();
     }
-    
-    
-    function install()
+       
+    function install($adapter)
     {
+		//$this->_loadLanguage();
         echo '<h2>',JText::_("XMAP_INSTALLING_XMAP"),'</h2>';
         $this->_discoverAndInstallExtensions();
     }
     
-    function update()
+    function update($adapter)
     {
         echo '<h2>',JText::_("XMAP_UPGRADING_XMAP"),'</h2>';
         $this->_discoverAndInstallExtensions();
     }
     
+	function uninstall($adapter)
+	{
+		$this->_loadLanguage();
+		echo '<h2>',JText::_("XMAP_UNISTALLING_XMAP_EXTENSIONS"),'</h2>';
+		$db = JFactory::getDBO();
+		require_once JPATH_ADMINISTRATOR.DS.'components'.DS.'com_xmap'.DS.'helpers'.DS.'installer.php';
+        $installer = XmapInstaller::getInstance();
+		$query = "SELECT extension_id from `#__extensions` where type='xmap_ext'";
+        $db->setQuery($query);
+		$extensions = $db->loadObjectList();
+		$table = JTable::getInstance('Extension');
+		foreach ($extensions as $extension) {
+			$table->delete($extension->extension_id);
+		}
+	}
 
     private function _discoverAndInstallExtensions()
     {
@@ -34,7 +44,7 @@ class com_xmapInstallerScript {
         jimport('joomla.filesystem.folder');
         // require_once JPATH_ADMINISTRATOR.DS.'components'.DS.'com_xmap'.DS.'adapters'.DS.'xmap_ext.php';
         require_once JPATH_ADMINISTRATOR.DS.'components'.DS.'com_xmap'.DS.'helpers'.DS.'installer.php';
-        $installer =& XmapInstaller::getInstance();
+        $installer = XmapInstaller::getInstance();
 
         $path = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_xmap'.DS.'extensions';
         if ($folders = JFolder::folders($path)){
@@ -59,4 +69,12 @@ class com_xmapInstallerScript {
             }
         }
     }
+	
+	private function _loadLanguage()
+	{
+        // Load Xmap's language file
+        $lang = JFactory::getLanguage();
+        $lang->load('com_xmap');
+		echo "Loading xmap's language file";	
+	}
 }

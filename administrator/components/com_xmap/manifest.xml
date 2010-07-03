@@ -20,8 +20,7 @@
 			<file driver="mysql" charset="utf8">install/uninstall.utf8.sql</file>
 		</sql>
 	</uninstall>
-	<installfile>install/install.xmap.php</installfile>
-	<uninstallfile>install/uninstall.xmap.php</uninstallfile>
+	<scriptfile>install/install.xmap.php</scriptfile>
 	<files folder="front">
         <filename>controller.php</filename>
 		<filename>displayer.php</filename>
