@@ -14,12 +14,27 @@ require_once(JPATH_COMPONENT . DS . 'displayer.php');
 class XmapXmlDisplayer extends XmapDisplayer
 {
 
+    /**
+     *
+     * @var array  Stores the list of links that have been already included in
+     *             the sitemap to avoid duplicated items
+     */
     var $_links;
+
+    /**
+     *
+     * @var string
+     */
     var $view = 'xml';
-    var $doCompression = 1;
+
+
+    /**
+     *
+     * @var int Indicates if this is a google news sitemap or not
+     */
     var $isNews = 0;
 
-    function __construct(&$config, &$sitemap)
+    function __construct($config, $sitemap)
     {
         parent::__construct($config, $sitemap);
         $this->uids = array();
@@ -28,9 +43,9 @@ class XmapXmlDisplayer extends XmapDisplayer
     /**
      * Prints an XML node for the sitemap
      *
-     *
+     * @param stdclass $node
      */
-    function printNode(&$node)
+    function printNode($node)
     {
 
         if ($this->isNews && (!isset($node->newsItem) || !$node->newsItem)) {
@@ -43,10 +58,10 @@ class XmapXmlDisplayer extends XmapDisplayer
             $len_live_site = strlen($live_site);
         }
 
-        $out = '';
-
+        // Get the item's URL
         $link = JRoute::_($node->link, true, -1);
 
+        // Determines if this node is a link to a external page
         $is_extern = ( 0 != strcasecmp(substr($link, 0, $len_live_site), $live_site) );
 
         if (!isset($node->browserNav))
@@ -58,13 +73,13 @@ class XmapXmlDisplayer extends XmapDisplayer
             $this->_count++;
             $this->_links[$link] = 1;
 
-
             if (!isset($node->priority))
                 $node->priority = "0.5";
 
             if (!isset($node->changefreq))
                 $node->changefreq = 'daily';
 
+            // Get the chancefrequency and priority for this item
             $changefreq = $this->getProperty('changefreq', $node->changefreq, $node->id, 'xml', $node->uid);
             $priority = $this->getProperty('priority', $node->priority, $node->id, 'xml', $node->uid);
 
@@ -76,6 +91,8 @@ class XmapXmlDisplayer extends XmapDisplayer
             }
             $timestamp = (isset($node->modified) && $node->modified != FALSE && $node->modified != -1) ? $node->modified : time();
             $modified = gmdate('Y-m-d\TH:i:s\Z', $timestamp);
+
+            // If this is a news sitemap
             if (!$this->isNews) {
                 echo '<lastmod>', $modified, '</lastmod>' . "\n";
                 echo '<changefreq>', $changefreq, '</changefreq>' . "\n";
@@ -103,41 +120,54 @@ class XmapXmlDisplayer extends XmapDisplayer
         return true;
     }
 
-    function escapeURL($str)
-    {
-        static $xTrans;
-        if (!isset($xTrans)) {
-            $xTrans = get_html_translation_table(HTML_ENTITIES, ENT_QUOTES);
-            foreach ($xTrans as $key => $value)
-                $xTrans[$key] = '&#' . ord($key) . ';';
-            // dont translate the '&' in case it is part of &xxx;
-            $xTrans[chr(38)] = '&';
-        }
-        return preg_replace("/&(?![A-Za-z]{0,4}\w{2,3};|#[0-9]{2,4};)/", "&amp;", strtr($str, $xTrans));
-    }
-
+    /**
+     *
+     * @param string $property The property that is needed
+     * @param string $value The default value if the property is not found
+     * @param int $Itemid   The menu item id
+     * @param string $view  (xml / html)
+     * @param int $uid      Unique id of the element on the sitemap
+     *                      (the id asigned by the extension)
+     * @return string
+     */
     function getProperty($property, $value, $Itemid, $view, $uid)
     {
-        static $items;
         if (isset($this->jview->sitemapItems[$view][$Itemid][$uid][$property])) {
             return $this->jview->sitemapItems[$view][$Itemid][$uid][$property];
         }
         return $value;
     }
 
+    /**
+     * Called on every level change
+     *
+     * @param int $level
+     * @return boolean
+     */
     function changeLevel($level)
     {
         return true;
     }
 
-    function startMenu(&$menu)
+    /**
+     * Function called before displaying the menu
+     *
+     * @param stdclass $menu The menu node item
+     * @return boolean
+     */
+    function startMenu($menu)
     {
         return true;
     }
 
-    function endMenu(&$menu)
+    /**
+     * Function called after displaying the menu
+     *
+     * @param stdclass $menu The menu node item
+     * @return boolean
+     */
+    function endMenu($menu)
     {
         return true;
     }
-
 }

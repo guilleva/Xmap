@@ -39,7 +39,6 @@ class XmapViewXml extends JView
             return $this->displayXSL($layout);
         }
 
-
         // Get model data.
         $state = $this->get('State');
         $item = $this->get('Item');

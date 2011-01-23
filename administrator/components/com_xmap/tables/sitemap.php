@@ -228,8 +228,7 @@ class XmapTableSitemap extends JTable
         $this->_db->setQuery(
                 'UPDATE `' . $this->_tbl . '`' .
                 ' SET `state` = ' . (int) $state .
-                ' WHERE (' . $where . ')' .
-                $checkin
+                ' WHERE (' . $where . ')'
         );
         $this->_db->query();
 

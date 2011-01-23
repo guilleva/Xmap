@@ -40,7 +40,7 @@ class XmapControllerSitemaps extends JController
 	/**
 	 * Proxy for getModel
 	 */
-	function &getModel($name = 'Sitemap', $prefix = 'XmapModel')
+	function getModel($name = 'Sitemap', $prefix = 'XmapModel')
 	{
 		return parent::getModel($name, $prefix, array('ignore_request' => true));
 	}

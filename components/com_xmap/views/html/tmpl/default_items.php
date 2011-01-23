@@ -15,4 +15,3 @@ $params = $this->state->get('params');
 
 // Use the class defined in default_class.php to print the sitemap
 $this->displayer->printSitemap();
-?>

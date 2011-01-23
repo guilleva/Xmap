@@ -103,7 +103,6 @@ class XmapDisplayer {
     }
     protected function printMenuTree($menu,&$items) 
     {
-
         $this->changeLevel(1);
 
         $router = JSite::getRouter();
@@ -120,7 +119,7 @@ class XmapDisplayer {
             $node = new stdclass;
 
             $node->id               = $item->id;
-            $node->uid              = "itemid".$item->id;
+            $node->uid              = $item->uid;
             $node->name             = $item->title;			// displayed name of node
             // $node->parent           = $item->parent;		// id of parent node
             $node->browserNav       = $item->browserNav;		// how to open link
@@ -148,10 +147,8 @@ class XmapDisplayer {
                     }
                     break;
                 case 'alias':
-
                     // If this is an alias use the item id stored in the parameters to make the link.
-                    $node->link = 'index.php?Itemid='.$item->params->aliasoptions;
-
+                    $node->link = 'index.php?Itemid='.$item->params->get('aliasoptions');
                     break;
                 default:
                     if ($router->getMode() == JROUTER_MODE_SEF) {
@@ -188,7 +185,7 @@ class XmapDisplayer {
 
     public function getCount()
     {
-        return $this->_count;
+        return $this->count;
     }
 
     public function &getExcludedItems() {

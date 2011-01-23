@@ -132,6 +132,12 @@ class JFormFieldXmapmenus extends JFormFieldList
 
         // Create a regular list.
         $i = 0;
+
+        //Lets show the enabled menus first
+        $this->currentItems = array_keys($value);
+        // Sort the menu options
+        uasort($options, array($this, 'myCompare'));
+
         foreach ($options as $option) {
             $prioritiesName = preg_replace('/(jform\[[^\]]+)(\].*)/', '$1_priority$2', $this->name);
             $changefreqName = preg_replace('/(jform\[[^\]]+)(\].*)/', '$1_changefreq$2', $this->name);
@@ -147,6 +153,26 @@ class JFormFieldXmapmenus extends JFormFieldList
         }
         $return .= "</ul>";
         return $return;
+    }
+
+    public function myCompare($a, $b) {
+        $indexA = array_search($a->value, $this->currentItems);
+        $indexB = array_search($b->value, $this->currentItems);
+        if ($indexA === $indexB && $indexA !== false) {
+            return 0;
+        }
+        if ($indexA === false && $indexA === $indexB) {
+            return ($a->value < $b->value) ? -1 : 1;
+        }
+
+        if ($indexA === false) {
+            return 1;
+        }
+        if ($indexB === false) {
+            return -1;
+        }
+
+        return ($indexA < $indexB) ? -1 : 1;
     }
     
 }

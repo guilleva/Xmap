@@ -159,8 +159,8 @@ class XmapModelSitemap extends JModelItem
     {
         return XmapHelper::getExtensions();
     }
-
-    private function prepareMenuItem(&$item)
+/*
+    private function prepareMenuItem222(&$item)
     {
         $extensions = $this->getExtensions();
         if (preg_match('#^/?index.php.*option=(com_[^&]+)#', $item->link, $matches)) {
@@ -174,7 +174,7 @@ class XmapModelSitemap extends JModelItem
             }
         }
     }
-
+*/
     /**
      * Increment the hit counter for the sitemap.
      *

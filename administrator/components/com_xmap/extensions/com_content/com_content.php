@@ -31,7 +31,7 @@ class xmap_com_content
      * @return void
      * @since  1.2
      */
-    static function prepareMenuItem(&$node)
+    static function prepareMenuItem($node)
     {
         $link_query = parse_url($node->link);
         if (!isset($link_query['query'])) {
@@ -56,6 +56,7 @@ class xmap_com_content
                 $node->uid = 'com_contenta' . $id;
                 $node->expandible = false;
         }
+        echo $node->uid;
     }
 
     /**
@@ -64,7 +65,7 @@ class xmap_com_content
      * @return void
      * @since  1.0
      */
-    static function getTree(&$xmap, &$parent, &$params)
+    static function getTree($xmap, $parent, &$params)
     {
         $db = JFactory::getDBO();
         $user = JFactory::getUser();
@@ -183,7 +184,7 @@ class xmap_com_content
      * @param array   $params   an assoc array with the params for this plugin on Xmap
      * @param int     $itemid   the itemid to use for this category's children
      */
-    static function expandCategory(&$xmap, &$parent, $catid, &$params, $itemid)
+    static function expandCategory($xmap, $parent, $catid, &$params, $itemid)
     {
         $db = JFactory::getDBO();
 
@@ -245,7 +246,7 @@ class xmap_com_content
      *
      * @since 2.0
      */
-    static function includeCategoryContent(&$xmap, &$parent, $catid, &$params,$Itemid)
+    static function includeCategoryContent($xmap, $parent, $catid, &$params,$Itemid)
     {
         $db = JFactory::getDBO();
         
@@ -343,7 +344,7 @@ class xmap_com_content
      * @param int $itemid
      * @return string
      */
-    static function buildContentOrderBy($params,$parentId,$itemid)
+    static function buildContentOrderBy(&$params,$parentId,$itemid)
     {
         $app	= JFactory::getApplication('site');
 
