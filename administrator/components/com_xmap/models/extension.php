@@ -63,17 +63,7 @@ class XmapModelExtension extends JModelAdmin
             $pk = (int) JRequest::getInt('item_id');
         }
 
-
-        $this->setState('extension.id', $pk);
-
-        $item = $this->getItem($pk);
-        $folder = $item->folder;
-        $element = $item->element;
-        $element = preg_replace('/^xmap_/', '', $element);
-
-        // These variables are used to add data from the plugin XML files.
-        $this->setState('item.folder', $folder);
-        $this->setState('item.element', $element);
+//        $this->setState('extension.id', $pk);
 
         // Load the parameters.
         $params = JComponentHelper::getParams('com_xmap');
@@ -197,8 +187,17 @@ class XmapModelExtension extends JModelAdmin
         $this->populateState();
 
         // Initialise variables.
+        $item = $this->getItem();
+        $folder = $item->folder;
+        $element = $item->element;
+        $element = preg_replace('/^xmap_/', '', $element);
+/*
+        // These variables are used to add data from the plugin XML files.
+        $this->setState('item.folder', $folder);
+        $this->setState('item.element', $element);
+
         $folder = $this->getState('item.folder');
-        $element = $this->getState('item.element');
+        $element = $this->getState('item.element');*/
         $lang = JFactory::getLanguage();
 
         // Try format: /components/com_xmap/extensions/folder/element.xml

@@ -52,7 +52,7 @@ $canEdit    = $user->authorise('core.edit',          'com_plugins');
                 </td>
                 <td>
                     <?php if ($canEdit) : ?>
-                        <a href="<?php echo JRoute::_('index.php?option=com_xmap&task=extension.edit&id='.(int) $item->id); ?>">
+                        <a href="<?php echo JRoute::_('index.php?option=com_xmap&task=extension.edit&extension_id='.(int) $item->id); ?>">
                             <?php echo $item->name; ?></a>
                     <?php else : ?>
                             <?php echo $item->name; ?>
@@ -85,6 +85,6 @@ $canEdit    = $user->authorise('core.edit',          'com_plugins');
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="option" value="com_xmap" />
 	<input type="hidden" name="type" value="xmap_ext" />
-    <input type="hidden" name="task" value="" />
+        <input type="hidden" name="task" value="" />
 	<?php echo JHtml::_('form.token'); ?>
 </form>
