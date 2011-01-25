@@ -128,8 +128,9 @@ class XmapHelper
         foreach ($extensions as $element => $extension) {
             $element = preg_replace('/^xmap_/', '', $element);
             require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'extensions' . DS . $extension->folder . DS . $element . '.php');
-            $xmlPath = JPATH_COMPONENT_ADMINISTRATOR . DS . 'extensions' . DS . $extension->folder . DS . $element . '.xml';
-            $params = new JParameter($extension->params, $xmlPath);
+            //$xmlPath = JPATH_COMPONENT_ADMINISTRATOR . DS . 'extensions' . DS . $extension->folder . DS . $element . '.xml';
+            //$params = new JParameter($extension->params, $xmlPath);
+            $params = new JParameter($extension->params);
             $extension->params = $params->toArray();
             $list[$element] = $extension;
         }

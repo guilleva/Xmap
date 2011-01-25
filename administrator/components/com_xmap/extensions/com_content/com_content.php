@@ -7,8 +7,8 @@
  */
 defined('_JEXEC') or die;
 
-require_once (JPATH_SITE . DS . 'components' . DS . 'com_content' . DS . 'helpers' . DS . 'route.php');
-require_once (JPATH_SITE . DS . 'components' . DS . 'com_content' . DS . 'helpers' . DS . 'query.php');
+require_once JPATH_SITE . DS . 'components' . DS . 'com_content' . DS . 'helpers' . DS . 'route.php';
+require_once JPATH_SITE . DS . 'components' . DS . 'com_content' . DS . 'helpers' . DS . 'query.php';
 
 /**
  * Handles standard Joomla's Content articles/categories
@@ -56,7 +56,6 @@ class xmap_com_content
                 $node->uid = 'com_contenta' . $id;
                 $node->expandible = false;
         }
-        echo $node->uid;
     }
 
     /**
