@@ -38,7 +38,6 @@ class XmapViewHtml extends JView
         $state = $this->get('State');
         $item = $this->get('Item');
         $items = $this->get('Items');
-        $extensions = $this->get('Extensions');
 
         // Check for errors.
         if (count($errors = $this->get('Errors'))) {
@@ -46,6 +45,7 @@ class XmapViewHtml extends JView
             return false;
         }
 
+        $extensions = $this->get('Extensions');
         // Add router helpers.
         $item->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
 

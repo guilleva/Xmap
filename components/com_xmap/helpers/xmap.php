@@ -66,6 +66,7 @@ class XmapHelper
                 $item->items = array();
 
                 $params = new JRegistry($item->params);
+                $item->uid = 'itemid'.$item->id;
 
                 if (preg_match('#^/?index.php.*option=(com_[^&]+)#', $item->link, $matches)) {
                     $item->option = $matches[1];
@@ -93,7 +94,6 @@ class XmapHelper
 
                 if ($item->parent_id > 1) {
                     $tmpList[$item->parent_id]->items[$item->id] = $item;
-                    //unset($list[$menutype][$item->id]);
                 } else {
                     $list[$menutype][$item->id] = $item;
                 }

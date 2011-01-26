@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
 	<view
-		title="Article">
-		<message><![CDATA[TYPEARTICLAYDESC]]></message>
+		title="Sitemap">
+		<message><![CDATA[COM_XMAP_SITEMAP_HTML_VIEW_DEFAULT_DESC]]></message>
 	</view>
 </metadata>

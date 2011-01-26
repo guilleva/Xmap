@@ -14,8 +14,8 @@
                 name="id"
                 type="modal_sitemaps"
                 default="0"
-                label="Xmap_Select_an_Sitemap"
-                description="A Sitemap" />
+                label="COM_XMAP_SELECT_AN_SITEMAP"
+                description="COM_XMAP_SELECT_A_SITEMAP" />
         </fieldset>
     </fields>
 </metadata>

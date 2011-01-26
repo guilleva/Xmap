@@ -59,21 +59,10 @@ if ($this->displayer->_isAdmin) {
 	$doc->addScriptDeclaration ($js);
 }
 ?>
-<?php if ($params->get('show_page_title', 1) && $params->get('page_title') != $this->item->title) : ?>
+<?php if ($params->get('show_page_heading', 1) && $params->get('page_heading') != '') : ?>
 	<h1>
-		<?php echo $this->escape($params->get('page_title')); ?>
+		<?php echo $this->escape($params->get('page_heading')); ?>
 	</h1>
-<?php endif; ?>
-
-<?php if ($params->get('show_title')) : ?>
-	<h2>
-		<?php if ($params->get('link_titles') && !empty($this->item->rlink)) : ?>
-		<a href="<?php echo $this->item->rlink; ?>">
-			<?php echo $this->escape($this->item->title); ?></a>
-		<?php else : ?>
-			<?php echo $this->escape($this->item->title); ?>
-		<?php endif; ?>
-	</h2>
 <?php endif; ?>
 
 <?php if ($params->get('access-edit') || $params->get('show_title') ||  $params->get('show_print_icon') || $params->get('show_email_icon')) : ?>
