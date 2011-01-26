@@ -72,7 +72,7 @@ class JFormFieldModal_Sitemaps extends JFormField
 
         JHTML::_('behavior.modal', 'a.modal');
         $html = "\n" . '<div style="float: left;"><input style="background: #ffffff;" type="text" id="' . $this->id . '_name" value="' . htmlspecialchars($title, ENT_QUOTES, 'UTF-8') . '" disabled="disabled" /></div>';
-        $html .= '<div class="button2-left"><div class="blank"><a class="modal" title="' . JText::_('Xmap_Change_Sitemap') . '"  href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}}">' . JText::_('Xmap_Change_Sitemap_button') . '</a></div></div>' . "\n";
+        $html .= '<div class="button2-left"><div class="blank"><a class="modal" title="' . JText::_('COM_XMAP_CHANGE_SITEMAP') . '"  href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}}">' . JText::_('COM_XMAP_CHANGE_SITEMAP_BUTTON') . '</a></div></div>' . "\n";
         $html .= "\n" . '<input type="hidden" id="' . $this->id . '_id" name="' . $this->name . '" value="' . (int) $this->value . '" />';
         return $html;
     }

@@ -108,7 +108,7 @@ class XmapHtmlDisplayer extends XmapDisplayer {
             }
             echo ' <a href= "#" class="xmapexcl '.$class.'" rel="{uid:\''.$node->uid.'\',itemid:'.$node->id.'}">'.$img.'</a>';
         }
-        $this->_count++;
+        $this->count++;
 
         $this->_last_child[$this->level] = $node->uid;
 

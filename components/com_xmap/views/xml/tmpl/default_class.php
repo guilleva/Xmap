@@ -70,7 +70,7 @@ class XmapXmlDisplayer extends XmapDisplayer
         if ($node->browserNav != 3   // ignore "no link"
                 && !$is_extern     // ignore external links
                 && empty($this->_links[$link])) { // ignore links that have been added already
-            $this->_count++;
+            $this->count++;
             $this->_links[$link] = 1;
 
             if (!isset($node->priority))
