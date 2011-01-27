@@ -81,10 +81,6 @@ class XmapHelper
                 $item->params = $params;
 
                 if ($item->type != 'separator') {
-                    if ($item->home == 1) {
-                        // Correct the URL for the home page.
-                        $item->link = JURI::base();
-                    }
 
                     $item->priority = $menuOptions['priority'];
                     $item->changefreq = $menuOptions['changefreq'];
@@ -200,7 +196,10 @@ class XmapHelper
     static function getPagebreaks($text,$baseLink)
     {
         $matches = $subnodes = array();
-        if (preg_match_all('/<hr\s*[^>]*?(?:(?:\s*alt="(?P<alt>[^"]+)")|(?:\s*title="(?P<title>[^"]+)"))+[^>]*>/i', $text, $matches, PREG_SET_ORDER)) {
+        if (preg_match_all(
+                '/<hr\s*[^>]*?(?:(?:\s*alt="(?P<alt>[^"]+)")|(?:\s*title="(?P<title>[^"]+)"))+[^>]*>/i',
+                $text, $matches, PREG_SET_ORDER)
+        ) {
             $i = 2;
             foreach ($matches as $match) {
                 if (strpos($match[0], 'class="system-pagebreak"') !== FALSE) {
@@ -214,7 +213,6 @@ class XmapHelper
                         $title = JText::sprintf('Page #', $i);
                     }
                     $subnode = new stdclass();
-                    $subnode->uid = $parent->uid . 'a' . $item->id . 'p' . $i;
                     $subnode->name = $title;
                     $subnode->expandible = false;
                     $subnode->link = $link;

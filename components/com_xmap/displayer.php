@@ -37,7 +37,7 @@ class XmapDisplayer {
      */
     public $view;
 
-    function __construct(&$config,&$sitemap)
+    function __construct($config,$sitemap)
     {
         jimport('joomla.utilities.date');
         jimport('joomla.user.helper');
@@ -49,8 +49,8 @@ class XmapDisplayer {
         // Deprecated: should use userLevels from now on
         // $this->gid	= $user->gid;
         $this->now	= $date->toUnix();
-        $this->config	= &$config;
-        $this->sitemap	= &$sitemap;
+        $this->config	= $config;
+        $this->sitemap	= $sitemap;
         $this->isNews	= false;
         $this->count	= 0;
         $this->_isAdmin	= in_array(8,$groups);  // TODO: Change to use ACLs
@@ -70,7 +70,7 @@ class XmapDisplayer {
             $node->uid = "menu-".$menutype;
             $node->menutype = $menutype;
             $node->priority = null;
-            $node->changefreq = null; 
+            $node->changefreq = null;
             // $node->priority = $menu->priority;
             // $node->changefreq = $menu->changefreq;
             $node->browserNav = 3;
@@ -79,7 +79,7 @@ class XmapDisplayer {
 
             $this->startMenu($node);
             $this->printMenuTree($node, $items);
-            $this->endMenu($node);	
+            $this->endMenu($node);
         }
     }
 
@@ -101,7 +101,7 @@ class XmapDisplayer {
     {
         return true;
     }
-    protected function printMenuTree($menu,&$items) 
+    protected function printMenuTree($menu,&$items)
     {
         $this->changeLevel(1);
 
@@ -135,6 +135,10 @@ class XmapDisplayer {
             // New on Xmap 2.0: send the menu params
             $node->params =& $item->params;
 
+            if ($node->home == 1) {
+                // Correct the URL for the home page.
+                $node->link = JURI::base();
+            }
             switch ($item->type)
             {
                 case 'separator':
@@ -159,21 +163,23 @@ class XmapDisplayer {
                     }
                     break;
             }
-            $this->printNode($node);
-            
-            //Restore the original link
-            $node->link             = $item->link;
-            $this->printMenuTree($node,$item->items);
-            $matches=array();
-            //if ( preg_match('#^/?index.php.*option=(com_[^&]+)#',$node->link,$matches) ) {
-            if ( $node->option ) {
-                if ( !empty($this->jview->extensions[$node->option]) ) {
-                     $node->uid = $node->option;
-                    $className = 'xmap_'.$node->option;
-                    $result = call_user_func_array(array($className, 'getTree'),array(&$this,&$node,&$this->jview->extensions[$node->option]->params));
+
+            if ($this->printNode($node)) {
+
+                //Restore the original link
+                $node->link             = $item->link;
+                $this->printMenuTree($node,$item->items);
+                $matches=array();
+                //if ( preg_match('#^/?index.php.*option=(com_[^&]+)#',$node->link,$matches) ) {
+                if ( $node->option ) {
+                    if ( !empty($this->jview->extensions[$node->option]) ) {
+                         $node->uid = $node->option;
+                        $className = 'xmap_'.$node->option;
+                        $result = call_user_func_array(array($className, 'getTree'),array(&$this,&$node,&$this->jview->extensions[$node->option]->params));
+                    }
                 }
+                //XmapPlugins::printTree( $this, $node, $this->jview->extensions );    // Determine the menu entry's type and call it's handler
             }
-            //XmapPlugins::printTree( $this, $node, $this->jview->extensions );    // Determine the menu entry's type and call it's handler
         }
         $this->changeLevel(-1);
     }
@@ -207,7 +213,7 @@ class XmapDisplayer {
                 $excludedItems[$itemid] = (array) $excludedItems[$itemid];
             }
             $items =& $excludedItems[$itemid];
-        } 
+        }
         if (!$items) {
             return false;
         }

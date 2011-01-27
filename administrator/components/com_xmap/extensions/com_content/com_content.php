@@ -55,6 +55,10 @@ class xmap_com_content
             case 'article':
                 $node->uid = 'com_contenta' . $id;
                 $node->expandible = false;
+                break;
+            case 'featured':
+                $node->uid = 'com_contentfeatured';
+                $node->expandible = false;
         }
     }
 
@@ -89,6 +93,14 @@ class xmap_com_content
                 || ( $expand_categories == 3 && $xmap->view == 'html')
                 || $xmap->view == 'navigator');
         $params['expand_categories'] = $expand_categories;
+
+        //----- Set expand_featured param
+        $expand_featured = JArrayHelper::getValue($params, 'expand_featured', 1);
+        $expand_featured = ( $expand_featured == 1
+                || ( $expand_featured == 2 && $xmap->view == 'xml')
+                || ( $expand_featured == 3 && $xmap->view == 'html')
+                || $xmap->view == 'navigator');
+        $params['expand_featured'] = $expand_featured;
 
         //----- Set show_unauth param
         $show_unauth = JArrayHelper::getValue($params, 'show_unauth', 1);
@@ -153,12 +165,17 @@ class xmap_com_content
                     $id = intval(JArrayHelper::getValue($params, 'id', 0));
                 }
                 if ($params['expand_categories'] && $id) {
-                    $result = xmap_com_content::expandCategory($xmap, $parent, $id, $params, $parent->id);
+                    $result = self::expandCategory($xmap, $parent, $id, $params, $parent->id);
+                }
+                break;
+            case 'featured':
+                if ($params['expand_featured']) {
+                    $result = self::includeCategoryContent($xmap, $parent, 'featured', $params,$parent->id);
                 }
                 break;
             case 'categories':
                 if ($params['expand_categories']) {
-                    $result = xmap_com_content::expandCategory($xmap, $parent, 1, $params, $parent->id);
+                    $result = self::expandCategory($xmap, $parent, 1, $params, $parent->id);
                 }
                 break;
             case 'article':
@@ -168,6 +185,7 @@ class xmap_com_content
                 if ($item->modified) {
                     $item->modified = $item->created;
                 }
+                $result = true;
                 break;
         }
         return $result;
@@ -228,14 +246,14 @@ class xmap_com_content
                     $node->itemid = preg_replace('/.*Itemid=([0-9]+).*/','$1',$node->link);
                 }
                 if ($xmap->printNode($node)) {
-                    xmap_com_content::expandCategory($xmap, $parent, $item->id, $params, $node->itemid);
+                    self::expandCategory($xmap, $parent, $item->id, $params, $node->itemid);
                 }
             }
             $xmap->changeLevel(-1);
         }
 
         // Include Category's content
-        xmap_com_content::includeCategoryContent($xmap, $parent, $catid, $params, $itemid);
+        self::includeCategoryContent($xmap, $parent, $catid, $params, $itemid);
         return true;
     }
 
@@ -248,21 +266,27 @@ class xmap_com_content
     static function includeCategoryContent($xmap, $parent, $catid, &$params,$Itemid)
     {
         $db = JFactory::getDBO();
-        
+
         // We do not do ordering for XML sitemap.
         if ($xmap->view != 'xml') {
             $orderby = self::buildContentOrderBy($parent->params,$parent->id,$Itemid);
             //$orderby = !empty($menuparams['orderby']) ? $menuparams['orderby'] : (!empty($menuparams['orderby_sec']) ? $menuparams['orderby_sec'] : 'rdate' );
-            //$orderby = xmap_com_content::orderby_sec($orderby);
+            //$orderby = self::orderby_sec($orderby);
         }
 
-        $query = 'SELECT a.id, a.title, a.alias, a.title_alias, '
+        if ($catid=='featured') {
+            $where = 'a.featured=1';
+        } else {
+            $where = 'a.catid='.(int) $catid;
+        }
+
+        $query = 'SELECT a.id, a.title, a.alias, a.title_alias, a.catid, '
                . 'UNIX_TIMESTAMP(a.created) created, UNIX_TIMESTAMP(a.modified) modified'
                //. ',c.path AS category_route '
                . (($params['add_images'] || $params['add_pagebreaks']) ? ',a.introtext, a.fulltext ' : '')
                . 'FROM #__content AS a '
-               //. 'LEFT JOIN #__categories AS c ON c.id = a.catid '
-               . 'WHERE a.catid = ' . $catid . ' AND a.state = 1 AND '
+               . ($catid =='featured'? 'LEFT JOIN #__content_frontpage AS fp ON a.id = fp.content_id ' : '')
+               . 'WHERE ' . $where . ' AND a.state = 1 AND '
                . '      (a.publish_up = ' . $params['nullDate']
                . ' OR a.publish_up <= ' . $params['nowDate'] . ') AND '
                . '      (a.publish_down = ' . $params['nullDate']
@@ -272,7 +296,6 @@ class xmap_com_content
                . (!$params['show_unauth'] ? ' AND a.access IN (' . $params['groups'] . ') ' : '')
                . ( $xmap->view != 'xml' ? "\n ORDER BY $orderby  " : '' )
                . ( $params['max_art'] ? "\n LIMIT {$params['max_art']}" : '');
-
 
         $db->setQuery($query);
         //echo nl2br(str_replace('#__','jos_',$db->getQuery()));
@@ -300,7 +323,7 @@ class xmap_com_content
 
                 $node->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
                 //$node->catslug = $item->category_route ? ($catid . ':' . $item->category_route) : $catid;
-                $node->catslug = $catid;
+                $node->catslug = $item->catid;
                 $node->link = ContentHelperRoute::getArticleRoute($node->slug, $node->catslug);
 
                 // Add images to the article
@@ -316,13 +339,15 @@ class xmap_com_content
 
                 if ($xmap->printNode($node) && $node->expandible) {
                     $xmap->changeLevel(1);
+                    $i=0;
                     foreach ($subnodes as $subnode) {
+                        $i++;
                         //var_dump($subnodes);
                         $subnode->id = $parent->id;
+                        $subnode->uid = $parent->uid.'p'.$i;
                         $subnode->browserNav = $parent->browserNav;
                         $subnode->priority = $params['art_priority'];
                         $subnode->changefreq = $params['art_changefreq'];
-                        $subnode->access = $item->access;
                         $xmap->printNode($subnode);
                     }
                     $xmap->changeLevel(-1);

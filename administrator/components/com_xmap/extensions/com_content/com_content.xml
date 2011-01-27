@@ -3,7 +3,7 @@
 <install type="xmap_ext" version="1.6">
     <name>Content Plugin</name>
     <author>Guillermo Vargas</author>
-    <creationDate>26/02/2008</creationDate>
+    <creationDate>26/01/2011</creationDate>
     <copyright>GNU GPL</copyright>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
     <authorEmail>guille@vargas.co.cr</authorEmail>
@@ -26,6 +26,12 @@
         <fields name="params">
             <fieldset name="basic">
                 <field name="expand_categories" type="list" default="1" label="XMAP_SETTING_EXPAND_CATEGORIES" description="XMAP_SETTING_EXPAND_CATEGORIES_DESC">
+                    <option value="0">XMAP_OPTION_NEVER</option>
+                    <option value="1">XMAP_OPTION_ALWAYS</option>
+                    <option value="2">XMAP_OPTION_XML_ONLY</option>
+                    <option value="3">XMAP_OPTION_HTML_ONLY</option>
+                </field>
+                <field name="expand_featured" type="list" default="1" label="XMAP_SETTING_EXPAND_FEATURED" description="XMAP_SETTING_EXPAND_FEATURED_DESC">
                     <option value="0">XMAP_OPTION_NEVER</option>
                     <option value="1">XMAP_OPTION_ALWAYS</option>
                     <option value="2">XMAP_OPTION_XML_ONLY</option>

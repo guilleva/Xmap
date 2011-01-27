@@ -117,9 +117,7 @@ class XmapModelSitemap extends JModelItem
                 $registry = new JRegistry('_default');
                 $registry->loadJSON($data->attribs);
                 $data->params = clone $this->getState('params');
-                if (!$data->params->merge($registry)) {
-                    die('cannot merge');
-                }
+                $data->params->merge($registry);
 
                 // Convert the selections field to an array.
                 $registry = new JRegistry('_default');
