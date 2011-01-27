@@ -143,7 +143,7 @@ class XmapModelExtensions extends JModelList
 
 
             if (strlen($row->manifest_cache)) {
-                $data = unserialize($row->manifest_cache);
+                $data = json_decode($row->manifest_cache);
                 if ($data) {
                     foreach ($data as $key => $value) {
                         if ($key == 'type') {

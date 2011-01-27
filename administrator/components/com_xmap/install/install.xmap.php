@@ -16,7 +16,6 @@ class com_xmapInstallerScript
      */
     function __construct($adapter)
     {
-        $this->_loadLanguage();
     }
 
     /**
@@ -26,7 +25,6 @@ class com_xmapInstallerScript
      */
     function install($adapter)
     {
-        //$this->_loadLanguage();
         echo '<h2>', JText::_("XMAP_INSTALLING_XMAP"), '</h2>';
         $this->_discoverAndInstallExtensions();
     }
@@ -50,7 +48,6 @@ class com_xmapInstallerScript
      */
     function uninstall($adapter)
     {
-        $this->_loadLanguage();
         echo '<h2>', JText::_("XMAP_UNISTALLING_XMAP_EXTENSIONS"), '</h2>';
         $db = JFactory::getDBO();
         require_once JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_xmap' . DS . 'helpers' . DS . 'installer.php';
@@ -88,10 +85,21 @@ class com_xmapInstallerScript
                     if (!$id) {
                         if ($installer->install($path . DS . $folder)) {
                             echo '<p />' . JText::sprintf('XMAP_INSTALLED_EXTENSION_X', $folder);
+
                             // Auto-publish the extension if the component is installed
-                            $query = "update `#__extensions` set state=1 WHERE type='xmap_ext' and folder='$folder' and folder in (select name from `#__extensions` where name='$folder')";
-                            $db->setQuery($query);
-                            $db->query();
+                            $db->setQuery(
+                                    "SELECT extension_id from `#__extensions` "
+                                   ."where `type`='component' and `name`='$folder'"
+                            );
+                            $id = $db->loadResult();
+                            // if the component is installed, then publish the extension
+                            if ($id) {
+                                $db->setQuery(
+                                        "update `#__extensions` set `enabled`=1 "
+                                       ."WHERE type='xmap_ext' and folder='$folder'"
+                                );
+                                $db->query();
+                            }
                         } else {
                             echo '<p />' . JText::sprintf('XMAP_NOT_INSTALLED_EXTENSION_X', $folder);
                         }
@@ -100,16 +108,4 @@ class com_xmapInstallerScript
             }
         }
     }
-
-    /**
-     * Load the language files for the component
-     *
-     */
-    private function _loadLanguage()
-    {
-        // Load Xmap's language file
-        $lang = JFactory::getLanguage();
-        $lang->load('com_xmap');
-    }
-
 }

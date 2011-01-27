@@ -493,7 +493,7 @@ class JInstallerXmap_ext extends JAdapterInstance
      *
      * @access public
      * @return array(JExtension) list of extensions available
-     * @since 1.6
+     * @since 2.0
      */
     function discover()
     {
@@ -548,7 +548,7 @@ class JInstallerXmap_ext extends JAdapterInstance
      * @access public
      * @param int $id The id of the extension to install (from #__discoveredextensions)
      * @return void
-     * @since 1.6
+     * @since 2.0
      */
     function discover_install()
     {
@@ -581,15 +581,12 @@ class JInstallerXmap_ext extends JAdapterInstance
 
     function refreshManifestCache()
     {
-        // Plugins use the extensions table as their primary store
-        // Similar to modules and templates, rather easy
-        // If its not in the extensions table we just add it
         $element = preg_replace('/^xmap_/','', $this->parent->extension->element);
         $manifestPath = JPATH_COMPONENT_ADMINISTRATOR. '/extensions/'. $this->parent->extension->folder . '/' . $element . '.xml';
         $this->parent->manifest = $this->parent->isManifest($manifestPath);
         $this->parent->setPath('manifest', $manifestPath);
         $manifest_details = JApplicationHelper::parseXMLInstallFile($this->parent->getPath('manifest'));
-        $this->parent->extension->manifest_cache = serialize($manifest_details);
+        $this->parent->extension->manifest_cache = json_encode($manifest_details);
 
         $this->parent->extension->name = $manifest_details['name'];
         if ($this->parent->extension->store()) {
