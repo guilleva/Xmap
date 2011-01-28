@@ -84,10 +84,19 @@
                     endif;
             ?>
             <fieldset class="panelform">
+                <?php $hidden_fields = ''; ?>
+		<ul class="adminformlist">
                 <?php foreach ($this->form->getFieldset($name) as $field) : ?>
-                    <?php echo $field->label; ?>
-                    <?php echo $field->input; ?>
+                    <?php if (!$field->hidden) : ?>
+                    <li>
+                        <?php echo $field->label; ?>
+                        <?php echo $field->input; ?>
+                    </li>
+                    <?php else : $hidden_fields.= $field->input; ?>
+                    <?php endif; ?>
                     <?php endforeach; ?>
+                </ul>
+		<?php echo $hidden_fields; ?>
             </fieldset>
             <?php endforeach; ?>
         <?php echo JHtml::_('sliders.end'); ?>

@@ -59,6 +59,7 @@ if ($this->displayer->_isAdmin) {
 	$doc->addScriptDeclaration ($js);
 }
 ?>
+<div id="xmap">
 <?php if ($params->get('show_page_heading', 1) && $params->get('page_heading') != '') : ?>
 	<h1>
 		<?php echo $this->escape($params->get('page_heading')); ?>
@@ -94,3 +95,4 @@ if ($this->displayer->_isAdmin) {
 <?php echo $this->loadTemplate('items'); ?>
 
 <span class="article_separator">&nbsp;</span>
+</div>

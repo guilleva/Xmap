@@ -77,21 +77,21 @@ class XmapModelExtension extends JModelAdmin
      *
      * @return	mixed	Menu item data object on success, false on failure.
      */
-    public function getItem($itemId = null)
+    public function getItem($pk = null)
     {
         if (isset($this->_item)) {
             return $this->_item;
         }
 
         // Initialize variables.
-        $itemId = (!empty($itemId)) ? $itemId : (int) $this->getState('extension.id');
+        $pk = (!empty($pk)) ? $pk : (int) $this->getState('extension.id');
         $false = false;
 
         // Get a row instance.
         $table = $this->getTable();
 
         // Attempt to load the row.
-        $return = $table->load($itemId);
+        $return = $table->load($pk);
 
         // Check for a table object error.
         if ($return === false && $table->getError()) {
@@ -126,22 +126,6 @@ class XmapModelExtension extends JModelAdmin
         return $this->_item;
     }
 
-    function &getParams()
-    {
-        // Get the state parameters
-        $extension = $this->getItem();
-        $params = new JParameter($extension->params);
-
-        if ($xml = $this->_getXML()) {
-            if ($ps = & $xml->document->params) {
-                foreach ($ps as $p) {
-                    $params->setXML($p);
-                }
-            }
-        }
-        return $params;
-    }
-
     /**
      * Method to get the record form.
      *
@@ -172,7 +156,9 @@ class XmapModelExtension extends JModelAdmin
     {
         // Check the session for previously entered form data.
         $data = JFactory::getApplication()->getUserState('com_xmap.edit.extension.data', array());
-
+        if (empty($data)) {
+            $data = $this->getItem();
+        }
 
         return $data;
     }
@@ -204,7 +190,6 @@ class XmapModelExtension extends JModelAdmin
         $formFile = JPath::clean(JPATH_COMPONENT_ADMINISTRATOR . '/extensions/' . $folder . '/' . $element . '.xml');
         //echo $formFile;exit;
         if (!file_exists($formFile)) {
-            echo $formFile;exit;
             throw new Exception(JText::sprintf('JError_File_not_found', $element . '.xml'));
             return false;
         }

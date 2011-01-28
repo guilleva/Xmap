@@ -37,7 +37,7 @@ class XmapViewExtension extends JView
         }
 
         // Bind the record to the form.
-        $form->bind($item);
+        //$form->bind($item);
 
         $this->assignRef('state', $state);
         $this->assignRef('extension', $item);

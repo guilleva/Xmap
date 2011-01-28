@@ -53,8 +53,5 @@
             description="COM_PLUGINS_FIELD_ELEMENT_DESC"
             readonly="true" />
         
-        <field
-            name="params"
-            type="hidden" />
 	</fieldset>
 </form>
