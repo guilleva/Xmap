@@ -158,7 +158,7 @@ class XmapDisplayer {
                     if ($router->getMode() == JROUTER_MODE_SEF) {
                         $node->link = 'index.php?Itemid='.$node->id;
                     }
-                    else {
+                    elseif (!$node->home) {
                         $node->link .= '&Itemid='.$node->id;
                     }
                     break;
