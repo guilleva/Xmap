@@ -27,12 +27,14 @@ class xmap_com_content
      * proper uniqueid for the item
      *
      * @param object  Menu item to be "prepared"
+     * @param array   The extension params
      *
      * @return void
      * @since  1.2
      */
-    static function prepareMenuItem($node)
+    static function prepareMenuItem($node,$params)
     {
+        $db = JFactory::getDbo();
         $link_query = parse_url($node->link);
         if (!isset($link_query['query'])) {
             return;
@@ -42,6 +44,13 @@ class xmap_com_content
         $view = JArrayHelper::getValue($link_vars, 'view', '');
         $layout = JArrayHelper::getValue($link_vars, 'layout', '');
         $id = JArrayHelper::getValue($link_vars, 'id', 0);
+
+        //----- Set add_images param
+        $params['add_images'] = JArrayHelper::getValue($params, 'add_images', 0);;
+
+        //----- Set add pagebreaks param
+        $add_pagebreaks = JArrayHelper::getValue($params, 'add_pagebreaks', 1);
+        $params['add_pagebreaks'] = JArrayHelper::getValue($params, 'add_pagebreaks', 1);
 
         switch ($view) {
             case 'category':
@@ -55,6 +64,18 @@ class xmap_com_content
             case 'article':
                 $node->uid = 'com_contenta' . $id;
                 $node->expandible = false;
+
+                $query = 'SELECT UNIX_TIMESTAMP(a.created) as created,
+                                 UNIX_TIMESTAMP(a.modified) as modified '
+                       .(($params['add_images'] || $params['add_pagebreaks'])? ',`introtext`, `fulltext` ' : '')
+                       . 'FROM `#__content` as a
+                          WHERE id='.intval($id).'
+                         ';
+                $db->setQuery($query);
+                if (($row = $db->loadObject()) != NULL) {
+                    $node->modified = ($row->modified? $row->modified : $row->created);
+                    $node->title.=$node->modified;
+                }
                 break;
             case 'featured':
                 $node->uid = 'com_contentfeatured';
@@ -71,6 +92,7 @@ class xmap_com_content
     static function getTree($xmap, $parent, &$params)
     {
         $db = JFactory::getDBO();
+        $app = JFactory::getApplication();
         $user = JFactory::getUser();
         $result = null;
 
@@ -159,6 +181,9 @@ class xmap_com_content
         $params['nowDate'] = $db->Quote(JFactory::getDate()->toMySQL());
         $params['groups'] = implode(',', $user->authorisedLevels());
 
+        // Define the language filter condition for the query
+        $params['language_filter'] = $app->getLanguageFilter();
+        
         switch ($view) {
             case 'category':
                 if (!$id) {
@@ -205,16 +230,25 @@ class xmap_com_content
     {
         $db = JFactory::getDBO();
 
+        $where = array('a.parent_id = ' . $catid . ' AND a.published = 1 AND a.extension=\'com_content\'');
+
+        if ($params['language_filter'] ) {
+            $where[] = 'a.language in ('.$db->quote(JFactory::getLanguage()->getTag()).','.$db->quote('*').')';
+        }
+
+        if (!$params['show_unauth']) {
+            $where[] = 'a.access IN (' . $params['groups'] . ') ';
+        }
+
         $orderby = 'a.lft';
         $query = 'SELECT a.id, a.title, a.alias, a.access, a.path AS route, '
                . 'UNIX_TIMESTAMP(a.created_time) created, UNIX_TIMESTAMP(a.modified_time) modified '
                . 'FROM #__categories AS a '
-               . 'WHERE a.parent_id = ' . $catid . ' AND a.published = 1 AND a.extension=\'com_content\' '
-               . (!$params['show_unauth'] ? ' AND a.access IN (' . $params['groups'] . ') ' : '')
+               . 'WHERE '. implode(' AND ',$where)
                . ( $xmap->view != 'xml' ? "\n ORDER BY " . $orderby . "" : '' );
 
         $db->setQuery($query);
-        // echo $db->getQuery();
+        #echo nl2br(str_replace('#__','jos_',$db->getQuery()));exit;
         $items = $db->loadObjectList();
 
         if (count($items) > 0) {
@@ -274,10 +308,25 @@ class xmap_com_content
             //$orderby = self::orderby_sec($orderby);
         }
 
+        $where = array('a.state = 1');
         if ($catid=='featured') {
-            $where = 'a.featured=1';
+            $where[] = 'a.featured=1';
         } else {
-            $where = 'a.catid='.(int) $catid;
+            $where[] = 'a.catid='.(int) $catid;
+        }
+
+        if ($params['max_art_age'] || $xmap->isNews) {
+            $days = (($xmap->isNews && ($params['max_art_age'] > 3 || !$params['max_art_age'])) ? 3 : $params['max_art_age']);
+            $where[] = "( a.created >= '"
+                      . date('Y-m-d H:i:s', time() - $days * 86400) . "' ) ";
+        }
+
+        if ($params['language_filter'] ) {
+            $where[] = 'a.language in ('.$db->quote(JFactory::getLanguage()->getTag()).','.$db->quote('*').')';
+        }
+
+        if (!$params['show_unauth'] ){
+            $where[] = 'a.access IN (' . $params['groups'] . ') ';
         }
 
         $query = 'SELECT a.id, a.title, a.alias, a.title_alias, a.catid, '
@@ -286,19 +335,16 @@ class xmap_com_content
                . (($params['add_images'] || $params['add_pagebreaks']) ? ',a.introtext, a.fulltext ' : '')
                . 'FROM #__content AS a '
                . ($catid =='featured'? 'LEFT JOIN #__content_frontpage AS fp ON a.id = fp.content_id ' : '')
-               . 'WHERE ' . $where . ' AND a.state = 1 AND '
+               . 'WHERE ' . implode(' AND ',$where) . ' AND a.state = 1 AND '
                . '      (a.publish_up = ' . $params['nullDate']
                . ' OR a.publish_up <= ' . $params['nowDate'] . ') AND '
                . '      (a.publish_down = ' . $params['nullDate']
                . ' OR a.publish_down >= ' . $params['nowDate'] . ') '
-               . ( ($params['max_art_age'] || $xmap->isNews) ?
-                    "\n AND ( a.created >= '" . date('Y-m-d H:i:s', time() - (($xmap->isNews && ($params['max_art_age'] > 3 || !$params['max_art_age'])) ? 3 : $params['max_art_age']) * 86400) . "' ) " : '')
-               . (!$params['show_unauth'] ? ' AND a.access IN (' . $params['groups'] . ') ' : '')
                . ( $xmap->view != 'xml' ? "\n ORDER BY $orderby  " : '' )
                . ( $params['max_art'] ? "\n LIMIT {$params['max_art']}" : '');
 
         $db->setQuery($query);
-        //echo nl2br(str_replace('#__','jos_',$db->getQuery()));
+        //echo nl2br(str_replace('#__','jos_',$db->getQuery()));exit;
         $items = $db->loadObjectList();
 
         if (count($items) > 0) {
@@ -311,6 +357,7 @@ class xmap_com_content
                 $node->priority = $params['art_priority'];
                 $node->changefreq = $params['art_changefreq'];
                 $node->name = $item->title;
+                $node->modified = $item->modified;
                 $node->expandible = false;
                 // TODO: Should we include category name or metakey here?
                 // $node->keywords = $item->metakey;
@@ -318,8 +365,8 @@ class xmap_com_content
 
                 // For the google news we should use te publication date instead
                 // the last modification date. See
-                if ($xmap->isNews || !$item->modified)
-                    $item->modified = $item->created;
+                if ($xmap->isNews || !$node->modified)
+                    $node->modified = $item->created;
 
                 $node->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
                 //$node->catslug = $item->category_route ? ($catid . ':' . $item->category_route) : $catid;
