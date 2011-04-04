@@ -25,6 +25,7 @@ class XmapHelper
     public static function &getMenuItems($selections)
     {
         $db = JFactory::getDbo();
+        $app = JFactory::getApplication();
         $user = JFactory::getUser();
         $list = array();
 
@@ -49,6 +50,11 @@ class XmapHelper
             // Filter over authorized access levels and publishing state.
             $query->where('n.published = 1');
             $query->where('n.access IN (' . implode(',', (array) $user->authorisedLevels()) . ')');
+
+            // Filter by language
+            if ($app->getLanguageFilter()) {
+                $query->where('n.language in ('.$db->quote(JFactory::getLanguage()->getTag()).','.$db->quote('*').')');
+            }
 
             // Get the list of menu items.
             $db->setQuery($query);
@@ -148,7 +154,7 @@ class XmapHelper
             $className = 'xmap_' . $item->option;
             $obj = new $className;
             if (method_exists($obj, 'prepareMenuItem')) {
-                $obj->prepareMenuItem($item);
+                $obj->prepareMenuItem($item,$extensions[$item->option]->params);
             }
         }
     }

@@ -9,7 +9,7 @@
 // no direct access
 defined('_JEXEC') or die;
 
-header('Content-Type: application/xml; charset="utf-8"');
+header('Content-Type: text/xml; charset="utf-8"');
 header('Content-Disposition: inline');
 
 $candEdit = JRequest::getInt('admin',0);

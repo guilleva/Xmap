@@ -117,10 +117,7 @@ class XmapViewXml extends JView
 
     function displayXSL()
     {
-        $item = $this->get('Item');
-
         $this->setLayout('default');
-        $this->assignRef('item', $item);
 
         @ob_end_clean();
         parent::display('xsl');

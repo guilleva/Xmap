@@ -62,7 +62,7 @@ class XmapHtmlDisplayer extends XmapDisplayer {
         $out .= '<li>';
 
         # $link = Xmap::getItemLink($node);
-        $link = $node->link;
+        $link = JRoute::_($node->link);
 
         if( !isset($node->browserNav) )
             $node->browserNav = 0;

@@ -131,6 +131,7 @@ class XmapDisplayer {
             // $node->link             = isset( $item->link ) ? htmlspecialchars( $item->link ) : '';
             $node->link             = $item->link;
             $node->option           = $item->option;
+            $node->modified         = @$item->modified;
 
             // New on Xmap 2.0: send the menu params
             $node->params =& $item->params;
