@@ -38,7 +38,7 @@ class JInstallerXmap_ext extends JAdapterInstance
     {
         $source = $this->parent->getPath('source');
         if (!$source) {
-            $this->parent->setPath('source', JPATH_ADMINISTRATOR . '/components/com_xmap/extensions/'.$this->parent->extension->folder.'/'.$this->parent->extension->element);
+            $this->parent->setPath('source', JPATH_ADMINISTRATOR . '/components/com_xmap/extensions/'.$this->parent->extension->folder);
         }
         $this->manifest = &$this->parent->getManifest();
         $element = $this->manifest->files;
@@ -129,6 +129,7 @@ class JInstallerXmap_ext extends JAdapterInstance
             }
         }
         if (!empty ($element)) {
+			$element = str_replace('xmap_','',$element);
             $this->parent->setPath('extension_root', JPATH_ADMINISTRATOR.DS.'components/com_xmap/extensions'.DS.$element);
         }
         else
@@ -498,7 +499,7 @@ class JInstallerXmap_ext extends JAdapterInstance
     function discover()
     {
         $results = Array();
-        $folder_list = JFolder::folders(JPATH_SITE.DS.'plugins');
+        $folder_list = JFolder::folders(JPATH_ADMINISTRATOR.DS.'components/com_xmap/extensions');
 
         foreach ($folder_list as $folder)
         {
@@ -518,26 +519,6 @@ class JInstallerXmap_ext extends JAdapterInstance
                 $extension->set('manifest_cache', serialize($manifest_details));
                 $results[] = $extension;
             }
-            $folder_list = JFolder::folders(JPATH_ADMINISTRATOR.DS.'components/com_xmap/extensions'.DS.$folder);
-            foreach ($folder_list as $plugin_folder)
-            {
-                $file_list = JFolder::files(JPATH_ADMINISTRATOR.DS.'components/com_xmap/extensions'.DS.$folder.DS.$plugin_folder,'\.xml$');
-                foreach ($file_list as $file)
-                {
-                    $manifest_details = JApplicationHelper::parseXMLInstallFile(JPATH_ADMINISTRATOR.DS.'components/com_xmap/extensions/'.$folder.'/'.$plugin_folder.'/'.$file);
-                    $file = JFile::stripExt($file);
-                    if ($file == 'example') continue; // ignore example plugins
-                    $extension = &JTable::getInstance('extension');
-                    $extension->set('type', 'xmap_ext');
-                    $extension->set('client_id', 0);
-                    $extension->set('element', "xmap_$file");
-                    $extension->set('folder', $folder);
-                    $extension->set('name', $file);
-                    $extension->set('state', -1);
-                    $extension->set('manifest_cache', serialize($manifest_details));
-                    $results[] = $extension;
-                }
-            }
         }
         return $results;
     }
@@ -554,6 +535,7 @@ class JInstallerXmap_ext extends JAdapterInstance
     {
         $element = preg_replace('/^xmap_/','', $this->parent->extension->element);
         $manifestPath = JPATH_ADMINISTRATOR.DS.'components/com_xmap/extensions'. DS . $this->parent->extension->folder . DS . $element . '.xml';
+
         $this->parent->manifest = $this->parent->isManifest($manifestPath);
         $description = (string)$this->parent->manifest->description;
         if ($description) {
@@ -563,11 +545,12 @@ class JInstallerXmap_ext extends JAdapterInstance
             $this->parent->set('message', '');
         }
         $this->parent->setPath('manifest', $manifestPath);
+		$this->parent->setPath('extension_root', JPATH_ADMINISTRATOR.DS.'components/com_xmap/extensions'.DS.$this->parent->extension->folder);
+		$this->parent->setPath('source', JPATH_ADMINISTRATOR.DS.'components/com_xmap/extensions'.DS.$this->parent->extension->folder);
         $manifest_details = JApplicationHelper::parseXMLInstallFile($manifestPath);
         $this->parent->extension->manifest_cache = serialize($manifest_details);
         $this->parent->extension->state = 0;
         $this->parent->extension->name = $manifest_details['name'];
-        $this->parent->extension->enabled = 1;
         $this->parent->extension->params = $this->parent->getParams();
         if ($this->parent->extension->store()) {
             return $this->parent->extension->get('extension_id');
@@ -585,6 +568,8 @@ class JInstallerXmap_ext extends JAdapterInstance
         $manifestPath = JPATH_ADMINISTRATOR. '/components/com_xmap/extensions/'. $this->parent->extension->folder . '/' . $element . '.xml';
         $this->parent->manifest = $this->parent->isManifest($manifestPath);
         $this->parent->setPath('manifest', $manifestPath);
+		$this->parent->setPath('extension_root', JPATH_ADMINISTRATOR.DS.'components/com_xmap/extensions'.DS.$this->parent->extension->folder);
+		$this->parent->setPath('source', JPATH_ADMINISTRATOR.DS.'components/com_xmap/extensions'.DS.$this->parent->extension->folder);
         $manifest_details = JApplicationHelper::parseXMLInstallFile($this->parent->getPath('manifest'));
         $this->parent->extension->manifest_cache = json_encode($manifest_details);
 

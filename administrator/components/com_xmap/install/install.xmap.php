@@ -83,7 +83,7 @@ class com_xmapInstallerScript
                     $db->setQuery($query);
                     $id = $db->loadResult();
                     if (!$id) {
-                        if ($installer->install($path . DS . $folder)) {
+                        if ($installer->discover_install($path . DS . $folder)) {
                             echo '<p />' . JText::sprintf('XMAP_INSTALLED_EXTENSION_X', $folder);
 
                             // Auto-publish the extension if the component is installed
