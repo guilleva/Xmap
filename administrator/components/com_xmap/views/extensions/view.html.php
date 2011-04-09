@@ -56,7 +56,7 @@ class XmapViewExtensions extends JView
         JToolBarHelper::divider();
         JToolBarHelper::custom('extensions.refresh', 'refresh', 'refresh', 'JTOOLBAR_REFRESH_CACHE', true);
         JToolBarHelper::divider();
-        JToolBarHelper::deleteList('', 'extension.remove', 'JTOOLBAR_UNINSTALL');
+        JToolBarHelper::deleteList('', 'extensions.remove', 'JTOOLBAR_UNINSTALL');
         # JToolBarHelper::deleteList(JText::_('Are you sure you want to delete selected Items?'));
         JToolBarHelper::divider();
         JToolBarHelper::back('Back', 'index.php?option=com_xmap');

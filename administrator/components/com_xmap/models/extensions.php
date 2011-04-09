@@ -206,11 +206,11 @@ class XmapModelExtensions extends JModelList
         // Install the package
         if (!$installer->install($package['dir'])) {
             // There was an error installing the package
-            $msg = JText::sprintf('INSTALLEXT', JText::_($package['type']), JText::_('Error'));
+            $msg = JText::_('XMAP_INSTALL_ERROR_EXTENSION');
             $result = false;
         } else {
             // Package installed sucessfully
-            $msg = JText::sprintf('INSTALLEXT', JText::_($package['type']), JText::_('Success'));
+            $msg = JText::_('XMAP_INSTALL_SUCCESS_EXTENSION');
             $result = true;
         }
 
@@ -428,4 +428,77 @@ class XmapModelExtensions extends JModelList
         return $result;
     }
 
+    /**
+     * Remove (uninstall) one or more extensions
+     *
+     * @static
+     * @param   array    An array of identifiers
+     * @return  boolean    True on success
+     * @since   2.0
+     */
+    function remove($eid = array())
+    {
+        require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'installer.php');
+
+        // Initialise variables.
+        $user = JFactory::getUser();
+        if ($user->authorise('core.delete', 'com_installer')) {
+
+            // Initialise variables.
+            $failed = array();
+
+            /*
+             * Ensure eid is an array of extension ids in the form id => client_id
+             * TODO: If it isn't an array do we want to set an error and fail?
+             */
+            if (!is_array($eid)) {
+                $eid = array($eid => 0);
+            }
+
+            // Get a database connector
+            $db = JFactory::getDBO();
+
+            // Get an installer object for the extension type
+            jimport('joomla.installer.installer');
+            $installer = XmapInstaller::getInstance();
+            $row = JTable::getInstance('extension');
+
+            // Uninstall the chosen extensions
+            foreach ($eid as $id) {
+                $id = trim($id);
+                $row->load($id);
+                if ($row->type) {
+                    $result = $installer->uninstall($row->type, $id);
+
+                    // Build an array of extensions that failed to uninstall
+                    if ($result === false) {
+                        $failed[] = $id;
+                    }
+                } else {
+                    $failed[] = $id;
+                }
+            }
+            if (count($failed)) {
+
+                // There was an error in uninstalling the package
+                $msg = JText::sprintf('COM_INSTALLER_UNINSTALL_ERROR', $row->type);
+                $result = false;
+            } else {
+
+                // Package uninstalled sucessfully
+                $msg = JText::sprintf('COM_INSTALLER_UNINSTALL_SUCCESS', $row->type);
+                $result = true;
+            }
+            $app = JFactory::getApplication();
+            $app->enqueueMessage($msg);
+            $this->setState('action', 'remove');
+            $this->setState('name', $installer->get('name'));
+            $app->setUserState('com_xmap.message', $installer->message);
+            $app->setUserState('com_xmap.extension_message', $installer->get('extension_message'));
+            return $result;
+        } else {
+            $result = false;
+            JError::raiseWarning(403, JText::_('JERROR_CORE_DELETE_NOT_PERMITTED'));
+        }
+    }
 }

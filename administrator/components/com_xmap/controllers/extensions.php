@@ -1,100 +1,99 @@
 <?php
 /**
  * @version             $Id$
- * @copyright			Copyright (C) 2007 - 2009 Joomla! Vargas. All rights reserved.
+ * @copyright		Copyright (C) 2007 - 2009 Joomla! Vargas. All rights reserved.
  * @license             GNU General Public License version 2 or later; see LICENSE.txt
  * @author              Guillermo Vargas (guille@vargas.co.cr)
-*/
-
+ */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
 jimport('joomla.application.component.controller');
 jimport('joomla.client.helper');
 
-class XmapControllerExtensions extends JController
-{
-	public function __construct($config = array())
-	{
-		parent::__construct($config);
-		$this->registerTask('add', 'edit');
-        $this->registerTask('unpublish',        'publish');
-        $this->registerTask('publish',          'publish');
-	}
+class XmapControllerExtensions extends JController {
 
-	function display()
-	{
-			parent::display();
-	}
+    public function __construct($config = array())
+    {
+        parent::__construct($config);
+        $this->registerTask('add', 'edit');
+        $this->registerTask('unpublish', 'publish');
+        $this->registerTask('publish', 'publish');
+    }
 
-	function edit()
-	{
-			JRequest::setVar( 'layout', 'form' );
-			JRequest::setVar( 'hidemainmenu', 1 );
+    function display()
+    {
+        parent::display();
+    }
 
-			parent::display();
-	}
+    function edit()
+    {
+        JRequest::setVar('layout', 'form');
+        JRequest::setVar('hidemainmenu', 1);
 
-	/**
-	 * Install an extension
-	 *
-	 * @access      public
-	 * @return      void
-	 * @since       2.0
-	 */
-	function doInstall()
-	{
-			// Check for request forgeries
-			JRequest::checkToken() or jexit('Invalid Token');
+        parent::display();
+    }
 
-			$model  = &$this->getModel('Extensions');
-			$view   = &$this->getView('Extensions','html');
+    /**
+     * Install an extension
+     *
+     * @access      public
+     * @return      void
+     * @since       2.0
+     */
+    function doInstall()
+    {
+        // Check for request forgeries
+        JRequest::checkToken() or jexit('Invalid Token');
 
-			$model->install();
+        $model = &$this->getModel('Extensions');
+        $view = &$this->getView('Extensions', 'html');
 
-			$this->setRedirect('index.php?option=com_xmap&view=extensions');
-	}
+        $model->install();
 
-	/**
-	 * Enable an extension
-	 *
-	 * @access      public
-	 * @return      void
-	 * @since       2.0
-	 */
-	function enable()
-	{
-			// Check for request forgeries
-			JRequest::checkToken('request') or jexit('Invalid Token');
+        $this->setRedirect('index.php?option=com_xmap&view=extensions');
+    }
 
-			$model  = &$this->getModel('Extensions');
+    /**
+     * Enable an extension
+     *
+     * @access      public
+     * @return      void
+     * @since       2.0
+     */
+    function enable()
+    {
+        // Check for request forgeries
+        JRequest::checkToken('request') or jexit('Invalid Token');
 
-			$ids = JRequest::getVar('eid',array(),'get','array');
-			$model->publish($ids,'1');
+        $model = &$this->getModel('Extensions');
 
-			$this->setRedirect('index.php?option=com_xmap&view=extensions');
-	}
+        $ids = JRequest::getVar('eid', array(), 'get', 'array');
+        $model->publish($ids, '1');
 
-	/**
-	 * Disable an extension
-	 *
-	 * @access      public
-	 * @return      void
-	 * @since       2.0
-	 */
-	function disable()
-	{
-			// Check for request forgeries
-			JRequest::checkToken('request') or jexit('Invalid Token');
+        $this->setRedirect('index.php?option=com_xmap&view=extensions');
+    }
 
-			$model  = &$this->getModel('Extensions');
-			$ids = JRequest::getVar('eid',array(),'get','array');
+    /**
+     * Disable an extension
+     *
+     * @access      public
+     * @return      void
+     * @since       2.0
+     */
+    function disable()
+    {
+        // Check for request forgeries
+        JRequest::checkToken('request') or jexit('Invalid Token');
 
-			$model->publish($ids,'0');
+        $model = &$this->getModel('Extensions');
+        $ids = JRequest::getVar('eid', array(), 'get', 'array');
 
-			$this->setRedirect('index.php?option=com_xmap&view=extensions');
-	}
-	
+        $model->publish($ids, '0');
+
+        $this->setRedirect('index.php?option=com_xmap&view=extensions');
+    }
+
     /**
      * Enable/Disable an extension (If supported)
      */
@@ -104,24 +103,22 @@ class XmapControllerExtensions extends JController
         JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
         // Initialise variables.
-        $user    = JFactory::getUser();
-        $ids    = JRequest::getVar('cid', array(), '', 'array');
-        $values    = array('publish' => 1, 'unpublish' => 0);
-        $task    = $this->getTask();
-        $value    = JArrayHelper::getValue($values, $task, 0, 'int');
+        $user = JFactory::getUser();
+        $ids = JRequest::getVar('cid', array(), '', 'array');
+        $values = array('publish' => 1, 'unpublish' => 0);
+        $task = $this->getTask();
+        $value = JArrayHelper::getValue($values, $task, 0, 'int');
 
         if (empty($ids)) {
             JError::raiseWarning(500, JText::_('XMAP_ERROR_NO_EXTENSIONS_SELECTED'));
         } else {
             // Get the model.
-            $model    = $this->getModel('extensions');
+            $model = $this->getModel('extensions');
 
             // Change the state of the records.
             if (!$model->publish($ids, $value)) {
                 JError::raiseWarning(500, implode('<br />', $model->getErrors()));
-            }
-            else
-            {
+            } else {
                 if ($value == 1) {
                     $ntext = 'XMAP_N_EXTENSIONS_PUBLISHED';
                 } else if ($value == 0) {
@@ -131,9 +128,9 @@ class XmapControllerExtensions extends JController
             }
         }
 
-        $this->setRedirect(JRoute::_('index.php?option=com_xmap&view=extensions',false));
+        $this->setRedirect(JRoute::_('index.php?option=com_xmap&view=extensions', false));
     }
-    
+
     /**
      * Refreshes the cached metadata about an extension
      * Useful for debugging and testing purposes when the XML file might change
@@ -143,10 +140,29 @@ class XmapControllerExtensions extends JController
         // Check for request forgeries
         JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
-        $model    = &$this->getModel('extensions');
+        $model = &$this->getModel('extensions');
         $uid = JRequest::getVar('cid', array(), '', 'array');
         JArrayHelper::toInteger($uid, array());
         $result = $model->refresh($uid);
+        $this->setRedirect(JRoute::_('index.php?option=com_xmap&view=extensions', false));
+    }
+
+    /**
+     * Remove an extension (Uninstall).
+     *
+     * @return	void
+     * @since	1.5
+     */
+    public function remove()
+    {
+        // Check for request forgeries
+        JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
+        $eid	= JRequest::getVar('cid', array(), '', 'array');
+        $model	= $this->getModel('extensions');
+
+        JArrayHelper::toInteger($eid, array());
+        $result = $model->remove($eid);
         $this->setRedirect(JRoute::_('index.php?option=com_xmap&view=extensions',false));
     }
 }
