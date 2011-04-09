@@ -23,6 +23,7 @@ class XmapControllerAjax extends JController
 
     public function editElement()
     {
+        JRequest::checkToken('get') or jexit(JText::_('JINVALID_TOKEN'));
 
         jimport('joomla.utilities.date');
         jimport('joomla.user.helper');
@@ -60,7 +61,7 @@ class XmapControllerAjax extends JController
             $registry->setValue('state', $state);
             $registry->setValue('message', '');
         }
-        ob_end_clean();
+
         echo $registry->toString();
     }
 }

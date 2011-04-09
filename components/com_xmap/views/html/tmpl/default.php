@@ -17,7 +17,7 @@ $params = $this->item->params;
 if ($this->displayer->_isAdmin) {
 	JHTML::_('behavior.mootools');
 	$live_site = JURI::root();
-	$ajaxurl = "$live_site/index.php?option=com_xmap&tmpl=component&task=editElement&action=toggleElement";
+	$ajaxurl = "{$live_site}index.php?option=com_xmap&format=json&task=ajax.editElement&action=toggleElement&".JUtility::getToken().'=1';
 
 	$css = '.xmapexcl img{ border:0px; }'."\n";
 	$css .= '.xmapexcloff { text-decoration:line-through; }';
@@ -30,9 +30,10 @@ if ($this->displayer->_isAdmin) {
 					if (this && this.rel) {
 						options = JSON.decode(this.rel);
 						this.onComplete = checkExcludeResult
-						var myAjax = new Request.JSON({url:'{$ajaxurl}',
-						                 	onComplete: checkExcludeResult.bind(this)
-						                 }).get({id:{$this->item->id},uid:options.uid,itemid:options.itemid});
+						var myAjax = new Request.JSON({
+                                                    url:'{$ajaxurl}',
+						    onSuccess: checkExcludeResult.bind(this)
+						}).get({id:{$this->item->id},uid:options.uid,itemid:options.itemid});
 					}
 					return false;
 				};
