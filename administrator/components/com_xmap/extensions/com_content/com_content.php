@@ -74,7 +74,6 @@ class xmap_com_content
                 $db->setQuery($query);
                 if (($row = $db->loadObject()) != NULL) {
                     $node->modified = ($row->modified? $row->modified : $row->created);
-                    $node->title.=$node->modified;
                 }
                 break;
             case 'featured':
