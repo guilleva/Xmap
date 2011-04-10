@@ -7,7 +7,7 @@
 	<copyright>This component is released under the GNU/GPL License</copyright>
 	<authorEmail>guille@vargas.co.cr</authorEmail>
 	<authorUrl>http://joomla.vargas.co.cr</authorUrl>
-	<version>2.0b3</version>
+	<version>2.0RC1</version>
 	<license>GNU/GPL</license>
 	<description>Xmap - Sitemap Generator for Joomla!</description>
 	<install folder="admin">
@@ -41,7 +41,7 @@
 		<folder>images</folder>
 	</images>
 	<administration>
-		<menu>COM_XMAP_TITLE</menu>
+		<menu img="components/com_xmap/images/xmap-favicon.png">COM_XMAP_TITLE</menu>
 		<files folder="admin">
 			<filename>xmap.php</filename>
 			<filename>controller.php</filename>
