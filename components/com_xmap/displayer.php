@@ -143,7 +143,7 @@ class XmapDisplayer {
             switch ($item->type)
             {
                 case 'separator':
-                    $item->browserNav=3;
+                    $node->browserNav=3;
                     break;
                 case 'url':
                     if ((strpos($item->link, 'index.php?') === 0) && (strpos($item->link, 'Itemid=') === false)) {
