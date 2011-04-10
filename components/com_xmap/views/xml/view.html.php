@@ -22,7 +22,6 @@ class XmapViewXml extends JView
 {
 
     protected $state;
-    protected $item;
     protected $print;
 
     function display($tpl = null)
