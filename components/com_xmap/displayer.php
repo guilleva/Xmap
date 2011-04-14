@@ -96,7 +96,7 @@ class XmapDisplayer {
     {
         $app = JFactory::getApplication();
         $db = JFactory::getDbo();
-        $title = '';
+        $title = $extra = '';
 
         // Filter by language
         if ($app->getLanguageFilter()) {
