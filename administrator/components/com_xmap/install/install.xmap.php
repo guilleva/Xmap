@@ -83,21 +83,6 @@ class com_xmapInstallerScript
 			if (!isset($installedtmp[$e->folder])) {
 				if ($e->store() && $installer->discover_install($e->extension_id)) {
 					echo '<p />' . JText::sprintf('XMAP_INSTALLED_EXTENSION_X', $e->folder);
-
-					// Auto-publish the extension if the component is installed
-					$db->setQuery(
-							"SELECT extension_id from `#__extensions` "
-						   ."where `type`='component' and `name`='{$e->folder}'"
-					);
-					$id = $db->loadResult();
-					// if the component is installed, then publish the extension
-					if ($id) {
-						$db->setQuery(
-								"update `#__extensions` set `enabled`=1, `state`=1 "
-							   ."WHERE `extension_id`='{$e->extension_id}'"
-						);
-						$db->query();
-					}
 				}
 			}
 		}

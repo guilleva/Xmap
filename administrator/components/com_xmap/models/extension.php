@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id$
- * @copyright   	Copyright (C) 2007 - 2009 Joomla! Vargas. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
- * @author		Guillermo Vargas (guille@vargas.co.cr)
+ * @version     $Id$
+ * @copyright       Copyright (C) 2007 - 2009 Joomla! Vargas. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @author      Guillermo Vargas (guille@vargas.co.cr)
  */
 // No direct access
 defined('_JEXEC') or die;
@@ -37,10 +37,10 @@ class XmapModelExtension extends JModelAdmin
     /**
      * Returns a reference to the a Table object, always creating it
      *
-     * @param	type 	$type 	 The table type to instantiate
-     * @param	string 	$prefix	 A prefix for the table class name. Optional.
-     * @param	array	$options Configuration array for model. Optional.
-     * @return	JTable	A database object
+     * @param   type    $type    The table type to instantiate
+     * @param   string  $prefix  A prefix for the table class name. Optional.
+     * @param   array   $options Configuration array for model. Optional.
+     * @return  JTable  A database object
      */
     public function getTable($type = 'Extension', $prefix = 'JTable', $config = array())
     {
@@ -50,7 +50,7 @@ class XmapModelExtension extends JModelAdmin
     /**
      * Method to auto-populate the model state.
      *
-     * @return	void
+     * @return  void
      */
     protected function populateState()
     {
@@ -73,9 +73,9 @@ class XmapModelExtension extends JModelAdmin
     /**
      * Method to get a menu item.
      *
-     * @param	integer	The id of the menu item to get.
+     * @param   integer The id of the menu item to get.
      *
-     * @return	mixed	Menu item data object on success, false on failure.
+     * @return  mixed   Menu item data object on success, false on failure.
      */
     public function getItem($pk = null)
     {
@@ -103,7 +103,7 @@ class XmapModelExtension extends JModelAdmin
         $lang->load('xmapext_' . trim($table->element), JPATH_ADMINISTRATOR);
         $lang->load('xmapext_' . trim($table->element), JPATH_SITE); // handle language files not in admin, mostly core
         $lang->load('xmapext_' . trim($table->element), JPATH_COMPONENT_ADMINISTRATOR . DS . 'extensions' . DS . $table->folder);
-
+echo 'xmapext_' . trim($table->element), JPATH_COMPONENT_ADMINISTRATOR . DS . 'extensions' . DS . $table->folder;
 
         $value = $table->getProperties(1);
         $value = JArrayHelper::toObject($value, 'JObject');
@@ -220,10 +220,10 @@ class XmapModelExtension extends JModelAdmin
     /**
      * Method to publish categories.
      *
-     * @param	array	The ids of the items to publish.
-     * @param	int		The value of the published state
+     * @param   array   The ids of the items to publish.
+     * @param   int     The value of the published state
      *
-     * @return	boolean	True on success.
+     * @return  boolean True on success.
      */
     function publish(&$pks, $value = 1)
     {

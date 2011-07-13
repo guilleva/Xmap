@@ -2,7 +2,7 @@
 <!-- $Id$ -->
 <install method="upgrade" version="1.5" type="component">
 	<name>com_xmap</name>
-	<creationDate>2011-04-02</creationDate>
+	<creationDate>2011-04-10</creationDate>
 	<author>Guillermo Vargas</author>
 	<copyright>This component is released under the GNU/GPL License</copyright>
 	<authorEmail>guille@vargas.co.cr</authorEmail>

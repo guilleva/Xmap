@@ -57,7 +57,7 @@ class JFormFieldModal_Sitemaps extends JFormField
         }
 
         if (empty($title)) {
-            $title = JText::_('Xmap_Select_an_Sitemap');
+            $title = JText::_('COM_XMAP_SELECT_AN_SITEMAP');
         }
 
         $doc->addScriptDeclaration(
