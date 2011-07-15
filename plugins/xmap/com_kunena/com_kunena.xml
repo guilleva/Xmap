@@ -18,8 +18,8 @@
         <!--
         these files will be installed in the administrator/language folder.
         -->
-        <language tag="en-GB">en-GB.xmap_com_kunena.ini</language>
-        <language tag="es-ES">es-ES.xmap_com_kunena.ini</language>
+        <language tag="en-GB">en-GB.plg_xmap_com_kunena.ini</language>
+        <language tag="es-ES">es-ES.plg_xmap_com_kunena.ini</language>
     </languages>
 
     <config>
