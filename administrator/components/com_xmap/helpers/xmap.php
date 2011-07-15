@@ -33,7 +33,7 @@ class XmapHelper
 		);
 		JSubMenuHelper::addEntry(
 			JText::_('Xmap_Submenu_Extensions'),
-			'index.php?option=com_plugins&view=plugins&filter_folder=editors',
+			'index.php?option=com_plugins&view=plugins&filter_folder=xmap',
 			$vName == 'extensions');
 	}
 }
