@@ -11,7 +11,7 @@
     <version>2.0</version>
     <description>Xmap Plugin for Kunena component</description>
     <files>
-        <filename xmap="com_kunena">com_kunena.php</filename>
+        <filename plugin="com_kunena">com_kunena.php</filename>
     </files>
 
     <languages folder="language">

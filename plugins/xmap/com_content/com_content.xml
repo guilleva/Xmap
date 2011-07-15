@@ -11,7 +11,7 @@
     <version>2.0</version>
     <description>Add support for articles and categories on Joomla 1.6 or newer</description>
     <files>
-        <filename xmap="com_content">com_content.php</filename>
+        <filename plugin="com_content">com_content.php</filename>
     </files>
 
     <languages folder="language">
