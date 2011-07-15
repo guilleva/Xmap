@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <!-- $Id: com_kunena.xml 57 2009-10-28 03:16:48Z guilleva $ -->
-<install type="xmap_ext" version="1.6">
-    <name>Kunena Plugin</name>
+<extension type="plugin"group="xmap" version="1.6">
+    <name>Xmap - Kunena Plugin</name>
     <author>Guillermo Vargas</author>
     <creationDate>September 2007</creationDate>
     <copyright>GNU GPL</copyright>
@@ -86,4 +86,4 @@
             </fieldset>
         </fields>
     </config>
-</install>
+</extension>
