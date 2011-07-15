@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: com_content.xml 23 2011-01-27 05:04:56Z guille $ -->
+<!-- $Id$ -->
 <extension type="plugin" group="xmap" version="1.6">
     <name>Xmap - Content Plugin</name>
     <author>Guillermo Vargas</author>

@@ -3,7 +3,7 @@
 /**
  * @author Guillermo Vargas, http://joomla.vargas.co.cr
  * @email guille@vargas.co.cr
- * @version $Id: com_kunena.php 30 2011-04-09 23:38:58Z guille $
+ * @version $Id$
  * @package Xmap
  * @license GNU/GPL
  * @description Xmap plugin for Kunena Forum Component.

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version             $Id: com_content.php 32 2011-04-09 23:41:20Z guille $
+ * @version             $Id$
  * @copyright           Copyright (C) 2007 - 2009 Joomla! Vargas. All rights reserved.
  * @license             GNU General Public License version 2 or later; see LICENSE.txt
  * @author              Guillermo Vargas (guille@vargas.co.cr)
