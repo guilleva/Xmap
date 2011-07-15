@@ -28,22 +28,24 @@ class XmapViewXml extends JView
     {
         // Initialise variables.
         $app = JFactory::getApplication();
-        $user = JFactory::getUser();
+        $this->user = JFactory::getUser();
         // $dispatcher	= &JDispatcher::getInstance();
 
 
         $layout = $this->getLayout();
 
-        if ($layout == 'xsl' || $layout == 'adminxsl') {
+        $this->item = $this->get('Item');
+        $this->state = $this->get('State');
+	$this->canEdit = JFactory::getUser()->authorise('core.admin', 'com_xmap');
+
+        if ($layout == 'xsl') {
             return $this->displayXSL($layout);
         }
 
         // Get model data.
-        $state = $this->get('State');
-        $item = $this->get('Item');
-        $items = $this->get('Items');
-        $sitemapItems = $this->get('SitemapItems');
-        $extensions = $this->get('Extensions');
+        $this->items = $this->get('Items');
+        $this->sitemapItems = $this->get('SitemapItems');
+        $this->extensions = $this->get('Extensions');
 
         // Check for errors.
         if (count($errors = $this->get('Errors'))) {
@@ -52,16 +54,16 @@ class XmapViewXml extends JView
         }
 
         // Add router helpers.
-        $item->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
+        $this->item->slug = $this->item->alias ? ($this->item->id . ':' . $this->item->alias) : $this->item->id;
 
-        $item->rlink = JRoute::_('index.php?option=com_xmap&view=xml&id=' . $item->slug);
+        $this->item->rlink = JRoute::_('index.php?option=com_xmap&view=xml&id=' . $this->item->slug);
 
         // Create a shortcut to the paramemters.
-        $params = &$state->params;
-        $offset = $state->get('page.offset');
+        $params = &$this->state->params;
+        $offset = $this->state->get('page.offset');
 
-        if (!$item->params->get('access-view')) {
-            if ($user->get('guest')) {
+        if (!$this->item->params->get('access-view')) {
+            if ($this->user->get('guest')) {
                 // Redirect to login
                 $uri = JFactory::getURI();
                 $app->redirect(
@@ -82,17 +84,10 @@ class XmapViewXml extends JView
 
         // Load the class used to display the sitemap
         $this->loadTemplate('class');
-        $displayer = new XmapXmlDisplayer($params, $item);
+        $this->displayer = new XmapXmlDisplayer($params, $this->item);
 
-        $displayer->setJView($this);
+        $this->displayer->setJView($this);
 
-        $this->assignRef('state', $state);
-        $this->assignRef('item', $item);
-        $this->assignRef('items', $items);
-        $this->assignRef('sitemapItems', $sitemapItems);
-        $this->assignRef('extensions', $extensions);
-        $this->assignRef('user', $user);
-        $this->assignRef('displayer', $displayer);
 
         $doCompression = ($this->item->params->get('compress_xml') && !ini_get('zlib.output_compression') && ini_get('output_handler') != 'ob_gzhandler');
         @ob_end_clean();
@@ -103,7 +98,7 @@ class XmapViewXml extends JView
         parent::display($tpl);
 
         $model = $this->getModel();
-        $model->hit($displayer->getCount());
+        $model->hit($this->displayer->getCount());
 
         if ($doCompression) {
             $data = ob_get_contents();

@@ -12,8 +12,6 @@ defined('_JEXEC') or die;
 header('Content-Type: text/xml; charset="utf-8"');
 header('Content-Disposition: inline');
 
-$candEdit = JRequest::getInt('admin',0);
-
 echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 ?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xna="http://www.sitemaps.org/schemas/sitemap/0.9" exclude-result-prefixes="xna">
@@ -21,8 +19,8 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 <xsl:template match="/">
 <html>
 <head>
-<title>Google Sitemap File</title>
-<?php if ($candEdit): ?>
+<title>XML Sitemap File</title>
+<?php if ($this->canEdit): ?>
 <script src="media/system/js/mootools-core.js" type="text/javascript"></script>
 <script src="media/system/js/mootools-more.js" type="text/javascript"></script>
 <?php endif; ?>
@@ -103,7 +101,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 	}
 	.editable {
 		cursor:pointer;
-		background: url(components/com_xmap/images/arrow.gif) top right no-repeat;
+		background: url(components/com_xmap/assets/images/arrow.gif) top right no-repeat;
 		padding-right:18px;
 		padding-right:18px;
 		border:1px solid #ffffff;
@@ -142,9 +140,6 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
   		  setSort(tabName, 1, 1);
   	  }
   	
-  		var theURL = document.getElementById("head1");
-  		theURL.innerHTML += ' ' + location;
-  		document.title += ': ' + location;
   	}
   	
   	function initTable(tabName) {
@@ -286,34 +281,23 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 
 	function changeProperty(el,property) {
 		var myAjax = new Request({
-                    url: 'index.php?option=com_xmap&format=json&task=ajax.editElement&action=changeProperty',
+		    url: '<?php echo JRoute::_('index.php?option=com_xmap&format=json&task=ajax.editElement&action=changeProperty',false); ?>',
                     onComplete: checkChangeResult.bind(divOptions),
                     method: 'get'
-                }).send('id='+sitemapid+'&uid='+divOptions.uid+'&itemid='+divOptions.itemid+'&property='+property+'&value='+el.innerHTML);
+		}).send('<?php echo JUtility::getToken(); ?>=1&id='+sitemapid+'&uid='+divOptions.uid+'&itemid='+divOptions.itemid+'&property='+property+'&value='+el.innerHTML);
 		divOptions.cell.innerHTML=el.innerHTML;
 		divOptions.style.display='none';
 		return false;
 	}
 	function checkChangeResult(result,xmlResponse) {
 	}
-
-	function getURLparam( name ) {
-  		name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-  		var regexS = "[\\?&]"+name+"=([^&#]*)";
-  		var regex = new RegExp( regexS );
-  		var results = regex.exec( window.location.href );
-  		if( results == null )
-    			return "";
-  		else
-    			return results[1];
-	}
-	var sitemapid=getURLparam('id');
+	var sitemapid=<?php echo $this->item->id; ?>;
 
     ]]>
 </script>
 </head>
 <body onLoad="initXsl('table0','sitemap');">
-<h1 id="head1">Site Map</h1>
+<h1 id="head1"><?php echo $this->item->title; ?></h1>
 <h2>Number of URLs in this Sitemap: <xsl:value-of select="count(xna:urlset/xna:url)"></xsl:value-of></h2>
 <table id="table0" class="data">
 <tr class="header">
@@ -329,7 +313,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 <td><xsl:variable name="sitemapURL"><xsl:value-of select="xna:loc"/></xsl:variable>
     <a href="{$sitemapURL}" target="_blank" ref="nofollow"><xsl:value-of select="$sitemapURL"></xsl:value-of></a></td>
 <td><xsl:value-of select="xna:lastmod"/></td>
-<?php if ($candEdit): ?>
+<?php if ($this->canEdit): ?>
 <td class="editable" onClick="showOptions(this,'changefreq','{$UID}','{$ItemID}',event);" ><xsl:value-of select="xna:changefreq"/></td>
 <td class="editable" onClick="showOptions(this,'priority','{$UID}','{$ItemID}',event);"><xsl:value-of select="xna:priority"/></td>
 <?php else: ?>

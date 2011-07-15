@@ -31,7 +31,6 @@ class XmapHtmlDisplayer extends XmapDisplayer {
         $this->live_site = substr_replace(JURI::root(), "", -1, 1);
 
         $user = JFactory::getUser();
-        $this->_isAdmin = JFactory::getUser()->authorise('core.admin', 'com_xmap');
     }
 
     /** 

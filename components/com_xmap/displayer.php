@@ -53,7 +53,7 @@ class XmapDisplayer {
         $this->sitemap	= $sitemap;
         $this->isNews	= false;
         $this->count	= 0;
-        $this->_isAdmin	= in_array(8,$groups);  // TODO: Change to use ACLs
+        $this->_isAdmin = JFactory::getUser()->authorise('core.admin', 'com_xmap');
     }
 
     public function printNode( &$node ) {
