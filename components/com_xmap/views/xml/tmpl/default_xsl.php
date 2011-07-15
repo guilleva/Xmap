@@ -307,8 +307,10 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
     <td>Priority</td>
   </tr>
 <xsl:for-each select="xna:urlset/xna:url">
+<?php if ($this->canEdit): ?>
      <xsl:variable name="UID"><xsl:value-of select="xna:uid"/></xsl:variable>
      <xsl:variable name="ItemID"><xsl:value-of select="xna:itemid"/></xsl:variable>
+<?php endif; ?>
 <tr>
 <td><xsl:variable name="sitemapURL"><xsl:value-of select="xna:loc"/></xsl:variable>
     <a href="{$sitemapURL}" target="_blank" ref="nofollow"><xsl:value-of select="$sitemapURL"></xsl:value-of></a></td>
