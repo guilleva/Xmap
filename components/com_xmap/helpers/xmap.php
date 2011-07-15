@@ -120,7 +120,7 @@ class XmapHelper
         $query = $db->getQuery(true);
         $query->select('*');
         $query->from('#__extensions AS n');
-        $query->where('n.type = \'xmap_ext\'');
+        $query->where('n.folder = \'xmap\'');
         $query->where('n.enabled = 1');
 
         // Get the list of menu items.
@@ -128,8 +128,7 @@ class XmapHelper
         $extensions = $db->loadObjectList('element');
 
         foreach ($extensions as $element => $extension) {
-            $element = preg_replace('/^xmap_/', '', $element);
-            require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'extensions' . DS . $extension->folder . DS . $element . '.php');
+            require_once(JPATH_PLUGIN . DS . $extension->folder . DS . $element. DS. $element . '.php');
             //$xmlPath = JPATH_COMPONENT_ADMINISTRATOR . DS . 'extensions' . DS . $extension->folder . DS . $element . '.xml';
             //$params = new JParameter($extension->params, $xmlPath);
             $params = new JParameter($extension->params);
