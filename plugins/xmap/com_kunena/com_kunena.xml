@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id: com_kunena.xml 57 2009-10-28 03:16:48Z guilleva $ -->
 <extension type="plugin"group="xmap" version="1.6">
     <name>Xmap - Kunena Plugin</name>
