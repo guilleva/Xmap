@@ -1,10 +1,9 @@
 <?php
-
 /**
- * @version		 $Id$
- * @copyright		Copyright (C) 2005 - 2009 Joomla! Vargas. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
- * @author		Guillermo Vargas (guille@vargas.co.cr)
+ * @version         $Id$
+ * @copyright        Copyright (C) 2005 - 2009 Joomla! Vargas. All rights reserved.
+ * @license        GNU General Public License version 2 or later; see LICENSE.txt
+ * @author        Guillermo Vargas (guille@vargas.co.cr)
  */
 // No direct access
 defined('_JEXEC') or die;
@@ -27,7 +26,6 @@ class XmapXmlDisplayer extends XmapDisplayer
      */
     var $view = 'xml';
 
-
     /**
      *
      * @var int Indicates if this is a google news sitemap or not
@@ -47,6 +45,9 @@ class XmapXmlDisplayer extends XmapDisplayer
      */
     function printNode($node)
     {
+        if ($this->isExcluded($node->id,$node->uid)) {
+            return FALSE;
+        }
 
         if ($this->isNews && (!isset($node->newsItem) || !$node->newsItem)) {
             return true;
