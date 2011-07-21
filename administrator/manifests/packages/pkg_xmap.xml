@@ -12,5 +12,6 @@
     <file type="plugin" id="com_content" group="xmap">plg_com_content.zip</file>
     <file type="plugin" id="com_kunena" group="xmap">plg_com_kunena.zip</file>
     <file type="plugin" id="com_sobipro" group="xmap">plg_com_sobipro.zip</file>
+    <file type="plugin" id="com_mtree" group="xmap">plg_com_mtree.zip</file>
   </files>
 </extension>
