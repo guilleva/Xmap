@@ -100,4 +100,22 @@ class XmapModelSitemaps extends JModelList
         return $query;
     }
 
+    public function getExtensionsMessage()
+    {
+        $db = JFactory::getDbo();
+        $db->setQuery('SELECT e.* from `#__extensions` e INNER JOIN `#__extensions` p ON e.element=p.element and p.enabled=0 and p.type=\'plugin\' and p.folder=\'xmap\' where e.type=\'component\' and e.enabled=1');
+        $extensions = $db->loadObjectList();
+        if ( count($extensions) ) {
+            $sep = $extensionsNameList = '';
+            foreach ($extensions as $extension) {
+                $extensionsNameList .= "$sep$extension->element";
+                $sep = ', ';
+            }
+
+            return JText::sprintf('XMAP_MESSAGE_EXTENSIONS_DISABLED',$extensionsNameList);
+        } else {
+            return "";
+        }
+    }
+
 }
