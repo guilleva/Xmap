@@ -145,7 +145,7 @@ class xmap_com_kunena {
             $node->name = $cat->cat_title;
             $node->priority = $params['cat_priority'];
             $node->changefreq = $params['cat_changefreq'];
-            $node->link = 'index.php?option=com_kunena&func=showcat&catid=' . $cat->cat_id;
+            $node->link = 'index.php?option=com_kunena&func=showcat&catid=' . $cat->cat_id.'&Itemid='.$parent->id;
             $node->expandible = true;
             if ($xmap->printNode($node) !== FALSE) {
                 xmap_com_kunena::getCategoryTree($xmap, $parent, $params, $cat->cat_id);
@@ -182,7 +182,7 @@ class xmap_com_kunena {
                 $node->priority = $params['topic_priority'];
                 $node->changefreq = $params['topic_changefreq'];
                 $node->modified = intval($forum->modified);
-                $node->link = 'index.php?option=com_kunena&func=view&catid=' . $forum->cat_id.'&id=' . $forum->id;
+                $node->link = 'index.php?option=com_kunena&func=view&catid=' . $forum->cat_id.'&id=' . $forum->id.'&Itemid='.$parent->id;
                 $node->expandible = false;
                 if ($xmap->printNode($node) !== FALSE) {
                     if ($params['include_pagination'] && $forum->msgcount > self::$config->messages_per_page ){
