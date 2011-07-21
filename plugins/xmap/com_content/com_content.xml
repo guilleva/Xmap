@@ -3,7 +3,7 @@
 <extension type="plugin" group="xmap" version="1.6">
     <name>Xmap - Content Plugin</name>
     <author>Guillermo Vargas</author>
-    <creationDate>26/01/2011</creationDate>
+    <creationDate>01/26/2011</creationDate>
     <copyright>GNU GPL</copyright>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
     <authorEmail>guille@vargas.co.cr</authorEmail>
@@ -12,6 +12,7 @@
     <description>Add support for articles and categories on Joomla 1.6 or newer</description>
     <files>
         <filename plugin="com_content">com_content.php</filename>
+        <filename>index.html</filename>
     </files>
 
     <languages folder="language">

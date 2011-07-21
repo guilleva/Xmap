@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- $Id$ -->
+<extension type="plugin" group="xmap" version="1.6">
+    <name>Xmap - Mosets Tree Plugin</name>
+    <author>Guillermo Vargas</author>
+    <creationDate>07/20/2011</creationDate>
+    <copyright>GNU GPL</copyright>
+    <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+    <authorEmail>guille@vargas.co.cr</authorEmail>
+    <authorUrl>joomla.vargas.co.cr</authorUrl>
+    <version>2.0</version>
+    <description>Add support for Mosets Tree categories and listings</description>
+    <files>
+        <filename plugin="com_mtree">com_mtree.php</filename>
+        <filename>index.html</filename>
+    </files>
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field name="cats_order" type="list" default="cat_name" label="Categories order" description="In which order do you want the categories listed on your sitemap?">
+                    <option value="ordering">Default ordering</option>
+                    <option value="cat_name">Category Name</option>
+                    <option value="cat_created">Category creation date</option>
+                </field>
+                <field name="include_links" type="list" default="1" label="Show Listings" description="Should we include links into the sitemap?">
+                    <option value="0">Never</option>
+                    <option value="1">Always</option>
+                    <option value="2">In XML Sitemap Only</option>
+                    <option value="3">In Site Sitemap Only</option>
+                </field>
+                <field name="links_order" type="list" default="ordering" label="Listings order" description="In which order do you want the listings?">
+                    <option value="ordering">Default ordering</option>
+                    <option value="link_name">Listing Name</option>
+                    <option value="link_created">Listing creation date</option>
+                    <option value="link_modified">Listing modified date</option>
+                    <option value="link_hits">Number hits</option>
+                </field>
+                <field name="max_links" type="text" default="" label="Max links" description="Max number of links per category to include on sitemap (Leave empty for no limit)" />
+                <field name="max_age" type="text" default="" label="Newest than" description="Only show links newest than this number of days (Leave it blank to ignore this option)" />
+            </fieldset>
+            <fieldset name="xml">
+                <field name="cat_priority" type="list" default="0.5" label="Category Priority" description="Set the priority for the categories">
+                    <option value="-1">Use Parent Menu Settings</option>
+                    <option value="0.0">0.0</option>
+                    <option value="0.1">0.1</option>
+                    <option value="0.2">0.2</option>
+                    <option value="0.3">0.3</option>
+                    <option value="0.4">0.4</option>
+                    <option value="0.5">0.5</option>
+                    <option value="0.6">0.6</option>
+                    <option value="0.7">0.7</option>
+                    <option value="0.8">0.8</option>
+                    <option value="0.9">0.9</option>
+                    <option value="1">1</option>
+                </field>
+                <field name="cat_changefreq" type="list" default="weekly" label="Category Change frequency" description="Set the chage frequency for the categories">
+                    <option value="-1">Use Parent Menu Settings</option>
+                    <option value="always">Always</option>
+                    <option value="hourly">Hourly</option>
+                    <option value="daily">Daily</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly">Monthly</option>
+                    <option value="yearly">Yearly</option>
+                    <option value="never">Never</option>
+                </field>
+                <field name="link_priority" type="list" default="0.5" label="Listing Priority" description="Set the priority for the links">
+                    <option value="-1">Use Parent Menu Settings</option>
+                    <option value="0.0">0.0</option>
+                    <option value="0.1">0.1</option>
+                    <option value="0.2">0.2</option>
+                    <option value="0.3">0.3</option>
+                    <option value="0.4">0.4</option>
+                    <option value="0.5">0.5</option>
+                    <option value="0.6">0.6</option>
+                    <option value="0.7">0.7</option>
+                    <option value="0.8">0.8</option>
+                    <option value="0.9">0.9</option>
+                    <option value="1">1</option>
+                </field>
+                <field name="link_changefreq" type="list" default="weekly" label="Listing Change frequency" description="Set the chage frequency for the links">
+                    <option value="-1">Use Parent Menu Settings</option>
+                    <option value="always">Always</option>
+                    <option value="hourly">Hourly</option>
+                    <option value="daily">Daily</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly">Monthly</option>
+                    <option value="yearly">Yearly</option>
+                    <option value="never">Never</option>
+                </field>
+            </fieldset>
+        </fields>
+     </config>
+</extension>
