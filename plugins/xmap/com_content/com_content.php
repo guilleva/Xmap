@@ -76,6 +76,9 @@ class xmap_com_content
                     $node->modified = ($row->modified? $row->modified : $row->created);
                 }
                 break;
+            case 'archive':
+                $node->expandible = true;
+                break;
             case 'featured':
                 $node->uid = 'com_contentfeatured';
                 $node->expandible = false;
@@ -182,7 +185,7 @@ class xmap_com_content
 
         // Define the language filter condition for the query
         $params['language_filter'] = $app->getLanguageFilter();
-        
+
         switch ($view) {
             case 'category':
                 if (!$id) {
@@ -200,6 +203,11 @@ class xmap_com_content
             case 'categories':
                 if ($params['expand_categories']) {
                     $result = self::expandCategory($xmap, $parent, 1, $params, $parent->id);
+                }
+                break;
+            case 'archive':
+                if ($params['expand_featured']) {
+                    $result = self::includeCategoryContent($xmap, $parent, 'archived', $params,$parent->id);
                 }
                 break;
             case 'article':
@@ -310,7 +318,10 @@ class xmap_com_content
         $where = array('a.state = 1');
         if ($catid=='featured') {
             $where[] = 'a.featured=1';
-        } else {
+        } elseif ($catid=='archived') {
+            $where = array('a.state=2');
+            $params['max_art'] = $parent->params->get('display_num',0);
+        } elseif(is_numeric($catid)) {
             $where[] = 'a.catid='.(int) $catid;
         }
 
@@ -334,7 +345,7 @@ class xmap_com_content
                . (($params['add_images'] || $params['add_pagebreaks']) ? ',a.introtext, a.fulltext ' : '')
                . 'FROM #__content AS a '
                . ($catid =='featured'? 'LEFT JOIN #__content_frontpage AS fp ON a.id = fp.content_id ' : '')
-               . 'WHERE ' . implode(' AND ',$where) . ' AND a.state = 1 AND '
+               . 'WHERE ' . implode(' AND ',$where) . ' AND '
                . '      (a.publish_up = ' . $params['nullDate']
                . ' OR a.publish_up <= ' . $params['nowDate'] . ') AND '
                . '      (a.publish_down = ' . $params['nullDate']
@@ -343,7 +354,7 @@ class xmap_com_content
                . ( $params['max_art'] ? "\n LIMIT {$params['max_art']}" : '');
 
         $db->setQuery($query);
-        //echo nl2br(str_replace('#__','jos_',$db->getQuery()));exit;
+        //echo nl2br(str_replace('#__','jos_',$db->getQuery()));
         $items = $db->loadObjectList();
 
         if (count($items) > 0) {
@@ -416,7 +427,7 @@ class xmap_com_content
      */
     static function buildContentOrderBy(&$params,$parentId,$itemid)
     {
-        $app	= JFactory::getApplication('site');
+        $app    = JFactory::getApplication('site');
 
         // Case when the child gets a different menu itemid than it's parent
         if ($parentId != $itemid) {
@@ -437,11 +448,11 @@ class xmap_com_content
             $orderby .= $filter_order . ' ' . $filter_order_Dir . ', ';
         }
 
-        $articleOrderby		= $menuParams->get('orderby_sec', 'rdate');
-        $articleOrderDate	= $menuParams->get('order_date');
-        //$categoryOrderby	= $menuParams->def('orderby_pri', '');
-        $secondary		= ContentHelperQuery::orderbySecondary($articleOrderby, $articleOrderDate) . ', ';
-        //$primary		= ContentHelperQuery::orderbyPrimary($categoryOrderby);
+        $articleOrderby     = $menuParams->get('orderby_sec', 'rdate');
+        $articleOrderDate   = $menuParams->get('order_date');
+        //$categoryOrderby  = $menuParams->def('orderby_pri', '');
+        $secondary      = ContentHelperQuery::orderbySecondary($articleOrderby, $articleOrderDate) . ', ';
+        //$primary      = ContentHelperQuery::orderbyPrimary($categoryOrderby);
 
         //$orderby .= $primary . ' ' . $secondary . ' a.created ';
         $orderby .=  $secondary . ' a.created ';
