@@ -228,4 +228,24 @@ class XmapModelSitemap extends JModelAdmin
         $condition = array();
         return $condition;
     }
+
+    function setDefault($id)
+    {
+        $table        = $this->getTable();
+        if ($table->load($id)) {
+            $query = 'UPDATE `#__xmap_sitemap` set is_default=0 where id <> '.$table->id;
+            $this->_db->setQuery($query);
+            if (!$this->_db->query()) {
+                $this->setError($table->_db->getErrorMsg());
+                return false;
+            }
+            $table->is_default = 1;
+            $table->store();
+            
+            // Clean the cache.
+            $cache = JFactory::getCache('com_xmap');
+            $cache->clean();
+            return true;
+        }
+    }
 }

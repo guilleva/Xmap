@@ -9,105 +9,30 @@
 // no direct access
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.controller');
+jimport('joomla.application.component.controlleradmin');
 
 /**
  * @package	     Xmap
  * @subpackage  com_xmap
  * @since	       2.0
  */
-class XmapControllerSitemaps extends JController
+class XmapControllerSitemaps extends JControllerAdmin
 {
+	
+	protected $text_prefix = 'COM_XMAP_SITEMAPS';
+	
 	/**
 	 * Constructor
 	 */
-	function __construct()
+	public function __construct($config = array())
 	{
-		parent::__construct();
+		parent::__construct($config);
 
 		$this->registerTask('unpublish',	'publish');
 		$this->registerTask('trash',	    'publish');
-		$this->registerTask('unfeatured',       'featured');
+		$this->registerTask('unfeatured',   'featured');
 	}
 
-	/**
-	 * Display the view
-	 */
-	function display()
-	{
-	}
-		
-	/**
-	 * Proxy for getModel
-	 */
-	function getModel($name = 'Sitemap', $prefix = 'XmapModel')
-	{
-		return parent::getModel($name, $prefix, array('ignore_request' => true));
-	}
-		
-	/**
-	 * Removes one or more sitemaps
-		 *
-	 * @return      void
-	 * @since       2.0
-	 */
-	function delete()
-	{
-		// Check for request forgeries
-		JRequest::checkToken() or die('Invalid Token');
-
-		// Get items to remove from the request.
-		$ids    = JRequest::getVar('cid', array(), '', 'array');
-
-		if (empty($ids)) {
-			JError::raiseWarning(500, JText::_('Select an item to delete'));
-		}
-		else {
-			// Get the model.
-			$model = $this->getModel();
-
-			// Remove the items.
-			if (!$model->delete($ids)) {
-				JError::raiseWarning(500, $model->getError());
-			}
-		}
-
-		$this->setRedirect('index.php?option=com_xmap&view=sitemaps');
-	}
-
-	/**
-	 * Method to publish a list of sitemaps.
-	 *
-	 * @return      void
-	 * @since       2.0
-	 */
-	function publish()
-	{
-		// Check for request forgeries
-		JRequest::checkToken() or die('Invalid Token');
-
-		// Get items to publish from the request.
-		$ids    = JRequest::getVar('cid', array(), '', 'array');
-		$values = array('publish' => 1, 'unpublish' => 0, 'trash' => -1);
-		$task   = $this->getTask();
-		$value  = JArrayHelper::getValue($values, $task, 0, 'int');
-
-		if (empty($ids)) {
-			JError::raiseWarning(500, JText::_('Select an item to publish'));
-		}
-		else
-		{
-			// Get the model.
-			$model  = $this->getModel();
-
-			// Publish the items.
-			if (!$model->publish($ids, $value)) {
-				JError::raiseWarning(500, $model->getError());
-			}
-		}
-
-		$this->setRedirect('index.php?option=com_xmap&view=sitemaps');
-	}
 		
 	/**
 	 * Method to toggle the default sitemap.
@@ -139,5 +64,21 @@ class XmapControllerSitemaps extends JController
 		}
 
 		$this->setRedirect('index.php?option=com_xmap&view=sitemaps');
+	}
+	
+	/**
+	 * Proxy for getModel.
+	 *
+	 * @param	string	$name	The name of the model.
+	 * @param	string	$prefix	The prefix for the PHP class name.
+	 *
+	 * @return	JModel
+	 * @since	2.0
+	 */
+	public function getModel($name = 'Sitemap', $prefix = 'XmapModel', $config = array('ignore_request' => true))
+	{
+		$model = parent::getModel($name, $prefix, $config);
+
+		return $model;
 	}
 }
