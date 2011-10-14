@@ -9,7 +9,7 @@
 
 defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );
 
-/** Adds support for Sobi2 categories to Xmap */
+/** Adds support for SobiPro categories to Xmap */
 class xmap_com_sobipro {
 
     static $sectionConfig = array();
@@ -115,7 +115,7 @@ class xmap_com_sobipro {
         xmap_com_sobipro::getCategoryTree($xmap, $parent, $sid, $params);
     }
 
-    /** SOBI2 support */
+    /** SobiPro support */
     function getCategoryTree( &$xmap, &$parent, $sid, &$params ) {
         $database =& JFactory::getDBO();
 
@@ -207,6 +207,8 @@ class xmap_com_sobipro {
         define( 'SOBI_TESTS', false );
         $ver = new JVersion();
         $ver = str_replace( '.', null, $ver->RELEASE );
+        // added by Pierre Burri-Wittke globeall.de
+        if ($ver > '15') { $ver = '16'; }
         define( 'SOBI_CMS', 'joomla'. $ver );
         define( 'SOBIPRO', true );
         define( 'SOBI_TASK', 'task' );
@@ -225,6 +227,8 @@ class xmap_com_sobipro {
         SPLoader::loadClass( 'base.object' );
         SPLoader::loadClass( 'base.factory' );
         SPLoader::loadClass( 'base.mainframe' );
+        // added by Pierre Burri-Wittke globeall.de
+        SPLoader::loadClass( 'base.const' );
         SPLoader::loadClass( 'cms.base.mainframe' );
         SPLoader::loadClass( 'cms.base.lang' );
         return true;
