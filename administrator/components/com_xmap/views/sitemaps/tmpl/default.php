@@ -125,9 +125,10 @@ $baseUrl = JUri::root();
 				<td>
 					<a href="<?php echo JRoute::_('index.php?option=com_xmap&task=sitemap.edit&id='.$item->id);?>">
 						<?php echo $this->escape($item->title); ?></a>
-                                        <?php if ($item->state): ?>
-                                    <small>[<a href="<?php echo $baseUrl. 'index.php?option=com_xmap&amp;view=xml&id='.$item->id; ?>" target="_blank" title="<?php echo JText::_('XMAP_XML_LINk_TOOLTIP',true); ?>"><?php echo JText::_('XMAP_XML_LINk'); ?></a>]</small>
-                                        <?php endif; ?>
+                            <?php if ($item->state): ?>
+                                <small>[<a href="<?php echo $baseUrl. 'index.php?option=com_xmap&amp;view=xml&id='.$item->id; ?>" target="_blank" title="<?php echo JText::_('XMAP_XML_LINK_TOOLTIP',true); ?>"><?php echo JText::_('XMAP_XML_LINK'); ?></a>]</small>
+                                <small>[<a href="<?php echo $baseUrl. 'index.php?option=com_xmap&amp;view=xml&news=1&id='.$item->id; ?>" target="_blank" title="<?php echo JText::_('XMAP_NEWS_LINK_TOOLTIP',true); ?>"><?php echo JText::_('XMAP_NEWS_LINK'); ?></a>]</small>
+                            <?php endif; ?>
 					<br /><small>
 						(<?php echo $this->escape($item->alias); ?>)</small>
 				</td>
