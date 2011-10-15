@@ -103,7 +103,9 @@ class xmap_com_kunena {
 
         if ($include_topics) {
             $ordering = JArrayHelper::getValue($params, 'topics_order', 'ordering');
-            $params['topics_order'] = 'modified desc';
+            if ( !in_array($ordering,array('id', 'ordering','time','subject','hits')) )
+                $ordering = 'ordering';
+            $params['topics_order'] = 't.`'.$ordering.'`';
             $params['include_pagination'] = ($xmap->view == 'xml');
 
             $params['limit'] = '';
@@ -113,9 +115,12 @@ class xmap_com_kunena {
                 $params['limit'] = ' LIMIT ' . $limit;
 
             $days = JArrayHelper::getValue($params, 'max_age', '');
+            $params['days'] = false;
             if (intval($days))
-                $params['days'] = ' AND time >=' . ($xmap->now - ($days * 86400)) . " ";
+                $params['days'] =  ($xmap->now - (intval($days) * 86400));
         }
+        
+        $params['table_prefix'] = xmap_com_kunena::getTablePrefix();
 
         xmap_com_kunena::getCategoryTree($xmap, $parent, $params, $catid);
     }
@@ -126,68 +131,92 @@ class xmap_com_kunena {
     {
         $database = & JFactory::getDBO();
 
-        $kunenaSession = KunenaFactory::getSession();
-        $kunenaSession->updateAllowedForums();
-        $catlist=$kunenaSession->allowed;
+        // Load categories
+        if (self::getKunenaMajorVersion() >= '2.0') {
+            // Kunena 2.0+
+            $catlink = 'index.php?option=com_kunena&amp;view=category&amp;catid=%s&Itemid='.$parent->id;
+            $toplink = 'index.php?option=com_kunena&amp;view=topic&amp;catid=%s&amp;id=%s&Itemid='.$parent->id;
 
-        $list = array();
-        $query = "SELECT id as cat_id, name as cat_title, ordering FROM #__kunena_categories WHERE parent=$parentCat AND published=1 and id in ({$catlist}) ORDER BY name";
-        $database->setQuery($query);
-        $cats = $database->loadObjectList();
+            kimport('kunena.forum.category.helper');
+            $categories = KunenaForumCategoryHelper::getChildren($parentCat);
+        } else {
+            $catlink = 'index.php?option=com_kunena&amp;func=showcat&amp;catid=%s&Itemid='.$parent->id;
+            $toplink = 'index.php?option=com_kunena&amp;func=view&amp;catid=%s&amp;id=%s&Itemid='.$parent->id;
+
+            if (self::getKunenaMajorVersion() >= '1.6') {
+                // Kunena 1.6+
+                kimport('session');
+                $session = KunenaFactory::getSession();
+                $session->updateAllowedForums();
+                $allowed = $session->allowed;
+                $query = "SELECT id, name FROM `#__kunena_categories` WHERE parent={$parentCat} AND id IN ({$allowed}) ORDER BY ordering";
+            } else {
+                // Kunena 1.0+
+                $query = "SELECT id, name FROM `{$params['table_prefix']}_categories` WHERE parent={$parentCat} AND published=1 AND pub_access=0 ORDER BY ordering";
+            }
+            $database->setQuery($query);
+            $categories = $database->loadObjectList();
+        }
 
         /* get list of categories */
         $xmap->changeLevel(1);
-        foreach ($cats as $cat) {
+        foreach ($categories as $cat) {
             $node = new stdclass;
             $node->id = $parent->id;
             $node->browserNav = $parent->browserNav;
-            $node->uid = $parent->uid . 'c' . $cat->cat_id;
-            $node->name = $cat->cat_title;
+            $node->uid = 'com_kunenac' . $cat->id;
+            $node->name = $cat->name;
             $node->priority = $params['cat_priority'];
             $node->changefreq = $params['cat_changefreq'];
-            $node->link = 'index.php?option=com_kunena&func=showcat&catid=' . $cat->cat_id.'&Itemid='.$parent->id;
+            $node->link = sprintf($catlink, $cat->id);
             $node->expandible = true;
             if ($xmap->printNode($node) !== FALSE) {
-                xmap_com_kunena::getCategoryTree($xmap, $parent, $params, $cat->cat_id);
+                xmap_com_kunena::getCategoryTree($xmap, $parent, $params, $cat->id);
             }
         }
 
         if ($params['include_topics']) {
-            $access = KunenaFactory::getAccessControl();
-            $hold = $access->getAllowedHold(self::$profile, $parentCat);
+            if (self::getKunenaMajorVersion() >= '2.0') {
+                // Kunena 2.0+
+                kimport('kunena.forum.topic.helper');
+                // TODO: orderby parameter is missing:
+                $topics = KunenaForumtopicHelper::getLatestTopics($parentCat, 0, $params['limit'], array('starttime', $params['days']));
+            } else {
+                $access = KunenaFactory::getAccessControl();
+                $hold = $access->getAllowedHold(self::$profile, $parentCat);
+                // Kunena 1.0+
+                $query = "SELECT t.id, t.catid, t.subject, max(m.time) as time, count(m.id) as msgcount 
+                    FROM {$params['table_prefix']}_messages t
+                    INNER JOIN {$params['table_prefix']}_messages AS m ON t.id = m.thread
+                    WHERE t.catid=$parentCat AND t.parent=0
+                        AND t.hold in ({$hold})
+                    GROUP BY m.`thread`
+                    ORDER BY {$params['topics_order']} DESC";
+                if ($params['days']) {
+                    $query = "SELECT * FROM ($query) as topics WHERE time >= {$params['days']}";
+                }
+                #echo str_replace('#__','mgbj2_',$query);
+                $database->setQuery($query, 0, $params['limit']);
+                $topics = $database->loadObjectList();
+            }
 
-            $query = "SELECT t.id, t.catid as cat_id, t.subject as forum_name, max(m.time) as modified, count(m.id) as msgcount " .
-                    "FROM #__kunena_messages AS t " .
-                    "INNER JOIN #__kunena_messages AS m ON t.id = m.thread " .
-                    "WHERE t.catid=$parentCat " .
-                    "AND t.hold in ({$hold}) " .
-                    "AND t.parent=0 " .
-                    $params['days'] .
-                    "GROUP BY m.`thread`" .
-                    "ORDER BY " . $params['topics_order'] .
-                    $params['limit'];
-
-            $database->setQuery($query);
-            #echo str_replace('#__','jos_',$database->getQuery());
-
-            $forums = $database->loadObjectList();
-
-            //get list of forums
-            foreach ($forums as $forum) {
+            //get list of topics
+            foreach ($topics as $topic) {
                 $node = new stdclass;
                 $node->id = $parent->id;
                 $node->browserNav = $parent->browserNav;
-                $node->uid = $parent->uid . 't' . $forum->id;
-                $node->name = $forum->forum_name;
+                $node->uid = 'com_kunenat' . $topic->id;
+                $node->name = $topic->subject;
                 $node->priority = $params['topic_priority'];
                 $node->changefreq = $params['topic_changefreq'];
-                $node->modified = intval($forum->modified);
-                $node->link = 'index.php?option=com_kunena&func=view&catid=' . $forum->cat_id.'&id=' . $forum->id.'&Itemid='.$parent->id;
+                $node->modified = intval($topic->time);
+                $node->link = sprintf($toplink, $topic->catid, $topic->id);
                 $node->expandible = false;
                 if ($xmap->printNode($node) !== FALSE) {
-                    if ($params['include_pagination'] && $forum->msgcount > self::$config->messages_per_page ){
+                    // Pagination will not work with K2.0, revisit this when that version is out and stable
+                    if ($params['include_pagination'] && isset($topic->msgcount) && $topic->msgcount > self::$config->messages_per_page ){
                         $msgPerPage = self::$config->messages_per_page;
-                        $threadPages = ceil ( $forum->msgcount / $msgPerPage );
+                        $threadPages = ceil ( $topic->msgcount / $msgPerPage );
                         for ($i=2;$i<=$threadPages;$i++) {
                             $subnode = new stdclass;
                             $subnode->id = $node->id;
@@ -226,6 +255,35 @@ class xmap_com_kunena {
             require_once ($kunena_api);
         }
         return true;
+    }
+    
+    
+    /**
+    * Based on Matias' version (Thanks)
+    * See: http://docs.kunena.org/index.php/Developing_Kunena_Router
+    */
+    function getKunenaMajorVersion() {
+        static $version;
+        if (!$version) {
+            if (class_exists('KunenaForum')) {
+                $version = KunenaForum::versionMajor();
+            } elseif (class_exists('Kunena')) {
+                $version = substr(Kunena::version(), 0, 3);
+            } elseif (is_file(JPATH_ROOT.'/components/com_kunena/lib/kunena.defines.php')) {
+                $version = '1.5';
+            } elseif (is_file(JPATH_ROOT.'/components/com_kunena/lib/kunena.version.php')) {
+                $version = '1.0';
+            }
+        }
+        return $version;
+    }
+    
+    function getTablePrefix() {
+        $version = self::getKunenaMajorVersion();
+        if ($version <= 1.5) {
+            return '#__fb';
+        }
+        return '#__kunena';
     }
 
 }
