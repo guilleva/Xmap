@@ -8,7 +8,7 @@
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
     <authorEmail>guille@vargas.co.cr</authorEmail>
     <authorUrl>joomla.vargas.co.cr</authorUrl>
-    <version>2.0.1</version>
+    <version>2.0.2</version>
     <description>Add support for articles and categories on Joomla 1.6 or newer</description>
     <files>
         <filename plugin="com_content">com_content.php</filename>
@@ -33,6 +33,12 @@
                     <option value="3">XMAP_OPTION_HTML_ONLY</option>
                 </field>
                 <field name="expand_featured" type="list" default="1" label="XMAP_SETTING_EXPAND_FEATURED" description="XMAP_SETTING_EXPAND_FEATURED_DESC">
+                    <option value="0">XMAP_OPTION_NEVER</option>
+                    <option value="1">XMAP_OPTION_ALWAYS</option>
+                    <option value="2">XMAP_OPTION_XML_ONLY</option>
+                    <option value="3">XMAP_OPTION_HTML_ONLY</option>
+                </field>
+                <field name="include_archived" type="list" default="2" label="XMAP_SETTING_INCLUDE_ARCHIVED" description="XMAP_SETTING_INCLUDE_ARCHIVED_DESC">
                     <option value="0">XMAP_OPTION_NEVER</option>
                     <option value="1">XMAP_OPTION_ALWAYS</option>
                     <option value="2">XMAP_OPTION_XML_ONLY</option>

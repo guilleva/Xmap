@@ -125,6 +125,14 @@ class xmap_com_content
                 || ( $expand_featured == 3 && $xmap->view == 'html')
                 || $xmap->view == 'navigator');
         $params['expand_featured'] = $expand_featured;
+        
+        //----- Set expand_featured param
+        $include_archived = JArrayHelper::getValue($params, 'include_archived', 2);
+        $include_archived = ( $include_archived == 1
+                || ( $include_archived == 2 && $xmap->view == 'xml')
+                || ( $include_archived == 3 && $xmap->view == 'html')
+                || $xmap->view == 'navigator');
+        $params['include_archived'] = $include_archived;
 
         //----- Set show_unauth param
         $show_unauth = JArrayHelper::getValue($params, 'show_unauth', 1);
@@ -315,12 +323,16 @@ class xmap_com_content
             //$orderby = self::orderby_sec($orderby);
         }
 
-        $where = array('a.state = 1');
+        if ($params['include_archived']) {
+            $where = array('(a.state = 1 || a.state = 2)');
+        } else {
+            $where = array('a.state = 1');
+        }
+        
         if ($catid=='featured') {
             $where[] = 'a.featured=1';
         } elseif ($catid=='archived') {
             $where = array('a.state=2');
-            $params['max_art'] = $parent->params->get('display_num',0);
         } elseif(is_numeric($catid)) {
             $where[] = 'a.catid='.(int) $catid;
         }
@@ -354,7 +366,7 @@ class xmap_com_content
                . ( $params['max_art'] ? "\n LIMIT {$params['max_art']}" : '');
 
         $db->setQuery($query);
-        //echo nl2br(str_replace('#__','jos_',$db->getQuery()));
+        //echo nl2br(str_replace('#__','mgbj2_',$db->getQuery()));
         $items = $db->loadObjectList();
 
         if (count($items) > 0) {
