@@ -86,7 +86,7 @@ class XmapXmlDisplayer extends XmapDisplayer
 
             echo '<url>' . "\n";
             echo '<loc>', $link, '</loc>' . "\n";
-            if ($this->_isAdmin) {
+            if ($this->canEdit) {
                 echo '<uid>', $node->uid, '</uid>' . "\n";
                 echo '<itemid>', $node->id, '</itemid>' . "\n";
             }

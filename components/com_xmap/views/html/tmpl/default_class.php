@@ -20,7 +20,6 @@ class XmapHtmlDisplayer extends XmapDisplayer {
     var $_closeItem = '';
     var $_childs;
     var $_width;
-    var $_isAdmin = 0;
     var $live_site = 0;
 
     function __construct ($config, $sitemap) {
@@ -45,7 +44,7 @@ class XmapHtmlDisplayer extends XmapDisplayer {
 
         $out = '';
 
-        if ($this->isExcluded($node->id,$node->uid) && !$this->_isAdmin) {
+        if ($this->isExcluded($node->id,$node->uid) && !$this->canEdit) {
             return FALSE;
         }
 
@@ -101,7 +100,7 @@ class XmapHtmlDisplayer extends XmapDisplayer {
         $this->_childs[$this->level]++;
         echo $out;
 
-        if ($this->_isAdmin) {
+        if ($this->canEdit) {
             if ( $this->isExcluded($node->id,$node->uid) ) {
                 $img = '<img src="'.$this->live_site.'/components/com_xmap/assets/images/unpublished.png" alt="v" title="'.JText::_('JUNPUBLISHED').'">';
                 $class= 'xmapexclon';

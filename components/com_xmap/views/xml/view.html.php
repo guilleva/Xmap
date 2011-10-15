@@ -29,6 +29,7 @@ class XmapViewXml extends JView
         // Initialise variables.
         $app = JFactory::getApplication();
         $this->user = JFactory::getUser();
+        $isNewsSitemap = JRequest::getInt('news',0);
         // $dispatcher	= &JDispatcher::getInstance();
 
 
@@ -36,7 +37,10 @@ class XmapViewXml extends JView
 
         $this->item = $this->get('Item');
         $this->state = $this->get('State');
-	$this->canEdit = JFactory::getUser()->authorise('core.admin', 'com_xmap');
+	    $this->canEdit = JFactory::getUser()->authorise('core.admin', 'com_xmap');
+	    
+	    // For now, news sitemaps are not editable
+	    $this->canEdit = $this->canEdit && !$isNewsSitemap;
 
         if ($layout == 'xsl') {
             return $this->displayXSL($layout);
@@ -87,6 +91,9 @@ class XmapViewXml extends JView
         $this->displayer = new XmapXmlDisplayer($params, $this->item);
 
         $this->displayer->setJView($this);
+        
+        $this->displayer->isNews = $isNewsSitemap;
+        $this->displayer->canEdit = $this->canEdit;
 
 
         $doCompression = ($this->item->params->get('compress_xml') && !ini_get('zlib.output_compression') && ini_get('output_handler') != 'ob_gzhandler');

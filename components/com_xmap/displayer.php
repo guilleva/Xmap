@@ -36,7 +36,9 @@ class XmapDisplayer {
      * @var string  The current value for the request var "view" (eg. html, xml)
      */
     public $view;
-
+    
+    public $canEdit;
+    
     function __construct($config,$sitemap)
     {
         jimport('joomla.utilities.date');
@@ -53,7 +55,7 @@ class XmapDisplayer {
         $this->sitemap	= $sitemap;
         $this->isNews	= false;
         $this->count	= 0;
-        $this->_isAdmin = JFactory::getUser()->authorise('core.admin', 'com_xmap');
+        $this->canEdit  = false;
     }
 
     public function printNode( &$node ) {

@@ -37,6 +37,8 @@ class XmapViewHtml extends JView
         $state = $this->get('State');
         $item = $this->get('Item');
         $items = $this->get('Items');
+        
+        $this->canEdit = JFactory::getUser()->authorise('core.admin', 'com_xmap');
 
         // Check for errors.
         if (count($errors = $this->get('Errors'))) {
@@ -82,6 +84,7 @@ class XmapViewHtml extends JView
         $displayer = new XmapHtmlDisplayer($params, $item);
 
         $displayer->setJView($this);
+        $displayer->canEdit = $this->canEdit;
 
         $this->assignRef('state', $state);
         $this->assignRef('item', $item);

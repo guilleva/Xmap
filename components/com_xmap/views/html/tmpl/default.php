@@ -14,7 +14,7 @@ JHtml::addIncludePath(JPATH_COMPONENT.DS.'helpers');
 // Create shortcut to parameters.
 $params = $this->item->params;
 
-if ($this->displayer->_isAdmin) {
+if ($this->displayer->canEdit) {
 	JHTML::_('behavior.mootools');
 	$live_site = JURI::root();
 	$ajaxurl = "{$live_site}index.php?option=com_xmap&format=json&task=ajax.editElement&action=toggleElement&".JUtility::getToken().'=1';
