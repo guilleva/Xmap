@@ -19,8 +19,7 @@ $this->isNews = JRequest::getInt('news',0);
 header('Content-type: text/xml; charset=utf-8');
 
 echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
-if (!$this->item->params->get('exclude_xsl') && !$this->displayer->isNews ) {
-    $user = JFactory::getUser();
+if ($this->item->params->get('beautify_xml', 1) == 1) {
     echo '<?xml-stylesheet type="text/xsl" href="'. $live_site.'/index.php?option=com_xmap&amp;view=xml&amp;layout=xsl&amp;tmpl=component&amp;id='.$this->item->id.'"?>'."\n";
 }
 ?>
