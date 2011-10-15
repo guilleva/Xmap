@@ -279,7 +279,7 @@ class xmap_com_content
                 $node->expandible = true;
                 // TODO: Should we include category name or metakey here?
                 // $node->keywords = $item->metakey;
-                $node->newsItem = 1;
+                $node->newsItem = 0;
 
                 // For the google news we should use te publication date instead
                 // the last modification date. See

@@ -37,6 +37,8 @@ class xmap_com_kunena {
 
     function getTree(&$xmap, &$parent, &$params)
     {
+        if (!$xmap->isNews) // This component does not provide news content. don't waste time/resources
+            return false;
 
         // Make sure that we can load the kunena api
         if (!xmap_com_kunena::loadKunenaApi()) {
