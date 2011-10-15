@@ -21,8 +21,8 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 <head>
 <title>XML Sitemap File</title>
 <?php if ($this->canEdit): ?>
-<script src="media/system/js/mootools-core.js" type="text/javascript"></script>
-<script src="media/system/js/mootools-more.js" type="text/javascript"></script>
+<script src="<?php echo JUri::base(); ?>media/system/js/mootools-core.js" type="text/javascript"></script>
+<script src="<?php echo JUri::base(); ?>media/system/js/mootools-more.js" type="text/javascript"></script>
 <?php endif; ?>
 <style type="text/css">
     <![CDATA[
@@ -101,7 +101,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 	}
 	.editable {
 		cursor:pointer;
-		background: url(components/com_xmap/assets/images/arrow.gif) top right no-repeat;
+		background: url(<?php echo JUri::base(); ?>components/com_xmap/assets/images/arrow.gif) top right no-repeat;
 		padding-right:18px;
 		padding-right:18px;
 		border:1px solid #ffffff;
