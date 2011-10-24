@@ -267,6 +267,23 @@
                     value="1">Yes</option>
             </field>
         </fieldset>
+
+        <fieldset name="news" label="XMAP_FIELDSET_NEWS_OPTIONS">
+          <field
+              name="news_publication_name"
+              type="text"
+              default=""
+              label="XMAP_ATTRIBS_NEWS_PUBLICATION_NAME_LABEL"
+              description="XMAP_ATTRIBS_NEWS_PUBLICATION_NAME_DESC"></field>
+<!--
+          <field
+              name="news_posts_keywords"
+              type="text"
+              default=""
+              label="XMAP_ATTRIBS_NEWS_POSTS_KEYWORDS_LABEL"
+              description="XMAP_ATTRIBS_NEWS_POSTS_KEYWORDS_DESC"></field>
+-->
+        </fieldset>
     </fields>
 
 </form>

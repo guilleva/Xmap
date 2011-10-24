@@ -36,6 +36,11 @@ class XmapXmlDisplayer extends XmapDisplayer
     {
         parent::__construct($config, $sitemap);
         $this->uids = array();
+        
+        $this->defaultLanguage = strtolower(JFactory::getLanguage()->getTag());
+        if (preg_match('/^([a-z]+)-.*/',$this->defaultLanguage,$matches) && !in_array(array(' zh-cn',' zh-tw'), $this->defaultLanguage) ) {
+            $this->defaultLanguage = $matches[1];
+        }
     }
 
     /**
@@ -100,14 +105,20 @@ class XmapXmlDisplayer extends XmapDisplayer
                 echo '<priority>', $priority, '</priority>' . "\n";
             } else {
                 if (isset($node->keywords)) {
-                    # $keywords = str_replace(array('&amp;','&'),array('&','&amp;'),$node->keywords);
-                    # $keywords = str_replace('&','&amp;',$node->keywords);
                     $keywords = htmlspecialchars($node->keywords);
                 } else {
                     $keywords = '';
                 }
+                
+                if (!isset($node->language) || $node->language == '*') {
+                    $node->language = $this->defaultLanguage;
+                }
 
                 echo "<news:news>\n";
+                echo '<news:publication>'."\n";
+                echo '  <news:name>'.(htmlspecialchars($this->sitemap->params->get('news_publication_name'))).'</news:name>'."\n";
+                echo '  <news:language>'.$node->language.'</news:language>'."\n";
+                echo '</news:publication>'."\n";
                 echo '<news:publication_date>', $modified, '</news:publication_date>' . "\n";
                 if ($keywords) {
                     echo '<news:keywords>', $keywords, '</news:keywords>' . "\n";

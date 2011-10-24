@@ -353,7 +353,7 @@ class xmap_com_content
 
         $query = 'SELECT a.id, a.title, a.alias, a.title_alias, a.catid, '
                . 'UNIX_TIMESTAMP(a.created) created, UNIX_TIMESTAMP(a.modified) modified'
-               //. ',c.path AS category_route '
+               . ',a.language'
                . (($params['add_images'] || $params['add_pagebreaks']) ? ',a.introtext, a.fulltext ' : '')
                . 'FROM #__content AS a '
                . ($catid =='featured'? 'LEFT JOIN #__content_frontpage AS fp ON a.id = fp.content_id ' : '')
@@ -384,6 +384,7 @@ class xmap_com_content
                 // TODO: Should we include category name or metakey here?
                 // $node->keywords = $item->metakey;
                 $node->newsItem = 1;
+                $node->language = $item->language;
 
                 // For the google news we should use te publication date instead
                 // the last modification date. See
