@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id$
- * @copyright           Copyright (C) 2007 - 2009 Joomla! Vargas. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
- * @author		Guillermo Vargas (guille@vargas.co.cr)
+ * @version       $Id$
+ * @copyright     Copyright (C) 2007 - 2009 Joomla! Vargas. All rights reserved.
+ * @license       GNU General Public License version 2 or later; see LICENSE.txt
+ * @author        Guillermo Vargas (guille@vargas.co.cr)
  */
 // no direct access
 defined('_JEXEC') or die;
@@ -20,41 +20,59 @@ jimport('joomla.database.query');
  */
 class XmapModelSitemaps extends JModelList
 {
-
     /**
-     * Model context string.
+     * Constructor.
      *
-     * @var	 string
+     * @param    array    An optional associative array of configuration settings.
+     * @see        JController
+     * @since    1.6
      */
-    public $_context = 'com_xmap.sitemaps';
+    public function __construct($config = array())
+    {
+        if (empty($config['filter_fields'])) {
+            $config['filter_fields'] = array(
+                'id', 'a.id',
+                'title', 'a.title',
+                'alias', 'a.alias',
+                'checked_out', 'a.checked_out',
+                'checked_out_time', 'a.checked_out_time',
+                'catid', 'a.catid', 'category_title',
+                'state', 'a.state',
+                'access', 'a.access', 'access_level',
+                'created', 'a.created',
+                'created_by', 'a.created_by',
+                'ordering', 'a.ordering',
+                'featured', 'a.featured',
+                'language', 'a.language',
+                'hits', 'a.hits',
+                'publish_up', 'a.publish_up',
+                'publish_down', 'a.publish_down',
+            );
+        }
+
+        parent::__construct($config);
+    }
 
     /**
      * Method to auto-populate the model state.
      *
      * @since       2.0
      */
-    protected function _populateState()
+    protected function populateState($ordering = null, $direction = null)
     {
-        $app = JFactory::getApplication();
+        // Adjust the context to support modal layouts.
+        if ($layout = JRequest::getVar('layout')) {
+            $this->context .= '.'.$layout;
+        }
 
-        $access = $app->getUserStateFromRequest($this->_context . '.filter.access', 'filter_access', 0, 'int');
+        $access = $this->getUserStateFromRequest($this->context.'.filter.access', 'filter_access', 0, 'int');
         $this->setState('filter.access', $access);
 
-        $published = $app->getUserStateFromRequest($this->_context . '.published', 'filter_published', '');
+        $published = $this->getUserStateFromRequest($this->context.'.filter.published', 'filter_published', '');
         $this->setState('filter.published', $published);
-
-        // List state information
-        $limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'));
-        $this->setState('list.limit', $limit);
-
-        $limitstart = $app->getUserStateFromRequest($this->_context . '.limitstart', 'limitstart', 0);
-        $this->setState('list.limitstart', $limitstart);
-
-        $orderCol = $app->getUserStateFromRequest($this->_context . '.ordercol', 'filter_order', 'a.title');
-        $this->setState('list.ordering', $orderCol);
-
-        $orderDirn = $app->getUserStateFromRequest($this->_context . '.orderdirn', 'filter_order_Dir', 'asc');
-        $this->setState('list.direction', $orderDirn);
+        
+        // List state information.
+        parent::populateState('a.title', 'asc');
     }
 
     /**
