@@ -60,23 +60,13 @@ class XmapXmlDisplayer extends XmapDisplayer
             return true;
         }
 
-        static $live_site, $len_live_site;
-        if (!isset($live_site)) {
-            $live_site = substr_replace(JURI::root(), "", -1, 1);
-            $len_live_site = strlen($live_site);
-        }
-
         // Get the item's URL
-        $link = JRoute::_($node->link, true, -1);
-
-        // Determines if this node is a link to a external page
-        $is_extern = ( 0 != strcasecmp(substr($link, 0, $len_live_site), $live_site) );
+        $link = JRoute::_($node->link, true, (@$node->secure? 1: -1));
 
         if (!isset($node->browserNav))
             $node->browserNav = 0;
 
         if ($node->browserNav != 3   // ignore "no link"
-                && !$is_extern     // ignore external links
                 && empty($this->_links[$link])) { // ignore links that have been added already
             $this->count++;
             $this->_links[$link] = 1;

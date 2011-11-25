@@ -136,11 +136,8 @@ class XmapDisplayer {
         foreach ( $items as $i => $item ) {             // Add each menu entry to the root tree.
             $item->priority = $item->priority;
             $item->changefreq = $item->changefreq;
-            /* TODO
-            if( in_array( $item->id, $menuExluded ) ) {     // ignore exluded menu-items
-            continue;
-            }
-            */
+
+            $excludeExternal = false;
 
             $node = new stdclass;
 
@@ -158,6 +155,7 @@ class XmapDisplayer {
             $node->link             = $item->link;
             $node->option           = $item->option;
             $node->modified         = @$item->modified;
+            $node->secure           = $item->params->get('secure');
 
             // New on Xmap 2.0: send the menu params
             $node->params =& $item->params;
@@ -175,6 +173,8 @@ class XmapDisplayer {
                     if ((strpos($item->link, 'index.php?') === 0) && (strpos($item->link, 'Itemid=') === false)) {
                         // If this is an internal Joomla link, ensure the Itemid is set.
                         $node->link = $node->link.'&Itemid='.$node->id;
+                    } else {
+                        $excludeExternal = ($this->view == 'xml');
                     }
                     break;
                 case 'alias':
@@ -191,7 +191,7 @@ class XmapDisplayer {
                     break;
             }
 
-            if ($this->printNode($node)) {
+            if ($excludeExternal || $this->printNode($node)) {
 
                 //Restore the original link
                 $node->link             = $item->link;

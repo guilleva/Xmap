@@ -109,8 +109,8 @@ class XmapViewXml extends JView
 
         if ($doCompression) {
             $data = ob_get_contents();
-            @ob_end_clean();
             JResponse::setBody($data);
+            @ob_end_clean();
             echo JResponse::toString(true);
         }
         exit;

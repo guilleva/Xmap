@@ -277,6 +277,7 @@ class xmap_com_content
                 $node->changefreq = $params['cat_changefreq'];
                 $node->name = $item->title;
                 $node->expandible = true;
+                $node->secure = $parent->secure;
                 // TODO: Should we include category name or metakey here?
                 // $node->keywords = $item->metakey;
                 $node->newsItem = 0;
@@ -381,6 +382,7 @@ class xmap_com_content
                 $node->name = $item->title;
                 $node->modified = $item->modified;
                 $node->expandible = false;
+                $node->secure = $parent->secure;
                 // TODO: Should we include category name or metakey here?
                 // $node->keywords = $item->metakey;
                 $node->newsItem = 1;
@@ -418,6 +420,7 @@ class xmap_com_content
                         $subnode->browserNav = $parent->browserNav;
                         $subnode->priority = $params['art_priority'];
                         $subnode->changefreq = $params['art_changefreq'];
+                        $subnode->secure = $parent->secure;
                         $xmap->printNode($subnode);
                     }
                     $xmap->changeLevel(-1);
