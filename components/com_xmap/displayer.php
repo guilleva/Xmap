@@ -134,9 +134,6 @@ class XmapDisplayer {
         $router = JSite::getRouter();
 
         foreach ( $items as $i => $item ) {             // Add each menu entry to the root tree.
-            $item->priority = $item->priority;
-            $item->changefreq = $item->changefreq;
-
             $excludeExternal = false;
 
             $node = new stdclass;

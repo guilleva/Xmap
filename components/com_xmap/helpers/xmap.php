@@ -92,6 +92,9 @@ class XmapHelper
                     $item->changefreq = $menuOptions['changefreq'];
 
                     XmapHelper::prepareMenuItem($item);
+                } else {
+                    $item->priority = null;
+                    $item->changefreq = null;
                 }
 
                 if ($item->parent_id > 1) {
