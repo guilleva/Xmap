@@ -37,7 +37,7 @@ class xmap_com_sobipro {
     /** Get the content tree for this kind of content */
     function getTree( $xmap, $parent, &$params ) {
 
-        if (!$xmap->isNews) // This component does not provide news content. don't waste time/resources
+        if ($xmap->isNews) // This component does not provide news content. don't waste time/resources
             return false;
 
         if ( !self::loadSobi() ){

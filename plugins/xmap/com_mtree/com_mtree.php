@@ -13,7 +13,7 @@ class xmap_com_mtree
 {
     static function getTree( $xmap, $parent, &$params )
     {
-        if (!$xmap->isNews) // This component does not provide news content. don't waste time/resources
+        if ($xmap->isNews) // This component does not provide news content. don't waste time/resources
             return false;
 
         $catid=0;

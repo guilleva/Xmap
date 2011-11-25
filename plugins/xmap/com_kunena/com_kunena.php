@@ -37,7 +37,7 @@ class xmap_com_kunena {
 
     function getTree(&$xmap, &$parent, &$params)
     {
-        if (!$xmap->isNews) // This component does not provide news content. don't waste time/resources
+        if ($xmap->isNews) // This component does not provide news content. don't waste time/resources
             return false;
 
         // Make sure that we can load the kunena api
@@ -67,6 +67,7 @@ class xmap_com_kunena {
                 parse_str(html_entity_decode($link_query['query']), $link_vars);
                 $catid = JArrayHelper::getValue($link_vars, 'catid', 0);
                 break;
+            case 'listcat':
             case 'entrypage':
                 $catid = 0;
                 break;
@@ -127,11 +128,12 @@ class xmap_com_kunena {
         xmap_com_kunena::getCategoryTree($xmap, $parent, $params, $catid);
     }
 
-    /* Return category/forum tree */
-
+    /* 
+     * Builds the Kunena's tree
+     */
     function getCategoryTree(&$xmap, &$parent, &$params, $parentCat)
     {
-        $database = & JFactory::getDBO();
+        $db = JFactory::getDBO();
 
         // Load categories
         if (self::getKunenaMajorVersion() >= '2.0') {
@@ -156,8 +158,8 @@ class xmap_com_kunena {
                 // Kunena 1.0+
                 $query = "SELECT id, name FROM `{$params['table_prefix']}_categories` WHERE parent={$parentCat} AND published=1 AND pub_access=0 ORDER BY ordering";
             }
-            $database->setQuery($query);
-            $categories = $database->loadObjectList();
+            $db->setQuery($query);
+            $categories = $db->loadObjectList();
         }
 
         /* get list of categories */
@@ -172,6 +174,7 @@ class xmap_com_kunena {
             $node->changefreq = $params['cat_changefreq'];
             $node->link = sprintf($catlink, $cat->id);
             $node->expandible = true;
+            $node->secure = $parent->secure;
             if ($xmap->printNode($node) !== FALSE) {
                 xmap_com_kunena::getCategoryTree($xmap, $parent, $params, $cat->id);
             }
@@ -198,8 +201,8 @@ class xmap_com_kunena {
                     $query = "SELECT * FROM ($query) as topics WHERE time >= {$params['days']}";
                 }
                 #echo str_replace('#__','mgbj2_',$query);
-                $database->setQuery($query, 0, $params['limit']);
-                $topics = $database->loadObjectList();
+                $db->setQuery($query, 0, $params['limit']);
+                $topics = $db->loadObjectList();
             }
 
             //get list of topics
@@ -214,6 +217,7 @@ class xmap_com_kunena {
                 $node->modified = intval($topic->time);
                 $node->link = sprintf($toplink, $topic->catid, $topic->id);
                 $node->expandible = false;
+                $node->secure = $parent->secure;
                 if ($xmap->printNode($node) !== FALSE) {
                     // Pagination will not work with K2.0, revisit this when that version is out and stable
                     if ($params['include_pagination'] && isset($topic->msgcount) && $topic->msgcount > self::$config->messages_per_page ){
@@ -230,6 +234,7 @@ class xmap_com_kunena {
                             $subnode->priority = $node->priority;
                             $subnode->changefreq = $node->changefreq;
                             $subnode->modified = $node->modified;
+                            $subnode->secure = $node->secure;
                             $xmap->printNode($subnode);
                         }
                     }
