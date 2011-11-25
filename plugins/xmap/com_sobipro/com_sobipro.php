@@ -150,6 +150,7 @@ class xmap_com_sobipro {
             $node->priority = $params['cat_priority'];
             $node->changefreq = $params['cat_changefreq'];
             $node->expandible = true;
+            $node->secure = $parent->secure;
             if ( $xmap->printNode($node) !== FALSE ) {
                 xmap_com_sobipro::getCategoryTree($xmap, $parent, $row->id, $params);
             }
@@ -186,6 +187,7 @@ class xmap_com_sobipro {
                 $node->priority = $params['entry_priority'];
                 $node->changefreq = $params['entry_changefreq'];
                 $node->expandible = false;
+                $node->secure = $parent->secure;
                 # $node->link = 'index.php?option=com_sobipro&pid='.$row->catid . '&sid=' . $row->id.':'.trim( SPLang::urlSafe( $row->name )).'&Itemid='.$parent->id;
                 $node->link = SPJoomlaMainFrame::url( array('sid' => $row->id, 'pid' => $row->catid, 'title' => $row->name) );
                 $xmap->printNode($node);
