@@ -12,6 +12,8 @@ defined('_JEXEC') or die;
 header('Content-Type: text/xml; charset="utf-8"');
 header('Content-Disposition: inline');
 
+$showTitle = $this->canEdit && JRequest::getBool('filter_showtitle', 0);
+
 echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 ?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xna="http://www.sitemaps.org/schemas/sitemap/0.9" exclude-result-prefixes="xna">
@@ -109,6 +111,25 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 	.editable:hover {
 		border-color:#cccccc;
 	}
+	#title {
+	    float:left;
+	    display:inline-block;
+	    width:29%;
+	}
+	#instructions {
+	    float:left;
+	    display:inline-block;
+	    font-size: 11px;
+	    width:70%;
+	    margin-bottom:10px;
+	}
+	#instructions>div {
+	    border-radius: 5px;
+	    padding: 10px;
+	    background-color: #ccc;
+    }
+    #filter_options form { margin:0; }
+    #filter_options {border-radius: 5px; background-color:#fff;padding: 3px;}
   	-->
     ]]>
 </style>
@@ -297,14 +318,38 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 </script>
 </head>
 <body onLoad="initXsl('table0','sitemap');">
-<h1 id="head1"><?php echo $this->item->title; ?></h1>
-<h2>Number of URLs in this Sitemap: <xsl:value-of select="count(xna:urlset/xna:url)"></xsl:value-of></h2>
+<div id="header">
+ <div id="title">
+    <h1 id="head1"><?php echo $this->item->title; ?></h1>
+    <span class="number_urls">Number of URLs in this Sitemap: <xsl:value-of select="count(xna:urlset/xna:url)"></xsl:value-of></span>
+ </div>
+ <div id="instructions">
+    <div>
+        <?php $sitemapUrl = 'index.php?option=com_xmap&view=xml&id='.$this->item->id; ?>
+        <?php if (!$this->user->get('id')): ?>
+            <p><?php echo JText::sprintf('COM_XMAP_LOGIN_AS_ADMIN_EDIT_SITEMAP', JRoute::_('index.php?option=com_users&view=login&return='.base64_encode($sitemapUrl))); ?></p>
+        <?php else: ?>
+            <?php $sitemapUrl = JUri::base(true).'/'.str_replace('&','&amp;',$sitemapUrl); ?>
+            <p><?php echo JText::_('COM_XMAP_XML_SITEMAP_HELP'); ?></p>
+            <p><?php echo JText::_('COM_XMAP_XML_SITEMAP_URL'); ?>: <?php echo $sitemapUrl; ?></p>
+            <div id="filter_options">
+                <form method="get" action="<?php echo JRoute::_('index.php?option=com_xmap&view=xml'); ?>">
+                <input type="hidden" name="option" value="com_xmap" />
+                <input type="hidden" name="view" value="xml" />
+                <input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
+                <label><input onclick="this.form.submit();"<?php echo ($showTitle? ' checked="checked"':''); ?> type="checkbox" value="1" name="filter_showtitle" /><?php echo JText::_('COM_XMAP_DISPLAY_TITLE'); ?></label>
+                </form>
+            </div>
+        <?php endif; ?>
+    </div>
+ </div>
+</div>
 <table id="table0" class="data">
 <tr class="header">
-  <td>Sitemap URL</td>
-    <td>Last modification date</td>
-    <td>Change freq.</td>
-    <td>Priority</td>
+  <td><?php echo ($showTitle? JText::_('COM_XMAP_TITLE').' / ' : ''); ?><?php echo JText::_('COM_XMAP_URL'); ?></td>
+    <td><?php echo JText::_('COM_XMAP_LASTMOD'); ?></td>
+    <td><?php echo JText::_('COM_XMAP_CHANGEFREQ'); ?></td>
+    <td><?php echo JText::_('COM_XMAP_PRIORITY'); ?></td>
   </tr>
 <xsl:for-each select="xna:urlset/xna:url">
 <?php if ($this->canEdit): ?>
@@ -313,6 +358,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 <?php endif; ?>
 <tr>
 <td><xsl:variable name="sitemapURL"><xsl:value-of select="xna:loc"/></xsl:variable>
+    <div class="item_title"><xsl:value-of select="xna:title"/></div>
     <a href="{$sitemapURL}" target="_blank" ref="nofollow"><xsl:value-of select="$sitemapURL"></xsl:value-of></a></td>
 <td><xsl:value-of select="xna:lastmod"/></td>
 <?php if ($this->canEdit): ?>

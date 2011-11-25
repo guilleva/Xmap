@@ -38,9 +38,11 @@ class XmapXmlDisplayer extends XmapDisplayer
         $this->uids = array();
         
         $this->defaultLanguage = strtolower(JFactory::getLanguage()->getTag());
-        if (preg_match('/^([a-z]+)-.*/',$this->defaultLanguage,$matches) && !in_array(array(' zh-cn',' zh-tw'), $this->defaultLanguage) ) {
+        if (preg_match('/^([a-z]+)-.*/',$this->defaultLanguage,$matches) && !in_array($this->defaultLanguage, array(' zh-cn',' zh-tw')) ) {
             $this->defaultLanguage = $matches[1];
         }
+        
+        $this->showTitle = JRequest::getBool('filter_showtitle', 0);
     }
 
     /**
@@ -92,6 +94,9 @@ class XmapXmlDisplayer extends XmapDisplayer
             echo '<url>' . "\n";
             echo '<loc>', $link, '</loc>' . "\n";
             if ($this->canEdit) {
+                if ($this->showTitle) {
+                    echo '<title>', $node->name, '</title>' . "\n";
+                }
                 echo '<uid>', $node->uid, '</uid>' . "\n";
                 echo '<itemid>', $node->id, '</itemid>' . "\n";
             }
