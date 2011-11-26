@@ -248,4 +248,13 @@ class XmapModelSitemap extends JModelAdmin
             return true;
         }
     }
+    
+    /**
+     * Override to avoid warnings
+     *
+     */
+    public function checkout($pk = null)
+    {
+        return true;
+    }
 }
