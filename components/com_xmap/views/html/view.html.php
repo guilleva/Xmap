@@ -27,16 +27,16 @@ class XmapViewHtml extends JView
     function display($tpl = null)
     {
         // Initialise variables.
-        $app = JFactory::getApplication();
-        $user = JFactory::getUser();
+        $this->app = JFactory::getApplication();
+        $this->user = JFactory::getUser();
 
         // Get view related request variables.
-        $print = JRequest::getBool('print');
+        $this->print = JRequest::getBool('print');
 
         // Get model data.
-        $state = $this->get('State');
-        $item = $this->get('Item');
-        $items = $this->get('Items');
+        $this->state = $this->get('State');
+        $this->item = $this->get('Item');
+        $this->items = $this->get('Items');
         
         $this->canEdit = JFactory::getUser()->authorise('core.admin', 'com_xmap');
 
@@ -46,19 +46,19 @@ class XmapViewHtml extends JView
             return false;
         }
 
-        $extensions = $this->get('Extensions');
+        $this->extensions = $this->get('Extensions');
         // Add router helpers.
-        $item->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
+        $this->item->slug = $this->item->alias ? ($this->item->id . ':' . $this->item->alias) : $this->item->id;
 
-        $item->rlink = JRoute::_('index.php?option=com_xmap&view=html&id=' . $item->slug);
+        $this->item->rlink = JRoute::_('index.php?option=com_xmap&view=html&id=' . $this->item->slug);
 
         // Create a shortcut to the paramemters.
-        $params = &$state->params;
-        $offset = $state->get('page.offset');
+        $params = &$this->state->params;
+        $offset = $this->state->get('page.offset');
 
         // If a guest user, they may be able to log in to view the full article
         // TODO: Does this satisfy the show not auth setting?
-        if (!$item->params->get('access-view')) {
+        if (!$this->item->params->get('access-view')) {
             if ($user->get('guest')) {
                 // Redirect to login
                 $uri = JFactory::getURI();
@@ -81,24 +81,17 @@ class XmapViewHtml extends JView
 
         // Load the class used to display the sitemap
         $this->loadTemplate('class');
-        $displayer = new XmapHtmlDisplayer($params, $item);
+        $this->displayer = new XmapHtmlDisplayer($params, $this->item);
 
-        $displayer->setJView($this);
-        $displayer->canEdit = $this->canEdit;
+        $this->displayer->setJView($this);
+        $this->displayer->canEdit = $this->canEdit;
 
-        $this->assignRef('state', $state);
-        $this->assignRef('item', $item);
-        $this->assignRef('items', $items);
-        $this->assignRef('extensions', $extensions);
-        $this->assignRef('user', $user);
-        $this->assign('print', $print);
-        $this->assignRef('displayer', $displayer);
 
         $this->_prepareDocument();
         parent::display($tpl);
 
         $model = $this->getModel();
-        $model->hit($displayer->getCount());
+        $model->hit($this->displayer->getCount());
     }
 
     /**
