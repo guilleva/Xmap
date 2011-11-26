@@ -85,7 +85,7 @@ class XmapXmlDisplayer extends XmapDisplayer
             echo '<loc>', $link, '</loc>' . "\n";
             if ($this->canEdit) {
                 if ($this->showTitle) {
-                    echo '<title>', $node->name, '</title>' . "\n";
+                    echo '<title><![CDATA['.$node->name.']]></title>' . "\n";
                 }
                 echo '<uid>', $node->uid, '</uid>' . "\n";
                 echo '<itemid>', $node->id, '</itemid>' . "\n";
@@ -115,6 +115,7 @@ class XmapXmlDisplayer extends XmapDisplayer
                 echo '  <news:language>'.$node->language.'</news:language>'."\n";
                 echo '</news:publication>'."\n";
                 echo '<news:publication_date>', $modified, '</news:publication_date>' . "\n";
+                echo '<news:title><![CDATA['.$node->name.']]></news:title>' . "\n";
                 if ($keywords) {
                     echo '<news:keywords>', $keywords, '</news:keywords>' . "\n";
                 }
