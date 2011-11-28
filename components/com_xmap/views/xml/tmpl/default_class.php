@@ -90,12 +90,19 @@ class XmapXmlDisplayer extends XmapDisplayer
                 echo '<uid>', $node->uid, '</uid>' . "\n";
                 echo '<itemid>', $node->id, '</itemid>' . "\n";
             }
-            $timestamp = (isset($node->modified) && $node->modified != FALSE && $node->modified != -1) ? $node->modified : time();
-            $modified = gmdate('Y-m-d\TH:i:s\Z', $timestamp);
+            $modified = (isset($node->modified) && $node->modified != FALSE && $node->modified != -1) ? $node->modified : NULL;
+            if (!$modified && $this->isNews) {
+                $modified = time();
+            }
+            if ($modified) {
+                $modified = gmdate('Y-m-d\TH:i:s\Z', $modified);
+            }
 
-            // If this is a news sitemap
+            // If this is not a news sitemap
             if (!$this->isNews) {
-                echo '<lastmod>', $modified, '</lastmod>' . "\n";
+                if ($modified){
+                    echo '<lastmod>', $modified, '</lastmod>' . "\n";
+                }
                 echo '<changefreq>', $changefreq, '</changefreq>' . "\n";
                 echo '<priority>', $priority, '</priority>' . "\n";
             } else {
