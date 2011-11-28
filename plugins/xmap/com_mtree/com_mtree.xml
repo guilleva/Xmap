@@ -8,39 +8,54 @@
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
     <authorEmail>guille@vargas.co.cr</authorEmail>
     <authorUrl>joomla.vargas.co.cr</authorUrl>
-    <version>2.0.1</version>
-    <description>Add support for Mosets Tree categories and listings</description>
+    <version>2.0.2</version>
+    <description>XMAP_MTREE_PLUGIN_DESCRIPTION</description>
     <files>
         <filename plugin="com_mtree">com_mtree.php</filename>
         <filename>index.html</filename>
     </files>
+    <languages folder="language">
+        <!--
+        these files will be installed in the administrator/language folder.
+        -->
+        <language tag="en-GB">en-GB.plg_xmap_com_mtree.ini</language>
+        <language tag="es-ES">es-ES.plg_xmap_com_mtree.ini</language>
+    </languages>
     <config>
         <fields name="params">
             <fieldset name="basic">
-                <field name="cats_order" type="list" default="cat_name" label="Categories order" description="In which order do you want the categories listed on your sitemap?">
-                    <option value="ordering">Default ordering</option>
-                    <option value="cat_name">Category Name</option>
-                    <option value="cat_created">Category creation date</option>
+                <field name="cats_order" type="list" default="cat_name" label="XMAP_SETTING_CATEGORIES_ORDER_LABEL" description="XMAP_SETTING_CATEGORIES_ORDER_DESC">
+                    <option value="ordering">XMAP_SETTING_OPTION_ORDERING_DEFAULT</option>
+                    <option value="cat_name">XMAP_SETTING_OPTION_ORDERING_NAME</option>
+                    <option value="cat_created">XMAP_SETTING_OPTION_ORDERING_CREATED</option>
                 </field>
-                <field name="include_links" type="list" default="1" label="Show Listings" description="Should we include links into the sitemap?">
-                    <option value="0">Never</option>
-                    <option value="1">Always</option>
-                    <option value="2">In XML Sitemap Only</option>
-                    <option value="3">In Site Sitemap Only</option>
+                <field name="cats_orderdir" type="list" default="ASC" label="XMAP_SETTING_CATEGORIES_ORDER_DIR_LABEL" description="XMAP_SETTING_CATEGORIES_ORDER_DESC">
+                    <option value="ASC">XMAP_SETTING_OPTION_ORDERING_DIR_ASC</option>
+                    <option value="DESC">XMAP_SETTING_OPTION_ORDERING_DIR_DESC</option>
                 </field>
-                <field name="links_order" type="list" default="ordering" label="Listings order" description="In which order do you want the listings?">
-                    <option value="ordering">Default ordering</option>
-                    <option value="link_name">Listing Name</option>
-                    <option value="link_created">Listing creation date</option>
-                    <option value="link_modified">Listing modified date</option>
-                    <option value="link_hits">Number hits</option>
+                <field name="include_links" type="list" default="1" label="XMAP_SETTING_SHOW_LISTINGS_LABEL" description="XMAP_SETTING_SHOW_LISTINGS_DESC">
+                    <option value="0">XMAP_OPTION_NEVER</option>
+                    <option value="1">XMAP_OPTION_ALWAYS</option>
+                    <option value="2">XMAP_OPTION_XML_ONLY</option>
+                    <option value="3">XMAP_OPTION_HTML_ONLY</option>
                 </field>
-                <field name="max_links" type="text" default="" label="Max links" description="Max number of links per category to include on sitemap (Leave empty for no limit)" />
-                <field name="max_age" type="text" default="" label="Newest than" description="Only show links newest than this number of days (Leave it blank to ignore this option)" />
+                <field name="links_order" type="list" default="ordering" label="XMAP_SETTING_LISTINGS_ORDER_LABEL" description="XMAP_SETTING_LISTINGS_ORDER_DESC">
+                    <option value="ordering">XMAP_SETTING_OPTION_ORDERING_DEFAULT</option>
+                    <option value="link_name">XMAP_SETTING_OPTION_ORDERING_NAME</option>
+                    <option value="link_created">XMAP_SETTING_OPTION_ORDERING_CREATED</option>
+                    <option value="link_modified">XMAP_SETTING_OPTION_ORDERING_MODIFIED</option>
+                    <option value="link_hits">XMAP_SETTING_OPTION_ORDERING_HITS</option>
+                </field>
+                <field name="entries_orderdir" type="list" default="ASC" label="XMAP_SETTING_LISTINGS_ORDER_DIR_LABEL" description="XMAP_SETTING_LISTINGS_ORDER_DIR_DESC">
+                    <option value="ASC">XMAP_SETTING_OPTION_ORDERING_DIR_ASC</option>
+                    <option value="DESC">XMAP_SETTING_OPTION_ORDERING_DIR_DESC</option>
+                </field>
+                <field name="max_links" type="text" default="" label="XMAP_SETTING_MAX_ENTRIES_LABEL" description="XMAP_SETTING_MAX_ENTRIES_DESC" />
+                <field name="max_age" type="text" default="" label="XMAP_SETTING_LISTINGS_NEWER_THAN_LABEL" description="XMAP_SETTING_LISTINGS_NEWER_THAN_LABEL" />
             </fieldset>
             <fieldset name="xml">
                 <field name="cat_priority" type="list" default="0.5" label="Category Priority" description="Set the priority for the categories">
-                    <option value="-1">Use Parent Menu Settings</option>
+                    <option value="-1">XMAP_OPTION_USE_PARENT_MENU</option>
                     <option value="0.0">0.0</option>
                     <option value="0.1">0.1</option>
                     <option value="0.2">0.2</option>
@@ -54,17 +69,17 @@
                     <option value="1">1</option>
                 </field>
                 <field name="cat_changefreq" type="list" default="weekly" label="Category Change frequency" description="Set the chage frequency for the categories">
-                    <option value="-1">Use Parent Menu Settings</option>
-                    <option value="always">Always</option>
-                    <option value="hourly">Hourly</option>
-                    <option value="daily">Daily</option>
-                    <option value="weekly">Weekly</option>
-                    <option value="monthly">Monthly</option>
-                    <option value="yearly">Yearly</option>
-                    <option value="never">Never</option>
+                    <option value="-1">XMAP_OPTION_USE_PARENT_MENU</option>
+                    <option value="always">XMAP_OPTION_ALWAYS</option>
+                    <option value="hourly">XMAP_OPTION_HOURLY</option>
+                    <option value="daily">XMAP_OPTION_DAILY</option>
+                    <option value="weekly">XMAP_OPTION_WEEKLY</option>
+                    <option value="monthly">XMAP_OPTION_MONTHLY</option>
+                    <option value="yearly">XMAP_OPTION_YEARLY</option>
+                    <option value="never">XMAP_OPTION_NEVER</option>
                 </field>
                 <field name="link_priority" type="list" default="0.5" label="Listing Priority" description="Set the priority for the links">
-                    <option value="-1">Use Parent Menu Settings</option>
+                    <option value="-1">XMAP_OPTION_USE_PARENT_MENU</option>
                     <option value="0.0">0.0</option>
                     <option value="0.1">0.1</option>
                     <option value="0.2">0.2</option>
@@ -78,14 +93,14 @@
                     <option value="1">1</option>
                 </field>
                 <field name="link_changefreq" type="list" default="weekly" label="Listing Change frequency" description="Set the chage frequency for the links">
-                    <option value="-1">Use Parent Menu Settings</option>
-                    <option value="always">Always</option>
-                    <option value="hourly">Hourly</option>
-                    <option value="daily">Daily</option>
-                    <option value="weekly">Weekly</option>
-                    <option value="monthly">Monthly</option>
-                    <option value="yearly">Yearly</option>
-                    <option value="never">Never</option>
+                    <option value="-1">XMAP_OPTION_USE_PARENT_MENU</option>
+                    <option value="always">XMAP_OPTION_ALWAYS</option>
+                    <option value="hourly">XMAP_OPTION_HOURLY</option>
+                    <option value="daily">XMAP_OPTION_DAILY</option>
+                    <option value="weekly">XMAP_OPTION_WEEKLY</option>
+                    <option value="monthly">XMAP_OPTION_MONTHLY</option>
+                    <option value="yearly">XMAP_OPTION_YEARLY</option>
+                    <option value="never">XMAP_OPTION_NEVER</option>
                 </field>
             </fieldset>
         </fields>

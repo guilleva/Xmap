@@ -52,17 +52,27 @@ class xmap_com_mtree
         $params['link_changefreq'] = $changefreq;
 
         $ordering = xmap_com_mtree::getParam($params,'cats_order','cat_name');
+        $orderdir = JArrayHelper::getValue($params,'cats_orderdir','ASC');
         if ( !in_array($ordering,array('ordering','cat_name','cat_created')) )
             $ordering = 'cat_name';
+            
+        if ( !in_array($orderdir,array('ASC','DESC')) ){
+            $orderdir = 'ASC';
+        }
 
-        $params['cats_order'] = $ordering;
+        $params['cats_order'] = "`$ordering` $orderdir";
 
         if ( $include_links ) {
             $ordering = xmap_com_mtree::getParam($params,'links_order','ordering');
+            $orderdir = JArrayHelper::getValue($params,'links_orderdir','ASC');
             if ( !in_array($ordering,array('ordering','link_name','link_modified','link_created','link_hits')) )
                 $ordering = 'ordering';
+            
+            if ( !in_array($orderdir,array('ASC','DESC')) ){
+                $orderdir = 'ASC';
+            }
 
-            $params['links_order'] = $ordering;
+            $params['links_order'] = "`$ordering` $orderdir";
 
             $params['limit'] = '';
             $params['days'] = '';
@@ -75,7 +85,6 @@ class xmap_com_mtree
                 $params['days'] = ' AND a.link_created >=\''.date('Y-m-d H:i:s',($xmap->now - ($days*86400))) ."' ";
         }
 
-
         xmap_com_mtree::getMtreeCategory($xmap,$parent,$params,$catid);
     }
 
@@ -86,7 +95,7 @@ class xmap_com_mtree
 
         $query = "SELECT cat_name, cat_id, UNIX_TIMESTAMP(cat_created) as `created` ".
              "FROM #__mt_cats WHERE cat_published='1' AND cat_approved='1' AND cat_parent = $catid " .
-             "ORDER BY `" . $params['cats_order'] ."`"; 
+             "ORDER BY " . $params['cats_order']; 
 
         $database->setQuery($query);
         $rows = $database->loadObjectList();
@@ -122,7 +131,7 @@ class xmap_com_mtree
                              " AND b.cat_id = $catid " .
                              " AND ( link_published='1' AND link_approved='1' ) " .
                  $params['days'] .
-                 " ORDER BY `" . $params['links_order'] ."` " .
+                 " ORDER BY " . $params['links_order'] .
                  $params['limit'];
 
             $database->setQuery($query);
@@ -152,7 +161,7 @@ class xmap_com_mtree
         
     }
 
-    function &getParam($arr, $name, $def)
+    static function getParam($arr, $name, $def)
     {
         $var = JArrayHelper::getValue( $arr, $name, $def, '' );
         return $var;
