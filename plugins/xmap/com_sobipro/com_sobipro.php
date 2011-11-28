@@ -146,7 +146,7 @@ class xmap_com_sobipro {
             $node->name = html_entity_decode($row->name);
             $node->modified = $modified;
             #$node->link = 'index.php?option=com_sobipro&sid='.$row->id.':'.trim( SPLang::urlSafe( $row->name ) ).'&Itemid='.$parent->id;
-            $node->link = SPJoomlaMainFrame::url( array('sid' => $row->id, 'title' => $row->name) );
+            $node->link = SPJoomlaMainFrame::url( array('sid' => $row->id, 'title' => $row->name), false, false );
             $node->priority = $params['cat_priority'];
             $node->changefreq = $params['cat_changefreq'];
             $node->expandible = true;
@@ -189,7 +189,7 @@ class xmap_com_sobipro {
                 $node->expandible = false;
                 $node->secure = $parent->secure;
                 # $node->link = 'index.php?option=com_sobipro&pid='.$row->catid . '&sid=' . $row->id.':'.trim( SPLang::urlSafe( $row->name )).'&Itemid='.$parent->id;
-                $node->link = SPJoomlaMainFrame::url( array('sid' => $row->id, 'pid' => $row->catid, 'title' => $row->name) );
+                $node->link = SPJoomlaMainFrame::url( array('sid' => $row->id, 'pid' => $row->catid, 'title' => $row->name), false, false );
                 $xmap->printNode($node);
             }
 
