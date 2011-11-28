@@ -13,7 +13,8 @@
             <field
                 name="id"
                 type="modal_sitemaps"
-                default="0"
+                default=""
+                required="true"
                 label="COM_XMAP_SELECT_AN_SITEMAP"
                 description="COM_XMAP_SELECT_A_SITEMAP" />
         </fieldset>
