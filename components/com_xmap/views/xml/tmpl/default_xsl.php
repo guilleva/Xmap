@@ -71,6 +71,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 		font-size: 12px;
 		width: 100%;
 		border: 1px solid #000000;
+		clear:both;
 	}
 	table.data tr.header td{
 		background-color: #CCCCCC;
@@ -343,6 +344,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
         <?php endif; ?>
     </div>
  </div>
+ <div style="width:100%;clear:both;height:1px;"></div>
 </div>
 <table id="table0" class="data">
 <tr class="header">
