@@ -31,20 +31,20 @@
                     <option value="3">XMAP_OPTION_HTML_ONLY</option>
 		</field>
                 <field name="max_entries" type="text" default="" label="XMAP_SETTING_MAX_ENTRIES_LABEL" description="XMAP_SETTING_MAX_ENTRIES_DESC" />
-                <field name="max_age" type="text" default="" label="Newest than" description="Only show entries newest than this number of days (Leave it blank to ignore this option)" />
-                <field name="entries_order" type="list" default="a.ordering" label="Entries Order" description="How should the items be ordered in the sitemap?">
-                        <option value="b.position">Default</option>
-                        <option value="a.counter">Number of visits</option>
-                        <option value="b.validSince">Publish up date</option>
-                        <option value="a.updatedTime">Last modification date</option>
+                <field name="max_age" type="text" default="" label="XMAP_SOBIPRO_NEWEST_THAN_LABEL" description="XMAP_SOBIPRO_NEWEST_THAN_DESC" />
+                <field name="entries_order" type="list" default="a.ordering" label="XMAP_OPTION_ENTRIES_ORDER" description="XMAP_OPTION_ENTRIES_ORDER_DESC">
+                        <option value="b.position">XMAP_OPTION_DEFAULT</option>
+                        <option value="a.counter">XMAP_OPTION_VISITS</option>
+                        <option value="b.validSince">XMAP_OPTION_PUBLISH</option>
+                        <option value="a.updatedTime">XMAP_OPTION_MOD</option>
 		</field>
-                <field name="entries_orderdir" type="list" default="DESC" label="Order direction" description="How should the items be ordered in the sitemap?">
-                        <option value="ASC">Ascendant</option>
-                        <option value="DESC">Descendant</option>
+                <field name="entries_orderdir" type="list" default="DESC" label="XMAP_SETTING_CATEGORIES_ORDER_DIR_LABEL" description="XMAP_SETTING_CATEGORIES_ORDER_DIR_DESC">
+                        <option value="ASC">XMAP_SETTING_OPTION_ORDERING_DIR_ASC</option>
+                        <option value="DESC">XMAP_SETTING_OPTION_ORDERING_DIR_DESC</option>
 		</field>
             </fieldset>
             <fieldset name="xml">
-                <field name="cat_priority" type="list" default="-1" label="Category Priority" description="Set the priority for the categories">
+                <field name="cat_priority" type="list" default="-1" label="XMAP_SOBIPRO_CATEGORY_PRIORITY_LABEL" description="XMAP_SOBIPRO_CATEGORY_PRIORITY_DESC">
                         <option value="-1">XMAP_OPTION_USE_PARENT_MENU</option>
                         <option value="0.0">0.0</option>
                         <option value="0.1">0.1</option>
@@ -58,7 +58,7 @@
                         <option value="0.9">0.9</option>
                         <option value="1">1</option>
                 </field>
-                <field name="cat_changefreq" type="list" default="weekly" label="Category Change frequency" description="Set the chage frequency for the categories">
+                <field name="cat_changefreq" type="list" default="weekly" label="XMAP_SOBIPRO_CATEGORY_CHANGEFREQ_LABEL" description="XMAP_SOBIPRO_CATEGORY_CHANGEFREQ_DESC">
                         <option value="-1">XMAP_OPTION_USE_PARENT_MENU</option>
                         <option value="always">XMAP_OPTION_ALWAYS</option>
                         <option value="hourly">XMAP_OPTION_HOURLY</option>
@@ -68,7 +68,7 @@
                         <option value="yearly">XMAP_OPTION_YEARLY</option>
                         <option value="never">XMAP_OPTION_NEVER</option>
                 </field>
-                <field name="entry_priority" type="list" default="-1" label="Entries Priority" description="Set the priority for the entries">
+                <field name="entry_priority" type="list" default="-1" label="XMAP_SOBIPRO_ENTRIES_PRIORITY_LABEL" description="XMAP_SOBIPRO_ENTRIES_PRIORITY_DESC">
                         <option value="-1">XMAP_OPTION_USE_PARENT_MENU</option>
                         <option value="0.0">0.0</option>
                         <option value="0.1">0.1</option>
@@ -82,7 +82,7 @@
                         <option value="0.9">0.9</option>
                         <option value="1">1</option>
                 </field>
-                <field name="entry_changefreq" type="list" default="weekly" label="Entries Change frequency" description="Set the chage frequency for the entris">
+                <field name="entry_changefreq" type="list" default="weekly" label="XMAP_SOBIPRO_ENTRIES_CHANGEFREQ_LABEL" description="XMAP_SOBIPRO_ENTRIES_CHANGEFREQ_DESC">
                         <option value="-1">XMAP_OPTION_USE_PARENT_MENU</option>
                         <option value="always">XMAP_OPTION_ALWAYS</option>
                         <option value="hourly">XMAP_OPTION_HOURLY</option>

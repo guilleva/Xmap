@@ -29,7 +29,7 @@
                     <option value="cat_name">XMAP_SETTING_OPTION_ORDERING_NAME</option>
                     <option value="cat_created">XMAP_SETTING_OPTION_ORDERING_CREATED</option>
                 </field>
-                <field name="cats_orderdir" type="list" default="ASC" label="XMAP_SETTING_CATEGORIES_ORDER_DIR_LABEL" description="XMAP_SETTING_CATEGORIES_ORDER_DESC">
+                <field name="cats_orderdir" type="list" default="ASC" label="XMAP_SETTING_CATEGORIES_ORDER_DIR_LABEL" description="XMAP_SETTING_CATEGORIES_ORDER_DIR_DESC">
                     <option value="ASC">XMAP_SETTING_OPTION_ORDERING_DIR_ASC</option>
                     <option value="DESC">XMAP_SETTING_OPTION_ORDERING_DIR_DESC</option>
                 </field>
@@ -54,7 +54,7 @@
                 <field name="max_age" type="text" default="" label="XMAP_SETTING_LISTINGS_NEWER_THAN_LABEL" description="XMAP_SETTING_LISTINGS_NEWER_THAN_LABEL" />
             </fieldset>
             <fieldset name="xml">
-                <field name="cat_priority" type="list" default="0.5" label="Category Priority" description="Set the priority for the categories">
+                <field name="cat_priority" type="list" default="0.5" label="XMAP_MTREE_CATEGORY_PRIORITY_LABEL" description="XMAP_MTREE_CATEGORY_PRIORITY_DESC">
                     <option value="-1">XMAP_OPTION_USE_PARENT_MENU</option>
                     <option value="0.0">0.0</option>
                     <option value="0.1">0.1</option>
@@ -68,7 +68,7 @@
                     <option value="0.9">0.9</option>
                     <option value="1">1</option>
                 </field>
-                <field name="cat_changefreq" type="list" default="weekly" label="Category Change frequency" description="Set the chage frequency for the categories">
+                <field name="cat_changefreq" type="list" default="weekly" label="XMAP_MTREE_CATEGORY_CHANGEFREQ_LABEL" description="XMAP_MTREE_CATEGORY_CHANGEFREQ_DESC">
                     <option value="-1">XMAP_OPTION_USE_PARENT_MENU</option>
                     <option value="always">XMAP_OPTION_ALWAYS</option>
                     <option value="hourly">XMAP_OPTION_HOURLY</option>
@@ -78,7 +78,7 @@
                     <option value="yearly">XMAP_OPTION_YEARLY</option>
                     <option value="never">XMAP_OPTION_NEVER</option>
                 </field>
-                <field name="link_priority" type="list" default="0.5" label="Listing Priority" description="Set the priority for the links">
+                <field name="link_priority" type="list" default="0.5" label="XMAP_MTREE_LISTING_PRIORITY_LABEL" description="XMAP_MTREE_LISTING_PRIORITY_DESC">
                     <option value="-1">XMAP_OPTION_USE_PARENT_MENU</option>
                     <option value="0.0">0.0</option>
                     <option value="0.1">0.1</option>
@@ -92,7 +92,7 @@
                     <option value="0.9">0.9</option>
                     <option value="1">1</option>
                 </field>
-                <field name="link_changefreq" type="list" default="weekly" label="Listing Change frequency" description="Set the chage frequency for the links">
+                <field name="link_changefreq" type="list" default="weekly" label="XMAP_MTREE_LISTING_CHANGEFREQ_LABEL" description="XMAP_MTREE_LISTING_CHANGEFREQ_DESC">
                     <option value="-1">XMAP_OPTION_USE_PARENT_MENU</option>
                     <option value="always">XMAP_OPTION_ALWAYS</option>
                     <option value="hourly">XMAP_OPTION_HOURLY</option>
