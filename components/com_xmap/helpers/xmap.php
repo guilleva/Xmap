@@ -131,12 +131,12 @@ class XmapHelper
         $extensions = $db->loadObjectList('element');
 
         foreach ($extensions as $element => $extension) {
-            require_once(JPATH_PLUGINS . DS . $extension->folder . DS . $element. DS. $element . '.php');
-            //$xmlPath = JPATH_COMPONENT_ADMINISTRATOR . DS . 'extensions' . DS . $extension->folder . DS . $element . '.xml';
-            //$params = new JParameter($extension->params, $xmlPath);
-            $params = new JParameter($extension->params);
-            $extension->params = $params->toArray();
-            $list[$element] = $extension;
+            if (file_exists(JPATH_PLUGINS . DS . $extension->folder . DS . $element. DS. $element . '.php')) {
+                require_once(JPATH_PLUGINS . DS . $extension->folder . DS . $element. DS. $element . '.php');
+                $params = new JParameter($extension->params);
+                $extension->params = $params->toArray();
+                $list[$element] = $extension;
+            }
         }
 
         return $list;
