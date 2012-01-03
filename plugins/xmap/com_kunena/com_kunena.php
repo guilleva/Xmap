@@ -19,7 +19,7 @@ class xmap_com_kunena {
     static $profile;
     static $config;
 
-    function prepareMenuItem(&$node, &$params)
+    function prepareMenuItem($node, &$params)
     {
         $link_query = parse_url($node->link);
         parse_str(html_entity_decode($link_query['query']), $link_vars);
@@ -35,7 +35,7 @@ class xmap_com_kunena {
         }
     }
 
-    function getTree(&$xmap, &$parent, &$params)
+    function getTree($xmap, $parent, &$params)
     {
         if ($xmap->isNews) // This component does not provide news content. don't waste time/resources
             return false;
@@ -131,7 +131,7 @@ class xmap_com_kunena {
     /* 
      * Builds the Kunena's tree
      */
-    function getCategoryTree(&$xmap, &$parent, &$params, $parentCat)
+    function getCategoryTree($xmap, $parent, &$params, $parentCat)
     {
         $db = JFactory::getDBO();
 

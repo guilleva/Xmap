@@ -23,7 +23,7 @@ class xmap_com_virtuemart
      * proper uniqueid for the item and indicate whether the node is expandible or not
      */
 
-    static function prepareMenuItem($node, $params)
+    static function prepareMenuItem($node, &$params)
     {
         $link_query = parse_url($node->link);
         parse_str(html_entity_decode($link_query['query']), $link_vars);
@@ -49,7 +49,7 @@ class xmap_com_virtuemart
     }
 
     /** Get the content tree for this kind of content */
-    static function getTree($xmap, $parent, $params)
+    static function getTree($xmap, $parent, &$params)
     {
         self::initialize();
 
@@ -102,7 +102,7 @@ class xmap_com_virtuemart
     }
 
     /** Virtuemart support */
-    static function getCategoryTree($xmap, $parent, $params, $catid=0)
+    static function getCategoryTree($xmap, $parent, &$params, $catid=0)
     {
         $database = &JFactory::getDBO();
 

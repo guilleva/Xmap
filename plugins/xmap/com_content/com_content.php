@@ -32,7 +32,7 @@ class xmap_com_content
      * @return void
      * @since  1.2
      */
-    static function prepareMenuItem($node,$params)
+    static function prepareMenuItem($node, &$params)
     {
         $db = JFactory::getDbo();
         $link_query = parse_url($node->link);

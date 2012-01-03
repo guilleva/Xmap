@@ -119,7 +119,7 @@ class xmap_com_sobipro {
     }
 
     /** SobiPro support */
-    function getCategoryTree( &$xmap, &$parent, $sid, &$params ) {
+    function getCategoryTree( $xmap, $parent, $sid, &$params ) {
         $database =& JFactory::getDBO();
 
         $query  =
