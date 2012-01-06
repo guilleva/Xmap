@@ -10,7 +10,8 @@
     <version>2.0.0</version>
     <description>XMAP_VM_PLUGIN_DESCRIPTION</description>
     <files>
-        <filename xmap_ext="com_virtuemart">com_virtuemart.php</filename>
+        <filename plugin="com_virtuemart">com_virtuemart.php</filename>
+        <filename>index.html</filename>
     </files>
     <languages folder="language">
         <!--
