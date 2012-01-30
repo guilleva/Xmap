@@ -67,7 +67,16 @@ class XmapModelSitemap extends JModelItem
     public function &getItem($pk = null)
     {
         // Initialize variables.
+        $db = $this->getDbo();
         $pk = (!empty($pk)) ? $pk : (int) $this->getState('sitemap.id');
+        
+        // If not sitemap specified, select the default one
+        if (!$pk) {
+            $query = $db->getQuery(true);
+            $query->select('id')->from('#__xmap_sitemap')->where('is_default=1');
+            $db->setQuery($query);
+            $pk = $db->loadResult();
+        }
 
         if ($this->_item === null) {
             $this->_item = array();
@@ -75,7 +84,6 @@ class XmapModelSitemap extends JModelItem
 
         if (!isset($this->_item[$pk])) {
             try {
-                $db = $this->getDbo();
                 $query = $db->getQuery(true);
 
                 $query->select($this->getState('item.select', 'a.*'));
