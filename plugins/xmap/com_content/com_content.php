@@ -210,7 +210,7 @@ class xmap_com_content
                 break;
             case 'categories':
                 if ($params['expand_categories']) {
-                    $result = self::expandCategory($xmap, $parent, 1, $params, $parent->id);
+                    $result = self::expandCategory($xmap, $parent, ($id ? $id : 1), $params, $parent->id);
                 }
                 break;
             case 'archive':
