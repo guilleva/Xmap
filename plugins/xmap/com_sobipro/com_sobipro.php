@@ -170,8 +170,8 @@ class xmap_com_sobipro {
             ."\n AND b.oType = 'entry'"
             ."\n AND b.pid = $sid"
             ."\n AND a.approved=1 "
-            ."\n AND b.validUntil<='{$params['now']}' "
-            ."\n AND (b.validSince>='{$params['now']}' or b.validUntil='0000-00-00 00:00:00' ) "
+            ."\n AND (a.validUntil>='{$params['now']}' or a.validUntil='0000-00-00 00:00:00' ) "
+            ."\n AND (a.validSince<='{$params['now']}' or a.validSince='0000-00-00 00:00:00' ) "
             ."\n AND a.id=c.sid AND c.fid=".self::$sectionConfig['name_field']->sValue
             ."\n AND c.section=".self::$sectionConfig['name_field']->section
             . $params['days']
@@ -181,7 +181,6 @@ class xmap_com_sobipro {
 
             $database->setQuery( $query );
             $rows = $database->loadObjectList();
-            echo str_replace('#__','jos_',$database->getQuery( ));
             foreach($rows as $row) {
                 $node = new stdclass;
                 $node->id = $parent->id;
