@@ -12,7 +12,7 @@ defined('_JEXEC') or die('Restricted access.');
 
 class xmap_com_weblinks
 {
-    
+
     static private $_initialized = false;
     /*
      * This function is called before a menu item is printed. We use it to set the
@@ -43,6 +43,9 @@ class xmap_com_weblinks
     static function getTree($xmap, $parent, &$params)
     {
         self::initialize($params);
+
+        $app        = JFactory::getApplication();
+        $weblinks_params     = $app->getParams('com_weblinks');
 
         $link_query = parse_url($parent->link);
         parse_str(html_entity_decode($link_query['query']), $link_vars);
@@ -86,13 +89,15 @@ class xmap_com_weblinks
 
         $params['link_priority'] = $priority;
         $params['link_changefreq'] = $changefreq;
-        
+
 
         $options = array();
         $options['countItems'] = false;
         $options['catid'] = rand();
         $categories = JCategories::getInstance('Weblinks', $options);
         $category = $categories->get($catid? $catid : 'root', true);
+
+        $params['count_clicks'] = $weblinks_params->get('count_clicks');
 
 
         xmap_com_weblinks::getCategoryTree($xmap, $parent, $params, $category);
@@ -118,7 +123,7 @@ class xmap_com_weblinks
             }
         }
         $xmap->changeLevel(-1);
-    
+
         if ($params['include_links']) { //view=category&catid=...
             $linksModel = new WeblinksModelCategory();
             $linksModel->getState(); // To force the populate state
@@ -130,11 +135,22 @@ class xmap_com_weblinks
             $links = $linksModel->getItems();
             $xmap->changeLevel(1);
             foreach ($links as $link) {
+                $item_params = new JRegistry;
+                $item_params->loadString($link->params);
+
                 $node = new stdclass;
                 $node->id = $parent->id;
                 $node->uid = $parent->uid . 'i' . $link->id;
                 $node->name = $link->title;
-                $node->link = WeblinksHelperRoute::getWeblinkRoute($link->id, $category->id);
+
+                // Find the Itemid
+                $Itemid = intval(preg_replace('/.*Itemid=([0-9]+).*/','$1',WeblinksHelperRoute::getWeblinkRoute($link->id, $category->id)));
+
+                if ($item_params->get('count_clicks', $params['count_clicks']) == 1) {
+                    $node->link = 'index.php?option=com_weblinks&task=weblink.go&id='. $link->id.'&Itemid='.($Itemid ? $Itemid : $parent->id);
+                } else {
+                    $node->link = $link->url;
+                }
                 $node->priority = $params['link_priority'];
                 $node->changefreq = $params['link_changefreq'];
                 $node->expandible = false;
@@ -143,13 +159,13 @@ class xmap_com_weblinks
             $xmap->changeLevel(-1);
         }
     }
-    
+
     static public function initialize(&$params)
     {
         if (self::$_initialized) {
             return;
         }
-        
+
         self::$_initialized = true;
         require_once JPATH_SITE.DS.'components'.DS.'com_weblinks'.DS.'models'.DS.'category.php';
         require_once JPATH_SITE.DS.'components'.DS.'com_weblinks'.DS.'helpers'.DS.'route.php';
