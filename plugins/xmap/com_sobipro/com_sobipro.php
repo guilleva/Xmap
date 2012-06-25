@@ -47,6 +47,11 @@ class xmap_com_sobipro {
         $link_query = parse_url( $parent->link );
         parse_str( html_entity_decode($link_query['query']), $link_vars);
         $sid =JArrayHelper::getValue($link_vars,'sid',1);
+        $task =JArrayHelper::getValue($link_vars,'task', null);
+
+        if (in_array($task, array('search', 'entry.add'))) {
+            return;
+        }
 
         $db = JFactory::getDbo();
         $db->setQuery('SELECT * FROM `#__sobipro_object` where id='.(int)$sid);
@@ -176,7 +181,7 @@ class xmap_com_sobipro {
 
             $database->setQuery( $query );
             $rows = $database->loadObjectList();
-#            echo str_replace('#__','jos_',$database->getQuery( ));
+            echo str_replace('#__','jos_',$database->getQuery( ));
             foreach($rows as $row) {
                 $node = new stdclass;
                 $node->id = $parent->id;
