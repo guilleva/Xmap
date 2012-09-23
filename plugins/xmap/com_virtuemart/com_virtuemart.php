@@ -134,7 +134,7 @@ class xmap_com_virtuemart
 
         if ($params['include_products']) {
             $products = self::$productModel->getProductsInCategory($catid);
-            
+
             if ($params['include_product_images']) {
                 self::$categoryModel->addImages($products,1);
             }
@@ -171,12 +171,16 @@ class xmap_com_virtuemart
     static protected function initialize()
     {
         if (self::$initialized) return;
+
+        $app = JFactory::getApplication ();
         
         if (!class_exists( 'VmConfig' )) {
             require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');
             VmConfig::loadConfig();
         }
         JTable::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'tables');
+
+        $app->setUserState('com_virtuemart.htmlc0.limit',9000);
 
         if (!class_exists('VirtueMartModelCategory')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'category.php');
         self::$categoryModel = new VirtueMartModelCategory();
