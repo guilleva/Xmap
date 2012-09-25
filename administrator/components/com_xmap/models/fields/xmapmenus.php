@@ -112,7 +112,9 @@ class JFormFieldXmapmenus extends JFormFieldList
         $doc = JFactory::getDocument();
         $doc->addScriptDeclaration("
 		window.addEvent('domready',function(){
-			new Sortables(\$('ul_" . $this->inputId . "'),{
+            \$\$('div.xmap-menu-options select').addEvent('mouseover',function(event){xmapMenusSortable.detach();})
+            \$\$('div.xmap-menu-options select').addEvent('mouseout',function(event){xmapMenusSortable.attach();})
+			var xmapMenusSortable = new Sortables(\$('ul_" . $this->inputId . "'),{
 				clone:true,
 				revert: true,
 				onStart: function(el) {
