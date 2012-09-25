@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <!-- $Id$ -->
-<extension type="plugin" group="xmap" version="1.6">
+<extension type="plugin" group="xmap" version="1.6" method="upgrade">
     <name>Xmap - Mosets Tree Plugin</name>
     <author>Guillermo Vargas</author>
     <creationDate>07/20/2011</creationDate>

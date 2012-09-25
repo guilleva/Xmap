@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<extension type="plugin" group="xmap" version="1.6">
+<extension type="plugin" group="xmap" version="1.6" method="upgrade">
     <name>Xmap - Content Plugin</name>
     <author>Guillermo Vargas</author>
     <creationDate>01/26/2011</creationDate>
