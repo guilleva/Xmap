@@ -24,6 +24,8 @@ class XmapViewXml extends JView
     protected $state;
     protected $print;
 
+    protected $_obLevel;
+
     function display($tpl = null)
     {
         // Initialise variables.
@@ -38,7 +40,7 @@ class XmapViewXml extends JView
         $this->item = $this->get('Item');
         $this->state = $this->get('State');
 	    $this->canEdit = JFactory::getUser()->authorise('core.admin', 'com_xmap');
-	    
+
 	    // For now, news sitemaps are not editable
 	    $this->canEdit = $this->canEdit && !$isNewsSitemap;
 
@@ -91,13 +93,13 @@ class XmapViewXml extends JView
         $this->displayer = new XmapXmlDisplayer($params, $this->item);
 
         $this->displayer->setJView($this);
-        
+
         $this->displayer->isNews = $isNewsSitemap;
         $this->displayer->canEdit = $this->canEdit;
 
 
         $doCompression = ($this->item->params->get('compress_xml') && !ini_get('zlib.output_compression') && ini_get('output_handler') != 'ob_gzhandler');
-        @ob_end_clean();
+        $this->endAllBuffering();
         if ($doCompression) {
             ob_start();
         }
@@ -113,6 +115,7 @@ class XmapViewXml extends JView
             @ob_end_clean();
             echo JResponse::toString(true);
         }
+        $this->recreateBuffering();
         exit;
     }
 
@@ -120,9 +123,24 @@ class XmapViewXml extends JView
     {
         $this->setLayout('default');
 
-        @ob_end_clean();
+        $this->endAllBuffering();
         parent::display('xsl');
+        $this->recreateBuffering();
         exit;
+    }
+
+    private function endAllBuffering()
+    {
+        $this->_obLevel = ob_get_level();
+        while (ob_get_level()) {
+            @ob_end_clean();
+        }
+    }
+    private function recreateBuffering()
+    {
+        while($this->_obLevel--) {
+            ob_start();
+        }
     }
 
 }
