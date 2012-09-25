@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- $Id$ -->
 <install method="upgrade" version="1.5" type="component">
     <name>com_xmap</name>
     <creationDate>2011-04-10</creationDate>

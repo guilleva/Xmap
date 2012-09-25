@@ -69,7 +69,7 @@ class XmapModelSitemap extends JModelItem
         // Initialize variables.
         $db = $this->getDbo();
         $pk = (!empty($pk)) ? $pk : (int) $this->getState('sitemap.id');
-        
+
         // If not sitemap specified, select the default one
         if (!$pk) {
             $query = $db->getQuery(true);
@@ -167,22 +167,7 @@ class XmapModelSitemap extends JModelItem
     {
         return XmapHelper::getExtensions();
     }
-/*
-    private function prepareMenuItem222(&$item)
-    {
-        $extensions = $this->getExtensions();
-        if (preg_match('#^/?index.php.*option=(com_[^&]+)#', $item->link, $matches)) {
-            $option = $matches[1];
-            if (!empty($extensions[$option])) {
-                $className = 'xmap_' . $option;
-                $obj = new $className;
-                if (method_exists($obj, 'prepareMenuItem')) {
-                    $obj->prepareMenuItem($item);
-                }
-            }
-        }
-    }
-*/
+
     /**
      * Increment the hit counter for the sitemap.
      *
@@ -249,7 +234,7 @@ class XmapModelSitemap extends JModelItem
         $items = $this->getSitemapItems($view);
         $db = JFactory::getDBO();
         $pk = (int) $this->getState('sitemap.id');
-        
+
         $isNew = false;
         if (empty($items[$view][$itemid][$uid])) {
             $items[$view][$itemid][$uid] = array();
@@ -302,13 +287,7 @@ class XmapModelSitemap extends JModelItem
         $registry = new JRegistry('_default');
         $registry->loadArray($excludedItems);
         $str = $registry->toString();
-        /*
-          $sep = $str = '';
-          foreach ($excludedItems as $itemid => $items) {
-          $str .= $sep."$itemid:".implode(',',$items);
-          $sep = ';';
-          }
-         */
+
         $db = &JFactory::getDBO();
         $query = "UPDATE #__xmap_sitemap set excluded_items='" . $db->getEscaped($str) . "' where id=" . $sitemap->id;
         $db->setQuery($query);

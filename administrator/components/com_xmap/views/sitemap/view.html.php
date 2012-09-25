@@ -80,9 +80,6 @@ class XmapViewSitemap extends JView
         $this->loadTemplate('class');
         $displayer = new XmapNavigatorDisplayer($state->params, $item);
 
-        # $displayer->setMenuItems($menuItems);
-        # $displayer->setExtensions($extensions);
-
         $this->assignRef('state', $state);
         $this->assignRef('item', $item);
 

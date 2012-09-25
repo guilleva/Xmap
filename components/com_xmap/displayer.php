@@ -36,9 +36,9 @@ class XmapDisplayer {
      * @var string  The current value for the request var "view" (eg. html, xml)
      */
     public $view;
-    
+
     public $canEdit;
-    
+
     function __construct($config,$sitemap)
     {
         jimport('joomla.utilities.date');

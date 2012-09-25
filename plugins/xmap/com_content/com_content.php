@@ -125,7 +125,7 @@ class xmap_com_content
                 || ( $expand_featured == 3 && $xmap->view == 'html')
                 || $xmap->view == 'navigator');
         $params['expand_featured'] = $expand_featured;
-        
+
         //----- Set expand_featured param
         $include_archived = JArrayHelper::getValue($params, 'include_archived', 2);
         $include_archived = ( $include_archived == 1
@@ -217,15 +217,6 @@ class xmap_com_content
                 if ($params['expand_featured']) {
                     $result = self::includeCategoryContent($xmap, $parent, 'archived', $params,$parent->id);
                 }
-                break;
-            case 'article':
-                $db = JFactory::getDBO();
-                $db->setQuery("SELECT UNIX_TIMESTAMP(modified) modified, UNIX_TIMESTAMP(created) created FROM #__content WHERE id=" . $id);
-                $item = $db->loadObject();
-                if ($item->modified) {
-                    $item->modified = $item->created;
-                }
-                $result = true;
                 break;
         }
         return $result;
@@ -329,7 +320,7 @@ class xmap_com_content
         } else {
             $where = array('a.state = 1');
         }
-        
+
         if ($catid=='featured') {
             $where[] = 'a.featured=1';
         } elseif ($catid=='archived') {
