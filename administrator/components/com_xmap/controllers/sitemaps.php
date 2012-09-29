@@ -18,9 +18,9 @@ jimport('joomla.application.component.controlleradmin');
  */
 class XmapControllerSitemaps extends JControllerAdmin
 {
-	
+
 	protected $text_prefix = 'COM_XMAP_SITEMAPS';
-	
+
 	/**
 	 * Constructor
 	 */
@@ -33,7 +33,7 @@ class XmapControllerSitemaps extends JControllerAdmin
 		$this->registerTask('unfeatured',   'featured');
 	}
 
-		
+
 	/**
 	 * Method to toggle the default sitemap.
 	 *
@@ -65,7 +65,7 @@ class XmapControllerSitemaps extends JControllerAdmin
 
 		$this->setRedirect('index.php?option=com_xmap&view=sitemaps');
 	}
-	
+
 	/**
 	 * Proxy for getModel.
 	 *

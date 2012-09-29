@@ -182,7 +182,7 @@ class XmapTableSitemap extends JTable
     {
         $date = JFactory::getDate();
         if (!$this->id) {
-            $this->created = $date->toMySQL();
+            $this->created = $date->toSql();
         }
         return parent::store($updateNulls);
     }

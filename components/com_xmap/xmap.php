@@ -10,10 +10,9 @@ defined('_JEXEC') or die;
 
 // Include dependencies
 jimport('joomla.application.component.controller');
-//require_once JPATH_COMPONENT.DS.'router.php';
 
-require_once(JPATH_COMPONENT.DS.'displayer.php');
+require_once(JPATH_COMPONENT.'/displayer.php');
 
-$controller = JController::getInstance('Xmap');
+$controller = JControllerLegacy::getInstance('Xmap');
 $controller->execute(JRequest::getVar('task'));
 $controller->redirect();

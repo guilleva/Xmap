@@ -9,15 +9,17 @@
 // no direct access
 defined('_JEXEC') or die;
 
-JHtml::addIncludePath(JPATH_COMPONENT.DS.'helpers'.DS.'html');
+JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 JHtml::_('behavior.tooltip');
 
 $n = count($this->items);
 
 $baseUrl = JUri::root();
 
+$version = new JVersion;
+
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_xmap&view=sitemaps');?>" method="post" name="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=com_xmap&view=sitemaps');?>" method="post" name="adminForm" id="adminForm">
 	<fieldset class="filter clearfix">
 		<div class="left">
 			<label for="search">
@@ -59,9 +61,6 @@ $baseUrl = JUri::root();
 				</th>
 				<th width="10%">
 					<?php echo JHtml::_('grid.sort',  'Xmap_Heading_Access', 'access_level', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
-				</th>
-				<th width="5%">
-					<?php echo JHtml::_('grid.sort', 'Xmap_Heading_Default', 'a.is_default', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
 				</th>
 				<th width="10%" class="nowrap">
 					<?php echo JText::_('Xmap_Heading_Html_Stats'); ?><br />
@@ -125,6 +124,13 @@ $baseUrl = JUri::root();
 				<td>
 					<a href="<?php echo JRoute::_('index.php?option=com_xmap&task=sitemap.edit&id='.$item->id);?>">
 						<?php echo $this->escape($item->title); ?></a>
+						<?php if ($item->is_default == 1) : ?>
+							<?php if (version_compare($version->getShortVersion(), '3.0.0', '>=')): ?>
+								<span class="icon-featured"></span>
+							<?php else: ?>
+								<img src="templates/bluestork/images/menu/icon-16-default.png" alt="<?php echo JText::_('Default'); ?>" />
+							<?php endif; ?>
+						<?php endif; ?>
                             <?php if ($item->state): ?>
                                 <small>[<a href="<?php echo $baseUrl. 'index.php?option=com_xmap&amp;view=xml&tmpl=component&id='.$item->id; ?>" target="_blank" title="<?php echo JText::_('XMAP_XML_LINK_TOOLTIP',true); ?>"><?php echo JText::_('XMAP_XML_LINK'); ?></a>]</small>
                                 <small>[<a href="<?php echo $baseUrl. 'index.php?option=com_xmap&amp;view=xml&tmpl=component&news=1&id='.$item->id; ?>" target="_blank" title="<?php echo JText::_('XMAP_NEWS_LINK_TOOLTIP',true); ?>"><?php echo JText::_('XMAP_NEWS_LINK'); ?></a>]</small>
@@ -137,13 +143,6 @@ $baseUrl = JUri::root();
 				</td>
 				<td class="center">
 					<?php echo $this->escape($item->access_level); ?>
-				</td>
-				<td class="center">
-					<?php if ($item->is_default == 1) : ?>
-						<img src="templates/bluestork/images/menu/icon-16-default.png" alt="<?php echo JText::_('Default'); ?>" />
-					<?php else  : ?>
-						&nbsp;
-					<?php endif; ?>
 				</td>
 				<td class="center">
 					<?php echo $item->count_html .' / '.$item->views_html. ' / ' . $htmlDate; ?>

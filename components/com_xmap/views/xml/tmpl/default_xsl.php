@@ -13,6 +13,7 @@ header('Content-Type: text/xml; charset="utf-8"');
 header('Content-Disposition: inline');
 
 $showTitle = $this->canEdit && JRequest::getBool('filter_showtitle', 0);
+$showExcluded = $this->canEdit && JRequest::getBool('filter_showexcluded', 0);
 
 echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 ?>
@@ -29,37 +30,37 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 <style type="text/css">
     <![CDATA[
   	<!--
-  	h1 { 
+  	h1 {
   		font-weight:bold;
   		font-size:1.5em;
   		margin-bottom:0;
   		margin-top:1px; }
-  	
-  	h2 { 
+
+  	h2 {
   		font-weight:bold;
   		font-size:1.2em;
-  		margin-bottom:0; 
+  		margin-bottom:0;
   		color:#707070;
   		margin-top:1px; }
-  	 	
-  	p.sml { 
+
+  	p.sml {
   		font-size:0.8em;
   		margin-top:0; }
-  	
+
   	.sortup {
   		background-position: right center;
-  		background-image: url(http://www.google.com/webmasters/sitemaps/images/sortup.gif);
+  		background-image: url(<?php echo JUri::base(); ?>components/com_xmap/assets/images/sortup.gif);
   		background-repeat: no-repeat;
   		font-style:italic;
   		white-space:pre; }
-  		
+
   	.sortdown {
   		background-position: right center;
-  		background-image: url(http://www.google.com/webmasters/sitemaps/images/sortdown.gif);
+  		background-image: url(<?php echo JUri::base(); ?>components/com_xmap/assets/images/sortdown.gif);
   		background-repeat: no-repeat;
   		font-style:italic;
   		white-space:pre; }
-  	
+
   	table.copyright {
   		width:100%;
   		border-top:1px solid #ddad08;
@@ -131,7 +132,17 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
     }
     #filter_options form { margin:0; }
     #filter_options {border-radius: 5px; background-color:#fff;padding: 3px;}
-  	-->
+    .toggle-excluded {
+      width: 16px; height: 16px; display: inline-block; float: left; cursor: pointer;margin-right: 5px;
+      background: url(<?php echo JUri::base(); ?>components/com_xmap/assets/images/tick.png) no-repeat;
+    }
+    .excluded {
+      text-decoration:line-through;
+    }
+    .excluded .toggle-excluded {
+      background: url(<?php echo JUri::base(); ?>components/com_xmap/assets/images/unpublished.png) no-repeat;
+    }
+    -->
     ]]>
 </style>
 <script language="JavaScript">
@@ -143,10 +154,10 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
   	var desc = '..';
   	var html = '..';
   	var freq = '..';
-  	
+
   	function initXsl(tabName,fileType) {
   		hdrRows = 1;
-  	
+
   	  if(fileType=="sitemap") {
   	  	numeric = ".3.";
   	  	desc = ".1.";
@@ -161,9 +172,9 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
   	  	initTable(tabName);
   		  setSort(tabName, 1, 1);
   	  }
-  	
+
   	}
-  	
+
   	function initTable(tabName) {
   	  var theTab = document.getElementById(tabName);
   	  for(r=0;r<hdrRows;r++)
@@ -193,21 +204,21 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
   	    }
   	  }
   	}
-  	
+
   	function setSort(tabName, colNum, sortDir) {
   		var theTab = document.getElementById(tabName);
   		theTab.rows[0].sCol = colNum;
   		theTab.rows[0].sDir = sortDir;
-  		if (sortDir) 
+  		if (sortDir)
   			theTab.rows[0].cells[colNum].className='sortdown'
   		else
   			theTab.rows[0].cells[colNum].className='sortup';
   	}
-  	
+
   	function setCursor(theCell, mode){
   	  rTitle = theCell.innerHTML.replace(/<[^>]+>|&nbsp;|\W/g,'');
   	  if(mode=="selected"){
-  	    if(theCell.style.color!=selectedColor) 
+  	    if(theCell.style.color!=selectedColor)
   	      defaultColor = theCell.style.color;
   	    theCell.style.color = selectedColor;
   	    theCell.style.cursor = "pointer";
@@ -218,7 +229,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
   	    window.status = "";
   	  }
   	}
-  	
+
   	function sortTable(theCell, colNum, hdrRows, sortParams){
   	  var typnum = !(sortParams & 1);
   	  sDir = !(sortParams & 2);
@@ -234,9 +245,9 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
   	    tBody.rows[0].cells[tBody.rows[0].sCol].className='';
   	  tBody.rows[0].sCol = colNum;
   	  tBody.rows[0].sDir = sDir;
-  	  if (sDir) 
+  	  if (sDir)
   	  	 tBody.rows[0].cells[colNum].className='sortdown'
-  	  else 
+  	  else
   	     tBody.rows[0].cells[colNum].className='sortup';
   	  for(i=0,r=hdrRows;r<tBody.rows.length;i++,r++){
   	    colCont = tBody.rows[r].cells[colNum].innerHTML;
@@ -261,10 +272,10 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
   	  tabOrd.sort(compRows);
   	  for(i=0,r=hdrRows;r<tBody.rows.length;i++,r++){
   	    tBody.insertBefore(tabOrd[i][1],tBody.rows[r]);
-  	  } 
-  	  window.status = ""; 
+  	  }
+  	  window.status = "";
   	}
-  	
+
   	function compRows(a, b){
   	  if(sDir){
   	    if(a[2]>b[2]) return -1;
@@ -275,6 +286,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
   	  }
   	  return 0;
   	}
+<?php if ($this->canEdit): ?>
 
 	var divOptions=null;
 	function showOptions (cell,options,uid,itemid,e) {
@@ -294,7 +306,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 		div.itemid=itemid;
 		div.cell=myCell;
 		divOptions=div;
-		
+
 	}
 	function closeOptions() {
 		divOptions.style.display='none';
@@ -302,17 +314,35 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 	}
 
 	function changeProperty(el,property) {
-		var myAjax = new Request({
+		new Request.JSON({
 		    url: '<?php echo JRoute::_('index.php?option=com_xmap&format=json&task=ajax.editElement&action=changeProperty',false); ?>',
                     onComplete: checkChangeResult.bind(divOptions),
                     method: 'get'
-		}).send('<?php echo JUtility::getToken(); ?>=1&id='+sitemapid+'&uid='+divOptions.uid+'&itemid='+divOptions.itemid+'&property='+property+'&value='+el.innerHTML);
+		}).send('<?php echo JSession::getFormToken(); ?>=1&id='+sitemapid+'&uid='+divOptions.uid+'&itemid='+divOptions.itemid+'&property='+property+'&value='+el.innerHTML);
 		divOptions.cell.innerHTML=el.innerHTML;
 		divOptions.style.display='none';
 		return false;
 	}
+  function toggleExcluded(el,itemid, uid){
+    row = $(el).getParent('tr');
+    new Request.JSON({
+        url: '<?php echo JRoute::_('index.php?option=com_xmap&format=json&task=ajax.editElement&action=toggleElement',false); ?>',
+                    onComplete: checkToggleExcluded.bind(row),
+                    method: 'get'
+    }).send('<?php echo JSession::getFormToken(); ?>=1&id='+sitemapid+'&uid='+uid+'&itemid='+itemid);
+  }
 	function checkChangeResult(result,xmlResponse) {
 	}
+  function checkToggleExcluded(result,xmlResponse) {
+    if (result.result == 'OK') {
+      if (result.state == 1) {
+        this.removeClass('excluded');
+      } else {
+        this.addClass('excluded');
+      }
+    }
+  }
+  <?php endif; ?>
 	var sitemapid=<?php echo $this->item->id; ?>;
 
     ]]>
@@ -332,13 +362,14 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
         <?php else: ?>
             <?php $sitemapUrl = JUri::base(true).'/'.str_replace('&','&amp;',$sitemapUrl); ?>
             <p><?php echo JText::_('COM_XMAP_XML_SITEMAP_HELP'); ?></p>
-            <p><?php echo JText::_('COM_XMAP_XML_SITEMAP_URL'); ?>: <?php echo $sitemapUrl; ?></p>
+            <p><b><?php echo JText::_('COM_XMAP_XML_SITEMAP_URL'); ?></b>: <?php echo $sitemapUrl; ?></p>
             <div id="filter_options">
                 <form method="get" action="<?php echo JRoute::_('index.php?option=com_xmap&view=xml'); ?>">
                 <input type="hidden" name="option" value="com_xmap" />
                 <input type="hidden" name="view" value="xml" />
                 <input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
                 <label><input onclick="this.form.submit();"<?php echo ($showTitle? ' checked="checked"':''); ?> type="checkbox" value="1" name="filter_showtitle" /><?php echo JText::_('COM_XMAP_DISPLAY_TITLE'); ?></label>
+                <label><input onclick="this.form.submit();"<?php echo ($showExcluded? ' checked="checked"':''); ?> type="checkbox" value="1" name="filter_showexcluded" /><?php echo JText::_('COM_XMAP_DISPLAY_EXCLUDED_ITEMS'); ?></label>
                 </form>
             </div>
         <?php endif; ?>
@@ -355,11 +386,12 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
   </tr>
 <xsl:for-each select="xna:urlset/xna:url">
 <?php if ($this->canEdit): ?>
+     <xsl:variable name="rowclass"><xsl:value-of select="xna:rowclass"/></xsl:variable>
      <xsl:variable name="UID"><xsl:value-of select="xna:uid"/></xsl:variable>
      <xsl:variable name="ItemID"><xsl:value-of select="xna:itemid"/></xsl:variable>
 <?php endif; ?>
-<tr>
-<td><xsl:variable name="sitemapURL"><xsl:value-of select="xna:loc"/></xsl:variable>
+<tr class="{$rowclass}">
+<td><?php if ($this->canEdit): ?><span class="toggle-excluded" onClick="toggleExcluded(this,'{$ItemID}','{$UID}')"></span><?php endif; ?><xsl:variable name="sitemapURL"><xsl:value-of select="xna:loc"/></xsl:variable>
     <div class="item_title"><xsl:value-of select="xna:title"/></div>
     <a href="{$sitemapURL}" target="_blank" ref="nofollow"><xsl:value-of select="$sitemapURL"></xsl:value-of></a></td>
 <td><xsl:value-of select="xna:lastmod"/></td>

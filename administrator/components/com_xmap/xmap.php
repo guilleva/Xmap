@@ -9,15 +9,14 @@
 // no direct access
 defined('_JEXEC') or die;
 
-JTable::addIncludePath( JPATH_COMPONENT.DS.'tables' );
+JTable::addIncludePath( JPATH_COMPONENT.'/tables' );
 
 jimport('joomla.form.form');
-JForm::addFieldPath( JPATH_COMPONENT.DS.'models'.DS.'fields' );
-//JForm::addFieldPath( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_menus'.DS.'models'.DS.'fields' );
+JForm::addFieldPath( JPATH_COMPONENT.'/models/fields' );
 
 // Include dependancies
 jimport('joomla.application.component.controller');
 
-$controller = JController::getInstance('Xmap');
+$controller = JControllerLegacy::getInstance('Xmap');
 $controller->execute(JRequest::getVar('task'));
 $controller->redirect();

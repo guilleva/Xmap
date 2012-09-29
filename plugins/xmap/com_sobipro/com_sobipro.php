@@ -224,13 +224,13 @@ class xmap_com_sobipro {
         define( 'SOBI_DEFLANG', JFactory::getLanguage()->getDefault() );
         define( 'SOBI_ACL', 'front' );
         define( 'SOBI_ROOT', JPATH_ROOT );
-        define( 'SOBI_MEDIA', implode( DS, array( JPATH_ROOT, 'media', 'sobipro' ) ) );
+        define( 'SOBI_MEDIA', implode( '/', array( JPATH_ROOT, 'media', 'sobipro' ) ) );
         define( 'SOBI_MEDIA_LIVE', JURI::root().'/media/sobipro' );
-        define( 'SOBI_PATH', SOBI_ROOT.DS.'components'.DS.'com_sobipro' );
-        if (!file_exists(SOBI_PATH.DS.'lib'.DS.'base'.DS.'fs'.DS.'loader.php')) {
+        define( 'SOBI_PATH', SOBI_ROOT.'/components/com_sobipro' );
+        if (!file_exists(SOBI_PATH.'/lib/base/fs/loader.php')) {
            return false;
         }
-        require_once SOBI_PATH.DS.'lib'.DS.'base'.DS.'fs'.DS.'loader.php';
+        require_once SOBI_PATH.'/lib/base/fs/loader.php';
         SPLoader::loadClass( 'sobi' );
         SPLoader::loadClass( 'base.request' );
         SPLoader::loadClass( 'base.object' );

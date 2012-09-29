@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS `#__xmap_sitemap` (
   `lastvisit_xml` int(11) DEFAULT NULL,
   `lastvisit_html` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__xmap_items` (
   `uid` varchar(100) NOT NULL,
@@ -30,4 +30,4 @@ CREATE TABLE IF NOT EXISTS `#__xmap_items` (
   PRIMARY KEY (`uid`,`itemid`,`view`,`sitemap_id`),
   KEY `uid` (`uid`,`itemid`),
   KEY `view` (`view`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8
+) ENGINE=InnoDB DEFAULT CHARSET=utf8

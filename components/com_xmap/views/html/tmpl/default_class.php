@@ -9,7 +9,7 @@
 // No direct access
 defined('_JEXEC') or die;
 
-require_once(JPATH_COMPONENT.DS.'displayer.php');
+require_once(JPATH_COMPONENT.'/displayer.php');
 
 
 class XmapHtmlDisplayer extends XmapDisplayer {

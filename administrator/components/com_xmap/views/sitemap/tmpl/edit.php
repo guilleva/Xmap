@@ -10,8 +10,6 @@ defined('_JEXEC') or die;
 // Include the component HTML helpers.
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
-jimport('joomla.html.pane');
-
 // Load the tooltip behavior.
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
@@ -20,68 +18,99 @@ JHtml::_('behavior.formvalidation');
 <!--
     function submitbutton(task)
     {
-        if (task == 'sitemap.cancel' || document.formvalidator.isValid($('item-form'))) {
+        if (task == 'sitemap.cancel' || document.formvalidator.isValid($('adminForm'))) {
             submitform(task);
         }
     }
 // -->
 </script>
+<form action="<?php echo JRoute::_('index.php?option=com_xmap&layout=edit&id='.$this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
+    <div class="row-fluid">
+        <!-- Begin Content -->
+        <div class="span10 form-horizontal">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#general" data-toggle="tab"><?php echo JText::_('XMAP_SITEMAP_DETAILS_FIELDSET');?></a></li>
+                <li><a href="#attrib-menus" data-toggle="tab"><?php echo JText::_('XMAP_FIELDSET_MENUS');?></a></li>
+                <?php
+                    $fieldSets = $this->form->getFieldsets('attribs');
+                    foreach ($fieldSets as $name => $fieldSet) : ?>
+                        <li><a href="#attrib-<?php echo $name;?>" data-toggle="tab"><?php echo JText::_($fieldSet->label);?></a></li>
+                <?php
+                    endforeach;
+                ?>
+            </ul>
 
-<form action="<?php JRoute::_('index.php?option=com_xmap'); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
+            <div class="tab-content">
+                <div class="tab-pane active" id="general">
+                    <div class="row-fluid">
+                        <div class="span6">
+                            <div class="control-group">
+                                <?php echo $this->form->getLabel('title'); ?>
+                                <div class="controls">
+                                    <?php echo $this->form->getInput('title'); ?>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <?php echo $this->form->getLabel('alias'); ?>
+                                <div class="controls">
+                                    <?php echo $this->form->getInput('alias'); ?>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <?php echo $this->form->getLabel('state'); ?>
+                                <div class="controls">
+                                    <?php echo $this->form->getInput('state'); ?>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <?php echo $this->form->getLabel('access'); ?>
+                                <div class="controls">
+                                    <?php echo $this->form->getInput('access'); ?>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <div class="clr"></div>
+                                <?php echo $this->form->getLabel('introtext'); ?><br />
+                                <div class="clr"></div>
+                                <?php echo $this->form->getInput('introtext'); ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-    <div class="width-60 fltlft">
-        <fieldset class="adminform">
-            <legend><?php echo JText::_('Xmap_Sitemap_Details_Fieldset'); ?></legend>
-<?php echo $this->form->getLabel('title'); ?>
-            <?php echo $this->form->getInput('title'); ?>
 
-<?php echo $this->form->getLabel('alias'); ?>
-            <?php echo $this->form->getInput('alias'); ?>
+                <div class="tab-pane" id="attrib-menus">
+                    <?php echo $this->form->getInput('selections'); ?>
+                </div>
+                <?php
+                    $fieldSets = $this->form->getFieldsets('attribs');
+                    foreach ($fieldSets as $name => $fieldSet) : ?>
+                        <div class="tab-pane" id="attrib-<?php echo $name;?>">
+                        <?php
+                        if (isset($fieldSet->description) && trim($fieldSet->description)) :
+                            echo '<p class="tip">' . $this->escape(JText::_($fieldSet->description)) . '</p>';
+                        endif;
 
-<?php echo $this->form->getLabel('state'); ?>
-            <?php echo $this->form->getInput('state'); ?>
-
-<?php echo $this->form->getLabel('access'); ?>
-            <?php echo $this->form->getInput('access'); ?>
-
-            <div class="clr"></div>
-<?php echo $this->form->getLabel('introtext'); ?><br />
-            <div class="clr"></div>
-<?php echo $this->form->getInput('introtext'); ?>
-        </fieldset>
+                        foreach ($this->form->getFieldset($name) as $field) : ?>
+                            <div class="control-group">
+                                <?php echo $field->label; ?>
+                                <div class="controls">
+                                    <?php echo $field->input; ?>
+                                </div>
+                            </div>
+                        <?php
+                        endforeach; ?>
+                        </div>
+                    <?php
+                    endforeach;
+                    ?>
+            </div>
+        </div>
     </div>
 
-    <div class="width-40" style="float:left">
-<?php echo JHtml::_('sliders.start', 'xmap-sliders-' . $this->item->id, array('useCookie' => 1)); ?>
-        <?php echo JHtml::_('sliders.panel', JText::_('XMAP_FIELDSET_MENUS'), 'menus-details'); ?>
-        <?php echo $this->form->getInput('selections'); ?>
 
-<?php
-            $fieldSets = $this->form->getFieldsets('attribs');
-            foreach ($fieldSets as $name => $fieldSet) :
-                echo JHtml::_('sliders.panel', JText::_($fieldSet->label), $name . '-options');
-                if (isset($fieldSet->description) && trim($fieldSet->description)) :
-                    echo '<p class="tip">' . $this->escape(JText::_($fieldSet->description)) . '</p>';
-                endif;
-?>
-                <fieldset class="panelform">
-                    <ul class="adminformlist">
-                    <?php foreach ($this->form->getFieldset($name) as $field) : ?>
-                            <li><?php echo $field->label; ?>
-                                <?php echo $field->input; ?></li>
-                    <?php endforeach; ?>
-                    </ul>
-                </fieldset>
-        <?php endforeach; ?>
-
-        <?php echo JHtml::_('sliders.end'); ?>
-        </div>
-
-
-
-
-        <input type="hidden" name="task" value="" />
-<?php echo $this->form->getInput('is_default'); ?>
+    <input type="hidden" name="task" value="" />
+    <?php echo $this->form->getInput('is_default'); ?>
     <?php echo JHtml::_('form.token'); ?>
-</form>
-<div class="clr"></div>
+    </form>
+    <div class="clr"></div>

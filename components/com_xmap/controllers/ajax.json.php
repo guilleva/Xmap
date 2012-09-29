@@ -18,7 +18,7 @@ jimport('joomla.application.component.controller');
  * @subpackage          com_xmap
  * @since		2.0
  */
-class XmapControllerAjax extends JController
+class XmapControllerAjax extends JControllerLegacy
 {
 
     public function editElement()
@@ -29,12 +29,12 @@ class XmapControllerAjax extends JController
         jimport('joomla.user.helper');
         $user = JFactory::getUser();
         $groups = array_keys(JUserHelper::getUserGroups($user->get('id')));
-        $registry = new JRegistry('_default');
-        $sitemapId = JREquest::getInt('sitemap');
+        $result = new JRegistry('_default');
+        $sitemapId = JREquest::getInt('id');
 
-        if (!$user->authorize('core.edit', 'com_xmap.sitemap.'.$sitemapId)) {
-            $registry->setValue('result', 'KO');
-            $registry->setValue('message', 'You are not authorized to perform this action!');
+        if (!$user->authorise('core.edit', 'com_xmap.sitemap.'.$sitemapId)) {
+            $result->setValue('result', 'KO');
+            $result->setValue('message', 'You are not authorized to perform this action!');
         } else {
             $model = $this->getModel('sitemap');
             if ($model->getItem()) {
@@ -57,11 +57,11 @@ class XmapControllerAjax extends JController
                         break;
                 }
             }
-            $registry->setValue('result', 'OK');
-            $registry->setValue('state', $state);
-            $registry->setValue('message', '');
+            $result->set('result', 'OK');
+            $result->set('state', $state);
+            $result->set('message', '');
         }
 
-        echo $registry->toString();
+        echo $result->toString();
     }
 }

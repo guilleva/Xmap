@@ -16,7 +16,7 @@ jimport('joomla.application.component.view');
  * @subpackage  com_xmap
  * @since	       2.0
  */
-class XmapViewSitemaps extends JView
+class XmapViewSitemaps extends JViewLegacy
 {
 	protected $state;
 	protected $items;
@@ -27,6 +27,10 @@ class XmapViewSitemaps extends JView
 	 */
 	public function display($tpl = null)
 	{
+		if ($this->getLayout() !== 'modal') {
+		    XmapHelper::addSubmenu('sitemaps');
+		}
+
 		$this->state	  = $this->get('State');
 		$this->items	  = $this->get('Items');
 		$this->pagination     = $this->get('Pagination');
@@ -55,12 +59,18 @@ class XmapViewSitemaps extends JView
 	{
 		$state = $this->get('State');
 		$doc = JFactory::getDocument();
+		$version = new JVersion;
 
 		$doc->addStyleDeclaration('.icon-48-sitemap {background-image: url(components/com_xmap/images/sitemap-icon.png);}');
 		JToolBarHelper::title(JText::_('XMAP_SITEMAPS_TITLE'), 'sitemap.png');
 		JToolBarHelper::custom('sitemaps.publish', 'publish.png', 'publish_f2.png', 'JTOOLBAR_Publish', true);
 		JToolBarHelper::custom('sitemaps.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
+
+		if (version_compare($version->getShortVersion(), '3.0.0', '>=')) {
+                JToolBarHelper::custom('sitemaps.setdefault', 'featured.png', 'featured_f2.png', 'XMAP_TOOLBAR_SET_DEFAULT', true);
+        } else {
                 JToolBarHelper::custom('sitemaps.setdefault', 'default.png', 'default_f2.png', 'XMAP_TOOLBAR_SET_DEFAULT', true);
+        }
 		if ($state->get('filter.published') == -2) {
 			JToolBarHelper::deleteList('', 'sitemaps.delete','JTOOLBAR_DELETE');
 		}
@@ -69,9 +79,6 @@ class XmapViewSitemaps extends JView
 		}
 		JToolBarHelper::divider();
 		JToolBarHelper::custom('sitemap.edit', 'edit.png', 'edit_f2.png', 'JTOOLBAR_EDIT', true);
-		JToolBarHelper::custom('sitemap.edit', 'new.png', 'new_f2.png', 'JTOOLBAR_New', false);
-		//JToolBarHelper::divider();
-		//JToolBarHelper::preferences('com_xmap');
-		//JToolBarHelper::help('screen.xmap.sitemaps');
+		JToolBarHelper::addNew('sitemap.add');
 	}
 }

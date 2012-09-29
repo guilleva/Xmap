@@ -9,7 +9,7 @@
 // no direct access
 defined('_JEXEC') or die;
 
-JTable::addIncludePath( JPATH_COMPONENT.DS.'tables' );
+JTable::addIncludePath( JPATH_COMPONENT . '/tables' );
 
 /**
  * @package		Xmap

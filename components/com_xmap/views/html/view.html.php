@@ -18,7 +18,7 @@ jimport('joomla.application.component.view');
  * @subpackage      com_xmap
  * @since           2.0
  */
-class XmapViewHtml extends JView
+class XmapViewHtml extends JViewLegacy
 {
 
     protected $state;
@@ -37,7 +37,7 @@ class XmapViewHtml extends JView
         $this->state = $this->get('State');
         $this->item = $this->get('Item');
         $this->items = $this->get('Items');
-        
+
         $this->canEdit = JFactory::getUser()->authorise('core.admin', 'com_xmap');
 
         // Check for errors.
@@ -109,7 +109,7 @@ class XmapViewHtml extends JView
         if ($menu = $menus->getActive()) {
             if (isset($menu->query['view']) && isset($menu->query['id'])) {
                 if ($menu->query['view'] == 'html' && $menu->query['id'] == $this->item->id) {
-                    $menuParams = new JParameter($menu->params);
+                    $menuParams = new JRegistry($menu->params);
                     $title = $menuParams->get('page_title');
 
                     $this->document->setDescription($menuParams->get('menu-meta_description'));

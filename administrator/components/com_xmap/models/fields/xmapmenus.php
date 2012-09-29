@@ -8,7 +8,7 @@
 defined('_JEXEC') or die;
 
 jimport('joomla.html.html');
-require_once JPATH_LIBRARIES . DS . 'joomla' . DS . 'form' . DS . 'fields' . DS . 'list.php';
+require_once JPATH_LIBRARIES . '/joomla/form/fields/list.php';
 
 /**
  * Menus Form Field class for the Xmap Component
@@ -105,7 +105,7 @@ class JFormFieldXmapmenus extends JFormFieldList
         if (!is_array($value)) {
             // Convert the selections field to an array.
             $registry = new JRegistry;
-            $registry->loadJSON($value);
+            $registry->loadString($value);
             $value = $registry->toArray();
         }
 
@@ -117,6 +117,7 @@ class JFormFieldXmapmenus extends JFormFieldList
 			var xmapMenusSortable = new Sortables(\$('ul_" . $this->inputId . "'),{
 				clone:true,
 				revert: true,
+                preventDefault: true,
 				onStart: function(el) {
 					el.setStyle('background','#bbb');
 				},
@@ -176,5 +177,5 @@ class JFormFieldXmapmenus extends JFormFieldList
 
         return ($indexA < $indexB) ? -1 : 1;
     }
-    
+
 }

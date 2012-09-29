@@ -47,7 +47,7 @@ class XmapDisplayer {
         $groups = array_keys(JUserHelper::getUserGroups($user->get('id')));
         $date = new JDate();
 
-        $this->userLevels	= (array)$user->authorisedLevels();
+        $this->userLevels	= (array)$user->getAuthorisedViewLevels();
         // Deprecated: should use userLevels from now on
         // $this->gid	= $user->gid;
         $this->now	= $date->toUnix();
@@ -223,7 +223,7 @@ class XmapDisplayer {
         if (!isset($_excluded_items)) {
             $_excluded_items = array();
             $registry = new JRegistry('_default');
-            $registry->loadJSON($this->sitemap->excluded_items);
+            $registry->loadString($this->sitemap->excluded_items);
             $_excluded_items = $registry->toArray();
         }
         return $_excluded_items;

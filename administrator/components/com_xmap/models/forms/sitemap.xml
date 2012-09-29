@@ -6,8 +6,7 @@
             id="id"
             name="id"
             type="hidden"
-            class="inputbox"
-            label="Xmap_Id_Label"
+            label="XMAP_ID_LABEL"
             size="10"
             default="0"
             required="true"
@@ -19,7 +18,8 @@
             type="text"
             label="JGLOBAL_TITLE"
             description="JFIELD_TITLE_DESC"
-            class="inputbox"
+            class="inputbox input-xlarge"
+            labelclass="control-label"
             size="30"
             required="true"
             />
@@ -31,6 +31,7 @@
             label="JFIELD_ALIAS_LABEL"
             description="JFIELD_ALIAS_DESC"
             class="inputbox"
+            labelclass="control-label"
             size="30"
             default=""/>
 
@@ -39,6 +40,7 @@
             name="introtext"
             type="editor"
             class="inputbox"
+            labelclass="control-label"
             label="XMAP_INTROTEXT_LABEL"
             description="XMAP_INTROTEXT_DESC"
             filter="safehtml"
@@ -59,6 +61,7 @@
             label="JSTATUS"
             description="JFIELD_PUBLISHED_DESC"
             class="inputbox"
+            labelclass="control-label"
             size="1"
             default="1">
             <option
@@ -76,6 +79,7 @@
             label="XMAP_CREATED_LABEL"
             description="XMAP_CREATED_DESC"
             class="inputbox"
+            labelclass="control-label"
             size="16"
             format="%Y-%m-%d %H-%M-%S"
             />
@@ -87,8 +91,9 @@
             label="JFIELD_ACCESS_LABEL"
             description="JFIELD_ACCESS_DESC"
             class="inputbox"
+            labelclass="control-label"
             size="1"
-            default=""/>
+            />
 
         <field
             id="count_html"
@@ -97,6 +102,7 @@
             label="XMAP_HITSHTML_LABEL"
             description="XMAP_HITS_DESC"
             class="readonly"
+            labelclass="control-label"
             size="6"
             readonly="true"
             filter="unset"/>
@@ -108,6 +114,7 @@
             label="XMAP_HITSXML_LABEL"
             description="XMAP_HITS_DESC"
             class="readonly"
+            labelclass="control-label"
             size="6"
             readonly="true"
             filter="unset"/>
@@ -119,6 +126,7 @@
             label="XMAP_VISITSHTML_LABEL"
             description="XMAP_HITS_DESC"
             class="readonly"
+            labelclass="control-label"
             size="6"
             readonly="true"
             filter="unset"/>
@@ -130,6 +138,7 @@
             label="XMAP_VISITSXML_LABEL"
             description="XMAP_HITS_DESC"
             class="readonly"
+            labelclass="control-label"
             size="6"
             readonly="true"
             filter="unset"/>
@@ -141,6 +150,7 @@
             label="XMAP_MENUASSIGMENT_LABEL"
             description="XMAP_MENUASSIGMENT_DESC"
             class="inputbox"
+            labelclass="control-label"
             multiple="multiple"
             array="true"
             size="5"/>
@@ -150,6 +160,7 @@
             name="selections_priority"
             type="hidden"
             class="inputbox"
+            labelclass="control-label"
             multiple="multiple"
             size="5"/>
 
@@ -158,6 +169,7 @@
             name="selections_changefreq"
             type="hidden"
             class="inputbox"
+            labelclass="control-label"
             multiple="multiple"
             size="5"/>
     </fields>
@@ -167,7 +179,9 @@
 
             <field
                 name="showintro"
-                type="list"
+                type="radio"
+                class="btn-group"
+                labelclass="control-label"
                 label="XMAP_ATTRIBS_SHOW_INTRO_LABEL"
                 description="XMAP_ATTRIBS_SHOW_INTRO_DESC"
                 default="1">
@@ -179,9 +193,11 @@
 
             <field
                 name="show_menutitle"
-                type="list"
+                type="radio"
+                class="btn-group"
                 label="XMAP_ATTRIBS_SHOW_MENU_TITLE_LABEL"
                 description="XMAP_ATTRIBS_SHOW_MENU_TITLE_DESC"
+                labelclass="control-label"
                 default="1">
                 <option
                     value="0">No</option>
@@ -194,18 +210,22 @@
                 type="text"
                 default=""
                 label="XMAP_ATTRIBS_CLASSNAME_LABEL"
+                labelclass="control-label"
                 description="XMAP_ATTRIBS_CLASSNAME_DESC"></field>
 
             <field
                 name="columns"
                 type="text"
                 default=""
+                labelclass="control-label"
                 label="XMAP_ATTRIBS_COLUMNS_LABEL"
                 description="XMAP_ATTRIBS_COLUMNS_DESC"></field>
 
             <field
                 name="exlinks"
-                type="list"
+                type="radio"
+                class="btn-group"
+                labelclass="control-label"
                 label="XMAP_ATTRIBS_EXTERNAL_LINKS_LABEL"
                 description="XMAP_ATTRIBS_EXTERNAL_LINKS_DESC"
                 default="1">
@@ -220,6 +240,7 @@
                 type="list"
                 label="XMAP_ATTRIBS_EXTERNAL_LINKS_IMAGE_LABEL"
                 description="XMAP_ATTRIBS_EXTERNAL_LINKS_IMAGE_DESC"
+                labelclass="control-label"
                 default="1">
                 <option
                     value="img_blue.gif">img_blue.gif</option>
@@ -245,9 +266,11 @@
 
             <field
                 name="compress_xml"
-                type="list"
+                type="radio"
+                class="btn-group"
                 label="XMAP_ATTRIBS_COMPRESS_XML_LABEL"
                 description="XMAP_ATTRIBS_COMPRESS_XML_DESC"
+                labelclass="control-label"
                 default="1">
                 <option
                     value="0">No</option>
@@ -257,9 +280,11 @@
             
             <field
                 name="beautify_xml"
-                type="list"
+                type="radio"
+                class="btn-group"
                 label="XMAP_ATTRIBS_BEAUTIFY_XML_LABEL"
                 description="XMAP_ATTRIBS_BEAUTIFY_XML_DESC"
+                labelclass="control-label"
                 default="1">
                 <option
                     value="0">No</option>
@@ -273,6 +298,7 @@
               name="news_publication_name"
               type="text"
               default=""
+              labelclass="control-label"
               label="XMAP_ATTRIBS_NEWS_PUBLICATION_NAME_LABEL"
               description="XMAP_ATTRIBS_NEWS_PUBLICATION_NAME_DESC"></field>
 <!--

@@ -18,7 +18,7 @@ class XmapInstaller extends JInstaller
 
     public function __construct($basepath, $classprefix=null, $adapterfolder=null)
     {
-        JAdapter::__construct(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_xmap', 'JInstaller');
+        JAdapter::__construct(JPATH_ADMINISTRATOR '/components/com_xmap', 'JInstaller');
     }
 
     /**

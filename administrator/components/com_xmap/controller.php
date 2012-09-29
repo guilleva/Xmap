@@ -16,7 +16,7 @@ jimport('joomla.application.component.controller');
  * @package	     Xmap
  * @subpackage  com_xmap
  */
-class XmapController extends JController
+class XmapController extends JControllerLegacy
 {
 
     function __construct()
@@ -31,7 +31,7 @@ class XmapController extends JController
      */
     public function display($cachable = false, $urlparams = false)
     {
-        require_once JPATH_COMPONENT . DS . 'helpers' . DS . 'xmap.php';
+        require_once JPATH_COMPONENT . '/helpers/xmap.php';
 
         // Get the document object.
         $document = JFactory::getDocument();
@@ -55,8 +55,6 @@ class XmapController extends JController
 
             $view->display();
 
-            // Load the submenu.
-            XmapHelper::addSubmenu($vName);
         }
     }
 

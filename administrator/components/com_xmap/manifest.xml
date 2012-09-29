@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<install method="upgrade" version="1.5" type="component">
+<extension method="upgrade" version="1.5" type="component">
     <name>com_xmap</name>
     <creationDate>2011-04-10</creationDate>
     <author>Guillermo Vargas</author>
@@ -66,4 +66,4 @@
             <folder>images</folder>
         </images>
     </administration>
-</install>
+</extension>

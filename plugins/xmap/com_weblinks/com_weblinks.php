@@ -167,8 +167,8 @@ class xmap_com_weblinks
         }
 
         self::$_initialized = true;
-        require_once JPATH_SITE.DS.'components'.DS.'com_weblinks'.DS.'models'.DS.'category.php';
-        require_once JPATH_SITE.DS.'components'.DS.'com_weblinks'.DS.'helpers'.DS.'route.php';
+        require_once JPATH_SITE.'/components/com_weblinks/models/category.php';
+        require_once JPATH_SITE.'/components/com_weblinks/helpers/route.php';
 
     }
 }

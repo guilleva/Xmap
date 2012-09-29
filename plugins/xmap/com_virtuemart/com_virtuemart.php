@@ -7,7 +7,7 @@
  * @license GNU/GPL
  * @description Xmap plugin for Virtuemart component
  */
- 
+
 defined('_JEXEC') or die;
 
 /** Adds support for Virtuemart categories to Xmap */
@@ -167,25 +167,25 @@ class xmap_com_virtuemart
             $xmap->changeLevel(-1);
         }
     }
-    
+
     static protected function initialize()
     {
         if (self::$initialized) return;
 
         $app = JFactory::getApplication ();
-        
+
         if (!class_exists( 'VmConfig' )) {
-            require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');
+            require(JPATH_ADMINISTRATOR . '/components/com_virtuemart/helpers/config.php');
             VmConfig::loadConfig();
         }
-        JTable::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'tables');
+        JTable::addIncludePath(JPATH_VM_ADMINISTRATOR . '/tables');
 
         $app->setUserState('com_virtuemart.htmlc0.limit',9000);
 
-        if (!class_exists('VirtueMartModelCategory')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'category.php');
+        if (!class_exists('VirtueMartModelCategory')) require(JPATH_VM_ADMINISTRATOR . '/models/category.php');
         self::$categoryModel = new VirtueMartModelCategory();
-        
-        if (!class_exists('VirtueMartModelProduct')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'product.php');
+
+        if (!class_exists('VirtueMartModelProduct')) require(JPATH_VM_ADMINISTRATOR  . '/models/product.php');
         self::$productModel = new VirtueMartModelProduct();
     }
 

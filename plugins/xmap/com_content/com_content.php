@@ -7,8 +7,8 @@
  */
 defined('_JEXEC') or die;
 
-require_once JPATH_SITE . DS . 'components' . DS . 'com_content' . DS . 'helpers' . DS . 'route.php';
-require_once JPATH_SITE . DS . 'components' . DS . 'com_content' . DS . 'helpers' . DS . 'query.php';
+require_once JPATH_SITE . '/components/com_content/helpers/route.php';
+require_once JPATH_SITE . '/components/com_content/helpers/query.php';
 
 /**
  * Handles standard Joomla's Content articles/categories
@@ -188,8 +188,8 @@ class xmap_com_content
 
         $params['nullDate'] = $db->Quote($db->getNullDate());
 
-        $params['nowDate'] = $db->Quote(JFactory::getDate()->toMySQL());
-        $params['groups'] = implode(',', $user->authorisedLevels());
+        $params['nowDate'] = $db->Quote(JFactory::getDate()->toSql());
+        $params['groups'] = implode(',', $user->getAuthorisedViewLevels());
 
         // Define the language filter condition for the query
         $params['language_filter'] = $app->getLanguageFilter();
@@ -343,7 +343,7 @@ class xmap_com_content
             $where[] = 'a.access IN (' . $params['groups'] . ') ';
         }
 
-        $query = 'SELECT a.id, a.title, a.alias, a.title_alias, a.catid, '
+        $query = 'SELECT a.id, a.title, a.alias, a.catid, '
                . 'UNIX_TIMESTAMP(a.created) created, UNIX_TIMESTAMP(a.modified) modified'
                . ',a.language'
                . (($params['add_images'] || $params['add_pagebreaks']) ? ',a.introtext, a.fulltext ' : ' ')

@@ -14,8 +14,13 @@ jimport('joomla.application.component.view');
  * @package	Xmap
  * @subpackage	com_xmap
  */
-class XmapViewSitemap extends JView
+class XmapViewSitemap extends JViewLegacy
 {
+
+    protected $item;
+    protected $list;
+    protected $form;
+    protected $state;
 
     /**
      * Display the view
@@ -25,9 +30,11 @@ class XmapViewSitemap extends JView
     function display($tpl = null)
     {
         $app = JFactory::getApplication();
-        $state = $this->get('State');
-        $item = $this->get('Item');
-        $form = $this->get('Form');
+        $this->state = $this->get('State');
+        $this->item = $this->get('Item');
+        $this->form = $this->get('Form');
+
+        $version = new JVersion;
 
         // Check for errors.
         if (count($errors = $this->get('Errors'))) {
@@ -38,18 +45,15 @@ class XmapViewSitemap extends JView
         JHTML::stylesheet('administrator/components/com_xmap/css/xmap.css');
         // Convert dates from UTC
         $offset = $app->getCfg('offset');
-        if (intval($item->created)) {
-            $item->created = JHtml::date($item->created, '%Y-%m-%d %H-%M-%S', $offset);
+        if (intval($this->item->created)) {
+            $this->item->created = JHtml::date($this->item->created, '%Y-%m-%d %H-%M-%S', $offset);
         }
 
-
-        $form->bind($item);
-
-        $this->assignRef('state', $state);
-        $this->assignRef('item', $item);
-        $this->assignRef('form', $form);
-
         $this->_setToolbar();
+
+        if (version_compare($version->getShortVersion(), '3.0.0', '<')) {
+            $tpl = 'legacy';
+        }
         parent::display($tpl);
         JRequest::setVar('hidemainmenu', true);
     }
@@ -61,10 +65,10 @@ class XmapViewSitemap extends JView
      */
     function navigator($tpl = null)
     {
-        require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'xmap.php');
+        require_once(JPATH_COMPONENT_SITE . '/helpers/xmap.php');
         $app = JFactory::getApplication();
-        $state = $this->get('State');
-        $item = $this->get('Item');
+        $this->state = $this->get('State');
+        $this->item = $this->get('Item');
 
         # $menuItems = XmapHelper::getMenuItems($item->selections);
         # $extensions = XmapHelper::getExtensions();
@@ -78,10 +82,7 @@ class XmapViewSitemap extends JView
         JHTML::stylesheet('mootree.css', 'media/system/css/');
 
         $this->loadTemplate('class');
-        $displayer = new XmapNavigatorDisplayer($state->params, $item);
-
-        $this->assignRef('state', $state);
-        $this->assignRef('item', $item);
+        $displayer = new XmapNavigatorDisplayer($state->params, $this->item);
 
         parent::display($tpl);
     }
@@ -89,13 +90,13 @@ class XmapViewSitemap extends JView
     function navigatorLinks($tpl = null)
     {
 
-        require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'xmap.php');
+        require_once(JPATH_COMPONENT_SITE . '/helpers/xmap.php');
         $link = urldecode(JRequest::getVar('link', ''));
         $name = JRequest::getCmd('e_name', '');
         $Itemid = JRequest::getInt('Itemid');
 
-        $item = $this->get('Item');
-        $state = $this->get('State');
+        $this->item = $this->get('Item');
+        $this->state = $this->get('State');
         $menuItems = XmapHelper::getMenuItems($item->selections);
         $extensions = XmapHelper::getExtensions();
 
@@ -103,7 +104,7 @@ class XmapViewSitemap extends JView
         $nav = new XmapNavigatorDisplayer($state->params, $item);
         $nav->setExtensions($extensions);
 
-        $list = array();
+        $this->list = array();
         // Show the menu list
         if (!$link && !$Itemid) {
             foreach ($menuItems as $menutype => &$menu) {
@@ -127,7 +128,7 @@ class XmapViewSitemap extends JView
                 $node->selectable = false;
                 //$node->name = $this->getMenuTitle($menutype,@$menu->module);	// get the mod_mainmenu title from modules table
 
-                $list[] = $node;
+                $this->list[] = $node;
             }
         } else {
             $parent = new stdClass;
@@ -152,11 +153,9 @@ class XmapViewSitemap extends JView
                 $parent->id = 1;
                 $parent->link = $link;
             }
-            $list = $nav->expandLink($parent);
+            $this->list = $nav->expandLink($parent);
         }
 
-        $this->assignRef('item', $item);
-        $this->assignRef('list', $list);
         parent::display('links');
         exit;
     }
@@ -173,17 +172,13 @@ class XmapViewSitemap extends JView
 
         JToolBarHelper::title(JText::_('XMAP_PAGE_' . ($isNew ? 'ADD_SITEMAP' : 'EDIT_SITEMAP')), 'article-add.png');
 
-        // If an existing item, can save to a copy.
-        if (!$isNew) {
-            JToolBarHelper::custom('sitemap.save2copy', 'copy.png', 'copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
-        }
-
-        JToolBarHelper::custom('sitemap.save2new', 'new.png', 'new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-        JToolBarHelper::save('sitemap.save', 'JTOOLBAR_SAVE');
         JToolBarHelper::apply('sitemap.apply', 'JTOOLBAR_APPLY');
-        JToolBarHelper::cancel('sitemap.cancel', 'JTOOLBAR_CANCEL');
-        JToolBarHelper::divider();
-        JToolBarHelper::help('screen.xmap.sitemap');
+        JToolBarHelper::save('sitemap.save', 'JTOOLBAR_SAVE');
+        JToolBarHelper::save2new('sitemap.save2new');
+        if (!$isNew) {
+            JToolBarHelper::save2copy('sitemap.save2copy');
+        }
+        JToolBarHelper::cancel('sitemap.cancel', 'JTOOLBAR_CLOSE');
     }
 
 }

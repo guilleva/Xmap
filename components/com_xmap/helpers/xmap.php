@@ -9,7 +9,7 @@
 // No direct access
 defined('_JEXEC') or die;
 
-require_once(JPATH_SITE . DS . 'includes' . DS . 'application.php');
+require_once(JPATH_SITE .'/includes/application.php');
 jimport('joomla.database.query');
 
 /**
@@ -49,7 +49,7 @@ class XmapHelper
 
             // Filter over authorized access levels and publishing state.
             $query->where('n.published = 1');
-            $query->where('n.access IN (' . implode(',', (array) $user->authorisedLevels()) . ')');
+            $query->where('n.access IN (' . implode(',', (array) $user->getAuthorisedViewLevels()) . ')');
 
             // Filter by language
             if ($app->getLanguageFilter()) {
@@ -131,9 +131,9 @@ class XmapHelper
         $extensions = $db->loadObjectList('element');
 
         foreach ($extensions as $element => $extension) {
-            if (file_exists(JPATH_PLUGINS . DS . $extension->folder . DS . $element. DS. $element . '.php')) {
-                require_once(JPATH_PLUGINS . DS . $extension->folder . DS . $element. DS. $element . '.php');
-                $params = new JParameter($extension->params);
+            if (file_exists(JPATH_PLUGINS . '/' . $extension->folder . '/' . $element. '/'. $element . '.php')) {
+                require_once(JPATH_PLUGINS . '/' . $extension->folder . '/' . $element. '/'. $element . '.php');
+                $params = new JRegistry($extension->params);
                 $extension->params = $params->toArray();
                 $list[$element] = $extension;
             }

@@ -18,7 +18,7 @@ jimport('joomla.application.component.controller');
  * @subpackage          com_xmap
  * @since		2.0
  */
-class XmapController extends JController
+class XmapController extends JControllerLegacy
 {
 
     /**
