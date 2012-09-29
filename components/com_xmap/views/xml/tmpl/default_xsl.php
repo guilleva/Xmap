@@ -389,6 +389,8 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
      <xsl:variable name="rowclass"><xsl:value-of select="xna:rowclass"/></xsl:variable>
      <xsl:variable name="UID"><xsl:value-of select="xna:uid"/></xsl:variable>
      <xsl:variable name="ItemID"><xsl:value-of select="xna:itemid"/></xsl:variable>
+<?php else: ?>
+     <xsl:variable name="rowclass"></xsl:variable>
 <?php endif; ?>
 <tr class="{$rowclass}">
 <td><?php if ($this->canEdit): ?><span class="toggle-excluded" onClick="toggleExcluded(this,'{$ItemID}','{$UID}')"></span><?php endif; ?><xsl:variable name="sitemapURL"><xsl:value-of select="xna:loc"/></xsl:variable>
