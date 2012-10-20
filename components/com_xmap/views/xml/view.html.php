@@ -33,6 +33,10 @@ class XmapViewXml extends JViewLegacy
         $this->user = JFactory::getUser();
         $isNewsSitemap = JRequest::getInt('news',0);
 
+        $model = $this->getModel('Sitemap');
+        $this->setModel($model);
+
+
         // force to not display errors on XML sitemap
         @ini_set('display_errors', 0);
         # Increase memory and max execution time for XML sitemaps to make it work

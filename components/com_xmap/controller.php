@@ -22,32 +22,41 @@ class XmapController extends JControllerLegacy
 {
 
     /**
-     * Display the view
+     * Method to display a view.
+     *
+     * @param   boolean         If true, the view output will be cached
+     * @param   array           An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+     *
+     * @return  JController     This object to support chaining.
+     * @since   1.5
      */
     public function display($cachable = false, $urlparams = false)
     {
-        // Initialise variables.
-        $document = JFactory::getDocument();
+        $cachable = true;
 
-        // Set the default view name and format from the Request.
-        $vName = JRequest::getWord('view', 'html');
-        $vFormat = $document->getType();
-        $lName = JRequest::getWord('layout', 'default');
+        $id    = JRequest::getInt('id');
+        $viewName = JRequest::getCmd('view');
+        $viewLayout = JRequest::getCmd('layout', 'default');
 
-        // Get and render the view.
-        if ($view = $this->getView($vName, $vFormat)) {
-            // Get the model for the view.
-            $model = $this->getModel('Sitemap');
+        $user = JFactory::getUser();
 
-            // Push the model into the view (as default).
-            $view->setModel($model, true);
-            $view->setLayout($lName);
-
-            // Push document object into the view.
-            $view->assignRef('document', $document);
-
-            $view->display();
+        if ($user->get('id') || !in_array($viewName, array('html', 'xml')) || $viewLayout == 'xsl') {
+            $cachable = false;
         }
+
+        if ($viewName) {
+            $document = JFactory::getDocument();
+            $viewType = $document->getType();
+            $view = $this->getView($viewName, $viewType, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
+            $view->setModel($this->getModel('Sitemap'), true);
+        }
+
+        $safeurlparams = array('id' => 'INT', 'itemid' => 'INT', 'uid' => 'CMD', 'action' => 'CMD', 'property' => 'CMD', 'value' => 'CMD');
+
+
+        parent::display($cachable, $safeurlparams);
+
+        return $this;
     }
 
 }
