@@ -181,6 +181,7 @@ class xmap_com_virtuemart
         JTable::addIncludePath(JPATH_VM_ADMINISTRATOR . '/tables');
 
         $app->setUserState('com_virtuemart.htmlc0.limit',9000);
+        $app->setUserState('com_virtuemart.xmlc0.limit',9000);
 
         if (!class_exists('VirtueMartModelCategory')) require(JPATH_VM_ADMINISTRATOR . '/models/category.php');
         self::$categoryModel = new VirtueMartModelCategory();
