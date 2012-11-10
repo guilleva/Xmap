@@ -12,11 +12,13 @@
     <install folder="admin">
         <sql>
             <file driver="mysql" charset="utf8">install/install.utf8.sql</file>
+            <file driver="postgresql" charset="utf8">install/install.postgresql.sql</file>
         </sql>
     </install>
     <uninstall>
         <sql>
             <file driver="mysql" charset="utf8">install/uninstall.utf8.sql</file>
+            <file driver="postgresql" charset="utf8">install/uninstall.postgresql.sql</file>
         </sql>
     </uninstall>
     <files folder="front">

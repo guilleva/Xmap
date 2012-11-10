@@ -119,8 +119,14 @@ class XmapModelSitemaps extends JModelList
 
     public function getExtensionsMessage()
     {
-        $db = JFactory::getDbo();
-        $db->setQuery('SELECT e.* from `#__extensions` e INNER JOIN `#__extensions` p ON e.element=p.element and p.enabled=0 and p.type=\'plugin\' and p.folder=\'xmap\' where e.type=\'component\' and e.enabled=1');
+        $db     = $this->getDbo();
+        $query  = $db->getQuery(true);
+        $query->select('e.*');
+        $query->from($db->quoteName('#__extensions'). 'AS e');
+        $query->join('INNER', '#__extensions AS p ON e.element=p.element and p.enabled=0 and p.type=\'plugin\' and p.folder=\'xmap\'');
+        $query->where('e.type=\'component\' and e.enabled=1');
+
+        $db->setQuery($query);
         $extensions = $db->loadObjectList();
         if ( count($extensions) ) {
             $sep = $extensionsNameList = '';

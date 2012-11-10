@@ -35,8 +35,8 @@ class XmapHelper
             $query = $db->getQuery(true);
             $query->select(
                     'n.id, n.title, n.alias, n.path, n.level, n.link, '
-                  . 'n.type, n.browserNav, n.params, n.home, n.parent_id'
-                  //. ',n.params'
+                  . 'n.type, n.params, n.home, n.parent_id'
+                  . ',n.'.$db->quoteName('browserNav')
                   );
             $query->from('#__menu AS n');
             $query->join('INNER', ' #__menu AS p ON p.lft = 0');
