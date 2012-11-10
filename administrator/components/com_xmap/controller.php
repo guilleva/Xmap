@@ -68,7 +68,8 @@ class XmapController extends JControllerLegacy
         $link = urldecode(JRequest::getVar('link', ''));
         $name = JRequest::getCmd('e_name', '');
         if (!$id) {
-            $id = $this->getDefaultSitemapId();
+            $db->setQuery('SELECT id from `#__xmap_sitemap` where is_default=1');
+            $id = $db->loadResult();
         }
 
         if (!$id) {
@@ -100,7 +101,8 @@ class XmapController extends JControllerLegacy
         $link = urldecode(JRequest::getVar('link', ''));
         $name = JRequest::getCmd('e_name', '');
         if (!$id) {
-            $id = $this->getDefaultSitemapId();
+            $db->setQuery('SELECT id from `#__xmap_sitemap` where is_default=1');
+            $id = $db->loadResult();
         }
 
         if (!$id) {
@@ -119,17 +121,6 @@ class XmapController extends JControllerLegacy
         $view->assignRef('document', $document);
 
         $view->navigatorLinks();
-    }
-
-    private function getDefaultSitemapId()
-    {
-        $db = JFactory::getDBO();
-        $query  = $db->getQuery(true);
-        $query->select('id');
-        $query->from($db->quoteName('#__xmap_sitemap'));
-        $query->where('is_default=1');
-        $db->setQuery($query);
-        return $db->loadResult();
     }
 
 }
