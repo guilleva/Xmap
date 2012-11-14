@@ -17,6 +17,13 @@ JForm::addFieldPath( JPATH_COMPONENT.'/models/fields' );
 // Include dependancies
 jimport('joomla.application.component.controller');
 
+# For compatibility with older versions of Joola 2.5
+if (!class_exists('JControllerLegacy')){
+	class JControllerLegacy extends JController {
+
+	}
+}
+
 $controller = JControllerLegacy::getInstance('Xmap');
 $controller->execute(JRequest::getVar('task'));
 $controller->redirect();

@@ -11,6 +11,13 @@ defined('_JEXEC') or die;
 // Include dependencies
 jimport('joomla.application.component.controller');
 
+# For compatibility with older versions of Joola 2.5
+if (!class_exists('JControllerLegacy')){
+	class JControllerLegacy extends JController {
+
+	}
+}
+
 require_once(JPATH_COMPONENT.'/displayer.php');
 
 $controller = JControllerLegacy::getInstance('Xmap');
