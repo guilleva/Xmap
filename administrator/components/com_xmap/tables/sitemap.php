@@ -225,11 +225,12 @@ class XmapTableSitemap extends JTable
 
 
         // Update the publishing state for rows with the given primary keys.
-        $this->_db->setQuery(
-                'UPDATE `' . $this->_tbl . '`' .
-                ' SET `state` = ' . (int) $state .
-                ' WHERE (' . $where . ')'
-        );
+        $query =  $this->_db->getQuery(true)
+                        ->update($this->_db->quoteName('#__xmap_sitemap'))
+                        ->set($this->_db->quoteName('state').' = '. (int) $state)
+                        ->where($where);
+
+        $this->_db->setQuery($query);
         $this->_db->query();
 
         // Check for a database error.
