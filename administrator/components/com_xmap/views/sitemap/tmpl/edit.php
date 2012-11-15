@@ -80,7 +80,9 @@ JHtml::_('behavior.formvalidation');
 
 
                 <div class="tab-pane" id="attrib-menus">
-                    <?php echo $this->form->getInput('selections'); ?>
+                    <div style="width:500px">
+                        <?php echo $this->form->getInput('selections'); ?>
+                    </div>
                 </div>
                 <?php
                     $fieldSets = $this->form->getFieldsets('attribs');

@@ -23,4 +23,9 @@ margin:5px;
 }
 ul.ul_sortable li label.menu_label{
 font-weight: bold;
+display: inline-block;
+margin-bottom: 0px;
+}
+ul.ul_sortable input[type="checkbox"] {
+margin: 0 3px 0 0;
 }
