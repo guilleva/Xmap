@@ -8,7 +8,7 @@
   <packagerurl>http://joomla.vargas.co.cr</packagerurl>
   <description>The Site Map generator for Joomla!</description>
   <files folder="packages">
-    <file type="component" id="com_comenticos">com_xmap.zip</file>
+    <file type="component" id="com_xmap">com_xmap.zip</file>
     <file type="plugin" id="com_content" group="xmap">plg_com_content.zip</file>
     <file type="plugin" id="com_kunena" group="xmap">plg_com_kunena.zip</file>
     <file type="plugin" id="com_sobipro" group="xmap">plg_com_sobipro.zip</file>
