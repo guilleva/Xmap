@@ -26,14 +26,28 @@ class XmapHelper
 	 */
 	public static function addSubmenu($vName)
 	{
-		JSubMenuHelper::addEntry(
-			JText::_('Xmap_Submenu_Sitemaps'),
-			'index.php?option=com_xmap',
-			$vName == 'sitemaps'
-		);
-		JSubMenuHelper::addEntry(
-			JText::_('Xmap_Submenu_Extensions'),
-			'index.php?option=com_plugins&view=plugins&filter_folder=xmap',
-			$vName == 'extensions');
+		$version = new JVersion;
+
+		if (version_compare($version->getShortVersion(), '3.0.0', '<')) {
+			JSubMenuHelper::addEntry(
+				JText::_('Xmap_Submenu_Sitemaps'),
+				'index.php?option=com_xmap',
+				$vName == 'sitemaps'
+			);
+			JSubMenuHelper::addEntry(
+				JText::_('Xmap_Submenu_Extensions'),
+				'index.php?option=com_plugins&view=plugins&filter_folder=xmap',
+				$vName == 'extensions');
+		} else {
+			JHtmlSidebar::addEntry(
+				JText::_('Xmap_Submenu_Sitemaps'),
+				'index.php?option=com_xmap',
+				$vName == 'sitemaps'
+			);
+			JHtmlSidebar::addEntry(
+				JText::_('Xmap_Submenu_Extensions'),
+				'index.php?option=com_plugins&view=plugins&filter_folder=xmap',
+				$vName == 'extensions');
+		}
 	}
 }

@@ -42,6 +42,8 @@ class XmapViewSitemaps extends JViewLegacy
 		$this->items	  = $this->get('Items');
 		$this->pagination     = $this->get('Pagination');
 
+		$version = new JVersion;
+
 		$message     = $this->get('ExtensionsMessage');
 		if ( $message ) {
 		    JFactory::getApplication()->enqueueMessage($message);
@@ -53,7 +55,15 @@ class XmapViewSitemaps extends JViewLegacy
 			return false;
 		}
 
-		$this->_setToolbar();
+		if (version_compare($version->getShortVersion(), '3.0.0', '<')) {
+            $tpl = 'legacy';
+        }
+
+		// We don't need toolbar in the modal window.
+		if ($this->getLayout() !== 'modal') {
+			$this->addToolbar();
+		}
+
 		parent::display($tpl);
 	}
 
@@ -62,11 +72,14 @@ class XmapViewSitemaps extends JViewLegacy
 	 *
 	 * @access      private
 	 */
-	protected function _setToolbar()
+	protected function addToolbar()
 	{
 		$state = $this->get('State');
 		$doc = JFactory::getDocument();
 		$version = new JVersion;
+
+		JToolBarHelper::addNew('sitemap.add');
+		JToolBarHelper::custom('sitemap.edit', 'edit.png', 'edit_f2.png', 'JTOOLBAR_EDIT', true);
 
 		$doc->addStyleDeclaration('.icon-48-sitemap {background-image: url(components/com_xmap/images/sitemap-icon.png);}');
 		JToolBarHelper::title(JText::_('XMAP_SITEMAPS_TITLE'), 'sitemap.png');
@@ -85,7 +98,23 @@ class XmapViewSitemaps extends JViewLegacy
 			JToolBarHelper::trash('sitemaps.trash','JTOOLBAR_TRASH');
 		}
 		JToolBarHelper::divider();
-		JToolBarHelper::custom('sitemap.edit', 'edit.png', 'edit_f2.png', 'JTOOLBAR_EDIT', true);
-		JToolBarHelper::addNew('sitemap.add');
+
+
+		if (class_exists('JHtmlSidebar')){
+			JHtmlSidebar::addFilter(
+				JText::_('JOPTION_SELECT_PUBLISHED'),
+				'filter_published',
+				JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true)
+			);
+
+			JHtmlSidebar::addFilter(
+				JText::_('JOPTION_SELECT_ACCESS'),
+				'filter_access',
+				JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access'))
+			);
+
+			$this->sidebar = JHtmlSidebar::render();
+
+		}
 	}
 }
