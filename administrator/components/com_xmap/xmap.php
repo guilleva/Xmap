@@ -14,6 +14,9 @@ JTable::addIncludePath( JPATH_COMPONENT.'/tables' );
 jimport('joomla.form.form');
 JForm::addFieldPath( JPATH_COMPONENT.'/models/fields' );
 
+// Register helper class
+JLoader::register('XmapHelper', dirname(__FILE__) . '/helpers/xmap.php');
+
 // Include dependancies
 jimport('joomla.application.component.controller');
 
@@ -25,5 +28,5 @@ if (!class_exists('JControllerLegacy')){
 }
 
 $controller = JControllerLegacy::getInstance('Xmap');
-$controller->execute(JRequest::getVar('task'));
+$controller->execute(JRequest::getCmd('task'));
 $controller->redirect();
