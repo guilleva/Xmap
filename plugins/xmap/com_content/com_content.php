@@ -65,15 +65,33 @@ class xmap_com_content
                 $node->uid = 'com_contenta' . $id;
                 $node->expandible = false;
 
-                $query = 'SELECT UNIX_TIMESTAMP(a.created) as created,
-                                 UNIX_TIMESTAMP(a.modified) as modified '
-                       .(($params['add_images'] || $params['add_pagebreaks'])? ',`introtext`, `fulltext` ' : '')
-                       . 'FROM `#__content` as a
-                          WHERE id='.intval($id).'
-                         ';
+                $query = $db->getQuery(true);
+
+                $query->select($db->quoteName('created'))
+                      ->select($db->quoteName('modified'))
+                      ->from($db->quoteName('#__content'))
+                      ->where($db->quoteName('id').'='.intval($id));
+
+                if ($params['add_pagebreaks'] || $params['add_images']){
+                    $query->select($db->quoteName('introtext'))
+                          ->select($db->quoteName('fulltext'));
+                }
+
+
                 $db->setQuery($query);
                 if (($row = $db->loadObject()) != NULL) {
-                    $node->modified = ($row->modified? $row->modified : $row->created);
+                    $modified =  new JDate($row->modified != $db->getNullDate()? $row->modified : $row->created);
+                    $node->modified = $modified->toUnix();
+
+                    $text = @$item->introtext . @$item->fulltext;
+                    if ($params['add_images']) {
+                        $node->images = XmapHelper::getImages($text,JArrayHelper::getValue($params, 'max_images', 1000));
+                    }
+
+                    if ($params['add_pagebreaks']) {
+                        $node->subnodes = XmapHelper::getPagebreaks($text,$node->link);
+                        $node->expandible = (count($node->subnodes) > 0); // This article has children
+                    }
                 }
                 break;
             case 'archive':
@@ -218,6 +236,29 @@ class xmap_com_content
                     $result = self::includeCategoryContent($xmap, $parent, 'archived', $params,$parent->id);
                 }
                 break;
+            case 'article':
+                // if it's an article menu item, we have to check if we have to expand the
+                // article's page breaks
+                if ($params['add_pagebreaks']){
+                    $query = $db->getQuery(true);
+
+                    $query->select($db->quoteName('introtext'))
+                      ->select($db->quoteName('fulltext'))
+                      ->select($db->quoteName('alias'))
+                      ->select($db->quoteName('catid'))
+                      ->from($db->quoteName('#__content'))
+                      ->where($db->quoteName('id').'='.intval($id));
+                    $db->setQuery($query);
+
+                    $row = $db->loadObject();
+
+                    $parent->slug = $row->alias ? ($id . ':' . $row->alias) : $id;
+                    $parent->link = ContentHelperRoute::getArticleRoute($parent->slug, $row->catid);
+
+                    $subnodes = XmapHelper::getPagebreaks($row->introtext.$row->fulltext,$parent->link);
+                    self::printNodes($xmap, $parent, $params, $subnodes);
+                }
+
         }
         return $result;
     }
@@ -401,25 +442,29 @@ class xmap_com_content
                 }
 
                 if ($xmap->printNode($node) && $node->expandible) {
-                    $xmap->changeLevel(1);
-                    $i=0;
-                    foreach ($subnodes as $subnode) {
-                        $i++;
-                        //var_dump($subnodes);
-                        $subnode->id = $parent->id;
-                        $subnode->uid = $parent->uid.'p'.$i;
-                        $subnode->browserNav = $parent->browserNav;
-                        $subnode->priority = $params['art_priority'];
-                        $subnode->changefreq = $params['art_changefreq'];
-                        $subnode->secure = $parent->secure;
-                        $xmap->printNode($subnode);
-                    }
-                    $xmap->changeLevel(-1);
+                    self::printNodes($xmap, $parent, $params, $subnodes);
                 }
             }
             $xmap->changeLevel(-1);
         }
         return true;
+    }
+
+    static private function printNodes($xmap, $parent, &$params, &$subnodes)
+    {
+        $xmap->changeLevel(1);
+        $i=0;
+        foreach ($subnodes as $subnode) {
+            $i++;
+            $subnode->id = $parent->id;
+            $subnode->uid = $parent->uid.'p'.$i;
+            $subnode->browserNav = $parent->browserNav;
+            $subnode->priority = $params['art_priority'];
+            $subnode->changefreq = $params['art_changefreq'];
+            $subnode->secure = $parent->secure;
+            $xmap->printNode($subnode);
+        }
+        $xmap->changeLevel(-1);
     }
 
     /**
