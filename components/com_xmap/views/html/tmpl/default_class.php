@@ -31,11 +31,11 @@ class XmapHtmlDisplayer extends XmapDisplayer {
 
         $user = JFactory::getUser();
     }
-    
+
     function setJView($view)
     {
         parent::setJView($view);
-        
+
         $columns = $this->sitemap->params->get('columns',0);
         if( $columns > 1 ) {		// calculate column widths
             $total = count($view->items);
@@ -45,7 +45,7 @@ class XmapHtmlDisplayer extends XmapDisplayer {
         }
     }
 
-    /** 
+    /**
     * Prints one node of the sitemap
     *
     *
@@ -79,7 +79,7 @@ class XmapHtmlDisplayer extends XmapDisplayer {
             $node->browserNav = 0;
 
         if ($node->browserNav != 3) {
-            $link = JRoute::_($node->link);
+            $link = JRoute::_($node->link, true, @$node->secure);
         }
 
         $node->name = htmlspecialchars($node->name);
