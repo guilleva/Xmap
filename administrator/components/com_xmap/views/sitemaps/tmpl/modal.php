@@ -46,9 +46,6 @@ $n = count($this->items);
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th width="20">
-					<input type="checkbox" name="toggle" value="" onclick="checkAll(this)" />
-				</th>
 				<th class="title">
 					<?php echo JHtml::_('grid.sort', 'Xmap_Heading_Sitemap', 'a.title', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
 				</th>
@@ -114,9 +111,6 @@ $n = count($this->items);
 
 			?>
 			<tr class="row<?php echo $i % 2; ?>">
-				<td style="text-align:center">
-					<?php echo JHtml::_('grid.id', $i, $item->id); ?>
-				</td>
 				<td>
 					<a style="cursor: pointer;" onclick="if (window.parent) window.parent.<?php echo $function;?>('<?php echo $item->id; ?>', '<?php echo $this->escape($item->title); ?>');">
 						<?php echo $this->escape($item->title); ?></a>
