@@ -6,27 +6,27 @@
  * more info under: http://www.w3schools.com/css/css_list.asp
  */
 
-.xmap ul {
+#xmap ul {
 	display		: block;
 	list-style	: none;
 	margin		: 0;
 	padding		: 0;
 }
-.xmap ul li {
+#xmap ul li {
 	margin		: 0;
 	padding		: 0;
 	background	: transparent;
 }
-.xmap a img {
+#xmap a img {
 	border		: none;
 }
-.xmap ul.level_0 ul {
+#xmap ul.level_0 ul {
 	list-style	: inside square;
 	padding		: 0;
 }
-.xmap ul.level_1 li {
-	padding		: 0 0 0 2em;
+#xmap ul.level_1 li {
+	padding		: 0 0 0 1em;
 }
-.xmap .active {
+#xmap .active {
 	font-style	: italic;
 }

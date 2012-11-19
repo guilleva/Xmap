@@ -36,6 +36,7 @@ class XmapViewHtml extends JViewLegacy
         // Initialise variables.
         $this->app = JFactory::getApplication();
         $this->user = JFactory::getUser();
+        $doc = JFactory::getDocument();
 
         // Get view related request variables.
         $this->print = JRequest::getBool('print');
@@ -44,6 +45,7 @@ class XmapViewHtml extends JViewLegacy
         $this->state = $this->get('State');
         $this->item = $this->get('Item');
         $this->items = $this->get('Items');
+
 
         $this->canEdit = JFactory::getUser()->authorise('core.admin', 'com_xmap');
 
@@ -62,6 +64,9 @@ class XmapViewHtml extends JViewLegacy
         // Create a shortcut to the paramemters.
         $params = &$this->state->params;
         $offset = $this->state->get('page.offset');
+        if ($params->get('include_css', 0)){
+            $doc->addStyleSheet(JURI::root().'components/com_xmap/assets/css/xmap.css');
+        }
 
         // If a guest user, they may be able to log in to view the full article
         // TODO: Does this satisfy the show not auth setting?
