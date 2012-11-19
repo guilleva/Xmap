@@ -199,9 +199,9 @@ class XmapModelSitemap extends JModelAdmin
 
         if ($table->is_default) {
             $query =  $this->_db->getQuery(true)
-                            ->update($this->_->quoteName('#__xmap_sitemap'))
-                            ->set($this->_->quoteName('is_default').' = 0')
-                            ->where($this->_->quoteName('id').' <> '.$table->id);
+                            ->update($this->_db->quoteName('#__xmap_sitemap'))
+                            ->set($this->_db->quoteName('is_default').' = 0')
+                            ->where($this->_db->quoteName('id').' <> '.$table->id);
 
             $this->_db->setQuery($query);
             if (!$this->_db->query()) {
