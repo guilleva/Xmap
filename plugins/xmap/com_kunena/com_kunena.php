@@ -40,6 +40,7 @@ class xmap_com_kunena {
         if ($xmap->isNews) // This component does not provide news content. don't waste time/resources
             return false;
 
+
         // Make sure that we can load the kunena api
         if (!xmap_com_kunena::loadKunenaApi()) {
             return false;
@@ -62,7 +63,7 @@ class xmap_com_kunena {
         $view = JArrayHelper::getValue($link_vars, 'view', '');
 
         switch ($view){
-            case 'showcat':
+            case 'showcat': case 'category':
                 $link_query = parse_url($parent->link);
                 parse_str(html_entity_decode($link_query['query']), $link_vars);
                 $catid = JArrayHelper::getValue($link_vars, 'catid', 0);
@@ -122,13 +123,13 @@ class xmap_com_kunena {
             if (intval($days))
                 $params['days'] =  ($xmap->now - (intval($days) * 86400));
         }
-        
+
         $params['table_prefix'] = xmap_com_kunena::getTablePrefix();
 
         xmap_com_kunena::getCategoryTree($xmap, $parent, $params, $catid);
     }
 
-    /* 
+    /*
      * Builds the Kunena's tree
      */
     function getCategoryTree($xmap, $parent, &$params, $parentCat)
@@ -138,14 +139,14 @@ class xmap_com_kunena {
         // Load categories
         if (self::getKunenaMajorVersion() >= '2.0') {
             // Kunena 2.0+
-            $catlink = 'index.php?option=com_kunena&amp;view=category&amp;catid=%s&Itemid='.$parent->id;
-            $toplink = 'index.php?option=com_kunena&amp;view=topic&amp;catid=%s&amp;id=%s&Itemid='.$parent->id;
+            $catlink = 'index.php?option=com_kunena&view=category&catid=%s&Itemid='.$parent->id;
+            $toplink = 'index.php?option=com_kunena&view=topic&catid=%s&id=%s&Itemid='.$parent->id;
 
             kimport('kunena.forum.category.helper');
             $categories = KunenaForumCategoryHelper::getChildren($parentCat);
         } else {
-            $catlink = 'index.php?option=com_kunena&amp;func=showcat&amp;catid=%s&Itemid='.$parent->id;
-            $toplink = 'index.php?option=com_kunena&amp;func=view&amp;catid=%s&amp;id=%s&Itemid='.$parent->id;
+            $catlink = 'index.php?option=com_kunena&func=showcat&catid=%s&Itemid='.$parent->id;
+            $toplink = 'index.php?option=com_kunena&func=view&catid=%s&id=%s&Itemid='.$parent->id;
 
             if (self::getKunenaMajorVersion() >= '1.6') {
                 // Kunena 1.6+
@@ -185,12 +186,15 @@ class xmap_com_kunena {
                 // Kunena 2.0+
                 kimport('kunena.forum.topic.helper');
                 // TODO: orderby parameter is missing:
-                $topics = KunenaForumtopicHelper::getLatestTopics($parentCat, 0, $params['limit'], array('starttime', $params['days']));
+                $topics = KunenaForumTopicHelper::getLatestTopics($parentCat, 0, $params['limit'], array('starttime', $params['days']));
+                if (count($topics)==2 && is_numeric($topics[0])){
+                    $topics = $topics[1];
+                }
             } else {
                 $access = KunenaFactory::getAccessControl();
                 $hold = $access->getAllowedHold(self::$profile, $parentCat);
                 // Kunena 1.0+
-                $query = "SELECT t.id, t.catid, t.subject, max(m.time) as time, count(m.id) as msgcount 
+                $query = "SELECT t.id, t.catid, t.subject, max(m.time) as time, count(m.id) as msgcount
                     FROM {$params['table_prefix']}_messages t
                     INNER JOIN {$params['table_prefix']}_messages AS m ON t.id = m.thread
                     WHERE t.catid=$parentCat AND t.parent=0
@@ -214,8 +218,8 @@ class xmap_com_kunena {
                 $node->name = $topic->subject;
                 $node->priority = $params['topic_priority'];
                 $node->changefreq = $params['topic_changefreq'];
-                $node->modified = intval($topic->time);
-                $node->link = sprintf($toplink, $topic->catid, $topic->id);
+                $node->modified = intval(@$topic->last_post_time? $topic->last_post_time : $topic->time);
+                $node->link = sprintf($toplink, (@$topic->category_id? $topic->category_id : $topic->catid), $topic->id);
                 $node->expandible = false;
                 $node->secure = $parent->secure;
                 if ($xmap->printNode($node) !== FALSE) {
@@ -263,8 +267,8 @@ class xmap_com_kunena {
         }
         return true;
     }
-    
-    
+
+
     /**
     * Based on Matias' version (Thanks)
     * See: http://docs.kunena.org/index.php/Developing_Kunena_Router
@@ -284,7 +288,7 @@ class xmap_com_kunena {
         }
         return $version;
     }
-    
+
     function getTablePrefix() {
         $version = self::getKunenaMajorVersion();
         if ($version <= 1.5) {
