@@ -163,7 +163,7 @@ class xmap_com_sobipro {
 
         if ( $params['include_entries'] ) {
             $query  =
-             "SELECT a.id, c.baseData as name,UNIX_TIMESTAMP(a.updatedTime) as modified,UNIX_TIMESTAMP(b.validSince) as publish_up, b.pid as catid  "
+             "SELECT a.id, c.baseData as name,a.updatedTime as modified,b.validSince as publish_up, b.pid as catid  "
             ."\n FROM #__sobipro_object AS a, #__sobipro_relations AS b, #__sobipro_field_data c"
             ."\n WHERE a.state=1 "
             ."\n AND a.id=b.id "

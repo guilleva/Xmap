@@ -16,6 +16,8 @@ class xmap_com_mtree
         if ($xmap->isNews) // This component does not provide news content. don't waste time/resources
             return false;
 
+        $db = JFactory::getDbo();
+
         $catid=0;
         if ( strpos($parent->link, 'task=listcats') ) {
             $link_query = parse_url( $parent->link );
@@ -25,7 +27,7 @@ class xmap_com_mtree
 
         $include_links = JArrayHelper::getValue($params,'include_links',1);
         $include_links = ( $include_links == 1
-                                  || ( $include_links == 2 && $xmap->view == 'xml') 
+                                  || ( $include_links == 2 && $xmap->view == 'xml')
                                   || ( $include_links == 3 && $xmap->view == 'html')
                                   ||   $xmap->view == 'navigator');
         $params['include_links'] = $include_links;
@@ -55,24 +57,24 @@ class xmap_com_mtree
         $orderdir = JArrayHelper::getValue($params,'cats_orderdir','ASC');
         if ( !in_array($ordering,array('ordering','cat_name','cat_created')) )
             $ordering = 'cat_name';
-            
+
         if ( !in_array($orderdir,array('ASC','DESC')) ){
             $orderdir = 'ASC';
         }
 
-        $params['cats_order'] = "`$ordering` $orderdir";
+        $params['cats_order'] = $db->quoteName($ordering)." $orderdir";
 
         if ( $include_links ) {
             $ordering = JArrayHelper::getValue($params,'links_order','ordering');
             $orderdir = JArrayHelper::getValue($params,'links_orderdir','ASC');
             if ( !in_array($ordering,array('ordering','link_name','link_modified','link_created','link_hits')) )
                 $ordering = 'ordering';
-            
+
             if ( !in_array($orderdir,array('ASC','DESC')) ){
                 $orderdir = 'ASC';
             }
 
-            $params['links_order'] = "`$ordering` $orderdir";
+            $params['links_order'] = $db->quoteName($ordering)." $orderdir";
 
             $params['limit'] = '';
             $params['days'] = '';
@@ -91,28 +93,24 @@ class xmap_com_mtree
     /* Returns URLs of all Categories and links in of one category using recursion */
     static function getMtreeCategory ($xmap, $parent, &$params, $catid )
     {
-        $database =& JFactory::getDBO();
+        $database =& JFactory::getDbo();
 
-        $query = "SELECT cat_name, cat_id, UNIX_TIMESTAMP(cat_created) as `created` ".
+        $query = "SELECT cat_name, cat_id ".
              "FROM #__mt_cats WHERE cat_published='1' AND cat_approved='1' AND cat_parent = $catid " .
-             "ORDER BY " . $params['cats_order']; 
+             "ORDER BY " . $params['cats_order'];
 
         $database->setQuery($query);
         $rows = $database->loadObjectList();
 
         $xmap->changeLevel(1);
         foreach($rows as $row) {
-            if( !$row->created ) {
-                $row->created = $xmap->now;
-            }
-
             $node = new stdclass;
             $node->name = $row->cat_name;
             $node->link = 'index.php?option=com_mtree&task=listcats&cat_id='.$row->cat_id.'&Itemid='.$parent->id;
             $node->id = $parent->id;
             $node->uid = $parent->uid .'c'.$row->cat_id;
             $node->browserNav = $parent->browserNav;
-            $node->modified = $row->created;
+            $node->modified = NULL;
             $node->priority = $params['cat_priority'];
             $node->changefreq = $params['cat_changefreq'];
             $node->expandible = true;
@@ -125,7 +123,7 @@ class xmap_com_mtree
 
         /* Returns URLs of all listings in the current category */
         if ($params['include_links']) {
-            $query = " SELECT a.link_name, a.link_id, UNIX_TIMESTAMP(a.link_created) as `created`,  UNIX_TIMESTAMP(a.link_modified) as `modified` \n".
+            $query = " SELECT a.link_name, a.link_id, a.link_created as created, a.link_modified as modified \n".
                  " FROM #__mt_links AS a, #__mt_cl as b \n".
                  " WHERE a.link_id = b.link_id \n".
                              " AND b.cat_id = $catid " .
@@ -139,17 +137,17 @@ class xmap_com_mtree
             $rows = $database->loadObjectList();
 
             foreach($rows as $row) {
-                if( !$row->modified ) {
+                if ( !$row->modified || ($row->modified == $database->getNullDate())) {
                     $row->modified = $row->created;
                 }
 
                 $node = new stdclass;
                 $node->name = $row->link_name;
-                $node->link = 'index.php?option=com_mtree&amp;task=viewlink&amp;link_id='.$row->link_id.'&Itemid='.$parent->id;
+                $node->link = 'index.php?option=com_mtree&task=viewlink&link_id='.$row->link_id.'&Itemid='.$parent->id;
                 $node->id = $parent->id;
                 $node->uid = $parent->uid.'l'.$row->link_id;
                 $node->browserNav = $parent->browserNav;
-                $node->modified = ($row->modified? $row->modified : $row->created);
+                $node->modified = $row->modified;
                 $node->priority = $params['link_priority'];
                 $node->changefreq = $params['link_changefreq'];
                 $node->expandible = false;
@@ -158,6 +156,6 @@ class xmap_com_mtree
             }
         }
         $xmap->changeLevel(-1);
-        
+
     }
 }
