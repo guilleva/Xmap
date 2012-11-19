@@ -47,6 +47,9 @@ class XmapXmlDisplayer extends XmapDisplayer
 
         $this->showTitle = JRequest::getBool('filter_showtitle', 0);
         $this->showExcluded = JRequest::getBool('filter_showexcluded', 0);
+
+        $db = JFactory::getDbo();
+        $this->nullDate = $db->getNullDate();
     }
 
     /**
@@ -101,9 +104,13 @@ class XmapXmlDisplayer extends XmapDisplayer
                 echo '<uid>', $node->uid, '</uid>' . "\n";
                 echo '<itemid>', $node->id, '</itemid>' . "\n";
             }
-            $modified = (isset($node->modified) && $node->modified != FALSE && $node->modified != -1) ? $node->modified : NULL;
+            $modified = (isset($node->modified) && $node->modified != FALSE && $node->modified != $this->nullDate && $node->modified != -1) ? $node->modified : NULL;
             if (!$modified && $this->isNews) {
                 $modified = time();
+            }
+            if ($modified && !is_numeric($modified)){
+                $date =  new JDate($modified);
+                $modified = $date->toUnix();
             }
             if ($modified) {
                 $modified = gmdate('Y-m-d\TH:i:s\Z', $modified);

@@ -80,8 +80,7 @@ class xmap_com_content
 
                 $db->setQuery($query);
                 if (($row = $db->loadObject()) != NULL) {
-                    $modified =  new JDate($row->modified != $db->getNullDate()? $row->modified : $row->created);
-                    $node->modified = $modified->toUnix();
+                    $node->modified = $row->modified;
 
                     $text = @$item->introtext . @$item->fulltext;
                     if ($params['add_images']) {
@@ -289,7 +288,7 @@ class xmap_com_content
 
         $orderby = 'a.lft';
         $query = 'SELECT a.id, a.title, a.alias, a.access, a.path AS route, '
-               . 'UNIX_TIMESTAMP(a.created_time) created, UNIX_TIMESTAMP(a.modified_time) modified '
+               . 'a.created_time created, a.modified_time modified '
                . 'FROM #__categories AS a '
                . 'WHERE '. implode(' AND ',$where)
                . ( $xmap->view != 'xml' ? "\n ORDER BY " . $orderby . "" : '' );
@@ -357,7 +356,7 @@ class xmap_com_content
         }
 
         if ($params['include_archived']) {
-            $where = array('(a.state = 1 || a.state = 2)');
+            $where = array('(a.state = 1 or a.state = 2)');
         } else {
             $where = array('a.state = 1');
         }
@@ -385,7 +384,7 @@ class xmap_com_content
         }
 
         $query = 'SELECT a.id, a.title, a.alias, a.catid, '
-               . 'UNIX_TIMESTAMP(a.created) created, UNIX_TIMESTAMP(a.modified) modified'
+               . 'a.created created, a.modified modified'
                . ',a.language'
                . (($params['add_images'] || $params['add_pagebreaks']) ? ',a.introtext, a.fulltext ' : ' ')
                . 'FROM #__content AS a '
