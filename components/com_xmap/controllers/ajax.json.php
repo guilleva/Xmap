@@ -23,7 +23,7 @@ class XmapControllerAjax extends JControllerLegacy
 
     public function editElement()
     {
-        JRequest::checkToken('get') or jexit(JText::_('JINVALID_TOKEN'));
+        JSession::checkToken('get') or jexit(JText::_('JINVALID_TOKEN'));
 
         jimport('joomla.utilities.date');
         jimport('joomla.user.helper');
