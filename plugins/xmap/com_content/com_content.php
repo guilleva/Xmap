@@ -46,7 +46,7 @@ class xmap_com_content
         $id = JArrayHelper::getValue($link_vars, 'id', 0);
 
         //----- Set add_images param
-        $params['add_images'] = JArrayHelper::getValue($params, 'add_images', 0);;
+        $params['add_images'] = JArrayHelper::getValue($params, 'add_images', 0);
 
         //----- Set add pagebreaks param
         $add_pagebreaks = JArrayHelper::getValue($params, 'add_pagebreaks', 1);
@@ -159,8 +159,8 @@ class xmap_com_content
         $params['show_unauth'] = $show_unauth;
 
         //----- Set add_images param
-        $add_images = JArrayHelper::getValue($params, 'add_images', 0);
-        $add_images = ( $add_images == 1 && $xmap->view == 'xml');
+        $add_images = JArrayHelper::getValue($params, 'add_images', 0) && $xmap->isImages;
+        $add_images = ( $add_images && $xmap->view == 'xml');
         $params['add_images'] = $add_images;
         $params['max_images'] = JArrayHelper::getValue($params, 'max_images', 1000);
 

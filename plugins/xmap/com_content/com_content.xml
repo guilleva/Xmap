@@ -60,7 +60,7 @@
                 <field name="max_art_age" type="text" default="0" label="XMAP_SETTING_MAX_ART_AGE" description="XMAP_SETTING_MAX_ART_AGE_DESC" />
             </fieldset>
             <fieldset name="xml">
-                <field name="add_images" type="list" default="0" label="XMAP_SETTING_ADD_IMAGES_LABEL" description="XMAP_SETTING_ADD_IMAGES_DESC">
+                <field name="add_images" type="list" default="1" label="XMAP_SETTING_ADD_IMAGES_LABEL" description="XMAP_SETTING_ADD_IMAGES_DESC">
                     <option value="1">JYES</option>
                     <option value="0">JNO</option>
                 </field>

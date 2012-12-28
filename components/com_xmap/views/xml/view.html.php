@@ -39,6 +39,7 @@ class XmapViewXml extends JViewLegacy
         $app = JFactory::getApplication();
         $this->user = JFactory::getUser();
         $isNewsSitemap = JRequest::getInt('news',0);
+        $this->isImages = JRequest::getInt('images',0);
 
         $model = $this->getModel('Sitemap');
         $this->setModel($model);
@@ -111,6 +112,7 @@ class XmapViewXml extends JViewLegacy
         $this->displayer->setJView($this);
 
         $this->displayer->isNews = $isNewsSitemap;
+        $this->displayer->isImages = $this->isImages;
         $this->displayer->canEdit = $this->canEdit;
 
 

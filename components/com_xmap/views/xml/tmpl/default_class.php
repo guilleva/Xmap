@@ -35,6 +35,12 @@ class XmapXmlDisplayer extends XmapDisplayer
      */
     var $isNews = 0;
 
+    /**
+     *
+     * @var int Indicates if this is a google news sitemap or not
+     */
+    var $isImages = 0;
+
     function __construct($config, $sitemap)
     {
         parent::__construct($config, $sitemap);
@@ -68,6 +74,11 @@ class XmapXmlDisplayer extends XmapDisplayer
         }
 
         if ($this->isNews && (!isset($node->newsItem) || !$node->newsItem)) {
+            return true;
+        }
+
+        // For images sitemaps only display pages with images
+        if ($this->isImages && (!isset($node->images) || !count($node->images))) {
             return true;
         }
 
@@ -118,11 +129,28 @@ class XmapXmlDisplayer extends XmapDisplayer
 
             // If this is not a news sitemap
             if (!$this->isNews) {
-                if ($modified){
-                    echo '<lastmod>', $modified, '</lastmod>' . "\n";
+                if ($this->isImages) {
+                    foreach ($node->images as $image) {
+                        echo '<image:image>', "\n";
+                        echo '<image:loc>', $image->src, '</image:loc>', "\n";
+                        if ($image->title) {
+                            $image->title = str_replace('&', '&amp;', html_entity_decode($image->title, ENT_NOQUOTES, 'UTF-8'));
+                            echo '<image:title>', $image->title, '</image:title>', "\n";
+                        } else {
+                            echo '<image:title />';
+                        }
+                        if (isset($image->license) && $image->license) {
+                            echo '<image:license>',str_replace('&', '&amp;',html_entity_decode($image->license, ENT_NOQUOTES, 'UTF-8')),'</image:license>',"\n";
+                        }
+                        echo '</image:image>', "\n";
+                    }
+                } else {
+                    if ($modified){
+                        echo '<lastmod>', $modified, '</lastmod>' . "\n";
+                    }
+                    echo '<changefreq>', $changefreq, '</changefreq>' . "\n";
+                    echo '<priority>', $priority, '</priority>' . "\n";
                 }
-                echo '<changefreq>', $changefreq, '</changefreq>' . "\n";
-                echo '<priority>', $priority, '</priority>' . "\n";
             } else {
                 if (isset($node->keywords)) {
                     $keywords = htmlspecialchars($node->keywords);

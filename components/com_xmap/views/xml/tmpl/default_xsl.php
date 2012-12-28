@@ -17,16 +17,15 @@ $showExcluded = $this->canEdit && JRequest::getBool('filter_showexcluded', 0);
 
 echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 ?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xna="http://www.sitemaps.org/schemas/sitemap/0.9" exclude-result-prefixes="xna">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xna="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" exclude-result-prefixes="xna">
+
 <xsl:output indent="yes" method="html" omit-xml-declaration="yes"/>
 <xsl:template match="/">
 <html>
 <head>
 <title>XML Sitemap File</title>
-<?php if ($this->canEdit): ?>
 <script src="<?php echo JUri::base(); ?>media/system/js/mootools-core.js" type="text/javascript"></script>
 <script src="<?php echo JUri::base(); ?>media/system/js/mootools-more.js" type="text/javascript"></script>
-<?php endif; ?>
 <style type="text/css">
     <![CDATA[
   	<!--
@@ -142,6 +141,21 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
     .excluded .toggle-excluded {
       background: url(<?php echo JUri::base(); ?>components/com_xmap/assets/images/unpublished.png) no-repeat;
     }
+    div.imagelist {
+        border: 1px solid #ccc;
+        background-color: #eee;
+        padding: 5px;
+        width: auto;float:left;
+    }
+    span.images_count {
+        border: 1px solid #004080;
+        background-color: #0000FF;
+        color: #fff;
+        margin: 0 5px;
+        cursor: pointer;
+        padding:2px;
+        float: left;
+    }
     -->
     ]]>
 </style>
@@ -164,13 +178,13 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
   	  	html = ".0.";
   	  	freq = ".2.";
   	  	initTable(tabName);
-  		  setSort(tabName, 3, 1);
+  		  setSort(tabName, 0, 1);
   	  }
   	  else {
   	  	desc = ".1.";
   	  	html = ".0.";
   	  	initTable(tabName);
-  		  setSort(tabName, 1, 1);
+  		  setSort(tabName, 0, 1);
   	  }
 
   	}
@@ -343,6 +357,16 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
     }
   }
   <?php endif; ?>
+  window.addEvent('domready',function(){
+      $$('div.imagelist').each(function(div){
+          div.slide = new Fx.Slide(div).hide();
+      })
+      $$('span.images_count').each(function(span){
+          span.addEvent('click',function(){
+            $(this.parentNode).getElement('div.imagelist').slide.toggle();
+          });
+      })
+  });
 	var sitemapid=<?php echo $this->item->id; ?>;
 
     ]]>
@@ -380,9 +404,11 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 <table id="table0" class="data">
 <tr class="header">
   <td><?php echo ($showTitle? JText::_('COM_XMAP_TITLE').' / ' : ''); ?><?php echo JText::_('COM_XMAP_URL'); ?></td>
-    <td><?php echo JText::_('COM_XMAP_LASTMOD'); ?></td>
-    <td><?php echo JText::_('COM_XMAP_CHANGEFREQ'); ?></td>
-    <td><?php echo JText::_('COM_XMAP_PRIORITY'); ?></td>
+    <?php if (!$this->isImages): ?>
+      <td><?php echo JText::_('COM_XMAP_LASTMOD'); ?></td>
+      <td><?php echo JText::_('COM_XMAP_CHANGEFREQ'); ?></td>
+      <td><?php echo JText::_('COM_XMAP_PRIORITY'); ?></td>
+    <?php endif ?>
   </tr>
 <xsl:for-each select="xna:urlset/xna:url">
 <?php if ($this->canEdit): ?>
@@ -393,16 +419,30 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
      <xsl:variable name="rowclass"></xsl:variable>
 <?php endif; ?>
 <tr class="{$rowclass}">
-<td><?php if ($this->canEdit): ?><span class="toggle-excluded" onClick="toggleExcluded(this,'{$ItemID}','{$UID}')"></span><?php endif; ?><xsl:variable name="sitemapURL"><xsl:value-of select="xna:loc"/></xsl:variable>
+<td><?php if ($this->canEdit): ?><span class="toggle-excluded" onClick="toggleExcluded(this,'{$ItemID}','{$UID}')"></span><?php endif; ?>
+    <xsl:if test="count(image:image/image:loc) &gt; 0">
+    <span class="images_count"><xsl:value-of select="count(image:image/image:loc)"></xsl:value-of> Images</span>
+    </xsl:if>
+    <xsl:variable name="sitemapURL"><xsl:value-of select="xna:loc"/></xsl:variable>
     <div class="item_title"><xsl:value-of select="xna:title"/></div>
-    <a href="{$sitemapURL}" target="_blank" ref="nofollow"><xsl:value-of select="$sitemapURL"></xsl:value-of></a></td>
-<td><xsl:value-of select="xna:lastmod"/></td>
-<?php if ($this->canEdit): ?>
-<td class="editable" onClick="showOptions(this,'changefreq','{$UID}','{$ItemID}',event);" ><xsl:value-of select="xna:changefreq"/></td>
-<td class="editable" onClick="showOptions(this,'priority','{$UID}','{$ItemID}',event);"><xsl:value-of select="xna:priority"/></td>
-<?php else: ?>
-<td><xsl:value-of select="xna:changefreq"/></td>
-<td><xsl:value-of select="xna:priority"/></td>
+    <a href="{$sitemapURL}" target="_blank" ref="nofollow"><xsl:value-of select="$sitemapURL"></xsl:value-of></a>
+    <xsl:if test="count(image:image/image:loc) &gt; 0">
+    <div class="imagelist">
+      <xsl:for-each select="image:image">
+      <xsl:value-of select="image:loc"/> - <xsl:value-of select="image:title"/><br />
+      </xsl:for-each>
+    </div>
+    </xsl:if>
+</td>
+<?php if (!$this->isImages): ?>
+  <td><xsl:value-of select="xna:lastmod"/></td>
+  <?php if ($this->canEdit): ?>
+    <td class="editable" onClick="showOptions(this,'changefreq','{$UID}','{$ItemID}',event);" ><xsl:value-of select="xna:changefreq"/></td>
+    <td class="editable" onClick="showOptions(this,'priority','{$UID}','{$ItemID}',event);"><xsl:value-of select="xna:priority"/></td>
+  <?php else: ?>
+    <td><xsl:value-of select="xna:changefreq"/></td>
+    <td><xsl:value-of select="xna:priority"/></td>
+  <?php endif; ?>
 <?php endif; ?>
 </tr>
 </xsl:for-each>
