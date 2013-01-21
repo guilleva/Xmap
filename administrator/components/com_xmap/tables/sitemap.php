@@ -161,11 +161,11 @@ class XmapTableSitemap extends JTable
         if (empty($this->alias)) {
             $this->alias = $this->title;
         }
-        $this->alias = JFilterOutput::stringURLSafe($this->alias);
+        $this->alias = JApplication::stringURLSafe($this->alias);
 
         if (trim(str_replace('-', '', $this->alias)) == '') {
             $datenow = &JFactory::getDate();
-            $this->alias = $datenow->toFormat("%Y-%m-%d-%H-%M-%S");
+            $this->alias = $datenow->format("Y-m-d-H-i-s");
         }
 
         return true;
