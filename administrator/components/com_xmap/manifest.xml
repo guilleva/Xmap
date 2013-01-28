@@ -37,6 +37,7 @@
     <languages folder="front/language">
         <language tag="en-GB">en-GB.com_xmap.ini</language>
         <language tag="es-ES">es-ES.com_xmap.ini</language>
+        <language tag="fa-IR">fa-IR.com_xmap.ini</language>
     </languages>
     <images folder="admin">
         <folder>images</folder>
@@ -63,6 +64,8 @@
             <language tag="en-GB">en-GB/en-GB.com_xmap.sys.ini</language>
             <language tag="es-ES">es-ES/es-ES.com_xmap.ini</language>
             <language tag="es-ES">es-ES/es-ES.com_xmap.sys.ini</language>
+            <language tag="es-ES">fa-IR/fa-IR.com_xmap.ini</language>
+            <language tag="es-ES">fa-IR/fa-IR.com_xmap.sys.ini</language>
         </languages>
         <images folder="admin">
             <folder>images</folder>

@@ -21,6 +21,7 @@
         -->
         <language tag="en-GB">en-GB.plg_xmap_com_content.ini</language>
         <language tag="es-ES">es-ES.plg_xmap_com_content.ini</language>
+		<language tag="fa-IR">fa-IR.plg_xmap_com_content.ini</language>
     </languages>
 
     <config>
