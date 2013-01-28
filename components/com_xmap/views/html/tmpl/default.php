@@ -16,6 +16,7 @@ $params = $this->item->params;
 
 if ($this->displayer->canEdit) {
 	$live_site = JURI::root();
+	JHTML::_('behavior.framework', true);
 	$ajaxurl = "{$live_site}index.php?option=com_xmap&format=json&task=ajax.editElement&action=toggleElement&".JSession::getFormToken().'=1';
 
 	$css = '.xmapexcl img{ border:0px; }'."\n";

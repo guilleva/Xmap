@@ -68,16 +68,6 @@ class XmapViewHtml extends JViewLegacy
             $doc->addStyleSheet(JURI::root().'components/com_xmap/assets/css/xmap.css');
         }
 
-        if ($this->canEdit) {
-            // TODO: replace all mootools code for jQuery code
-            $version = new JVersion;
-            if (version_compare($version->getShortVersion(), '3.0.0', '<')) {
-                JHTML::_('behavior.mootools');
-            } else {
-                JHTML::_('behavior.framework', true);
-            }
-        }
-
         // If a guest user, they may be able to log in to view the full article
         // TODO: Does this satisfy the show not auth setting?
         if (!$this->item->params->get('access-view')) {
