@@ -9,7 +9,7 @@
     <authorEmail>guille@vargas.co.cr</authorEmail>
     <authorUrl>joomla.vargas.co.cr</authorUrl>
     <version>2.0.4</version>
-    <description>Add support for articles and categories on Joomla 1.6 or newer</description>
+    <description>XMAP_CONTENT_PLUGIN_DESCRIPTION</description>
     <files>
         <filename plugin="com_content">com_content.php</filename>
         <filename>index.html</filename>
@@ -21,7 +21,7 @@
         -->
         <language tag="en-GB">en-GB.plg_xmap_com_content.ini</language>
         <language tag="es-ES">es-ES.plg_xmap_com_content.ini</language>
-		<language tag="fa-IR">fa-IR.plg_xmap_com_content.ini</language>
+        <language tag="fa-IR">fa-IR.plg_xmap_com_content.ini</language>
     </languages>
 
     <config>
