@@ -23,7 +23,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 <xsl:template match="/">
 <html>
 <head>
-<title>XML Sitemap File</title>
+<title><?php echo JText::_('COM_XMAP_XML_FILE'); ?></title>
 <script src="<?php echo JUri::base(); ?>media/system/js/mootools-core.js" type="text/javascript"></script>
 <script src="<?php echo JUri::base(); ?>media/system/js/mootools-more.js" type="text/javascript"></script>
 <style type="text/css">
@@ -156,6 +156,17 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
         padding:2px;
         float: left;
     }
+<?php $doc = JFactory::getDocument(); if ($doc->direction == 'rtl') { ?>
+	body {
+		font-family: Tahoma;
+	}
+	body #header {
+		direction: rtl;
+	}
+	#title {
+		float: right;
+	}
+<?php } ?>
     -->
     ]]>
 </style>
@@ -376,7 +387,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 <div id="header">
  <div id="title">
     <h1 id="head1"><?php echo $this->item->title; ?></h1>
-    <span class="number_urls">Number of URLs in this Sitemap: <xsl:value-of select="count(xna:urlset/xna:url)"></xsl:value-of></span>
+    <span class="number_urls"><?php echo JText::_('COM_XMAP_NUMBER_OF_URLS'); ?>: <xsl:value-of select="count(xna:urlset/xna:url)"></xsl:value-of></span>
  </div>
  <div id="instructions">
     <div>
@@ -386,14 +397,14 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
         <?php else: ?>
             <?php $sitemapUrl = JUri::base(true).'/'.str_replace('&','&amp;',$sitemapUrl); ?>
             <p><?php echo JText::_('COM_XMAP_XML_SITEMAP_HELP'); ?></p>
-            <p><b><?php echo JText::_('COM_XMAP_XML_SITEMAP_URL'); ?></b>: <?php echo $sitemapUrl; ?></p>
+            <p dir="ltr"><b><?php echo JText::_('COM_XMAP_XML_SITEMAP_URL'); ?></b>: <?php echo $sitemapUrl; ?></p>
             <div id="filter_options">
                 <form method="get" action="<?php echo JRoute::_('index.php?option=com_xmap&view=xml'); ?>">
                 <input type="hidden" name="option" value="com_xmap" />
                 <input type="hidden" name="view" value="xml" />
                 <input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
-                <label><input onclick="this.form.submit();"<?php echo ($showTitle? ' checked="checked"':''); ?> type="checkbox" value="1" name="filter_showtitle" /><?php echo JText::_('COM_XMAP_DISPLAY_TITLE'); ?></label>
-                <label><input onclick="this.form.submit();"<?php echo ($showExcluded? ' checked="checked"':''); ?> type="checkbox" value="1" name="filter_showexcluded" /><?php echo JText::_('COM_XMAP_DISPLAY_EXCLUDED_ITEMS'); ?></label>
+                <label><input onClick="this.form.submit();"<?php echo ($showTitle? ' checked="checked"':''); ?> type="checkbox" value="1" name="filter_showtitle" /><?php echo JText::_('COM_XMAP_DISPLAY_TITLE'); ?></label>
+                <label><input onClick="this.form.submit();"<?php echo ($showExcluded? ' checked="checked"':''); ?> type="checkbox" value="1" name="filter_showexcluded" /><?php echo JText::_('COM_XMAP_DISPLAY_EXCLUDED_ITEMS'); ?></label>
                 </form>
             </div>
         <?php endif; ?>
