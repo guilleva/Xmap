@@ -71,8 +71,13 @@ class JFormFieldModal_Sitemaps extends JFormField
         $link = 'index.php?option=com_xmap&amp;view=sitemaps&amp;layout=modal&amp;tmpl=component&amp;function=jSelectSitemap_' . $this->id;
 
         JHTML::_('behavior.modal', 'a.modal');
-        $html = "\n" . '<div style="float: left;"><input style="background: #ffffff;" type="text" id="' . $this->id . '_name" value="' . htmlspecialchars($title, ENT_QUOTES, 'UTF-8') . '" disabled="disabled" /></div>';
-        $html .= '<div class="button2-left"><div class="blank"><a class="modal" title="' . JText::_('COM_XMAP_CHANGE_SITEMAP') . '"  href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}}">' . JText::_('COM_XMAP_CHANGE_SITEMAP_BUTTON') . '</a></div></div>' . "\n";
+		$html = '<span class="input-append">';
+        $html .= "\n" . '<input class="input-medium" type="text" id="' . $this->id . '_name" value="' . htmlspecialchars($title, ENT_QUOTES, 'UTF-8') . '" disabled="disabled" />';
+		if(version_compare(JVERSION,'3.0.0','ge'))
+        	$html .= '<a class="modal btn" title="' . JText::_('COM_XMAP_CHANGE_SITEMAP') . '"  href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}}"><i class="icon-file"></i> ' . JText::_('COM_XMAP_CHANGE_SITEMAP_BUTTON') . '</a>' . "\n";
+		else
+			$html .= '<div class="button2-left"><div class="blank"><a class="modal btn" title="' . JText::_('COM_XMAP_CHANGE_SITEMAP') . '"  href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}}"><i class="icon-file"></i> ' . JText::_('COM_XMAP_CHANGE_SITEMAP_BUTTON') . '</a></div></div>' . "\n";
+		$html .= '</span>';
         $html .= "\n" . '<input type="hidden" id="' . $this->id . '_id" name="' . $this->name . '" value="' . (int) $this->value . '" />';
         return $html;
     }
