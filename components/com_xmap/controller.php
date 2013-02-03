@@ -48,7 +48,8 @@ class XmapController extends JControllerLegacy
             $document = JFactory::getDocument();
             $viewType = $document->getType();
             $view = $this->getView($viewName, $viewType, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
-            $view->setModel($this->getModel('Sitemap'), true);
+			$sitemapmodel = $this->getModel('Sitemap');
+            $view->setModel($sitemapmodel, true);
         }
 
         $safeurlparams = array('id' => 'INT', 'itemid' => 'INT', 'uid' => 'CMD', 'action' => 'CMD', 'property' => 'CMD', 'value' => 'CMD');

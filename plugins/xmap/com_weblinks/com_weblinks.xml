@@ -11,6 +11,7 @@
   <description>XMAP_WL_PLUGIN_DESCRIPTION</description>
   <files>
     <filename plugin="com_weblinks">com_weblinks.php</filename>
+    <filename>index.html</filename>
   </files>
   <languages folder="language">
       <!--
@@ -18,6 +19,7 @@
       -->
       <language tag="en-GB">en-GB.plg_xmap_com_weblinks.ini</language>
       <language tag="es-ES">es-ES.plg_xmap_com_weblinks.ini</language>
+	  <language tag="fa-IR">fa-IR.plg_xmap_com_weblinks.ini</language>
   </languages>
   <config>
     <fields name="params">

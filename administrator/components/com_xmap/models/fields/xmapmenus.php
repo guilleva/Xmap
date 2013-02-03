@@ -149,9 +149,9 @@ class JFormFieldXmapmenus extends JFormFieldList
             $return .= '<li id="menu_' . $i . '">';
             $return .= '  <input type="' . $type . '" id="' . $this->id . '_' . $i . '" name="' . $this->name . '" value="' . $option->value . '"' . $attributes . $selected . ' /><label for="' . $this->id . '_' . $i . '" class="menu_label">' . $option->text . '</label>';
             $return .= '  <div class="xmap-menu-options" id="menu_options_' . $i . '">' .
-                    '<label>' . JText::_('Xmap_Priority') . '</label> ' . JHTML::_('xmap.priorities', $prioritiesName, ($selected ? $value[$option->value]['priority'] : '0.5'), $i) . '<br />' .
-                    '<label>' . JText::_('Xmap_Change_Frequency') . '</label> ' . JHTML::_('xmap.changefrequency', $changefreqName, ($selected ? $value[$option->value]['changefreq'] : 'weekly'), $i) .
-                    '</div>';
+                    '<label class="control-label">' . JText::_('Xmap_Priority') . '</label><div class="controls">' . JHTML::_('xmap.priorities', $prioritiesName, ($selected ? $value[$option->value]['priority'] : '0.5'), $i) . '</div>' .
+                    '<label class="control-label">' . JText::_('Xmap_Change_Frequency') . '</label><div class="controls">' . JHTML::_('xmap.changefrequency', $changefreqName, ($selected ? $value[$option->value]['changefreq'] : 'weekly'), $i) .
+                    '</div></div>';
             $return .= '</li>';
         }
         $return .= "</ul>";
