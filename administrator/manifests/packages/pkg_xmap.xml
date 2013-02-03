@@ -15,5 +15,6 @@
     <file type="plugin" id="com_mtree" group="xmap">plg_com_mtree.zip</file>
     <file type="plugin" id="com_virtuemart" group="xmap">plg_com_virtuemart.zip</file>
     <file type="plugin" id="com_weblinks" group="xmap">plg_com_weblinks.zip</file>
+    <file type="plugin" id="com_k2" group="xmap">plg_com_k2.zip</file>
   </files>
 </extension>
