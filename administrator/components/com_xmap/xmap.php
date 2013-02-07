@@ -28,5 +28,5 @@ if (!class_exists('JControllerLegacy')){
 }
 
 $controller = JControllerLegacy::getInstance('Xmap');
-$controller->execute(JRequest::getCmd('task'));
+$controller->execute(JFactory::getApplication()->input->get('task'));
 $controller->redirect();

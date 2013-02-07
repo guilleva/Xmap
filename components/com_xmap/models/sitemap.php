@@ -288,7 +288,7 @@ class XmapModelSitemap extends JModelItem
         $registry->loadArray($excludedItems);
         $str = $registry->toString();
 
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = "UPDATE #__xmap_sitemap set excluded_items='" . $db->escape($str) . "' where id=" . $sitemap->id;
         $db->setQuery($query);
         $db->query();

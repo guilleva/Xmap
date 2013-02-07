@@ -51,7 +51,8 @@ class xmap_com_weblinks
         parse_str(html_entity_decode($link_query['query']), $link_vars);
         $view = JArrayHelper::getValue($link_vars, 'view', 0);
 
-        $menu = & JSite::getMenu();
+        $app = JFactory::getApplication();
+        $menu = $app->getMenu();
         $menuparams = $menu->getParams($parent->id);
 
         if ($view == 'category') {

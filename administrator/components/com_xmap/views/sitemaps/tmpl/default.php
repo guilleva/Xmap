@@ -11,6 +11,9 @@ defined('_JEXEC') or die;
 
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 JHtml::_('bootstrap.tooltip');
+if(version_compare(JVERSION,'3.0.0','ge')) {
+  JHtml::_('formbehavior.chosen', 'select');
+}
 
 $n = count($this->items);
 

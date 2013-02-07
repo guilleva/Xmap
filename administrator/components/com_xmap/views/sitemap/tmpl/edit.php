@@ -13,6 +13,9 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 // Load the tooltip behavior.
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
+if(version_compare(JVERSION,'3.0.0','ge')) {
+    JHtml::_('formbehavior.chosen', 'select');
+}
 ?>
 <script type="text/javascript">
 <!--
@@ -43,7 +46,7 @@ JHtml::_('behavior.formvalidation');
             <div class="tab-content">
                 <div class="tab-pane active" id="general">
                     <div class="row-fluid">
-                        <div class="span6">
+                        <div class="span10">
                             <div class="control-group">
                                 <?php echo $this->form->getLabel('title'); ?>
                                 <div class="controls">
@@ -72,7 +75,9 @@ JHtml::_('behavior.formvalidation');
                                 <div class="clr"></div>
                                 <?php echo $this->form->getLabel('introtext'); ?><br />
                                 <div class="clr"></div>
-                                <?php echo $this->form->getInput('introtext'); ?>
+                                <div class="controls">
+                                    <?php echo $this->form->getInput('introtext'); ?>
+                                </div>
                             </div>
                         </div>
                     </div>

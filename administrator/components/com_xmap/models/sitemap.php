@@ -238,10 +238,11 @@ class XmapModelSitemap extends JModelAdmin
     {
         $table        = $this->getTable();
         if ($table->load($id)) {
-            $query =  $db->getQuery(true)
-                ->update($db->quoteName('#__xmap_sitemap'))
-                ->set($db->quoteName('is_default').' = 0')
-                ->where($db->quoteName('id').' <> '.$table->id);
+            $db = JFactory::getDbo();
+            $query = $db->getQuery(true)
+                        ->update($db->quoteName('#__xmap_sitemap'))
+                        ->set($db->quoteName('is_default').' = 0')
+                        ->where($db->quoteName('id').' <> '.$table->id);
             $this->_db->setQuery($query);
             if (!$this->_db->query()) {
                 $this->setError($table->_db->getErrorMsg());
