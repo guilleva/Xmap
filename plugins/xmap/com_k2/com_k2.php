@@ -319,13 +319,13 @@ class xmap_com_k2
 		if ($iscat)
 		{
 			$xmap->IDS .= "|c".$row->id;
-			$node->link = 'index.php?option=com_k2&view=itemlist&task=category&id='.$row->id.':'.$row->alias;
+			$node->link = 'index.php?option=com_k2&view=itemlist&task=category&id='.$row->id.':'.$row->alias.'&Itemid='.$parent->id;
 			$node->expandible = true;
 		}
 		else
 		{
 			$xmap->IDS .= "|".$row->id;
-			$node->link = 'index.php?option=com_k2&view=item&id='.$row->id.':'.$row->alias;
+			$node->link = 'index.php?option=com_k2&view=item&id='.$row->id.':'.$row->alias.'&Itemid='.$parent->id;
 			$node->expandible = false;
 		}
 		$node->tree = array ();
