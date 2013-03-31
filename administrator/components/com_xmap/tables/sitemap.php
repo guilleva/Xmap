@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id$
- * @copyright           Copyright (C) 2007 - 2009 Joomla! Vargas. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
- * @author		Guillermo Vargas (guille@vargas.co.cr)
+ * @version       $Id$
+ * @copyright     Copyright (C) 2007 - 2009 Joomla! Vargas. All rights reserved.
+ * @license       GNU General Public License version 2 or later; see LICENSE.txt
+ * @author        Guillermo Vargas (guille@vargas.co.cr)
  */
 // no direct access
 defined('_JEXEC') or die;
@@ -94,7 +94,7 @@ class XmapTableSitemap extends JTable
     var $lastvisit_html = 0;
 
     /**
-     * @param	JDatabase	A database connector object
+     * @param    JDatabase    A database connector object
      */
     function __construct(&$db)
     {
@@ -192,7 +192,7 @@ class XmapTableSitemap extends JTable
      * table.
      *
      * @param       mixed   An optional array of primary key values to update.  If not
-     *                                      set the instance property value is used.
+     *                      set the instance property value is used.
      * @param       integer The publishing state. eg. [0 = unpublished, 1 = published]
      * @param       integer The user id of the user performing the operation.
      * @return      boolean True on success.
@@ -226,9 +226,9 @@ class XmapTableSitemap extends JTable
 
         // Update the publishing state for rows with the given primary keys.
         $query =  $this->_db->getQuery(true)
-                        ->update($this->_db->quoteName('#__xmap_sitemap'))
-                        ->set($this->_db->quoteName('state').' = '. (int) $state)
-                        ->where($where);
+                       ->update($this->_db->quoteName('#__xmap_sitemap'))
+                       ->set($this->_db->quoteName('state').' = '. (int) $state)
+                       ->where($where);
 
         $this->_db->setQuery($query);
         $this->_db->query();

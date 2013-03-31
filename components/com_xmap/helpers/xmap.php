@@ -4,10 +4,10 @@
  * @version       $Id$
  * @copyright     Copyright (C) 2005 - 2009 Joomla! Vargas. All rights reserved.
  * @license       GNU General Public License version 2 or later; see LICENSE.txt
- * @author	Guillermo Vargas (guille@vargas.co.cr)
+ * @author        Guillermo Vargas (guille@vargas.co.cr)
  */
 // No direct access
-defined('_JEXEC') or die;
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 require_once(JPATH_SITE .'/includes/application.php');
 jimport('joomla.database.query');
@@ -15,9 +15,9 @@ jimport('joomla.database.query');
 /**
  * Xmap Component Sitemap Model
  *
- * @package		Xmap
- * @subpackage		com_xmap
- * @since 2.0
+ * @package        Xmap
+ * @subpackage     com_xmap
+ * @since          2.0
  */
 class XmapHelper
 {
@@ -145,9 +145,9 @@ class XmapHelper
     /**
      * Call the function prepareMenuItem of the extension for the item (if any)
      *
-     * @param	object		Menu item object
+     * @param    object        Menu item object
      *
-     * @return	void
+     * @return    void
      */
     public static function prepareMenuItem($item)
     {

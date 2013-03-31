@@ -18,8 +18,8 @@ if (!class_exists('JViewLegacy')){
 }
 
 /**
- * @package	Xmap
- * @subpackage	com_xmap
+ * @package    Xmap
+ * @subpackage com_xmap
  */
 class XmapViewSitemap extends JViewLegacy
 {
@@ -32,7 +32,7 @@ class XmapViewSitemap extends JViewLegacy
     /**
      * Display the view
      *
-     * @access	public
+     * @access    public
      */
     function display($tpl = null)
     {
@@ -68,7 +68,7 @@ class XmapViewSitemap extends JViewLegacy
     /**
      * Display the view
      *
-     * @access	public
+     * @access    public
      */
     function navigator($tpl = null)
     {
@@ -133,7 +133,7 @@ class XmapViewSitemap extends JViewLegacy
                 $node->link = '-menu-' . $menutype;
                 $node->expandible = true;
                 $node->selectable = false;
-                //$node->name = $this->getMenuTitle($menutype,@$menu->module);	// get the mod_mainmenu title from modules table
+                //$node->name = $this->getMenuTitle($menutype,@$menu->module);    // get the mod_mainmenu title from modules table
 
                 $this->list[] = $node;
             }
@@ -170,7 +170,7 @@ class XmapViewSitemap extends JViewLegacy
     /**
      * Display the toolbar
      *
-     * @access	private
+     * @access    private
      */
     function _setToolbar()
     {

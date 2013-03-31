@@ -7,7 +7,7 @@
 * @authorSite http://joomla.vargas.co.cr
 */
 
-defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 /** Adds support for SobiPro categories to Xmap */
 class xmap_com_sobipro {
@@ -40,7 +40,7 @@ class xmap_com_sobipro {
         if ($xmap->isNews) // This component does not provide news content. don't waste time/resources
             return false;
 
-        if ( !self::loadSobi() ){
+        if (!self::loadSobi()){
             return;
         }
 
@@ -69,15 +69,16 @@ class xmap_com_sobipro {
 
         $include_entries =JArrayHelper::getValue($params,'include_entries',1);
         $include_entries = ( $include_entries == 1
-                            || ( $include_entries == 2 && $xmap->view == 'xml')
-                    || ( $include_entries == 3 && $xmap->view == 'html')
-                    ||   $xmap->view == 'navigator');
+            || ( $include_entries == 2 && $xmap->view == 'xml')
+            || ( $include_entries == 3 && $xmap->view == 'html')
+            ||   $xmap->view == 'navigator');
         $params['include_entries'] = $include_entries;
 
         $priority =JArrayHelper::getValue($params,'cat_priority',$parent->priority);
-                $changefreq =JArrayHelper::getValue($params,'cat_changefreq',$parent->changefreq);
+        $changefreq =JArrayHelper::getValue($params,'cat_changefreq',$parent->changefreq);
+
         if ($priority  == '-1')
-        $priority = $parent->priority;
+            $priority = $parent->priority;
         if ($changefreq  == '-1')
             $changefreq = $parent->changefreq;
 
@@ -85,7 +86,8 @@ class xmap_com_sobipro {
         $params['cat_changefreq'] = $changefreq;
 
         $priority =JArrayHelper::getValue($params,'entry_priority',$parent->priority);
-                $changefreq =JArrayHelper::getValue($params,'entry_changefreq',$parent->changefreq);
+        $changefreq =JArrayHelper::getValue($params,'entry_changefreq',$parent->changefreq);
+
         if ($priority  == '-1')
             $priority = $parent->priority;
         if ($changefreq  == '-1')
@@ -94,8 +96,8 @@ class xmap_com_sobipro {
         $params['entry_priority'] = $priority;
         $params['entry_changefreq'] = $changefreq;
 
-                $date = JFactory::getDate();
-                $params['now'] = $date->toMySql();
+        $date = JFactory::getDate();
+        $params['now'] = $date->toMySql();
 
         if ( $include_entries ) {
             $ordering = JArrayHelper::getValue($params,'entries_order','b.position');
@@ -119,7 +121,6 @@ class xmap_com_sobipro {
                 $params['days'] = ' AND a.publish_up >=\''.strftime("%Y-%m-%d %H:%M:%S",$xmap->now - ($days*86400)) ."' ";
         }
 
-
         xmap_com_sobipro::getCategoryTree($xmap, $parent, $sid, $params);
     }
 
@@ -128,15 +129,15 @@ class xmap_com_sobipro {
         $database =& JFactory::getDBO();
 
         $query  =
-         "SELECT a.id,a.nid, a.name, b.pid as pid "
-        ."\n FROM #__sobipro_object AS a, #__sobipro_relations AS b "
-        ."\n WHERE a.parent=$sid"
-        ."   AND a.oType='category'"
-        ."   AND b.oType=a.oType"
+             "SELECT a.id,a.nid, a.name, b.pid as pid "
+            ."\n FROM #__sobipro_object AS a, #__sobipro_relations AS b "
+            ."\n WHERE a.parent=$sid"
+            ."   AND a.oType='category'"
+            ."   AND b.oType=a.oType"
             ."   AND a.state=1 "
             ."   AND a.approved=1 "
-        ."\n AND a.id=b.id "
-        ."\n ORDER BY b.position ASC";
+            ."\n AND a.id=b.id "
+            ."\n ORDER BY b.position ASC";
 
         $database->setQuery( $query );
         $rows = $database->loadObjectList();
@@ -163,21 +164,20 @@ class xmap_com_sobipro {
 
         if ( $params['include_entries'] ) {
             $query  =
-             "SELECT a.id, c.baseData as name,a.updatedTime as modified,b.validSince as publish_up, b.pid as catid  "
-            ."\n FROM #__sobipro_object AS a, #__sobipro_relations AS b, #__sobipro_field_data c"
-            ."\n WHERE a.state=1 "
-            ."\n AND a.id=b.id "
-            ."\n AND b.oType = 'entry'"
-            ."\n AND b.pid = $sid"
-            ."\n AND a.approved=1 "
-            ."\n AND (a.validUntil>='{$params['now']}' or a.validUntil='0000-00-00 00:00:00' ) "
-            ."\n AND (a.validSince<='{$params['now']}' or a.validSince='0000-00-00 00:00:00' ) "
-            ."\n AND a.id=c.sid AND c.fid=".self::$sectionConfig['name_field']->sValue
-            ."\n AND c.section=".self::$sectionConfig['name_field']->section
-            . $params['days']
-            ."\n ORDER BY " . $params['ordering']
-            . $params['limit'];
-
+                 "SELECT a.id, c.baseData as name,a.updatedTime as modified,b.validSince as publish_up, b.pid as catid  "
+                ."\n FROM #__sobipro_object AS a, #__sobipro_relations AS b, #__sobipro_field_data c"
+                ."\n WHERE a.state=1 "
+                ."\n AND a.id=b.id "
+                ."\n AND b.oType = 'entry'"
+                ."\n AND b.pid = $sid"
+                ."\n AND a.approved=1 "
+                ."\n AND (a.validUntil>='{$params['now']}' or a.validUntil='0000-00-00 00:00:00' ) "
+                ."\n AND (a.validSince<='{$params['now']}' or a.validSince='0000-00-00 00:00:00' ) "
+                ."\n AND a.id=c.sid AND c.fid=".self::$sectionConfig['name_field']->sValue
+                ."\n AND c.section=".self::$sectionConfig['name_field']->section
+                . $params['days']
+                ."\n ORDER BY " . $params['ordering']
+                . $params['limit'];
 
             $database->setQuery( $query );
             $rows = $database->loadObjectList();

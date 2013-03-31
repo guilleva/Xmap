@@ -5,7 +5,7 @@
  * @license             GNU General Public License version 2 or later; see LICENSE.txt
  * @author              Guillermo Vargas (guille@vargas.co.cr)
  */
-defined('_JEXEC') or die;
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 require_once JPATH_SITE . '/components/com_content/helpers/route.php';
 require_once JPATH_SITE . '/components/com_content/helpers/query.php';
@@ -130,32 +130,32 @@ class xmap_com_content
         //----- Set expand_categories param
         $expand_categories = JArrayHelper::getValue($params, 'expand_categories', 1);
         $expand_categories = ( $expand_categories == 1
-                || ( $expand_categories == 2 && $xmap->view == 'xml')
-                || ( $expand_categories == 3 && $xmap->view == 'html')
-                || $xmap->view == 'navigator');
+            || ( $expand_categories == 2 && $xmap->view == 'xml')
+            || ( $expand_categories == 3 && $xmap->view == 'html')
+            || $xmap->view == 'navigator');
         $params['expand_categories'] = $expand_categories;
 
         //----- Set expand_featured param
         $expand_featured = JArrayHelper::getValue($params, 'expand_featured', 1);
         $expand_featured = ( $expand_featured == 1
-                || ( $expand_featured == 2 && $xmap->view == 'xml')
-                || ( $expand_featured == 3 && $xmap->view == 'html')
-                || $xmap->view == 'navigator');
+            || ( $expand_featured == 2 && $xmap->view == 'xml')
+            || ( $expand_featured == 3 && $xmap->view == 'html')
+            || $xmap->view == 'navigator');
         $params['expand_featured'] = $expand_featured;
 
         //----- Set expand_featured param
         $include_archived = JArrayHelper::getValue($params, 'include_archived', 2);
         $include_archived = ( $include_archived == 1
-                || ( $include_archived == 2 && $xmap->view == 'xml')
-                || ( $include_archived == 3 && $xmap->view == 'html')
-                || $xmap->view == 'navigator');
+            || ( $include_archived == 2 && $xmap->view == 'xml')
+            || ( $include_archived == 3 && $xmap->view == 'html')
+            || $xmap->view == 'navigator');
         $params['include_archived'] = $include_archived;
 
         //----- Set show_unauth param
         $show_unauth = JArrayHelper::getValue($params, 'show_unauth', 1);
         $show_unauth = ( $show_unauth == 1
-                || ( $show_unauth == 2 && $xmap->view == 'xml')
-                || ( $show_unauth == 3 && $xmap->view == 'html'));
+            || ( $show_unauth == 2 && $xmap->view == 'xml')
+            || ( $show_unauth == 3 && $xmap->view == 'html'));
         $params['show_unauth'] = $show_unauth;
 
         //----- Set add_images param
@@ -167,9 +167,9 @@ class xmap_com_content
         //----- Set add pagebreaks param
         $add_pagebreaks = JArrayHelper::getValue($params, 'add_pagebreaks', 1);
         $add_pagebreaks = ( $add_pagebreaks == 1
-                || ( $add_pagebreaks == 2 && $xmap->view == 'xml')
-                || ( $add_pagebreaks == 3 && $xmap->view == 'html')
-                || $xmap->view == 'navigator');
+            || ( $add_pagebreaks == 2 && $xmap->view == 'xml')
+            || ( $add_pagebreaks == 3 && $xmap->view == 'html')
+            || $xmap->view == 'navigator');
         $params['add_pagebreaks'] = $add_pagebreaks;
 
         if ($params['add_pagebreaks'] && !defined('_XMAP_COM_CONTENT_LOADED')) {
@@ -242,11 +242,11 @@ class xmap_com_content
                     $query = $db->getQuery(true);
 
                     $query->select($db->quoteName('introtext'))
-                      ->select($db->quoteName('fulltext'))
-                      ->select($db->quoteName('alias'))
-                      ->select($db->quoteName('catid'))
-                      ->from($db->quoteName('#__content'))
-                      ->where($db->quoteName('id').'='.intval($id));
+                          ->select($db->quoteName('fulltext'))
+                          ->select($db->quoteName('alias'))
+                          ->select($db->quoteName('catid'))
+                          ->from($db->quoteName('#__content'))
+                          ->where($db->quoteName('id').'='.intval($id));
                     $db->setQuery($query);
 
                     $row = $db->loadObject();

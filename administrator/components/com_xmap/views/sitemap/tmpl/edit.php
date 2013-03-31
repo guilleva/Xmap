@@ -1,9 +1,9 @@
 <?php
 /**
- * @version             $Id$
- * @copyright		Copyright (C) 2007 - 2009 Joomla! Vargas. All rights reserved.
- * @license             GNU General Public License version 2 or later; see LICENSE.txt
- * @author              Guillermo Vargas (guille@vargas.co.cr)
+ * @version          $Id$
+ * @copyright        Copyright (C) 2007 - 2009 Joomla! Vargas. All rights reserved.
+ * @license          GNU General Public License version 2 or later; see LICENSE.txt
+ * @author           Guillermo Vargas (guille@vargas.co.cr)
  */
 defined('_JEXEC') or die;
 
@@ -35,11 +35,12 @@ if(version_compare(JVERSION,'3.0.0','ge')) {
                 <li class="active"><a href="#general" data-toggle="tab"><?php echo JText::_('XMAP_SITEMAP_DETAILS_FIELDSET');?></a></li>
                 <li><a href="#attrib-menus" data-toggle="tab"><?php echo JText::_('XMAP_FIELDSET_MENUS');?></a></li>
                 <?php
-                    $fieldSets = $this->form->getFieldsets('attribs');
-                    foreach ($fieldSets as $name => $fieldSet) : ?>
-                        <li><a href="#attrib-<?php echo $name;?>" data-toggle="tab"><?php echo JText::_($fieldSet->label);?></a></li>
+                $fieldSets = $this->form->getFieldsets('attribs');
+                foreach ($fieldSets as $name => $fieldSet) :
+                ?>
+                <li><a href="#attrib-<?php echo $name;?>" data-toggle="tab"><?php echo JText::_($fieldSet->label);?></a></li>
                 <?php
-                    endforeach;
+                endforeach;
                 ?>
             </ul>
 
@@ -83,41 +84,38 @@ if(version_compare(JVERSION,'3.0.0','ge')) {
                     </div>
                 </div>
 
-
                 <div class="tab-pane" id="attrib-menus">
                     <div style="width:500px">
                         <?php echo $this->form->getInput('selections'); ?>
                     </div>
                 </div>
                 <?php
-                    $fieldSets = $this->form->getFieldsets('attribs');
-                    foreach ($fieldSets as $name => $fieldSet) : ?>
-                        <div class="tab-pane" id="attrib-<?php echo $name;?>">
-                        <?php
-                        if (isset($fieldSet->description) && trim($fieldSet->description)) :
-                            echo '<p class="tip">' . $this->escape(JText::_($fieldSet->description)) . '</p>';
-                        endif;
-
-                        foreach ($this->form->getFieldset($name) as $field) : ?>
-                            <div class="control-group">
-                                <?php echo $field->label; ?>
-                                <div class="controls">
-                                    <?php echo $field->input; ?>
-                                </div>
-                            </div>
-                        <?php
-                        endforeach; ?>
-                        </div>
+                $fieldSets = $this->form->getFieldsets('attribs');
+                foreach ($fieldSets as $name => $fieldSet) :
+                ?>
+                <div class="tab-pane" id="attrib-<?php echo $name;?>">
                     <?php
-                    endforeach;
+                    if (isset($fieldSet->description) && trim($fieldSet->description)) :
+                        echo '<p class="tip">' . $this->escape(JText::_($fieldSet->description)) . '</p>';
+                    endif;
+
+                    foreach ($this->form->getFieldset($name) as $field) :
                     ?>
+                    <div class="control-group">
+                        <?php echo $field->label; ?>
+                        <div class="controls">
+                            <?php echo $field->input; ?>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </div>
 
-
     <input type="hidden" name="task" value="" />
     <?php echo $this->form->getInput('is_default'); ?>
     <?php echo JHtml::_('form.token'); ?>
-    </form>
-    <div class="clr"></div>
+</form>
+<div class="clr"></div>

@@ -1,8 +1,8 @@
 <?php
 /**
- * @version        $Id$
+ * @version      $Id$
  * @copyright    Copyright (C) 2005 - 2010 Open Source Matters, Inc. All rights reserved.
- * @license        GNU General Public License version 2 or later; see LICENSE.txt
+ * @license      GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 // No direct access
@@ -24,7 +24,7 @@ class XmapModelSitemap extends JModelAdmin
      * Constructor.
      *
      * @param    array An optional associative array of configuration settings.
-     * @see        JController
+     * @see      JController
      */
     public function __construct($config = array())
     {
@@ -55,10 +55,10 @@ class XmapModelSitemap extends JModelAdmin
     /**
      * Returns a Table object, always creating it.
      *
-     * @param    type    The table type to instantiate
-     * @param    string    A prefix for the table class name. Optional.
-     * @param    array    Configuration array for model. Optional.
-     * @return    XmapTableSitemap    A database object
+     * @param    type                The table type to instantiate
+     * @param    string              A prefix for the table class name. Optional.
+     * @param    array               Configuration array for model. Optional.
+     * @return   XmapTableSitemap    A database object
     */
     public function getTable($type = 'Sitemap', $prefix = 'XmapTable', $config = array())
     {
@@ -70,13 +70,13 @@ class XmapModelSitemap extends JModelAdmin
      *
      * @param    integer    The id of the primary key.
      *
-     * @return    mixed    Object on success, false on failure.
+     * @return   mixed      Object on success, false on failure.
      */
     public function getItem($pk = null)
     {
         // Initialise variables.
         $pk = (!empty($pk)) ? $pk : (int)$this->getState('sitemap.id');
-        $false    = false;
+        $false = false;
 
         // Get a row instance.
         $table = $this->getTable();
@@ -111,9 +111,9 @@ class XmapModelSitemap extends JModelAdmin
     /**
      * Method to get the record form.
      *
-     * @param    array    $data        Data for the form.
+     * @param    array      $data        Data for the form.
      * @param    boolean    $loadData    True if the form is to load its own data (default case), false if not.
-     * @return    mixed    A JForm object on success, false on failure
+     * @return   mixed                   A JForm object on success, false on failure
      * @since    2.0
      */
     public function getForm($data = array(), $loadData = true)
@@ -123,7 +123,6 @@ class XmapModelSitemap extends JModelAdmin
         if (empty($form)) {
             return false;
         }
-
 
         return $form;
     }
@@ -158,9 +157,9 @@ class XmapModelSitemap extends JModelAdmin
     {
         // Initialise variables;
         $dispatcher = JDispatcher::getInstance();
-        $table        = $this->getTable();
-        $pk            = (!empty($data['id'])) ? $data['id'] : (int)$this->getState('sitemap.id');
-        $isNew        = true;
+        $table      = $this->getTable();
+        $pk         = (!empty($data['id'])) ? $data['id'] : (int)$this->getState('sitemap.id');
+        $isNew      = true;
 
         // Load the row if saving an existing record.
         if ($pk > 0) {
@@ -199,9 +198,9 @@ class XmapModelSitemap extends JModelAdmin
 
         if ($table->is_default) {
             $query =  $this->_db->getQuery(true)
-                            ->update($this->_db->quoteName('#__xmap_sitemap'))
-                            ->set($this->_db->quoteName('is_default').' = 0')
-                            ->where($this->_db->quoteName('id').' <> '.$table->id);
+                           ->update($this->_db->quoteName('#__xmap_sitemap'))
+                           ->set($this->_db->quoteName('is_default').' = 0')
+                           ->where($this->_db->quoteName('id').' <> '.$table->id);
 
             $this->_db->setQuery($query);
             if (!$this->_db->query()) {
@@ -227,7 +226,6 @@ class XmapModelSitemap extends JModelAdmin
         // TODO.
     }
 
-
     function _orderConditions($table = null)
     {
         $condition = array();
@@ -236,7 +234,7 @@ class XmapModelSitemap extends JModelAdmin
 
     function setDefault($id)
     {
-        $table        = $this->getTable();
+        $table = $this->getTable();
         if ($table->load($id)) {
             $db = JFactory::getDbo();
             $query = $db->getQuery(true)

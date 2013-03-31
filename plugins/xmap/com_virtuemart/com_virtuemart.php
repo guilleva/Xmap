@@ -8,7 +8,7 @@
  * @description Xmap plugin for Virtuemart component
  */
 
-defined('_JEXEC') or die;
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 /** Adds support for Virtuemart categories to Xmap */
 class xmap_com_virtuemart

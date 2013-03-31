@@ -1,9 +1,9 @@
 <?php
 /**
- * @version             $Id$
- * @copyright		Copyright (C) 2007 - 2009 Joomla! Vargas. All rights reserved.
- * @license             GNU General Public License version 2 or later; see LICENSE.txt
- * @author              Guillermo Vargas (guille@vargas.co.cr)
+ * @version          $Id$
+ * @copyright        Copyright (C) 2007 - 2009 Joomla! Vargas. All rights reserved.
+ * @license          GNU General Public License version 2 or later; see LICENSE.txt
+ * @author           Guillermo Vargas (guille@vargas.co.cr)
  */
 defined('_JEXEC') or die;
 
@@ -13,9 +13,9 @@ require_once JPATH_LIBRARIES . '/joomla/form/fields/list.php';
 /**
  * Menus Form Field class for the Xmap Component
  *
- * @package		Xmap
- * @subpackage		com_xmap
- * @since		2.0
+ * @package      Xmap
+ * @subpackage   com_xmap
+ * @since        2.0
  */
 class JFormFieldXmapmenus extends JFormFieldList
 {
@@ -23,14 +23,14 @@ class JFormFieldXmapmenus extends JFormFieldList
     /**
      * The field type.
      *
-     * @var		string
+     * @var      string
      */
     public $type = 'Xmapmenus';
 
     /**
      * Method to get a list of options for a list input.
      *
-     * @return	array		An array of JHtml options.
+     * @return   array        An array of JHtml options.
      */
     protected function _getOptions()
     {
@@ -53,7 +53,6 @@ class JFormFieldXmapmenus extends JFormFieldList
         // Add the current sitemap menus in the defined order to the list
         foreach ($currentMenus as $menutype) {
             if (!empty($menus[$menutype])) {
-
                 $options[] = $menus[$menutype];
             }
         }
@@ -71,8 +70,8 @@ class JFormFieldXmapmenus extends JFormFieldList
         }
 
         $options = array_merge(
-                        parent::getOptions(),
-                        $options
+                       parent::getOptions(),
+                       $options
         );
         return $options;
     }
@@ -80,7 +79,7 @@ class JFormFieldXmapmenus extends JFormFieldList
     /**
      * Method to get the field input.
      *
-     * @return      string	  The field input.
+     * @return      string      The field input.
      */
     protected function getInput()
     {
@@ -111,21 +110,21 @@ class JFormFieldXmapmenus extends JFormFieldList
 
         $doc = JFactory::getDocument();
         $doc->addScriptDeclaration("
-		window.addEvent('domready',function(){
+        window.addEvent('domready',function(){
             \$\$('div.xmap-menu-options select').addEvent('mouseover',function(event){xmapMenusSortable.detach();})
             \$\$('div.xmap-menu-options select').addEvent('mouseout',function(event){xmapMenusSortable.attach();})
-			var xmapMenusSortable = new Sortables(\$('ul_" . $this->inputId . "'),{
-				clone:true,
-				revert: true,
+            var xmapMenusSortable = new Sortables(\$('ul_" . $this->inputId . "'),{
+                clone:true,
+                revert: true,
                 preventDefault: true,
-				onStart: function(el) {
-					el.setStyle('background','#bbb');
-				},
-				onComplete: function(el) {
-					el.setStyle('background','#eee');
-				}
-			});
-		});");
+                onStart: function(el) {
+                    el.setStyle('background','#bbb');
+                },
+                onComplete: function(el) {
+                    el.setStyle('background','#eee');
+                }
+            });
+        });");
 
         if ($disabled || $readonly) {
             $attributes .= 'disabled="disabled"';

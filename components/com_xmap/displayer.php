@@ -1,14 +1,13 @@
 <?php
 /**
-* @version		$Id$
-* @copyright		Copyright (C) 2005 - 2009 Joomla! Vargas. All rights reserved.
-* @license		GNU General Public License version 2 or later; see LICENSE.txt
-* @author		Guillermo Vargas (guille@vargas.co.cr)
+* @version        $Id$
+* @copyright        Copyright (C) 2005 - 2009 Joomla! Vargas. All rights reserved.
+* @license        GNU General Public License version 2 or later; see LICENSE.txt
+* @author        Guillermo Vargas (guille@vargas.co.cr)
 */
 
 // No direct access
-defined('_JEXEC') or die;
-
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class XmapDisplayer {
 
@@ -47,22 +46,21 @@ class XmapDisplayer {
         $groups = array_keys(JUserHelper::getUserGroups($user->get('id')));
         $date = new JDate();
 
-        $this->userLevels	= (array)$user->getAuthorisedViewLevels();
+        $this->userLevels    = (array)$user->getAuthorisedViewLevels();
         // Deprecated: should use userLevels from now on
-        // $this->gid	= $user->gid;
-        $this->now	= $date->toUnix();
-        $this->config	= $config;
-        $this->sitemap	= $sitemap;
+        // $this->gid = $user->gid;
+        $this->now    = $date->toUnix();
+        $this->config    = $config;
+        $this->sitemap    = $sitemap;
         $this->isNews   = false;
-        $this->isImages	= false;
-        $this->count	= 0;
+        $this->isImages    = false;
+        $this->count    = 0;
         $this->canEdit  = false;
     }
 
     public function printNode( &$node ) {
         return false;
     }
-
 
     public function printSitemap()
     {
@@ -134,26 +132,26 @@ class XmapDisplayer {
 
         $router = JSite::getRouter();
 
-        foreach ( $items as $i => $item ) {             // Add each menu entry to the root tree.
+        foreach ( $items as $i => $item ) {                   // Add each menu entry to the root tree.
             $excludeExternal = false;
 
             $node = new stdclass;
 
-            $node->id               = $item->id;
-            $node->uid              = $item->uid;
-            $node->name             = $item->title;			// displayed name of node
-            // $node->parent           = $item->parent;		// id of parent node
-            $node->browserNav       = $item->browserNav;		// how to open link
-            $node->priority         = $item->priority;
-            $node->changefreq       = $item->changefreq;
-            $node->type             = $item->type;			// menuentry-type
-            $node->menutype         = $menu->menutype;		// menuentry-type
-            $node->home             = $item->home;			// If it's a home menu entry
-            // $node->link             = isset( $item->link ) ? htmlspecialchars( $item->link ) : '';
-            $node->link             = $item->link;
-            $node->option           = $item->option;
-            $node->modified         = @$item->modified;
-            $node->secure           = $item->params->get('secure');
+            $node->id           = $item->id;
+            $node->uid          = $item->uid;
+            $node->name         = $item->title;               // displayed name of node
+            // $node->parent    = $item->parent;              // id of parent node
+            $node->browserNav   = $item->browserNav;          // how to open link
+            $node->priority     = $item->priority;
+            $node->changefreq   = $item->changefreq;
+            $node->type         = $item->type;                // menuentry-type
+            $node->menutype     = $menu->menutype;            // menuentry-type
+            $node->home         = $item->home;                // If it's a home menu entry
+            // $node->link      = isset( $item->link ) ? htmlspecialchars( $item->link ) : '';
+            $node->link         = $item->link;
+            $node->option       = $item->option;
+            $node->modified     = @$item->modified;
+            $node->secure       = $item->params->get('secure');
 
             // New on Xmap 2.0: send the menu params
             $node->params =& $item->params;

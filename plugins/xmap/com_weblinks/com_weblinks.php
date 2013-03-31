@@ -8,7 +8,7 @@
  * @license GNU/GPL
  * @description Xmap plugin for Joomla's web links component
  */
-defined('_JEXEC') or die('Restricted access.');
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class xmap_com_weblinks
 {
@@ -44,8 +44,8 @@ class xmap_com_weblinks
     {
         self::initialize($params);
 
-        $app        = JFactory::getApplication();
-        $weblinks_params     = $app->getParams('com_weblinks');
+        $app = JFactory::getApplication();
+        $weblinks_params = $app->getParams('com_weblinks');
 
         $link_query = parse_url($parent->link);
         parse_str(html_entity_decode($link_query['query']), $link_vars);
@@ -65,9 +65,9 @@ class xmap_com_weblinks
 
         $include_links = JArrayHelper::getValue($params, 'include_links', 1, '');
         $include_links = ( $include_links == 1
-                || ( $include_links == 2 && $xmap->view == 'xml')
-                || ( $include_links == 3 && $xmap->view == 'html')
-                || $xmap->view == 'navigator');
+            || ( $include_links == 2 && $xmap->view == 'xml')
+            || ( $include_links == 3 && $xmap->view == 'html')
+            || $xmap->view == 'navigator');
         $params['include_links'] = $include_links;
 
         $priority = JArrayHelper::getValue($params, 'cat_priority', $parent->priority, '');
@@ -91,7 +91,6 @@ class xmap_com_weblinks
         $params['link_priority'] = $priority;
         $params['link_changefreq'] = $changefreq;
 
-
         $options = array();
         $options['countItems'] = false;
         $options['catid'] = rand();
@@ -99,7 +98,6 @@ class xmap_com_weblinks
         $category = $categories->get($catid? $catid : 'root', true);
 
         $params['count_clicks'] = $weblinks_params->get('count_clicks');
-
 
         xmap_com_weblinks::getCategoryTree($xmap, $parent, $params, $category);
     }
@@ -170,6 +168,5 @@ class xmap_com_weblinks
         self::$_initialized = true;
         require_once JPATH_SITE.'/components/com_weblinks/models/category.php';
         require_once JPATH_SITE.'/components/com_weblinks/helpers/route.php';
-
     }
 }

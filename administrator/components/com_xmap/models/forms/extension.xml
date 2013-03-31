@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-	<!-- $Id$ -->
+<!-- $Id$ -->
 <form>
-	<fieldset addpath="administrator/components/com_xmap/elements">
+    <fieldset addpath="administrator/components/com_xmap/elements">
+
         <field
             name="extension_id"
             label="JGLOBAL_FIELD_ID_LABEL"
@@ -12,28 +13,27 @@
             readonly="true"
             class="readonly" />
 
-		<field
-			id="name"
-			name="name"
-			type="text"
-			label="JGLOBAL_TITLE"
-			description="JFIELD_TITLE_DESC"
-			class="inputbox"
-			size="29"
-			required="true"
-			/>
+        <field
+            id="name"
+            name="name"
+            type="text"
+            label="JGLOBAL_TITLE"
+            description="JFIELD_TITLE_DESC"
+            class="inputbox"
+            size="29"
+            required="true" />
 
-		<field
-			name="enabled"
-			type="list"
-			label="JFIELD_PUBLISHED_LABEL"
-			description="JFIELD_PUBLISHED_DESC"
-			default="1">
-			<option
-				value="0">No</option>
-			<option
-				value="1">Yes</option>
-		</field>
+        <field
+            name="enabled"
+            type="list"
+            label="JFIELD_PUBLISHED_LABEL"
+            description="JFIELD_PUBLISHED_DESC"
+            default="1">
+            <option
+                value="0">No</option>
+            <option
+                value="1">Yes</option>
+        </field>
         
         <field
             name="folder"
@@ -53,5 +53,5 @@
             description="COM_PLUGINS_FIELD_ELEMENT_DESC"
             readonly="true" />
         
-	</fieldset>
+    </fieldset>
 </form>
