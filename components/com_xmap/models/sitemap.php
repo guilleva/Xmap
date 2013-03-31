@@ -4,7 +4,7 @@
  * @version       $Id$
  * @copyright     Copyright (C) 2005 - 2009 Joomla! Vargas. All rights reserved.
  * @license       GNU General Public License version 2 or later; see LICENSE.txt
- * @author	Guillermo Vargas (guille@vargas.co.cr)
+ * @author        Guillermo Vargas (guille@vargas.co.cr)
  */
 // No direct access
 defined('_JEXEC') or die;
@@ -16,9 +16,9 @@ require_once(JPATH_COMPONENT . '/helpers/xmap.php');
 /**
  * Xmap Component Sitemap Model
  *
- * @package		Xmap
- * @subpackage	com_xmap
- * @since 2.0
+ * @package        Xmap
+ * @subpackage     com_xmap
+ * @since          2.0
  */
 class XmapModelSitemap extends JModelItem
 {
@@ -26,7 +26,7 @@ class XmapModelSitemap extends JModelItem
     /**
      * Model context string.
      *
-     * @var		string
+     * @var        string
      */
     protected $_context = 'com_xmap.sitemap';
     protected $_extensions = null;
@@ -35,7 +35,7 @@ class XmapModelSitemap extends JModelItem
     /**
      * Method to auto-populate the model state.
      *
-     * @return	void
+     * @return     void
      */
     protected function populateState()
     {
@@ -60,9 +60,9 @@ class XmapModelSitemap extends JModelItem
     /**
      * Method to get sitemap data.
      *
-     * @param	integer	The id of the article.
+     * @param    integer    The id of the article.
      *
-     * @return	mixed	Menu item data object on success, false on failure.
+     * @return   mixed      Menu item data object on success, false on failure.
      */
     public function &getItem($pk = null)
     {
@@ -171,9 +171,9 @@ class XmapModelSitemap extends JModelItem
     /**
      * Increment the hit counter for the sitemap.
      *
-     * @param	int		Optional primary key of the sitemap to increment.
+     * @param    int        Optional primary key of the sitemap to increment.
      *
-     * @return	boolean	True if successful; false otherwise and internal error set.
+     * @return   boolean    True if successful; false otherwise and internal error set.
      */
     public function hit($count)
     {
@@ -185,11 +185,10 @@ class XmapModelSitemap extends JModelItem
             return false;
         }
 
-
         $this->_db->setQuery(
-                'UPDATE #__xmap_sitemap' .
-                ' SET views_' . $view . ' = views_' . $view . ' + 1, count_' . $view . ' = ' . $count . ', lastvisit_' . $view . ' = ' . JFactory::getDate()->toUnix() .
-                ' WHERE id = ' . (int) $pk
+            'UPDATE #__xmap_sitemap' .
+            ' SET views_' . $view . ' = views_' . $view . ' + 1, count_' . $view . ' = ' . $count . ', lastvisit_' . $view . ' = ' . JFactory::getDate()->toUnix() .
+            ' WHERE id = ' . (int) $pk
         );
 
         if (!$this->_db->query()) {
@@ -264,7 +263,6 @@ class XmapModelSitemap extends JModelItem
     {
         $app = JFactory::getApplication('site');
         $sitemap = $this->getItem();
-
 
         $displayer = new XmapDisplayer($app->getParams(), $sitemap);
 

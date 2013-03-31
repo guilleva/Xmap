@@ -6,7 +6,7 @@
  * @author              Guillermo Vargas (guille@vargas.co.cr)
  */
 
-defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 /** Handles Mosets Tree component */
 class xmap_com_mtree
@@ -27,9 +27,9 @@ class xmap_com_mtree
 
         $include_links = JArrayHelper::getValue($params,'include_links',1);
         $include_links = ( $include_links == 1
-                                  || ( $include_links == 2 && $xmap->view == 'xml')
-                                  || ( $include_links == 3 && $xmap->view == 'html')
-                                  ||   $xmap->view == 'navigator');
+            || ( $include_links == 2 && $xmap->view == 'xml')
+            || ( $include_links == 3 && $xmap->view == 'html')
+            ||   $xmap->view == 'navigator');
         $params['include_links'] = $include_links;
 
         $priority = JArrayHelper::getValue($params,'cat_priority',$parent->priority);

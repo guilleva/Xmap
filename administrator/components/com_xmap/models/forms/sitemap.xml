@@ -21,8 +21,7 @@
             class="inputbox input-xlarge"
             labelclass="control-label"
             size="30"
-            required="true"
-            />
+            required="true" />
 
         <field
             id="alias"
@@ -81,8 +80,7 @@
             class="inputbox"
             labelclass="control-label"
             size="16"
-            format="%Y-%m-%d %H-%M-%S"
-            />
+            format="%Y-%m-%d %H-%M-%S" />
 
         <field
             id="access"
@@ -92,8 +90,7 @@
             description="JFIELD_ACCESS_DESC"
             class="inputbox"
             labelclass="control-label"
-            size="1"
-            />
+            size="1" />
 
         <field
             id="count_html"
@@ -211,7 +208,7 @@
                 default=""
                 label="XMAP_ATTRIBS_CLASSNAME_LABEL"
                 labelclass="control-label"
-                description="XMAP_ATTRIBS_CLASSNAME_DESC"></field>
+                description="XMAP_ATTRIBS_CLASSNAME_DESC" />
 
             <field
                 name="columns"
@@ -219,7 +216,7 @@
                 default=""
                 labelclass="control-label"
                 label="XMAP_ATTRIBS_COLUMNS_LABEL"
-                description="XMAP_ATTRIBS_COLUMNS_DESC"></field>
+                description="XMAP_ATTRIBS_COLUMNS_DESC" />
 
             <field
                 name="exlinks"
@@ -300,14 +297,14 @@
               default=""
               labelclass="control-label"
               label="XMAP_ATTRIBS_NEWS_PUBLICATION_NAME_LABEL"
-              description="XMAP_ATTRIBS_NEWS_PUBLICATION_NAME_DESC"></field>
+              description="XMAP_ATTRIBS_NEWS_PUBLICATION_NAME_DESC" />
 <!--
           <field
               name="news_posts_keywords"
               type="text"
               default=""
               label="XMAP_ATTRIBS_NEWS_POSTS_KEYWORDS_LABEL"
-              description="XMAP_ATTRIBS_NEWS_POSTS_KEYWORDS_DESC"></field>
+              description="XMAP_ATTRIBS_NEWS_POSTS_KEYWORDS_DESC" />
 -->
         </fieldset>
     </fields>

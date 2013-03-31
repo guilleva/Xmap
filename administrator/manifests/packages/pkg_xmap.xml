@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <extension type="package" version="1.6">
-  <name>Xmap Package</name>
-  <packagename>xmap</packagename>
-  <version>2.0.0</version>
-  <url>http://joomla.vargas.co.cr</url>
-  <packager>Joomla! Vargas</packager>
-  <packagerurl>http://joomla.vargas.co.cr</packagerurl>
-  <description>The Site Map generator for Joomla!</description>
-  <files folder="packages">
-    <file type="component" id="com_xmap">com_xmap.zip</file>
-    <file type="plugin" id="com_content" group="xmap">plg_com_content.zip</file>
-    <file type="plugin" id="com_kunena" group="xmap">plg_com_kunena.zip</file>
-    <file type="plugin" id="com_sobipro" group="xmap">plg_com_sobipro.zip</file>
-    <file type="plugin" id="com_mtree" group="xmap">plg_com_mtree.zip</file>
-    <file type="plugin" id="com_virtuemart" group="xmap">plg_com_virtuemart.zip</file>
-    <file type="plugin" id="com_weblinks" group="xmap">plg_com_weblinks.zip</file>
-    <file type="plugin" id="com_k2" group="xmap">plg_com_k2.zip</file>
-  </files>
+    <name>Xmap Package</name>
+    <packagename>xmap</packagename>
+    <version>2.3.3</version>
+    <url>http://joomla.vargas.co.cr</url>
+    <packager>Joomla! Vargas</packager>
+    <packagerurl>http://joomla.vargas.co.cr</packagerurl>
+    <description>The Site Map generator for Joomla!</description>
+    <files folder="packages">
+        <file type="component" id="com_xmap">com_xmap.zip</file>
+        <file type="plugin" id="com_content" group="xmap">plg_com_content.zip</file>
+        <file type="plugin" id="com_kunena" group="xmap">plg_com_kunena.zip</file>
+        <file type="plugin" id="com_sobipro" group="xmap">plg_com_sobipro.zip</file>
+        <file type="plugin" id="com_mtree" group="xmap">plg_com_mtree.zip</file>
+        <file type="plugin" id="com_virtuemart" group="xmap">plg_com_virtuemart.zip</file>
+        <file type="plugin" id="com_weblinks" group="xmap">plg_com_weblinks.zip</file>
+        <file type="plugin" id="com_k2" group="xmap">plg_com_k2.zip</file>
+    </files>
 </extension>

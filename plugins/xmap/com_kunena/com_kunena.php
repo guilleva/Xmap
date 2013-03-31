@@ -9,6 +9,8 @@
  * @description Xmap plugin for Kunena Forum Component.
  */
 
+defined( '_JEXEC' ) or die( 'Restricted access' );
+
 /** Handles Kunena forum structure */
 class xmap_com_kunena {
     /*
@@ -39,7 +41,6 @@ class xmap_com_kunena {
     {
         if ($xmap->isNews) // This component does not provide news content. don't waste time/resources
             return false;
-
 
         // Make sure that we can load the kunena api
         if (!xmap_com_kunena::loadKunenaApi()) {
@@ -78,9 +79,9 @@ class xmap_com_kunena {
 
         $include_topics = JArrayHelper::getValue($params, 'include_topics', 1);
         $include_topics = ( $include_topics == 1
-                || ( $include_topics == 2 && $xmap->view == 'xml')
-                || ( $include_topics == 3 && $xmap->view == 'html')
-                || $xmap->view == 'navigator');
+            || ( $include_topics == 2 && $xmap->view == 'xml')
+            || ( $include_topics == 3 && $xmap->view == 'html')
+            || $xmap->view == 'navigator');
         $params['include_topics'] = $include_topics;
 
         $priority = JArrayHelper::getValue($params, 'cat_priority', $parent->priority);
@@ -198,9 +199,10 @@ class xmap_com_kunena {
                     FROM {$params['table_prefix']}_messages t
                     INNER JOIN {$params['table_prefix']}_messages AS m ON t.id = m.thread
                     WHERE t.catid=$parentCat AND t.parent=0
-                        AND t.hold in ({$hold})
+                    AND t.hold in ({$hold})
                     GROUP BY m.`thread`
                     ORDER BY {$params['topics_order']} DESC";
+
                 if ($params['days']) {
                     $query = "SELECT * FROM ($query) as topics WHERE time >= {$params['days']}";
                 }
@@ -254,13 +256,13 @@ class xmap_com_kunena {
             jimport ( 'joomla.application.component.helper' );
             // Check if Kunena component is installed/enabled
             if (! JComponentHelper::isEnabled ( 'com_kunena', true )) {
-                    return false;
+                return false;
             }
 
             // Check if Kunena API exists
             $kunena_api = JPATH_ADMINISTRATOR . '/components/com_kunena/api.php';
             if (! is_file ( $kunena_api ))
-                    return false;
+                return false;
 
             // Load Kunena API
             require_once ($kunena_api);

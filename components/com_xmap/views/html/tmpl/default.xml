@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-    <layout
-        title="COM_XMAP_SITEMAP_HTML_VIEW_DEFAULT_TITLE">
+    <layout title="COM_XMAP_SITEMAP_HTML_VIEW_DEFAULT_TITLE">
         <message>
             <![CDATA[COM_XMAP_SITEMAP_HTML_VIEW_DEFAULT_DESC]]>
         </message>
     </layout>
-
     <fields name="request">
         <fieldset name="request"
             addfieldpath="/administrator/components/com_xmap/models/fields">
@@ -20,22 +18,20 @@
         </fieldset>
     </fields>
 
-        <!-- Add fields to the parameters object for the layout. -->
+    <!-- Add fields to the parameters object for the layout. -->
     <fields name="params">
-
         <!-- Basic options. -->
         <fieldset name="basic"
             label="COM_XMAP_ATTRIBS_SITEMAP_SETTINGS_LABEL">
-
-        <field
+            <field
             name="include_css"
             type="list"
             default="0"
             label="COM_XMAP_INCLUDE_CSS_LABEL"
             description="COM_XMAP_INCLUDE_CSS_DESC">
-            <option value="1">JYES</option>
-            <option value="0">JNO</option>
-        </field>
+                <option value="1">JYES</option>
+                <option value="0">JNO</option>
+            </field>
         </fieldset>
     </fields>
 </metadata>

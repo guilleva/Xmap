@@ -1,13 +1,13 @@
 <?php
 
 /**
- * @version             $Id$
- * @copyright		Copyright (C) 2005 - 2009 Joomla! Vargas. All rights reserved.
- * @license             GNU General Public License version 2 or later; see LICENSE.txt
- * @author              Guillermo Vargas (guille@vargas.co.cr)
+ * @version          $Id$
+ * @copyright        Copyright (C) 2005 - 2009 Joomla! Vargas. All rights reserved.
+ * @license          GNU General Public License version 2 or later; see LICENSE.txt
+ * @author           Guillermo Vargas (guille@vargas.co.cr)
  */
 // No direct access
-defined('_JEXEC') or die;
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport('joomla.application.component.view');
 
@@ -46,7 +46,6 @@ class XmapViewHtml extends JViewLegacy
         $this->item = $this->get('Item');
         $this->items = $this->get('Items');
 
-
         $this->canEdit = JFactory::getUser()->authorise('core.admin', 'com_xmap');
 
         // Check for errors.
@@ -75,8 +74,8 @@ class XmapViewHtml extends JViewLegacy
                 // Redirect to login
                 $uri = JFactory::getURI();
                 $app->redirect(
-                        'index.php?option=com_users&view=login&return=' . base64_encode($uri),
-                        JText::_('Xmap_Error_Login_to_view_sitemap')
+                    'index.php?option=com_users&view=login&return=' . base64_encode($uri),
+                    JText::_('Xmap_Error_Login_to_view_sitemap')
                 );
                 return;
             } else {
@@ -84,7 +83,6 @@ class XmapViewHtml extends JViewLegacy
                 return;
             }
         }
-
 
         // Override the layout.
         if ($layout = $params->get('layout')) {
@@ -97,7 +95,6 @@ class XmapViewHtml extends JViewLegacy
 
         $this->displayer->setJView($this);
         $this->displayer->canEdit = $this->canEdit;
-
 
         $this->_prepareDocument();
         parent::display($tpl);
