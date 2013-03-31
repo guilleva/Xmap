@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension type="plugin" group="xmap" version="2.5" method="upgrade">
 	<name>XMAP_PLUGIN_K2</name>
-	<author>Martin Herbst</author>
+	<author>Mohammad Hasani Eghtedar</author>
 	<creationDate>November 2011</creationDate>
 	<copyright>GNU GPL</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
-	<authorEmail>webmaster@mherbst.de</authorEmail>
-	<authorUrl>www.mherbst.de</authorUrl>
-	<version>1.2</version>
+	<authorEmail>m.h.eghtedar@gmail.com</authorEmail>
+	<authorUrl>https://github.com/mhehm/Xmap</authorUrl>
+	<version>1.3</version>
 	<description>XMAP_PLUGIN_K2_DESC</description>
 	<files>
 		<filename plugin="com_k2">com_k2.php</filename>
