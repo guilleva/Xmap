@@ -1,16 +1,15 @@
 <?php
 /**
-* @version             $Id$
-* @copyright		Copyright (C) 2005 - 2009 Joomla! Vargas. All rights reserved.
-* @license		GNU General Public License version 2 or later; see LICENSE.txt
-* @author		Guillermo Vargas (guille@vargas.co.cr)
+* @version       $Id$
+* @copyright     Copyright (C) 2005 - 2009 Joomla! Vargas. All rights reserved.
+* @license       GNU General Public License version 2 or later; see LICENSE.txt
+* @author        Guillermo Vargas (guille@vargas.co.cr)
 */
 
 // No direct access
-defined('_JEXEC') or die;
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 require_once(JPATH_COMPONENT.'/displayer.php');
-
 
 class XmapHtmlDisplayer extends XmapDisplayer {
 
@@ -37,10 +36,10 @@ class XmapHtmlDisplayer extends XmapDisplayer {
         parent::setJView($view);
 
         $columns = $this->sitemap->params->get('columns',0);
-        if( $columns > 1 ) {		// calculate column widths
+        if( $columns > 1 ) { // calculate column widths
             $total = count($view->items);
             $columns = $total < $columns? $total : $columns;
-            $this->_width	= (100 / $columns) - 1;
+            $this->_width    = (100 / $columns) - 1;
             $this->sitemap->params->set('columns',$columns);
         }
     }
@@ -84,7 +83,7 @@ class XmapHtmlDisplayer extends XmapDisplayer {
 
         $node->name = htmlspecialchars($node->name);
         switch( $node->browserNav ) {
-            case 1:		// open url in new window
+            case 1:        // open url in new window
                 $ext_image = '';
                 if ( $this->sitemap->params->get('exlinks') ) {
                     $ext_image = '&nbsp;<img src="'. $this->live_site .'/components/com_xmap/assets/images/'. $this->sitemap->params->get('exlinks') .'" alt="' . JText::_('COM_XMAP_SHOW_AS_EXTERN_ALT') . '" title="' . JText::_('COM_XMAP_SHOW_AS_EXTERN_ALT') . '" border="0" />';
@@ -92,7 +91,7 @@ class XmapHtmlDisplayer extends XmapDisplayer {
                 $out .= '<a href="'. $link .'" title="'. htmlspecialchars($node->name) .'" target="_blank">'. $node->name . $ext_image .'</a>';
                 break;
 
-            case 2:		// open url in javascript popup window
+            case 2:        // open url in javascript popup window
                 $ext_image = '';
                 if( $this->sitemap->params->get('exlinks') ) {
                     $ext_image = '&nbsp;<img src="'. $this->live_site .'/components/com_xmap/assets/images/'. $this->sitemap->params->get('exlinks') .'" alt="' . JText::_('COM_XMAP_SHOW_AS_EXTERN_ALT') . '" title="' . JText::_('COM_XMAP_SHOW_AS_EXTERN_ALT') . '" border="0" />';
@@ -100,11 +99,11 @@ class XmapHtmlDisplayer extends XmapDisplayer {
                 $out .= '<a href="'. $link .'" title="'. $node->name .'" target="_blank" '. "onClick=\"javascript: window.open('". $link ."', '', 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=780,height=550'); return false;\">". $node->name . $ext_image."</a>";
                 break;
 
-            case 3:		// no link
+            case 3:        // no link
                 $out .= '<span>'. $node->name .'</span>';
                 break;
 
-            default:	// open url in parent window
+            default:       // open url in parent window
                 $out .= '<a href="'. $link .'" title="'. $node->name .'">'. $node->name .'</a>';
                 break;
         }
@@ -158,9 +157,9 @@ class XmapHtmlDisplayer extends XmapDisplayer {
     }
 
     function startMenu(&$menu) {
-        if( $this->sitemap->params->get('columns') > 1 )			// use columns
+        if( $this->sitemap->params->get('columns') > 1 )            // use columns
             echo '<div style="float:left;width:'.$this->_width.'%;">';
-        if( $this->sitemap->params->get('show_menutitle') )			// show menu titles
+        if( $this->sitemap->params->get('show_menutitle') )         // show menu titles
             echo '<h2 class="menutitle">'.$menu->name.'</h2>';
     }
 

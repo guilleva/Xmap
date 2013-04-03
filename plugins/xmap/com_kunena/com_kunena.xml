@@ -13,7 +13,6 @@
     <files>
         <filename plugin="com_kunena">com_kunena.php</filename>
     </files>
-
     <languages folder="language">
         <!--
         these files will be installed in the administrator/language folder.
@@ -21,8 +20,10 @@
         <language tag="en-GB">en-GB.plg_xmap_com_kunena.ini</language>
         <language tag="es-ES">es-ES.plg_xmap_com_kunena.ini</language>
         <language tag="fa-IR">fa-IR.plg_xmap_com_kunena.ini</language>
+        <language tag="cs-CZ">cs-CZ.plg_xmap_com_kunena.ini</language>
+        <language tag="nl-NL">nl-NL.plg_xmap_com_kunena.ini</language>
+        <language tag="ru-RU">ru-RU.plg_xmap_com_kunena.ini</language>
     </languages>
-
     <config>
         <fields name="params">
             <fieldset name="basic">

@@ -1,22 +1,22 @@
 <?php
 
 /**
- * @version		$Id$
- * @copyright           Copyright (C) 2005 - 2009 Joomla! Vargas. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
- * @author		Guillermo Vargas (guille@vargas.co.cr)
+ * @version        $Id$
+ * @copyright      Copyright (C) 2005 - 2009 Joomla! Vargas. All rights reserved.
+ * @license        GNU General Public License version 2 or later; see LICENSE.txt
+ * @author         Guillermo Vargas (guille@vargas.co.cr)
  */
 // No direct access
-defined('_JEXEC') or die;
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport('joomla.application.component.controller');
 
 /**
  * Xmap Component Controller
  *
- * @package		Xmap
- * @subpackage          com_xmap
- * @since		2.0
+ * @package        Xmap
+ * @subpackage     com_xmap
+ * @since          2.0
  */
 class XmapController extends JControllerLegacy
 {
@@ -34,8 +34,8 @@ class XmapController extends JControllerLegacy
     {
         $cachable = true;
 
-        $id    = JRequest::getInt('id');
-        $viewName = JRequest::getCmd('view');
+        $id         = JRequest::getInt('id');
+        $viewName   = JRequest::getCmd('view');
         $viewLayout = JRequest::getCmd('layout', 'default');
 
         $user = JFactory::getUser();
@@ -48,12 +48,11 @@ class XmapController extends JControllerLegacy
             $document = JFactory::getDocument();
             $viewType = $document->getType();
             $view = $this->getView($viewName, $viewType, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
-			$sitemapmodel = $this->getModel('Sitemap');
+            $sitemapmodel = $this->getModel('Sitemap');
             $view->setModel($sitemapmodel, true);
         }
 
         $safeurlparams = array('id' => 'INT', 'itemid' => 'INT', 'uid' => 'CMD', 'action' => 'CMD', 'property' => 'CMD', 'value' => 'CMD');
-
 
         parent::display($cachable, $safeurlparams);
 

@@ -7,11 +7,10 @@
  */
 
 // no direct access
-defined('_JEXEC') or die;
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 // Create shortcut to parameters.
 $params = $this->state->get('params');
-
 
 // Use the class defined in default_class.php to print the sitemap
 $this->displayer->printSitemap();

@@ -1,10 +1,10 @@
 <?php
 
 /**
- * @version		$Id$
+ * @version     $Id$
  * @copyright   Copyright (C) 2005 - 2009 Joomla! Vargas. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
- * @author		Guillermo Vargas (guille@vargas.co.cr)
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @author      Guillermo Vargas (guille@vargas.co.cr)
  */
 // No direct access
 defined('_JEXEC') or die;
@@ -14,9 +14,9 @@ jimport('joomla.application.component.controller');
 /**
  * Xmap Ajax Controller
  *
- * @package		Xmap
- * @subpackage          com_xmap
- * @since		2.0
+ * @package      Xmap
+ * @subpackage   com_xmap
+ * @since        2.0
  */
 class XmapControllerAjax extends JControllerLegacy
 {

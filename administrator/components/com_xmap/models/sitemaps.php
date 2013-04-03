@@ -24,7 +24,7 @@ class XmapModelSitemaps extends JModelList
      * Constructor.
      *
      * @param    array    An optional associative array of configuration settings.
-     * @see        JController
+     * @see      JController
      * @since    1.6
      */
     public function __construct($config = array())
@@ -113,8 +113,8 @@ class XmapModelSitemaps extends JModelList
         // Select the required fields from the table.
         $query->select(
                 $this->getState(
-                        'list.select',
-                        'a.*')
+                          'list.select',
+                          'a.*')
         );
         $query->from('#__xmap_sitemap AS a');
 
@@ -155,8 +155,8 @@ class XmapModelSitemaps extends JModelList
 
     public function getExtensionsMessage()
     {
-        $db     = $this->getDbo();
-        $query  = $db->getQuery(true);
+        $db    = $this->getDbo();
+        $query = $db->getQuery(true);
         $query->select('e.*');
         $query->from($db->quoteName('#__extensions'). 'AS e');
         $query->join('INNER', '#__extensions AS p ON e.element=p.element and p.enabled=0 and p.type=\'plugin\' and p.folder=\'xmap\'');

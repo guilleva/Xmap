@@ -1,11 +1,11 @@
 <?php
 /**
- * @version             $Id$
- * @copyright		Copyright (C) 2007 - 2009 Joomla! Vargas. All rights reserved.
- * @license             GNU General Public License version 2 or later; see LICENSE.txt
- * @author              Guillermo Vargas (guille@vargas.co.cr)
+ * @version          $Id$
+ * @copyright        Copyright (C) 2007 - 2009 Joomla! Vargas. All rights reserved.
+ * @license          GNU General Public License version 2 or later; see LICENSE.txt
+ * @author           Guillermo Vargas (guille@vargas.co.cr)
  */
-defined('JPATH_BASE') or die;
+defined('_JEXEC') or die;
 
 jimport('joomla.form.field');
 
@@ -22,14 +22,14 @@ class JFormFieldModal_Sitemaps extends JFormField
     /**
      * The field type.
      *
-     * @var	string
+     * @var    string
      */
     protected $type = 'Modal_Sitemaps';
 
     /**
      * Method to get a list of options for a sitemaps list input.
      *
-     * @return	array		An array of JHtml options.
+     * @return    array        An array of JHtml options.
      */
     protected function getInput()
     {
@@ -61,23 +61,23 @@ class JFormFieldModal_Sitemaps extends JFormField
         }
 
         $doc->addScriptDeclaration(
-                "function jSelectSitemap_" . $this->id . "(id, title, object) {
-			$('" . $this->id . "_id').value = id;
-			$('" . $this->id . "_name').value = title;
-			SqueezeBox.close();
-		}"
+                  "function jSelectSitemap_" . $this->id . "(id, title, object) {
+                       $('" . $this->id . "_id').value = id;
+                       $('" . $this->id . "_name').value = title;
+                       SqueezeBox.close();
+                  }"
         );
 
         $link = 'index.php?option=com_xmap&amp;view=sitemaps&amp;layout=modal&amp;tmpl=component&amp;function=jSelectSitemap_' . $this->id;
 
         JHTML::_('behavior.modal', 'a.modal');
-		$html = '<span class="input-append">';
+        $html = '<span class="input-append">';
         $html .= "\n" . '<input class="input-medium" type="text" id="' . $this->id . '_name" value="' . htmlspecialchars($title, ENT_QUOTES, 'UTF-8') . '" disabled="disabled" />';
-		if(version_compare(JVERSION,'3.0.0','ge'))
-        	$html .= '<a class="modal btn" title="' . JText::_('COM_XMAP_CHANGE_SITEMAP') . '"  href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}}"><i class="icon-file"></i> ' . JText::_('COM_XMAP_CHANGE_SITEMAP_BUTTON') . '</a>' . "\n";
-		else
-			$html .= '<div class="button2-left"><div class="blank"><a class="modal btn" title="' . JText::_('COM_XMAP_CHANGE_SITEMAP') . '"  href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}}"><i class="icon-file"></i> ' . JText::_('COM_XMAP_CHANGE_SITEMAP_BUTTON') . '</a></div></div>' . "\n";
-		$html .= '</span>';
+        if(version_compare(JVERSION,'3.0.0','ge'))
+            $html .= '<a class="modal btn" title="' . JText::_('COM_XMAP_CHANGE_SITEMAP') . '"  href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}}"><i class="icon-file"></i> ' . JText::_('COM_XMAP_CHANGE_SITEMAP_BUTTON') . '</a>' . "\n";
+        else
+            $html .= '<div class="button2-left"><div class="blank"><a class="modal btn" title="' . JText::_('COM_XMAP_CHANGE_SITEMAP') . '"  href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}}"><i class="icon-file"></i> ' . JText::_('COM_XMAP_CHANGE_SITEMAP_BUTTON') . '</a></div></div>' . "\n";
+        $html .= '</span>';
         $html .= "\n" . '<input type="hidden" id="' . $this->id . '_id" name="' . $this->name . '" value="' . (int) $this->value . '" />';
         return $html;
     }

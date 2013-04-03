@@ -1,7 +1,7 @@
 <?php
 /**
  * @version     $Id$
- * @copyright           Copyright (C) 2007 - 2009 Joomla! Vargas. All rights reserved.
+ * @copyright   Copyright (C) 2007 - 2009 Joomla! Vargas. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  * @author      Guillermo Vargas (guille@vargas.co.cr)
  */
@@ -19,9 +19,9 @@ if (!class_exists('JViewLegacy')){
 }
 
 /**
- * @package      Xmap
+ * @package     Xmap
  * @subpackage  com_xmap
- * @since          2.0
+ * @since       2.0
  */
 class XmapViewSitemaps extends JViewLegacy
 {
@@ -40,11 +40,11 @@ class XmapViewSitemaps extends JViewLegacy
 
         $this->state      = $this->get('State');
         $this->items      = $this->get('Items');
-        $this->pagination     = $this->get('Pagination');
+        $this->pagination = $this->get('Pagination');
 
         $version = new JVersion;
 
-        $message     = $this->get('ExtensionsMessage');
+        $message = $this->get('ExtensionsMessage');
         if ( $message ) {
             JFactory::getApplication()->enqueueMessage($message);
         }
@@ -86,9 +86,9 @@ class XmapViewSitemaps extends JViewLegacy
         JToolBarHelper::custom('sitemaps.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
 
         if (version_compare($version->getShortVersion(), '3.0.0', '>=')) {
-                JToolBarHelper::custom('sitemaps.setdefault', 'featured.png', 'featured_f2.png', 'XMAP_TOOLBAR_SET_DEFAULT', true);
+            JToolBarHelper::custom('sitemaps.setdefault', 'featured.png', 'featured_f2.png', 'XMAP_TOOLBAR_SET_DEFAULT', true);
         } else {
-                JToolBarHelper::custom('sitemaps.setdefault', 'default.png', 'default_f2.png', 'XMAP_TOOLBAR_SET_DEFAULT', true);
+            JToolBarHelper::custom('sitemaps.setdefault', 'default.png', 'default_f2.png', 'XMAP_TOOLBAR_SET_DEFAULT', true);
         }
         if ($state->get('filter.published') == -2) {
             JToolBarHelper::deleteList('', 'sitemaps.delete','JTOOLBAR_DELETE');
@@ -113,7 +113,6 @@ class XmapViewSitemaps extends JViewLegacy
             );
 
             $this->sidebar = JHtmlSidebar::render();
-
         }
     }
 }
