@@ -23,13 +23,13 @@ abstract class JHtmlXmap
      * @param    string  $value
      * @param    int     $j
      */
-    public static function priorities($name, $value = '0.5', $j )
+    public static function priorities($name, $value = '0.5', $j)
     {
         // Array of options
         for ($i=0.1; $i<=1;$i+=0.1) {
             $options[] = JHTML::_('select.option',$i,$i);;
         }
-        return JHtml::_('select.genericlist', $options,$name, null, 'value','text', $value);
+        return JHtml::_('select.genericlist', $options, $name, null, 'value', 'text', $value, $name.$j);
     }
 
     /**
@@ -37,7 +37,7 @@ abstract class JHtmlXmap
      * @param    string  $value
      * @param    int     $j
      */
-    public static function changefrequency($name, $value = 'weekly', $j )
+    public static function changefrequency($name, $value = 'weekly', $j)
     {
         // Array of options
         $options[] = JHTML::_('select.option','hourly','hourly');
@@ -46,7 +46,7 @@ abstract class JHtmlXmap
         $options[] = JHTML::_('select.option','monthly','monthly');
         $options[] = JHTML::_('select.option','yearly','yearly');
         $options[] = JHTML::_('select.option','never','never');
-        return JHtml::_('select.genericlist', $options,$name, null, 'value','text', $value);
+        return JHtml::_('select.genericlist', $options, $name, null, 'value', 'text', $value, $name.$j);
     }
 
 }
