@@ -8,10 +8,11 @@
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
     <authorEmail>guille@vargas.co.cr</authorEmail>
     <authorUrl>joomla.vargas.co.cr</authorUrl>
-    <version>2.0.3</version>
+    <version>3.0.0</version>
     <description>Xmap Plugin for Kunena component</description>
     <files>
         <filename plugin="com_kunena">com_kunena.php</filename>
+		<filename>index.html</filename>
     </files>
     <languages folder="language">
         <!--
