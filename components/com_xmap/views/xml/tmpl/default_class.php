@@ -83,7 +83,7 @@ class XmapXmlDisplayer extends XmapDisplayer
         }
 
         // Get the item's URL
-        $link = JRoute::_($node->link, true, @$node->secure==0? -1: $node->secure);
+        $link = JRoute::_($node->link, true, @$node->secure == 0 ? (JFactory::getURI()->isSSL() ? 1 : -1) : $node->secure);
 
         if (!isset($node->browserNav))
             $node->browserNav = 0;
