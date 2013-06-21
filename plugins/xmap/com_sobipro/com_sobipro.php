@@ -4,7 +4,7 @@
 * @version $Id$
 * @package xmap
 * @license GNU/GPL
-* @authorSite http://joomla.vargas.co.cr
+* @authorSite http://www.joomla-sitemap.com
 */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );

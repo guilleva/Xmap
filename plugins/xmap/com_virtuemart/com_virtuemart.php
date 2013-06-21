@@ -1,6 +1,6 @@
 <?php
 /**
- * @author Guillermo Vargas, http://joomla.vargas.co.cr
+ * @author Guillermo Vargas, http://www.joomla-sitemap.com
  * @email guille@vargas.co.cr
  * @version $Id: com_virtuemart.php 154 2011-04-09 23:44:12Z guilleva $
  * @package Xmap

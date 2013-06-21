@@ -5,8 +5,8 @@
     <author>Guillermo Vargas</author>
     <copyright>This component is released under the GNU/GPL License</copyright>
     <authorEmail>guille@vargas.co.cr</authorEmail>
-    <authorUrl>http://joomla.vargas.co.cr</authorUrl>
-    <version>2.3.3</version>
+    <authorUrl>http://www.joomla-sitemap.com</authorUrl>
+    <version>2.3.4</version>
     <license>GNU/GPL</license>
     <description>Xmap - Sitemap Generator for Joomla!</description>
     <install folder="admin">

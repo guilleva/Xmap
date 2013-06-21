@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @author Guillermo Vargas, http://joomla.vargas.co.cr
+ * @author Guillermo Vargas, http://www.joomla-sitemap.com
  * @email guille@vargas.co.cr
  * @version $Id$
  * @package Xmap
