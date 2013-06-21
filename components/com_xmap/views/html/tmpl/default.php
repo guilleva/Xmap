@@ -95,5 +95,9 @@ if ($this->displayer->canEdit) {
 
     <?php echo $this->loadTemplate('items'); ?>
 
+<?php if ($params->get('include_link', 1) )  : ?>
+    <div class="muted" style="font-size: 10px; text-align: center;">Powered by <a href="http://www.joomla-sitemap.com/">Xmap</a></div>
+<?php endif; ?>
+
     <span class="article_separator">&nbsp;</span>
 </div>

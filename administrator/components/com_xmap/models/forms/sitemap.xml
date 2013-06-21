@@ -274,13 +274,27 @@
                 <option
                     value="1">Yes</option>
             </field>
-            
+
             <field
                 name="beautify_xml"
                 type="radio"
                 class="btn-group"
                 label="XMAP_ATTRIBS_BEAUTIFY_XML_LABEL"
                 description="XMAP_ATTRIBS_BEAUTIFY_XML_DESC"
+                labelclass="control-label"
+                default="1">
+                <option
+                    value="0">No</option>
+                <option
+                    value="1">Yes</option>
+            </field>
+
+            <field
+                name="include_link"
+                type="radio"
+                class="btn-group"
+                label="XMAP_ATTRIBS_INCLUDE_LINK_LABEL"
+                description="XMAP_ATTRIBS_INCLUDE_LINK_DESC"
                 labelclass="control-label"
                 default="1">
                 <option
