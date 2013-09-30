@@ -229,6 +229,9 @@ class xmap_com_virtuemart
 
 		JTable::addIncludePath(JPATH_VM_ADMINISTRATOR . '/tables');
 
+		VmConfig::set ('llimit_init_FE', 9000);
+
+		$app->setUserState('com_virtuemart.htmlc-1.limit',9000);
 		$app->setUserState('com_virtuemart.htmlc0.limit',9000);
 		$app->setUserState('com_virtuemart.xmlc0.limit' ,9000);
 
