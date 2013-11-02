@@ -137,7 +137,7 @@ class XmapViewHtml extends JViewLegacy
         $this->document->setTitle($title);
 
         if ($app->getCfg('MetaTitle') == '1') {
-            $this->document->setMetaData('title', $this->item->title);
+            $this->document->setMetaData('title', $title);
         }
 
         if ($this->print) {
