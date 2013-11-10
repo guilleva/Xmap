@@ -9,7 +9,6 @@
 // No direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-require_once(JPATH_SITE .'/includes/application.php');
 jimport('joomla.database.query');
 
 /**
