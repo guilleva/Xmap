@@ -148,8 +148,10 @@ class XmapViewXml extends JViewLegacy
     private function endAllBuffering()
     {
         $this->_obLevel = ob_get_level();
-        while (ob_get_level()) {
+        $level = FALSE;
+        while (ob_get_level() > 0 && $level !== ob_get_level()) {
             @ob_end_clean();
+            $level = ob_get_level();
         }
     }
     private function recreateBuffering()
