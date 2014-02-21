@@ -163,6 +163,7 @@ class XmapDisplayer {
             switch ($item->type)
             {
                 case 'separator':
+                case 'heading':
                     $node->browserNav=3;
                     break;
                 case 'url':
