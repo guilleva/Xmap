@@ -81,6 +81,6 @@
         </images>
     </administration>
     <updateservers>
-        <server type="extension" priority="1" name="Xmap Update Site">https://raw.github.com/guilleva/Xmap/master/xmap-update.xml</server>
+        <server type="extension" priority="1" name="Xmap Update Site">https://raw.githubusercontent.com/guilleva/Xmap/master/xmap-update.xml</server>
     </updateservers>
 </extension>
