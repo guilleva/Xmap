@@ -34,6 +34,6 @@
         <maintainer>Xmap</maintainer>
         <maintainerurl>http://www.jooxmap.com</maintainerurl>
         <section>frs</section>
-        <targetplatform name="joomla" version="3.0" />
+        <targetplatform name="joomla" version="^3\." />
     </update>
 </updates>
