@@ -124,7 +124,7 @@ $n = count($this->items);
                 $xmlDate = JText::sprintf('Date_Days_Hours_Ago',$days,intval(($now-($days*86400)-$item->lastvisit_xml)/3600));
             } else {
                 $date = new JDate($item->lastvisit_xml);
-                $xmlDate = $date->toFormat('%Y-%m-%d %H:%M');
+                $xmlDate = $date->format('%Y-%m-%d %H:%M');
             }
 
         ?>
