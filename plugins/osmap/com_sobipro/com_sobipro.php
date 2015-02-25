@@ -25,7 +25,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-/** Adds support for SobiPro categories to Xmap */
+/** Adds support for SobiPro categories to OSMap */
 class osmap_com_sobipro {
 
     static $sectionConfig = array();

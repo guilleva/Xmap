@@ -11,7 +11,7 @@ defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_COMPONENT.'/displayer.php');
 
-class XmapHtmlDisplayer extends XmapDisplayer {
+class OSMapHtmlDisplayer extends OSMapDisplayer {
 
     var $level = -1;
     var $_openList = '';

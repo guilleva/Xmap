@@ -29,7 +29,7 @@ jimport('joomla.form.field');
 /**
  * Supports a modal sitemap picker.
  *
- * @package             Xmap
+ * @package             OSMap
  * @subpackage          com_osmap
  * @since               2.0
  */

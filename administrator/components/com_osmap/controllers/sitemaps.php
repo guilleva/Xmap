@@ -29,11 +29,11 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.controlleradmin');
 
 /**
- * @package     Xmap
+ * @package     OSMap
  * @subpackage  com_osmap
  * @since       2.0
  */
-class XmapControllerSitemaps extends JControllerAdmin
+class OSMapControllerSitemaps extends JControllerAdmin
 {
 
     protected $text_prefix = 'COM_OSMAP_SITEMAPS';
@@ -92,7 +92,7 @@ class XmapControllerSitemaps extends JControllerAdmin
      * @return    JModel
      * @since    2.0
      */
-    public function getModel($name = 'Sitemap', $prefix = 'XmapModel', $config = array('ignore_request' => true))
+    public function getModel($name = 'Sitemap', $prefix = 'OSMapModel', $config = array('ignore_request' => true))
     {
         $model = parent::getModel($name, $prefix, $config);
 

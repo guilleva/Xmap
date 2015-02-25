@@ -36,11 +36,11 @@ if (!class_exists('JViewLegacy')){
 }
 
 /**
- * @package     Xmap
+ * @package     OSMap
  * @subpackage  com_osmap
  * @since       2.0
  */
-class XmapViewSitemaps extends JViewLegacy
+class OSMapViewSitemaps extends JViewLegacy
 {
     protected $state;
     protected $items;

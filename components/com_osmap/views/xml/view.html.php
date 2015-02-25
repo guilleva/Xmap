@@ -35,13 +35,13 @@ if (!class_exists('JViewLegacy')){
 }
 
 /**
- * XML Sitemap View class for the Xmap component
+ * XML Sitemap View class for the OSMap component
  *
- * @package      Xmap
+ * @package      OSMap
  * @subpackage   com_osmap
  * @since        2.0
  */
-class XmapViewXml extends JViewLegacy
+class OSMapViewXml extends JViewLegacy
 {
 
     protected $state;
@@ -106,11 +106,11 @@ class XmapViewXml extends JViewLegacy
                 $uri = JFactory::getURI();
                 $app->redirect(
                     'index.php?option=com_users&view=login&return=' . base64_encode($uri),
-                    JText::_('Xmap_Error_Login_to_view_sitemap')
+                    JText::_('OSMAP_ERROR_LOGIN_TO_VIEW_SITEMAP')
                 );
                 return;
             } else {
-                JError::raiseWarning(403, JText::_('Xmap_Error_Not_auth'));
+                JError::raiseWarning(403, JText::_('OSMAP_ERROR_NOT_AUTH'));
                 return;
             }
         }
@@ -122,7 +122,7 @@ class XmapViewXml extends JViewLegacy
 
         // Load the class used to display the sitemap
         $this->loadTemplate('class');
-        $this->displayer = new XmapXmlDisplayer($params, $this->item);
+        $this->displayer = new OSMapXmlDisplayer($params, $this->item);
 
         $this->displayer->setJView($this);
 

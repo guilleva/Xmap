@@ -28,13 +28,13 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.controller');
 
 /**
- * Xmap Ajax Controller
+ * OSMap Ajax Controller
  *
- * @package      Xmap
+ * @package      OSMap
  * @subpackage   com_osmap
  * @since        2.0
  */
-class XmapControllerAjax extends JControllerLegacy
+class OSMapControllerAjax extends JControllerLegacy
 {
 
     public function editElement()

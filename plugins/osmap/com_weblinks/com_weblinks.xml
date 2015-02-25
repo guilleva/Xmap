@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <extension type="plugin" group="osmap" version="1.6" method="upgrade">
-    <name>Xmap - WebLinks Plugin</name>
+    <name>OSMap - WebLinks Plugin</name>
     <author>Guillermo Vargas</author>
     <creationDate>Apr 2004</creationDate>
     <copyright>GNU GPL</copyright>

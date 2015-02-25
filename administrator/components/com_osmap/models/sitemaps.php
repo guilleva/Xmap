@@ -31,11 +31,11 @@ jimport('joomla.database.query');
 /**
  * Sitemaps Model Class
  *
- * @package         Xmap
+ * @package         OSMap
  * @subpackage      com_osmap
  * @since           2.0
  */
-class XmapModelSitemaps extends JModelList
+class OSMapModelSitemaps extends JModelList
 {
     /**
      * Constructor.

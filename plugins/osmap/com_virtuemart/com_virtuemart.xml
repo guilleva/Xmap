@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <extension type="plugin" group="osmap" version="1.6" method="upgrade">
-	<name>Xmap - Virtuemart Plugin</name>
+	<name>OSMap - Virtuemart Plugin</name>
 	<author>Guillermo Vargas</author>
 	<creationDate>January 2012</creationDate>
 	<copyright>GNU GPL</copyright>
@@ -28,7 +28,7 @@
 					<option value="2">OSMAP_OPTION_XML_ONLY</option>
 					<option value="3">OSMAP_OPTION_HTML_ONLY</option>
 				</field>
-				<!-- not yet supported on Xmap 2
+				<!-- not yet supported on OSMap 2
 				<field name="include_product_images" type="list" default="0" label="Include Product Images" description="Should we include product images in the sitemap?">
 					<option value="0">No</option>
 					<option value="1">Yes</option>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
 <extension type="plugin" group="osmap" version="1.6" method="upgrade">
-    <name>Xmap - Content Plugin</name>
+    <name>OSMap - Content Plugin</name>
     <author>Guillermo Vargas</author>
     <creationDate>01/26/2011</creationDate>
     <copyright>GNU GPL</copyright>

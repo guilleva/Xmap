@@ -26,11 +26,11 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Content Component Route Helper
  *
- * @package        Xmap
+ * @package        OSMap
  * @subpackage    com_osmap
  * @since 2.0
  */
-class XmapRoute
+class OSMapRoute
 {
 
     /**
@@ -105,7 +105,7 @@ class XmapRoute
  *
  * @return    array    The URL arguments to use to assemble the subsequent URL.
  */
-function XmapBuildRoute(&$query)
+function OSMapBuildRoute(&$query)
 {
     $segments = array();
 
@@ -179,7 +179,7 @@ function XmapBuildRoute(&$query)
  *
  * @return    array    The URL attributes to be used by the application.
  */
-function XmapParseRoute($segments)
+function OSMapParseRoute($segments)
 {
     $vars = array();
 

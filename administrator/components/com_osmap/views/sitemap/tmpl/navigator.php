@@ -81,27 +81,27 @@ $doc->addScriptDeclaration('
         <form name="adminForm" action="#" onSubmit="return false;">
         <table width="100%">
             <tr>
-                <td><?php echo JText::_('Xmap_Link_Text'); ?></td>
+                <td><?php echo JText::_('OSMAP_LINK_TEXT'); ?></td>
                 <td colspan="3"><input type="text" name="text" id="f_text" value="" size="30" /></td>
             </tr>
             <tr>
-                <td><?php echo JText::_('Xmap_Link_Title'); ?></td>
+                <td><?php echo JText::_('OSMAP_LINK_TITLE'); ?></td>
                 <td colspan="3"><input type="text" name="title" id="f_title"  value="" size="30" /></td>
             </tr>
             <tr>
-                <td><?php echo JText::_('Xmap_Link_Link'); ?></td>
+                <td><?php echo JText::_('OSMAP_LINK_LINK'); ?></td>
                 <td colspan="3"><input type="text" name="link" id="f_link"  value="" size="50" /></td>
             </tr>
             <tr>
-                <td><?php echo JText::_('Xmap_Link_Style'); ?></td>
+                <td><?php echo JText::_('OSMAP_LINK_STYLE'); ?></td>
                 <td><input type="text" name="cssstyle" id="f_cssstyle"  value="" /></td>
-                <td><?php echo JText::_('Xmap_Link_Class'); ?></td>
+                <td><?php echo JText::_('OSMAP_LINK_CLASS'); ?></td>
                 <td><input type="text" name="cssclass" id="f_cssclass"  value="" /></td>
             </tr>
             <tr>
                 <td colspan="4" align="right">
                     <button name="cssstyle" id="f_cssstyle" onclick="insertLink();"><?php echo JText::_('OK'); ?></button>
-                    <button name="cssstyle" id="f_cssstyle" onclick="window.parent.SqueezeBox.close();"><?php echo JText::_('Cancel'); ?></button>
+                    <button name="cssstyle" id="f_cssstyle" onclick="window.parent.SqueezeBox.close();"><?php echo JText::_('CANCEL'); ?></button>
                 </td>
            </tr>
         </table>

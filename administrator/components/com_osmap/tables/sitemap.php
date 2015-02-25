@@ -26,11 +26,11 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * @package         Xmap
+ * @package         OSMap
  * @subpackage      com_osmap
  * @since           2.0
  */
-class XmapTableSitemap extends JTable
+class OSMapTableSitemap extends JTable
 {
 
     /**
@@ -232,7 +232,7 @@ class XmapTableSitemap extends JTable
             }
             // Nothing to set publishing state on, return false.
             else {
-                $this->setError(JText::_('No_Rows_Selected'));
+                $this->setError(JText::_('NO_ROWS_SELECTED'));
                 return false;
             }
         }

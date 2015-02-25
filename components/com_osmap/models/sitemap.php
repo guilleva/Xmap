@@ -31,13 +31,13 @@ jimport('joomla.database.query');
 require_once(JPATH_COMPONENT . '/helpers/osmap.php');
 
 /**
- * Xmap Component Sitemap Model
+ * OSMap Component Sitemap Model
  *
- * @package        Xmap
+ * @package        OSMap
  * @subpackage     com_osmap
  * @since          2.0
  */
-class XmapModelSitemap extends JModelItem
+class OSMapModelSitemap extends JModelItem
 {
 
     /**
@@ -283,7 +283,7 @@ class XmapModelSitemap extends JModelItem
         $app = JFactory::getApplication('site');
         $sitemap = $this->getItem();
 
-        $displayer = new XmapDisplayer($app->getParams(), $sitemap);
+        $displayer = new OSMapDisplayer($app->getParams(), $sitemap);
 
         $excludedItems = $displayer->getExcludedItems();
         if (isset($excludedItems[$itemid])) {

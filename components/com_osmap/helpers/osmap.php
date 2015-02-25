@@ -28,9 +28,9 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.database.query');
 
 /**
- * Xmap Component Sitemap Model
+ * OSMap Component Sitemap Model
  *
- * @package        Xmap
+ * @package        OSMap
  * @subpackage     com_osmap
  * @since          2.0
  */

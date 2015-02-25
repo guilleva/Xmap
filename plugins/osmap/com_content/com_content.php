@@ -286,7 +286,7 @@ class osmap_com_content
      * @param object  $osmap
      * @param object  $parent   the menu item
      * @param int     $catid    the id of the category to be expanded
-     * @param array   $params   an assoc array with the params for this plugin on Xmap
+     * @param array   $params   an assoc array with the params for this plugin on OSMap
      * @param int     $itemid   the itemid to use for this category's children
      */
     static function expandCategory($osmap, $parent, $catid, &$params, $itemid)

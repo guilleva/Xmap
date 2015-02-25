@@ -35,10 +35,10 @@ if (!class_exists('JViewLegacy')){
 }
 
 /**
- * @package    Xmap
+ * @package    OSMap
  * @subpackage com_osmap
  */
-class XmapViewSitemap extends JViewLegacy
+class OSMapViewSitemap extends JViewLegacy
 {
 
     protected $item;
@@ -106,7 +106,7 @@ class XmapViewSitemap extends JViewLegacy
         JHTML::stylesheet('mootree.css', 'media/system/css/');
 
         $this->loadTemplate('class');
-        $displayer = new XmapNavigatorDisplayer($state->params, $this->item);
+        $displayer = new OSMapNavigatorDisplayer($state->params, $this->item);
 
         parent::display($tpl);
     }
@@ -125,7 +125,7 @@ class XmapViewSitemap extends JViewLegacy
         $extensions = OSMapHelper::getExtensions();
 
         $this->loadTemplate('class');
-        $nav = new XmapNavigatorDisplayer($state->params, $item);
+        $nav = new OSMapNavigatorDisplayer($state->params, $item);
         $nav->setExtensions($extensions);
 
         $this->list = array();

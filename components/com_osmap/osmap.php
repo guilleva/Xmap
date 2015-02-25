@@ -37,6 +37,6 @@ if (!class_exists('JControllerLegacy')){
 
 require_once(JPATH_COMPONENT.'/displayer.php');
 
-$controller = JControllerLegacy::getInstance('Xmap');
+$controller = JControllerLegacy::getInstance('OSMap');
 $controller->execute(JRequest::getVar('task'));
 $controller->redirect();

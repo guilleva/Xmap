@@ -31,10 +31,10 @@ jimport('joomla.application.component.modeladmin');
 /**
  * Sitemap model.
  *
- * @package       Xmap
+ * @package       OSMap
  * @subpackage    com_osmap
  */
-class XmapModelSitemap extends JModelAdmin
+class OSMapModelSitemap extends JModelAdmin
 {
     protected $_context = 'com_osmap';
 
@@ -76,9 +76,9 @@ class XmapModelSitemap extends JModelAdmin
      * @param    type                The table type to instantiate
      * @param    string              A prefix for the table class name. Optional.
      * @param    array               Configuration array for model. Optional.
-     * @return   XmapTableSitemap    A database object
+     * @return   OSMapTableSitemap    A database object
     */
-    public function getTable($type = 'Sitemap', $prefix = 'XmapTable', $config = array())
+    public function getTable($type = 'Sitemap', $prefix = 'OSMapTable', $config = array())
     {
         return JTable::getInstance($type, $prefix, $config);
     }

@@ -10,7 +10,7 @@ defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_COMPONENT . '/displayer.php');
 
-class XmapXmlDisplayer extends XmapDisplayer
+class OSMapXmlDisplayer extends OSMapDisplayer
 {
 
     /**

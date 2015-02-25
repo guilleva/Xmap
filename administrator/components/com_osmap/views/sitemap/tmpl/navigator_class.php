@@ -28,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_COMPONENT_SITE.'/displayer.php');
 
-class XmapNavigatorDisplayer extends XmapDisplayer {
+class OSMapNavigatorDisplayer extends OSMapDisplayer {
 
     function __construct(&$config, &$sitemap) {
         $this->_list=array();
@@ -41,7 +41,7 @@ class XmapNavigatorDisplayer extends XmapDisplayer {
         if (!isset($node->selectable )) {
             $node->selectable=true;
         }
-        // For extentions that doesn't set this property as this is new in Xmap 1.2.3
+        // For extentions that doesn't set this property as this is new in OSMap 1.2.3
         if (!isset($node->expandible )) {
             $node->expandible = true;
         }

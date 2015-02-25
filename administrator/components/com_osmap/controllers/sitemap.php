@@ -29,11 +29,11 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.controllerform');
 
 /**
- * @package     Xmap
+ * @package     OSMap
  * @subpackage  com_osmap
  * @since       2.0
  */
-class XmapControllerSitemap extends JControllerForm
+class OSMapControllerSitemap extends JControllerForm
 {
     /**
      * Method override to check if the user can edit an existing record.

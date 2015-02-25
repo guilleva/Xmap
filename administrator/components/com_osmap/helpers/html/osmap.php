@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 JTable::addIncludePath( JPATH_COMPONENT . '/tables' );
 
 /**
- * @package       Xmap
+ * @package       OSMap
  * @subpackage    com_osmap
  */
 abstract class JHtmlOSMap

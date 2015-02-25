@@ -25,7 +25,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-/** Adds support for Virtuemart categories to Xmap */
+/** Adds support for Virtuemart categories to OSMap */
 class osmap_com_virtuemart
 {
 	protected static $categoryModel;

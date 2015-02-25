@@ -36,24 +36,24 @@ $n = count($this->items);
     <fieldset class="filter clearfix">
         <div class="left">
             <label for="search">
-                <?php echo JText::_('JSearch_Filter_Label'); ?>
+                <?php echo JText::_('JSEARCH_FILTER_LABEL'); ?>
             </label>
-            <input type="text" name="filter_search" id="filter_search" value="<?php echo $this->state->get('filter.search'); ?>" size="60" title="<?php echo JText::_('Xmap_Filter_Search_Desc'); ?>" />
+            <input type="text" name="filter_search" id="filter_search" value="<?php echo $this->state->get('filter.search'); ?>" size="60" title="<?php echo JText::_('OSMAP_FILTER_SEARCH_DESC'); ?>" />
 
             <button type="submit">
-                <?php echo JText::_('JSearch_Filter_Submit'); ?></button>
+                <?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
             <button type="button" onclick="$('filter_search').value='';this.form.submit();">
-                <?php echo JText::_('JSearch_Filter_Clear'); ?></button>
+                <?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
         </div>
 
         <div class="right">
             <select name="filter_access" class="inputbox" onchange="this.form.submit()">
-                <option value=""><?php echo JText::_('JOption_Select_Access');?></option>
+                <option value=""><?php echo JText::_('JOPTION_SELECT_ACCESS');?></option>
                 <?php echo JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access'));?>
             </select>
 
             <select name="filter_published" class="inputbox" onchange="this.form.submit()">
-                <option value=""><?php echo JText::_('JOption_Select_Published');?></option>
+                <option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
                 <?php echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true);?>
             </select>
 
@@ -64,21 +64,21 @@ $n = count($this->items);
         <thead>
             <tr>
                 <th class="title">
-                    <?php echo JHtml::_('grid.sort', 'Xmap_Heading_Sitemap', 'a.title', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
+                    <?php echo JHtml::_('grid.sort', 'OSMap_Heading_Sitemap', 'a.title', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
                 </th>
                 <th width="5%">
-                    <?php echo JHtml::_('grid.sort', 'Xmap_Heading_Published', 'a.state', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
+                    <?php echo JHtml::_('grid.sort', 'OSMap_Heading_Published', 'a.state', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
                 </th>
                 <th width="10%">
                     <?php echo JHtml::_('grid.sort',  'JGrid_Heading_Access', 'access_level', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
                 </th>
                 <th width="10%" nowrap="nowrap">
-                    <?php echo JText::_('Xmap_Heading_Html_Stats'); ?><br />
-                    (<?php echo JText::_('Xmap_Heading_Num_Links') . ' / '. JText::_('Xmap_Heading_Num_Hits') . ' / ' . JText::_('Xmap_Heading_Last_Visit'); ?>)
+                    <?php echo JText::_('OSMAP_HEADING_HTML_STATS'); ?><br />
+                    (<?php echo JText::_('OSMAP_HEADING_NUM_LINKS') . ' / '. JText::_('OSMAP_HEADING_NUM_HITS') . ' / ' . JText::_('OSMAP_HEADING_LAST_VISIT'); ?>)
                 </th>
                 <th width="10%" nowrap="nowrap">
-                    <?php echo JText::_('Xmap_Heading_Xml_Stats'); ?><br />
-                    <?php echo JText::_('Xmap_Heading_Num_Links') . '/'. JText::_('Xmap_Heading_Num_Hits') . '/' . JText::_('Xmap_Heading_Last_Visit'); ?>
+                    <?php echo JText::_('OSMAP_HEADING_XML_STATS'); ?><br />
+                    <?php echo JText::_('OSMAP_HEADING_NUM_LINKS') . '/'. JText::_('OSMAP_HEADING_NUM_HITS') . '/' . JText::_('OSMAP_HEADING_LAST_VISIT'); ?>
                 </th>
                 <th width="1%" nowrap="nowrap">
                     <?php echo JHtml::_('grid.sort', 'JGrid_Heading_ID', 'a.id', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
@@ -98,7 +98,7 @@ $n = count($this->items);
 
             $now = JFactory::getDate()->toUnix();
             if ( !$item->lastvisit_html ) {
-                $htmlDate = JText::_('Date_Never');
+                $htmlDate = JText::_('DATE_NEVER');
             }elseif ( $item->lastvisit_html > ($now-3600)) { // Less than one hour
                 $htmlDate = JText::sprintf('Date_Minutes_Ago',intval(($now-$item->lastvisit_html)/60));
             } elseif ( $item->lastvisit_html > ($now-86400)) { // Less than one day
@@ -113,7 +113,7 @@ $n = count($this->items);
             }
 
             if ( !$item->lastvisit_xml ) {
-                $xmlDate = JText::_('Date_Never');
+                $xmlDate = JText::_('DATE_NEVER');
             } elseif ( $item->lastvisit_xml > ($now-3600)) { // Less than one hour
                 $xmlDate = JText::sprintf('Date_Minutes_Ago',intval(($now-$item->lastvisit_xml)/60));
             } elseif ( $item->lastvisit_xml > ($now-86400)) { // Less than one day

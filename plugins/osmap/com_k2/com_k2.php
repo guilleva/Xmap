@@ -25,7 +25,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-/** Adds support for K2  to Xmap */
+/** Adds support for K2  to OSMap */
 class osmap_com_k2
 {
     static $maxAccess = 0;

@@ -89,7 +89,7 @@ class OSMapController extends JControllerLegacy
         }
 
         if (!$id) {
-            JError::raiseWarning(500, JText::_('Xmap_Not_Sitemap_Selected'));
+            JError::raiseWarning(500, JText::_('OSMAP_NOT_SITEMAP_SELECTED'));
             return false;
         }
 
@@ -121,7 +121,7 @@ class OSMapController extends JControllerLegacy
         }
 
         if (!$id) {
-            JError::raiseWarning(500, JText::_('Xmap_Not_Sitemap_Selected'));
+            JError::raiseWarning(500, JText::_('OSMAP_NOT_SITEMAP_SELECTED'));
             return false;
         }
 

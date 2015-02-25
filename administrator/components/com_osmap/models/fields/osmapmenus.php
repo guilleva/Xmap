@@ -28,9 +28,9 @@ jimport('joomla.html.html');
 require_once JPATH_LIBRARIES . '/joomla/form/fields/list.php';
 
 /**
- * Menus Form Field class for the Xmap Component
+ * Menus Form Field class for the OSMap Component
  *
- * @package      Xmap
+ * @package      OSMap
  * @subpackage   com_osmap
  * @since        2.0
  */
