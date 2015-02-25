@@ -74,7 +74,7 @@ class XmapNavigatorDisplayer extends XmapDisplayer {
                     $node->expandible = true;
                     $node->selectable=true;
                     // Prepare the node link
-                    XmapHelper::prepareMenuItem($node);
+                    OSMapHelper::prepareMenuItem($node);
                     if ( $item->home ) {
                         $node->link = JURI::root();
                     } elseif (substr($item->link,0,9) == 'index.php' && $item->type != 'url' ) {

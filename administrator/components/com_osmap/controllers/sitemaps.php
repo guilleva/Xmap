@@ -36,7 +36,7 @@ jimport('joomla.application.component.controlleradmin');
 class XmapControllerSitemaps extends JControllerAdmin
 {
 
-    protected $text_prefix = 'COM_XMAP_SITEMAPS';
+    protected $text_prefix = 'COM_OSMAP_SITEMAPS';
 
     /**
      * Constructor

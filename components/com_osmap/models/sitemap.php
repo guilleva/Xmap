@@ -132,12 +132,12 @@ class XmapModelSitemap extends JModelItem
                 }
 
                 if (empty($data)) {
-                    throw new Exception(JText::_('COM_XMAP_ERROR_SITEMAP_NOT_FOUND'));
+                    throw new Exception(JText::_('COM_OSMAP_ERROR_SITEMAP_NOT_FOUND'));
                 }
 
                 // Check for published state if filter set.
                 if (is_numeric($published) && $data->state != $published) {
-                    throw new Exception(JText::_('COM_XMAP_ERROR_SITEMAP_NOT_FOUND'));
+                    throw new Exception(JText::_('COM_OSMAP_ERROR_SITEMAP_NOT_FOUND'));
                 }
 
                 // Convert parameter fields to objects.
@@ -177,14 +177,14 @@ class XmapModelSitemap extends JModelItem
     public function getItems()
     {
         if ($item = $this->getItem()) {
-            return XmapHelper::getMenuItems($item->selections);
+            return OSMapHelper::getMenuItems($item->selections);
         }
         return false;
     }
 
     function getExtensions()
     {
-        return XmapHelper::getExtensions();
+        return OSMapHelper::getExtensions();
     }
 
     /**

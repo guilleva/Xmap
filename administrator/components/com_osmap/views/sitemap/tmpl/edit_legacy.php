@@ -72,7 +72,7 @@ JHtml::_('behavior.formvalidation');
 
     <div class="width-40" style="float:left">
         <?php echo JHtml::_('sliders.start', 'xmap-sliders-' . $this->item->id, array('useCookie' => 1)); ?>
-        <?php echo JHtml::_('sliders.panel', JText::_('XMAP_FIELDSET_MENUS'), 'menus-details'); ?>
+        <?php echo JHtml::_('sliders.panel', JText::_('OSMAP_FIELDSET_MENUS'), 'menus-details'); ?>
         <?php echo $this->form->getInput('selections'); ?>
         <?php
             $fieldSets = $this->form->getFieldsets('attribs');

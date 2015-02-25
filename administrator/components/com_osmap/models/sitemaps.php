@@ -188,7 +188,7 @@ class XmapModelSitemaps extends JModelList
                 $sep = ', ';
             }
 
-            return JText::sprintf('XMAP_MESSAGE_EXTENSIONS_DISABLED',$extensionsNameList);
+            return JText::sprintf('OSMAP_MESSAGE_EXTENSIONS_DISABLED',$extensionsNameList);
         } else {
             return "";
         }

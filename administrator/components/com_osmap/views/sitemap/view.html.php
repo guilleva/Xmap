@@ -66,7 +66,7 @@ class XmapViewSitemap extends JViewLegacy
             return false;
         }
 
-        JHTML::stylesheet('administrator/components/com_xmap/css/xmap.css');
+        JHTML::stylesheet('administrator/components/com_osmap/css/osmap.css');
         // Convert dates from UTC
         $offset = $app->getCfg('offset');
         if (intval($this->item->created)) {
@@ -94,8 +94,8 @@ class XmapViewSitemap extends JViewLegacy
         $this->state = $this->get('State');
         $this->item = $this->get('Item');
 
-        # $menuItems = XmapHelper::getMenuItems($item->selections);
-        # $extensions = XmapHelper::getExtensions();
+        # $menuItems = OSMapHelper::getMenuItems($item->selections);
+        # $extensions = OSMapHelper::getExtensions();
         // Check for errors.
         if (count($errors = $this->get('Errors'))) {
             JError::raiseError(500, implode("\n", $errors));
@@ -121,8 +121,8 @@ class XmapViewSitemap extends JViewLegacy
 
         $this->item = $this->get('Item');
         $this->state = $this->get('State');
-        $menuItems = XmapHelper::getMenuItems($item->selections);
-        $extensions = XmapHelper::getExtensions();
+        $menuItems = OSMapHelper::getMenuItems($item->selections);
+        $extensions = OSMapHelper::getExtensions();
 
         $this->loadTemplate('class');
         $nav = new XmapNavigatorDisplayer($state->params, $item);
@@ -194,7 +194,7 @@ class XmapViewSitemap extends JViewLegacy
         $user = JFactory::getUser();
         $isNew = ($this->item->id == 0);
 
-        JToolBarHelper::title(JText::_('XMAP_PAGE_' . ($isNew ? 'ADD_SITEMAP' : 'EDIT_SITEMAP')), 'article-add.png');
+        JToolBarHelper::title(JText::_('OSMAP_PAGE_' . ($isNew ? 'ADD_SITEMAP' : 'EDIT_SITEMAP')), 'article-add.png');
 
         JToolBarHelper::apply('sitemap.apply', 'JTOOLBAR_APPLY');
         JToolBarHelper::save('sitemap.save', 'JTOOLBAR_SAVE');

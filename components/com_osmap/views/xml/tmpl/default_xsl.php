@@ -40,7 +40,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 <xsl:template match="/">
 <html>
 <head>
-<title><?php echo JText::_('COM_XMAP_XML_FILE'); ?></title>
+<title><?php echo JText::_('COM_OSMAP_XML_FILE'); ?></title>
 <script src="<?php echo JUri::base(); ?>media/system/js/mootools-core.js" type="text/javascript"></script>
 <script src="<?php echo JUri::base(); ?>media/system/js/mootools-more.js" type="text/javascript"></script>
 <style type="text/css">
@@ -411,24 +411,24 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 <div id="header">
     <div id="title">
         <h1 id="head1"><?php echo $this->item->title; ?></h1>
-        <span class="number_urls"><?php echo JText::_('COM_XMAP_NUMBER_OF_URLS'); ?>: <xsl:value-of select="count(xna:urlset/xna:url)"></xsl:value-of></span>
+        <span class="number_urls"><?php echo JText::_('COM_OSMAP_NUMBER_OF_URLS'); ?>: <xsl:value-of select="count(xna:urlset/xna:url)"></xsl:value-of></span>
     </div>
     <div id="instructions">
         <div>
             <?php $sitemapUrl = 'index.php?option=com_xmap&view=xml&id='.$this->item->id; ?>
             <?php if (!$this->user->get('id')): ?>
-            <p><?php echo JText::sprintf('COM_XMAP_LOGIN_AS_ADMIN_EDIT_SITEMAP', JRoute::_('index.php?option=com_users&view=login&return='.base64_encode($sitemapUrl))); ?></p>
+            <p><?php echo JText::sprintf('COM_OSMAP_LOGIN_AS_ADMIN_EDIT_SITEMAP', JRoute::_('index.php?option=com_users&view=login&return='.base64_encode($sitemapUrl))); ?></p>
             <?php else: ?>
             <?php $sitemapUrl = JUri::base(true).'/'.str_replace('&','&amp;',$sitemapUrl); ?>
-            <p><?php echo JText::_('COM_XMAP_XML_SITEMAP_HELP'); ?></p>
-            <p dir="ltr"><b><?php echo JText::_('COM_XMAP_XML_SITEMAP_URL'); ?></b>: <?php echo $sitemapUrl; ?></p>
+            <p><?php echo JText::_('COM_OSMAP_XML_SITEMAP_HELP'); ?></p>
+            <p dir="ltr"><b><?php echo JText::_('COM_OSMAP_XML_SITEMAP_URL'); ?></b>: <?php echo $sitemapUrl; ?></p>
             <div id="filter_options">
                 <form method="get" action="<?php echo JRoute::_('index.php?option=com_xmap&view=xml'); ?>">
                     <input type="hidden" name="option" value="com_xmap" />
                     <input type="hidden" name="view" value="xml" />
                     <input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
-                    <label><input onClick="this.form.submit();"<?php echo ($showTitle? ' checked="checked"':''); ?> type="checkbox" value="1" name="filter_showtitle" /><?php echo JText::_('COM_XMAP_DISPLAY_TITLE'); ?></label>
-                    <label><input onClick="this.form.submit();"<?php echo ($showExcluded? ' checked="checked"':''); ?> type="checkbox" value="1" name="filter_showexcluded" /><?php echo JText::_('COM_XMAP_DISPLAY_EXCLUDED_ITEMS'); ?></label>
+                    <label><input onClick="this.form.submit();"<?php echo ($showTitle? ' checked="checked"':''); ?> type="checkbox" value="1" name="filter_showtitle" /><?php echo JText::_('COM_OSMAP_DISPLAY_TITLE'); ?></label>
+                    <label><input onClick="this.form.submit();"<?php echo ($showExcluded? ' checked="checked"':''); ?> type="checkbox" value="1" name="filter_showexcluded" /><?php echo JText::_('COM_OSMAP_DISPLAY_EXCLUDED_ITEMS'); ?></label>
                 </form>
             </div>
             <?php endif; ?>
@@ -438,11 +438,11 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 </div>
 <table id="table0" class="data">
     <tr class="header">
-        <td><?php echo ($showTitle? JText::_('COM_XMAP_TITLE').' / ' : ''); ?><?php echo JText::_('COM_XMAP_URL'); ?></td>
+        <td><?php echo ($showTitle? JText::_('COM_OSMAP_TITLE').' / ' : ''); ?><?php echo JText::_('COM_OSMAP_URL'); ?></td>
         <?php if (!$this->isImages): ?>
-        <td><?php echo JText::_('COM_XMAP_LASTMOD'); ?></td>
-        <td><?php echo JText::_('COM_XMAP_CHANGEFREQ'); ?></td>
-        <td><?php echo JText::_('COM_XMAP_PRIORITY'); ?></td>
+        <td><?php echo JText::_('COM_OSMAP_LASTMOD'); ?></td>
+        <td><?php echo JText::_('COM_OSMAP_CHANGEFREQ'); ?></td>
+        <td><?php echo JText::_('COM_OSMAP_PRIORITY'); ?></td>
         <?php endif ?>
     </tr>
     <xsl:for-each select="xna:urlset/xna:url">

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-    <layout title="COM_XMAP_SITEMAP_HTML_VIEW_DEFAULT_TITLE">
+    <layout title="COM_OSMAP_SITEMAP_HTML_VIEW_DEFAULT_TITLE">
         <message>
-            <![CDATA[COM_XMAP_SITEMAP_HTML_VIEW_DEFAULT_DESC]]>
+            <![CDATA[COM_OSMAP_SITEMAP_HTML_VIEW_DEFAULT_DESC]]>
         </message>
     </layout>
     <fields name="request">
@@ -13,8 +13,8 @@
                 type="modal_sitemaps"
                 default=""
                 required="true"
-                label="COM_XMAP_SELECT_AN_SITEMAP"
-                description="COM_XMAP_SELECT_A_SITEMAP" />
+                label="COM_OSMAP_SELECT_AN_SITEMAP"
+                description="COM_OSMAP_SELECT_A_SITEMAP" />
         </fieldset>
     </fields>
 
@@ -22,13 +22,13 @@
     <fields name="params">
         <!-- Basic options. -->
         <fieldset name="basic"
-            label="COM_XMAP_ATTRIBS_SITEMAP_SETTINGS_LABEL">
+            label="COM_OSMAP_ATTRIBS_SITEMAP_SETTINGS_LABEL">
             <field
             name="include_css"
             type="list"
             default="0"
-            label="COM_XMAP_INCLUDE_CSS_LABEL"
-            description="COM_XMAP_INCLUDE_CSS_DESC">
+            label="COM_OSMAP_INCLUDE_CSS_LABEL"
+            description="COM_OSMAP_INCLUDE_CSS_DESC">
                 <option value="1">JYES</option>
                 <option value="0">JNO</option>
             </field>

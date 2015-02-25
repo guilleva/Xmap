@@ -49,8 +49,8 @@ if(version_compare(JVERSION,'3.0.0','ge')) {
         <!-- Begin Content -->
         <div class="span10 form-horizontal">
             <ul class="nav nav-tabs">
-                <li class="active"><a href="#general" data-toggle="tab"><?php echo JText::_('XMAP_SITEMAP_DETAILS_FIELDSET');?></a></li>
-                <li><a href="#attrib-menus" data-toggle="tab"><?php echo JText::_('XMAP_FIELDSET_MENUS');?></a></li>
+                <li class="active"><a href="#general" data-toggle="tab"><?php echo JText::_('OSMAP_SITEMAP_DETAILS_FIELDSET');?></a></li>
+                <li><a href="#attrib-menus" data-toggle="tab"><?php echo JText::_('OSMAP_FIELDSET_MENUS');?></a></li>
                 <?php
                 $fieldSets = $this->form->getFieldsets('attribs');
                 foreach ($fieldSets as $name => $fieldSet) :

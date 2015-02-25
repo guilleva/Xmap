@@ -52,7 +52,7 @@ class XmapViewSitemaps extends JViewLegacy
     public function display($tpl = null)
     {
         if ($this->getLayout() !== 'modal') {
-            XmapHelper::addSubmenu('sitemaps');
+            OSMapHelper::addSubmenu('sitemaps');
         }
 
         $this->state      = $this->get('State');
@@ -98,14 +98,14 @@ class XmapViewSitemaps extends JViewLegacy
         JToolBarHelper::custom('sitemap.edit', 'edit.png', 'edit_f2.png', 'JTOOLBAR_EDIT', true);
 
         $doc->addStyleDeclaration('.icon-48-sitemap {background-image: url(components/com_xmap/images/sitemap-icon.png);}');
-        JToolBarHelper::title(JText::_('XMAP_SITEMAPS_TITLE'), 'sitemap.png');
+        JToolBarHelper::title(JText::_('OSMAP_SITEMAPS_TITLE'), 'sitemap.png');
         JToolBarHelper::custom('sitemaps.publish', 'publish.png', 'publish_f2.png', 'JTOOLBAR_Publish', true);
         JToolBarHelper::custom('sitemaps.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
 
         if (version_compare($version->getShortVersion(), '3.0.0', '>=')) {
-            JToolBarHelper::custom('sitemaps.setdefault', 'featured.png', 'featured_f2.png', 'XMAP_TOOLBAR_SET_DEFAULT', true);
+            JToolBarHelper::custom('sitemaps.setdefault', 'featured.png', 'featured_f2.png', 'OSMAP_TOOLBAR_SET_DEFAULT', true);
         } else {
-            JToolBarHelper::custom('sitemaps.setdefault', 'default.png', 'default_f2.png', 'XMAP_TOOLBAR_SET_DEFAULT', true);
+            JToolBarHelper::custom('sitemaps.setdefault', 'default.png', 'default_f2.png', 'OSMAP_TOOLBAR_SET_DEFAULT', true);
         }
         if ($state->get('filter.published') == -2) {
             JToolBarHelper::deleteList('', 'sitemaps.delete','JTOOLBAR_DELETE');

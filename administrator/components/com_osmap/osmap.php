@@ -32,7 +32,7 @@ jimport('joomla.form.form');
 JForm::addFieldPath( JPATH_COMPONENT.'/models/fields' );
 
 // Register helper class
-JLoader::register('XmapHelper', dirname(__FILE__) . '/helpers/xmap.php');
+JLoader::register('OSMapHelper', dirname(__FILE__) . '/helpers/xmap.php');
 
 // Include dependancies
 jimport('joomla.application.component.controller');

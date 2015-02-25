@@ -2,7 +2,7 @@
 <metadata>
     <view title="Sitemap">
         <message>
-            <![CDATA[COM_XMAP_SITEMAP_HTML_VIEW_DEFAULT_DESC]]>
+            <![CDATA[COM_OSMAP_SITEMAP_HTML_VIEW_DEFAULT_DESC]]>
         </message>
     </view>
 </metadata>
