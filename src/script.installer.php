@@ -23,17 +23,24 @@
  * along with OSMap. If not, see <http://www.gnu.org/licenses/>.
  */
 
+// No direct access
 defined('_JEXEC') or die('Restricted access');
 
-header('Content-type: text/xml');
+$includePath = __DIR__ . '/admin/library/Installer/include.php';
+if (! file_exists($includePath)) {
+    $includePath = __DIR__ . '/library/Installer/include.php';
+}
 
-$name = JRequest::getCmd('e_name');
-?>
-<?xml version="1.0" encoding="UTF-8" ?>
-<nodes>
-<?php foreach ($this->list as $node) {
-    $load = 'index.php?option=com_osmap&amp;task=navigator-links&amp;sitemap='.$this->item->id.'&amp;e_name='.$name.(isset($node->id)?'&amp;Itemid='.$node->id:'').(isset($node->link)?'&amp;link='.urlencode($node->link):'').'&amp;tmpl=component';
-?>
-    <node text="<?php echo htmlentities($node->name); ?>" <?php echo ($node->expandible?" openicon=\"_open\" icon=\"_closed\" load=\"$load\"":' icon="_doc"'); ?> uid="<?php $node->uid; ?>" link="<?php echo str_replace(array('&amp;','&'),array('&','&amp;'),$node->link); ?>" selectable="<?php echo ($node->selectable?'true':'false'); ?>" />
-<?php } ?>
-</nodes>
+require_once $includePath;
+
+use Alledia\Installer\AbstractScript;
+
+/**
+ * OSMap Installer Script
+ *
+ * @since  2.4.0
+ */
+class Com_OSMapInstallerScript extends AbstractScript
+{
+
+}

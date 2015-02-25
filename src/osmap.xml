@@ -1,27 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension method="upgrade" version="1.5" type="component">
+<extension type="component" version="2.5" method="upgrade">
     <name>com_osmap</name>
     <creationDate>February 25th, 2015</creationDate>
+    <copyright>Copyright (C) 2015 Alledia.com. All rights reserved.</copyright>
+    <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
     <author>Alledia</author>
-    <copyright>This component is released under the GNU/GPL License</copyright>
     <authorEmail>support@alledia.com</authorEmail>
     <authorUrl>http://www.alledia.com</authorUrl>
     <version>2.4.0</version>
-    <license>GNU/GPL</license>
     <description>OSMap - Sitemap Generator for Joomla!</description>
+
+    <alledia>
+        <element>osmap</element>
+        <namespace>OSMap</namespace>
+        <license>free</license>
+        <relatedExtensions>
+            <extension
+                type="library"
+                element="allediaframework">AllediaFramework</extension>
+
+            <extension
+                type="plugin"
+                group="system"
+                element="ossystem"
+                publish="true"
+                ordering="first">OSSystem</extension>
+
+            <extension
+                type="plugin"
+                group="osmap"
+                element="com_content">plg_osmap_com_content</extension>
+
+            <extension
+                type="plugin"
+                group="osmap"
+                element="com_k2">plg_osmap_com_k2</extension>
+
+            <extension
+                type="plugin"
+                group="osmap"
+                element="com_kunena">plg_osmap_com_kunena</extension>
+
+            <extension
+                type="plugin"
+                group="osmap"
+                element="com_mtree">plg_osmap_com_mtree</extension>
+
+            <extension
+                type="plugin"
+                group="osmap"
+                element="com_sobipro">plg_osmap_com_sobipro</extension>
+
+            <extension
+                type="plugin"
+                group="osmap"
+                element="com_virtuemart">plg_osmap_com_virtuemart</extension>
+
+            <extension
+                type="plugin"
+                group="osmap"
+                element="com_weblinks">plg_osmap_com_weblinks</extension>
+        </relatedExtensions>
+
+        <include>AllediaFreeDefaultFiles</include>
+    </alledia>
+
+    <scriptfile>script.installer.php</scriptfile>
+
     <install folder="admin">
         <sql>
             <file driver="mysql" charset="utf8">install/install.utf8.sql</file>
             <file driver="postgresql" charset="utf8">install/install.postgresql.sql</file>
         </sql>
     </install>
+
     <uninstall>
         <sql>
             <file driver="mysql" charset="utf8">install/uninstall.utf8.sql</file>
             <file driver="postgresql" charset="utf8">install/uninstall.postgresql.sql</file>
         </sql>
     </uninstall>
-    <files folder="front">
+
+    <files folder="site">
         <filename>controller.php</filename>
         <filename>displayer.php</filename>
         <filename>index.html</filename>
@@ -34,12 +94,15 @@
         <folder>models</folder>
         <folder>views</folder>
     </files>
-    <languages folder="front/language">
+
+    <languages folder="site/language">
         <language tag="en-GB">en-GB.com_osmap.ini</language>
     </languages>
+
     <images folder="admin">
         <folder>images</folder>
     </images>
+
     <administration>
         <menu img="components/com_osmap/images/osmap-favicon.png">com_osmap_TITLE</menu>
         <files folder="admin">
