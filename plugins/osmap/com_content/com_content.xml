@@ -2,13 +2,13 @@
 <!-- $Id$ -->
 <extension type="plugin" group="osmap" version="1.6" method="upgrade">
     <name>OSMap - Content Plugin</name>
-    <author>Guillermo Vargas</author>
-    <creationDate>01/26/2011</creationDate>
-    <copyright>GNU GPL</copyright>
-    <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
-    <authorEmail>guille@vargas.co.cr</authorEmail>
-    <authorUrl>joomla.vargas.co.cr</authorUrl>
-    <version>2.0.4</version>
+    <author>Alledia</author>
+    <creationDate>February 25th, 2015</creationDate>
+    <copyright>Copyright (C) 2015 Alledia.com</copyright>
+    <license>GPL v3</license>
+    <authorEmail>support@alledia.com</authorEmail>
+    <authorUrl>https://www.alledia.com</authorUrl>
+    <version>2.4.0</version>
     <description>OSMAP_CONTENT_PLUGIN_DESCRIPTION</description>
     <files>
         <filename plugin="com_content">com_content.php</filename>

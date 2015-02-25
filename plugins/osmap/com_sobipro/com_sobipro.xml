@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <extension type="plugin" group="osmap" version="1.6" method="upgrade">
     <name>OSMap - SobiPro Plugin</name>
-    <author>Guillermo Vargas</author>
-    <creationDate>07/15/2011</creationDate>
-    <copyright>GNU GPL</copyright>
-    <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
-    <authorEmail>guille@vargas.co.cr</authorEmail>
-    <authorUrl>joomla.vargas.co.cr</authorUrl>
-    <version>2.0.2</version>
+    <author>Alledia</author>
+    <creationDate>February 25th, 2015</creationDate>
+    <copyright>Copyright (C) 2015 Alledia.com</copyright>
+    <license>GPL v3</license>
+    <authorEmail>support@alledia.com</authorEmail>
+    <authorUrl>https://www.alledia.com</authorUrl>
+    <version>2.4.0</version>
     <description>OSMap Plugin for SobiPro component</description>
     <files>
         <filename plugin="com_sobipro">com_sobipro.php</filename>
