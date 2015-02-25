@@ -25,7 +25,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class xmap_com_weblinks
+class osmap_com_weblinks
 {
 
     static private $_initialized = false;
@@ -55,7 +55,7 @@ class xmap_com_weblinks
         }
     }
 
-    static function getTree($xmap, $parent, &$params)
+    static function getTree($osmap, $parent, &$params)
     {
         self::initialize($params);
 
@@ -80,9 +80,9 @@ class xmap_com_weblinks
 
         $include_links = JArrayHelper::getValue($params, 'include_links', 1, '');
         $include_links = ( $include_links == 1
-            || ( $include_links == 2 && $xmap->view == 'xml')
-            || ( $include_links == 3 && $xmap->view == 'html')
-            || $xmap->view == 'navigator');
+            || ( $include_links == 2 && $osmap->view == 'xml')
+            || ( $include_links == 3 && $osmap->view == 'html')
+            || $osmap->view == 'navigator');
         $params['include_links'] = $include_links;
 
         $priority = JArrayHelper::getValue($params, 'cat_priority', $parent->priority, '');
@@ -114,15 +114,15 @@ class xmap_com_weblinks
 
         $params['count_clicks'] = $weblinks_params->get('count_clicks');
 
-        xmap_com_weblinks::getCategoryTree($xmap, $parent, $params, $category);
+        osmap_com_weblinks::getCategoryTree($osmap, $parent, $params, $category);
     }
 
-    static function getCategoryTree($xmap, $parent, &$params, $category)
+    static function getCategoryTree($osmap, $parent, &$params, $category)
     {
         $db = JFactory::getDBO();
 
         $children = $category->getChildren();
-        $xmap->changeLevel(1);
+        $osmap->changeLevel(1);
         foreach ($children as $cat) {
             $node = new stdclass;
             $node->id = $parent->id;
@@ -132,11 +132,11 @@ class xmap_com_weblinks
             $node->priority = $params['cat_priority'];
             $node->changefreq = $params['cat_changefreq'];
             $node->expandible = true;
-            if ($xmap->printNode($node) !== FALSE) {
-                xmap_com_weblinks::getCategoryTree($xmap, $parent, $params, $cat);
+            if ($osmap->printNode($node) !== FALSE) {
+                osmap_com_weblinks::getCategoryTree($osmap, $parent, $params, $cat);
             }
         }
-        $xmap->changeLevel(-1);
+        $osmap->changeLevel(-1);
 
         if ($params['include_links']) { //view=category&catid=...
             $linksModel = new WeblinksModelCategory();
@@ -147,7 +147,7 @@ class xmap_com_weblinks
             $linksModel->setState('list.direction', 'ASC');
             $linksModel->setState('category.id', $category->id);
             $links = $linksModel->getItems();
-            $xmap->changeLevel(1);
+            $osmap->changeLevel(1);
             foreach ($links as $link) {
                 $item_params = new JRegistry;
                 $item_params->loadString($link->params);
@@ -168,9 +168,9 @@ class xmap_com_weblinks
                 $node->priority = $params['link_priority'];
                 $node->changefreq = $params['link_changefreq'];
                 $node->expandible = false;
-                $xmap->printNode($node);
+                $osmap->printNode($node);
             }
-            $xmap->changeLevel(-1);
+            $osmap->changeLevel(-1);
         }
     }
 

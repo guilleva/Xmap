@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `#__xmap_sitemap` (
+CREATE TABLE IF NOT EXISTS `#__osmap_sitemap` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) DEFAULT NULL,
   `alias` varchar(255) DEFAULT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS `#__xmap_sitemap` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `#__xmap_items` (
+CREATE TABLE IF NOT EXISTS `#__osmap_items` (
   `uid` varchar(100) NOT NULL,
   `itemid` int(11) NOT NULL,
   `view` varchar(10) NOT NULL,

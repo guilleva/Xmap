@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<extension type="plugin" group="xmap" version="2.5" method="upgrade">
+<extension type="plugin" group="osmap" version="2.5" method="upgrade">
     <name>OSMAP_PLUGIN_K2</name>
     <author>Mohammad Hasani Eghtedar</author>
     <creationDate>November 2011</creationDate>
@@ -14,12 +14,8 @@
         <filename>index.html</filename>
     </files>
     <languages folder="language">
-        <language tag="en-GB">en-GB/en-GB.plg_xmap_com_k2.ini</language>
-        <language tag="en-GB">en-GB/en-GB.plg_xmap_com_k2.sys.ini</language>
-        <language tag="fr-FR">fr-FR/fr-FR.plg_xmap_com_k2.ini</language>
-        <language tag="fr-FR">fr-FR/fr-FR.plg_xmap_com_k2.sys.ini</language>
-        <language tag="fa-IR">fa-IR/fa-IR.plg_xmap_com_k2.ini</language>
-        <language tag="fa-IR">fa-IR/fa-IR.plg_xmap_com_k2.sys.ini</language>
+        <language tag="en-GB">en-GB/en-GB.plg_osmap_com_k2.ini</language>
+        <language tag="en-GB">en-GB/en-GB.plg_osmap_com_k2.sys.ini</language>
     </languages>
     <config>
         <fields name="params">

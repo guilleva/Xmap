@@ -31,7 +31,7 @@ require_once JPATH_LIBRARIES . '/joomla/form/fields/list.php';
  * Menus Form Field class for the Xmap Component
  *
  * @package      Xmap
- * @subpackage   com_xmap
+ * @subpackage   com_osmap
  * @since        2.0
  */
 class JFormFieldOSMapMenus extends JFormFieldList
@@ -128,8 +128,8 @@ class JFormFieldOSMapMenus extends JFormFieldList
         $doc = JFactory::getDocument();
         $doc->addScriptDeclaration("
         window.addEvent('domready',function(){
-            \$\$('div.xmap-menu-options select').addEvent('mouseover',function(event){OSMapMenusSortable.detach();})
-            \$\$('div.xmap-menu-options select').addEvent('mouseout',function(event){OSMapMenusSortable.attach();})
+            \$\$('div.osmap-menu-options select').addEvent('mouseover',function(event){OSMapMenusSortable.detach();})
+            \$\$('div.osmap-menu-options select').addEvent('mouseout',function(event){OSMapMenusSortable.attach();})
             var OSMapMenusSortable = new Sortables(\$('ul_" . $this->inputId . "'),{
                 clone:true,
                 revert: true,
@@ -165,11 +165,11 @@ class JFormFieldOSMapMenus extends JFormFieldList
             $return .= '<li id="menu_' . $i . '">';
             $return .= '<input type="' . $type . '" id="' . $this->id . '_' . $i . '" name="' . $this->name . '" value="' . $option->value . '"' . $attributes . $selected . ' />';
             $return .= '<label for="' . $this->id . '_' . $i . '" class="menu_label">' . $option->text . '</label>';
-            $return .= '<div class="xmap-menu-options" id="menu_options_' . $i . '">';
+            $return .= '<div class="osmap-menu-options" id="menu_options_' . $i . '">';
             $return .= '<label class="control-label">' . JText::_('OSMAP_PRIORITY') . '</label>';
-            $return .= '<div class="controls">' . JHTML::_('xmap.priorities', $prioritiesName, ($selected ? $value[$option->value]['priority'] : '0.5'), $i) . '</div>';
+            $return .= '<div class="controls">' . JHTML::_('osmap.priorities', $prioritiesName, ($selected ? $value[$option->value]['priority'] : '0.5'), $i) . '</div>';
             $return .= '<label class="control-label">' . JText::_('OSMAP_CHANGE_FREQUENCY') . '</label>';
-            $return .= '<div class="controls">' . JHTML::_('xmap.changefrequency', $changefreqName, ($selected ? $value[$option->value]['changefreq'] : 'weekly'), $i) . '</div>';
+            $return .= '<div class="controls">' . JHTML::_('osmap.changefrequency', $changefreqName, ($selected ? $value[$option->value]['changefreq'] : 'weekly'), $i) . '</div>';
             $return .= '</div>';
             $return .= '</li>';
         }

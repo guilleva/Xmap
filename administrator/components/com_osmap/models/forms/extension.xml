@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- $Id$ -->
 <form>
-    <fieldset addpath="administrator/components/com_xmap/elements">
+    <fieldset addpath="administrator/components/com_osmap/elements">
 
         <field
             name="extension_id"
@@ -34,7 +34,7 @@
             <option
                 value="1">Yes</option>
         </field>
-        
+
         <field
             name="folder"
             type="hidden"
@@ -52,6 +52,6 @@
             label="COM_PLUGINS_FIELD_ELEMENT_LABEL"
             description="COM_PLUGINS_FIELD_ELEMENT_DESC"
             readonly="true" />
-        
+
     </fieldset>
 </form>

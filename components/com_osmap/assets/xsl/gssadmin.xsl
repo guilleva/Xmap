@@ -9,19 +9,19 @@
 <style type="text/css">
     <![CDATA[
     <!--
-    h1 { 
+    h1 {
         font-weight:bold;
         font-size:1.5em;
         margin-bottom:0;
         margin-top:1px;
     }
-    h2 { 
+    h2 {
         font-weight:bold;
         font-size:1.2em;
-        margin-bottom:0; 
+        margin-bottom:0;
         color:#707070;
         margin-top:1px; }
-    p.sml { 
+    p.sml {
         font-size:0.8em;
         margin-top:0;
     }
@@ -83,7 +83,7 @@
     }
     .editable {
         cursor:pointer;
-        background: url(components/com_xmap/images/arrow.gif) top right no-repeat;
+        background: url(components/com_osmap/images/arrow.gif) top right no-repeat;
         padding-right:18px;
         padding-right:18px;
         border:1px solid #ffffff;
@@ -106,7 +106,7 @@
 
     function initXsl(tabName,fileType) {
         hdrRows = 1;
-      
+
         if(fileType=="sitemap") {
             numeric = ".3.";
             desc = ".1.";
@@ -121,7 +121,7 @@
             initTable(tabName);
             setSort(tabName, 1, 1);
         }
-      
+
         var theURL = document.getElementById("head1");
         theURL.innerHTML += ' ' + location;
         document.title += ': ' + location;
@@ -161,7 +161,7 @@
         var theTab = document.getElementById(tabName);
         theTab.rows[0].sCol = colNum;
         theTab.rows[0].sDir = sortDir;
-        if (sortDir) 
+        if (sortDir)
             theTab.rows[0].cells[colNum].className='sortdown'
         else
             theTab.rows[0].cells[colNum].className='sortup';
@@ -170,7 +170,7 @@
     function setCursor(theCell, mode){
         rTitle = theCell.innerHTML.replace(/<[^>]+>|&nbsp;|\W/g,'');
         if(mode=="selected"){
-            if(theCell.style.color!=selectedColor) 
+            if(theCell.style.color!=selectedColor)
                 defaultColor = theCell.style.color;
             theCell.style.color = selectedColor;
             theCell.style.cursor = "pointer";
@@ -197,9 +197,9 @@
             tBody.rows[0].cells[tBody.rows[0].sCol].className='';
         tBody.rows[0].sCol = colNum;
         tBody.rows[0].sDir = sDir;
-        if (sDir) 
+        if (sDir)
             tBody.rows[0].cells[colNum].className='sortdown'
-        else 
+        else
             tBody.rows[0].cells[colNum].className='sortup';
         for(i=0,r=hdrRows;r<tBody.rows.length;i++,r++){
             colCont = tBody.rows[r].cells[colNum].innerHTML;
@@ -224,8 +224,8 @@
         tabOrd.sort(compRows);
         for(i=0,r=hdrRows;r<tBody.rows.length;i++,r++){
             tBody.insertBefore(tabOrd[i][1],tBody.rows[r]);
-        } 
-        window.status = ""; 
+        }
+        window.status = "";
     }
 
     function compRows(a, b){
@@ -266,7 +266,7 @@
     }
 
     function changeProperty(el,property) {
-        var myAjax = new Ajax('index.php?option=com_xmap&tmpl=component&task=editElement&action=changeProperty&sitemap='+sitemapid+'&uid='+divOptions.uid+'&itemid='+divOptions.itemid+'&property='+property+'&value='+el.innerHTML,{
+        var myAjax = new Ajax('index.php?option=com_osmap&tmpl=component&task=editElement&action=changeProperty&sitemap='+sitemapid+'&uid='+divOptions.uid+'&itemid='+divOptions.itemid+'&property='+property+'&value='+el.innerHTML,{
             onComplete: checkChangeResult.bind(divOptions)
         }).request();
         divOptions.cell.innerHTML=el.innerHTML;

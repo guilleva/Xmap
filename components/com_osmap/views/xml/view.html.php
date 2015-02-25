@@ -38,7 +38,7 @@ if (!class_exists('JViewLegacy')){
  * XML Sitemap View class for the Xmap component
  *
  * @package      Xmap
- * @subpackage   com_xmap
+ * @subpackage   com_osmap
  * @since        2.0
  */
 class XmapViewXml extends JViewLegacy
@@ -71,7 +71,7 @@ class XmapViewXml extends JViewLegacy
 
         $this->item = $this->get('Item');
         $this->state = $this->get('State');
-        $this->canEdit = JFactory::getUser()->authorise('core.admin', 'com_xmap');
+        $this->canEdit = JFactory::getUser()->authorise('core.admin', 'com_osmap');
 
         // For now, news sitemaps are not editable
         $this->canEdit = $this->canEdit && !$isNewsSitemap;
@@ -94,7 +94,7 @@ class XmapViewXml extends JViewLegacy
         // Add router helpers.
         $this->item->slug = $this->item->alias ? ($this->item->id . ':' . $this->item->alias) : $this->item->id;
 
-        $this->item->rlink = JRoute::_('index.php?option=com_xmap&view=xml&id=' . $this->item->slug);
+        $this->item->rlink = JRoute::_('index.php?option=com_osmap&view=xml&id=' . $this->item->slug);
 
         // Create a shortcut to the paramemters.
         $params = &$this->state->params;

@@ -38,7 +38,7 @@ if (!class_exists('JViewLegacy')){
  * HTML Site map View class for the Xmap component
  *
  * @package         Xmap
- * @subpackage      com_xmap
+ * @subpackage      com_osmap
  * @since           2.0
  */
 class XmapViewHtml extends JViewLegacy
@@ -62,7 +62,7 @@ class XmapViewHtml extends JViewLegacy
         $this->item = $this->get('Item');
         $this->items = $this->get('Items');
 
-        $this->canEdit = JFactory::getUser()->authorise('core.admin', 'com_xmap');
+        $this->canEdit = JFactory::getUser()->authorise('core.admin', 'com_osmap');
 
         // Check for errors.
         if (count($errors = $this->get('Errors'))) {
@@ -74,7 +74,7 @@ class XmapViewHtml extends JViewLegacy
         // Add router helpers.
         $this->item->slug = $this->item->alias ? ($this->item->id . ':' . $this->item->alias) : $this->item->id;
 
-        $this->item->rlink = JRoute::_('index.php?option=com_xmap&view=html&id=' . $this->item->slug);
+        $this->item->rlink = JRoute::_('index.php?option=com_osmap&view=html&id=' . $this->item->slug);
 
         // Create a shortcut to the paramemters.
         $params = &$this->state->params;

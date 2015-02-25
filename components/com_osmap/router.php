@@ -27,7 +27,7 @@ defined('_JEXEC') or die('Restricted access');
  * Content Component Route Helper
  *
  * @package        Xmap
- * @subpackage    com_xmap
+ * @subpackage    com_osmap
  * @since 2.0
  */
 class XmapRoute
@@ -46,7 +46,7 @@ class XmapRoute
         );
 
         //Create the link
-        $link = 'index.php?option=com_xmap&view='.$view.'&id='. $id;
+        $link = 'index.php?option=com_osmap&view='.$view.'&id='. $id;
 
         if ($itemId = self::_findItemId($needles)) {
             $link .= '&Itemid='.$itemId;
@@ -63,7 +63,7 @@ class XmapRoute
         {
             self::$lookup = array();
 
-            $component    = &JComponentHelper::getComponent('com_xmap');
+            $component    = &JComponentHelper::getComponent('com_osmap');
             $menus        = &JApplication::getMenu('site', array());
             $items        = $menus->getItems('component_id', $component->id);
 

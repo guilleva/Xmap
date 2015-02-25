@@ -26,7 +26,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 /** Adds support for Virtuemart categories to Xmap */
-class xmap_com_virtuemart
+class osmap_com_virtuemart
 {
 	protected static $categoryModel;
 	protected static $productModel;
@@ -76,7 +76,7 @@ class xmap_com_virtuemart
 	}
 
 	/** Get the content tree for this kind of content */
-	static function getTree($xmap, $parent, &$params)
+	static function getTree($osmap, $parent, &$params)
 	{
 		self::initialize();
 
@@ -100,11 +100,11 @@ class xmap_com_virtuemart
 
 		$include_products = JArrayHelper::getValue($params, 'include_products', 1);
 		$include_products = ( $include_products == 1
-			|| ( $include_products == 2 && $xmap->view == 'xml')
-			|| ( $include_products == 3 && $xmap->view == 'html'));
+			|| ( $include_products == 2 && $osmap->view == 'xml')
+			|| ( $include_products == 3 && $osmap->view == 'html'));
 
 		$params['include_products']          = $include_products;
-		$params['include_product_images']    = (JArrayHelper::getValue($params, 'include_product_images', 1) && $xmap->view == 'xml');
+		$params['include_product_images']    = (JArrayHelper::getValue($params, 'include_product_images', 1) && $osmap->view == 'xml');
 		$params['product_image_license_url'] = trim(JArrayHelper::getValue($params, 'product_image_license_url', ''));
 
 		$priority   = JArrayHelper::getValue($params, 'cat_priority', $parent->priority);
@@ -139,13 +139,13 @@ class xmap_com_virtuemart
 		$params['prod_priority']   = $priority;
 		$params['prod_changefreq'] = $changefreq;
 
-		xmap_com_virtuemart::getCategoryTree($xmap, $parent, $params, $catid);
+		osmap_com_virtuemart::getCategoryTree($osmap, $parent, $params, $catid);
 
 		return true;
 	}
 
 	/** Virtuemart support */
-	static function getCategoryTree($xmap, $parent, &$params, $catid=0)
+	static function getCategoryTree($osmap, $parent, &$params, $catid=0)
 	{
 		$database = JFactory::getDBO();
 
@@ -158,7 +158,7 @@ class xmap_com_virtuemart
 		$cache    = JFactory::getCache('com_virtuemart','callback');
 		$children = $cache->call( array( 'VirtueMartModelCategory', 'getChildCategoryList' ),$vendorId, $catid );
 
-		$xmap->changeLevel(1);
+		$osmap->changeLevel(1);
 
 		foreach ($children as $row)
 		{
@@ -173,13 +173,13 @@ class xmap_com_virtuemart
 			$node->expandible = true;
 			$node->link       = 'index.php?option=com_virtuemart&amp;view=category&amp;virtuemart_category_id=' . $row->virtuemart_category_id . '&amp;Itemid='.$parent->id;
 
-			if ($xmap->printNode($node) !== FALSE)
+			if ($osmap->printNode($node) !== FALSE)
 			{
-				xmap_com_virtuemart::getCategoryTree($xmap, $parent, $params, $row->virtuemart_category_id);
+				osmap_com_virtuemart::getCategoryTree($osmap, $parent, $params, $row->virtuemart_category_id);
 			}
 		}
 
-		$xmap->changeLevel(-1);
+		$osmap->changeLevel(-1);
 
 		if ($params['include_products'] && $catid != 0)
 		{
@@ -190,7 +190,7 @@ class xmap_com_virtuemart
 				self::$categoryModel->addImages($products,1);
 			}
 
-			$xmap->changeLevel(1);
+			$osmap->changeLevel(1);
 
 			foreach ($products as $row)
 			{
@@ -223,10 +223,10 @@ class xmap_com_virtuemart
 					}
 				}
 
-				$xmap->printNode($node);
+				$osmap->printNode($node);
 			}
 
-			$xmap->changeLevel(-1);
+			$osmap->changeLevel(-1);
 		}
 	}
 

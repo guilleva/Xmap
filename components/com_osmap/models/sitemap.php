@@ -28,13 +28,13 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.modelitem');
 jimport('joomla.database.query');
-require_once(JPATH_COMPONENT . '/helpers/xmap.php');
+require_once(JPATH_COMPONENT . '/helpers/osmap.php');
 
 /**
  * Xmap Component Sitemap Model
  *
  * @package        Xmap
- * @subpackage     com_xmap
+ * @subpackage     com_osmap
  * @since          2.0
  */
 class XmapModelSitemap extends JModelItem
@@ -45,7 +45,7 @@ class XmapModelSitemap extends JModelItem
      *
      * @var        string
      */
-    protected $_context = 'com_xmap.sitemap';
+    protected $_context = 'com_osmap.sitemap';
     protected $_extensions = null;
 
     static $items = array();
@@ -65,7 +65,7 @@ class XmapModelSitemap extends JModelItem
         if (!$pk) {
             $db = $this->getDbo();
             $query = $db->getQuery(true);
-            $query->select('id')->from('#__xmap_sitemap')->where('is_default=1');
+            $query->select('id')->from('#__osmap_sitemap')->where('is_default=1');
             $db->setQuery($query);
             $pk = $db->loadResult();
         }
@@ -106,7 +106,7 @@ class XmapModelSitemap extends JModelItem
                 $query = $db->getQuery(true);
 
                 $query->select($this->getState('item.select', 'a.*'));
-                $query->from('#__xmap_sitemap AS a');
+                $query->from('#__osmap_sitemap AS a');
 
                 $query->where('a.id = ' . (int) $pk);
 
@@ -205,7 +205,7 @@ class XmapModelSitemap extends JModelItem
         }
 
         $this->_db->setQuery(
-            'UPDATE #__xmap_sitemap' .
+            'UPDATE #__osmap_sitemap' .
             ' SET views_' . $view . ' = views_' . $view . ' + 1, count_' . $view . ' = ' . $count . ', lastvisit_' . $view . ' = ' . JFactory::getDate()->toUnix() .
             ' WHERE id = ' . (int) $pk
         );
@@ -229,7 +229,7 @@ class XmapModelSitemap extends JModelItem
         if (self::$items !== NULL && isset(self::$items[$view])) {
             return;
         }
-        $query = "select * from #__xmap_items where view='$view' and sitemap_id=" . $pk;
+        $query = "select * from #__osmap_items where view='$view' and sitemap_id=" . $pk;
         $db->setQuery($query);
         $rows = $db->loadObjectList();
         self::$items[$view] = array();
@@ -265,9 +265,9 @@ class XmapModelSitemap extends JModelItem
             $sep = ';';
         }
         if (!$isNew) {
-            $query = 'UPDATE #__xmap_items SET properties=\'' . $db->escape($properties) . "' where uid='" . $db->escape($uid) . "' and itemid=$itemid and view='$view' and sitemap_id=" . $pk;
+            $query = 'UPDATE #__osmap_items SET properties=\'' . $db->escape($properties) . "' where uid='" . $db->escape($uid) . "' and itemid=$itemid and view='$view' and sitemap_id=" . $pk;
         } else {
-            $query = 'INSERT #__xmap_items (uid,itemid,view,sitemap_id,properties) values ( \'' . $db->escape($uid) . "',$itemid,'$view',$pk,'" . $db->escape($properties) . "')";
+            $query = 'INSERT #__osmap_items (uid,itemid,view,sitemap_id,properties) values ( \'' . $db->escape($uid) . "',$itemid,'$view',$pk,'" . $db->escape($properties) . "')";
         }
         $db->setQuery($query);
         //echo $db->getQuery();exit;
@@ -306,7 +306,7 @@ class XmapModelSitemap extends JModelItem
         $str = $registry->toString();
 
         $db = JFactory::getDBO();
-        $query = "UPDATE #__xmap_sitemap set excluded_items='" . $db->escape($str) . "' where id=" . $sitemap->id;
+        $query = "UPDATE #__osmap_sitemap set excluded_items='" . $db->escape($str) . "' where id=" . $sitemap->id;
         $db->setQuery($query);
         $db->query();
         return $state;

@@ -55,7 +55,7 @@ $doc->addScriptDeclaration('
     };
     window.addEvent("domready",function(){
         tree =  new MooTreeControl({
-        div: \'xmap-nav_tree\',
+        div: \'osmap-nav_tree\',
         mode: \'files\',
         grid: true,
         theme: \'../media/media/images/mootree.gif\',
@@ -72,12 +72,12 @@ $doc->addScriptDeclaration('
         text: \'Home\',
         open: true
     });
-    tree.root.load(\'index.php?option=com_xmap&task=navigator-links&sitemap='.$this->item->id.'&e_name='.$name.'&tmpl=component\');
+    tree.root.load(\'index.php?option=com_osmap&task=navigator-links&sitemap='.$this->item->id.'&e_name='.$name.'&tmpl=component\');
     });
     ');
 ?>
-<div id="xmap-nav_tree" style="height:250px;overflow:auto;border:1px solid #CCC;"></div>
-    <div id="xmap-nav_linkinfo" style="margin-top:3px;border:1px solid #CCC;height:120px;">
+<div id="osmap-nav_tree" style="height:250px;overflow:auto;border:1px solid #CCC;"></div>
+    <div id="osmap-nav_linkinfo" style="margin-top:3px;border:1px solid #CCC;height:120px;">
         <form name="adminForm" action="#" onSubmit="return false;">
         <table width="100%">
             <tr>
@@ -107,4 +107,4 @@ $doc->addScriptDeclaration('
         </table>
     </form>
 </div>
-<ul id="xmap-nav"></ul>
+<ul id="osmap-nav"></ul>

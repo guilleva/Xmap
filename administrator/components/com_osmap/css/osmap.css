@@ -1,11 +1,11 @@
-.xmap-menu-options {
+.osmap-menu-options {
     border-bottom: 1px solid #CCC;
     padding:10px;
 }
-.xmap-menu-options label {
+.osmap-menu-options label {
     cursor:move;
 }
-.xmap-menu-options input, .xmap-menu-options select {
+.osmap-menu-options input, .osmap-menu-options select {
     margin: 5px 5px 2px 0px;
 }
 ul.ul_sortable {

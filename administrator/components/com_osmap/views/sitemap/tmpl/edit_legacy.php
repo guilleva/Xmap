@@ -44,7 +44,7 @@ JHtml::_('behavior.formvalidation');
 // -->
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=com_xmap&layout=edit&id='.$this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
+<form action="<?php echo JRoute::_('index.php?option=com_osmap&layout=edit&id='.$this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
 
     <div class="width-60 fltlft">
         <fieldset class="adminform">
@@ -71,7 +71,7 @@ JHtml::_('behavior.formvalidation');
     </div>
 
     <div class="width-40" style="float:left">
-        <?php echo JHtml::_('sliders.start', 'xmap-sliders-' . $this->item->id, array('useCookie' => 1)); ?>
+        <?php echo JHtml::_('sliders.start', 'osmap-sliders-' . $this->item->id, array('useCookie' => 1)); ?>
         <?php echo JHtml::_('sliders.panel', JText::_('OSMAP_FIELDSET_MENUS'), 'menus-details'); ?>
         <?php echo $this->form->getInput('selections'); ?>
         <?php

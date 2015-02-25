@@ -26,14 +26,14 @@
 defined('_JEXEC') or die('Restricted access');
 
 /** Adds support for K2  to Xmap */
-class xmap_com_k2
+class osmap_com_k2
 {
     static $maxAccess = 0;
     static $suppressDups = false;
     static $suppressSub = false;
 
     /** Get the content tree for this kind of content */
-    static function getTree( &$xmap, &$parent, &$params )
+    static function getTree( &$osmap, &$parent, &$params )
     {
         $tag=null;
         $limit=null;
@@ -42,49 +42,49 @@ class xmap_com_k2
         parse_str( html_entity_decode($link_query['query']), $link_vars);
         $parm_vars = $parent->params->toArray();
 
-        $option = xmap_com_k2::getParam($link_vars,'option',"");
+        $option = osmap_com_k2::getParam($link_vars,'option',"");
         if ($option != "com_k2")
             return;
 
-        $view = xmap_com_k2::getParam($link_vars,'view',"");
-        $showMode = xmap_com_k2::getParam($params, 'showk2items', "always");
+        $view = osmap_com_k2::getParam($link_vars,'view',"");
+        $showMode = osmap_com_k2::getParam($params, 'showk2items', "always");
 
-        if ($showMode == "never" || ($showMode == "xml" && $xmap->view == "html") || ($showMode == "html" && $xmap->view == "xml"))
+        if ($showMode == "never" || ($showMode == "xml" && $osmap->view == "html") || ($showMode == "html" && $osmap->view == "xml"))
             return;
-        self::$suppressDups = (xmap_com_k2::getParam($params,'suppressdups', 'yes') == "yes");
-        self::$suppressSub = (xmap_com_k2::getParam($params,'subcategories',"yes") != "yes");
+        self::$suppressDups = (osmap_com_k2::getParam($params,'suppressdups', 'yes') == "yes");
+        self::$suppressSub = (osmap_com_k2::getParam($params,'subcategories',"yes") != "yes");
 
         if ($view == "item")   // for Items the sitemap already contains the correct reference
         {
-            if (!isset($xmap->IDS))
-                $xmap->IDS = "";
-            $xmap->IDS = $xmap->IDS."|".xmap_com_k2::getParam($link_vars, 'id', $id);
+            if (!isset($osmap->IDS))
+                $osmap->IDS = "";
+            $osmap->IDS = $osmap->IDS."|".osmap_com_k2::getParam($link_vars, 'id', $id);
             return;
         }
 
-        if ($xmap->view == "xml")
+        if ($osmap->view == "xml")
             self::$maxAccess = 1;   // XML sitemaps will only see content for guests
         else
             self::$maxAccess = implode(",", JFactory::getUser()->getAuthorisedViewLevels());
 
-        switch(xmap_com_k2::getParam($link_vars,'task',""))
+        switch(osmap_com_k2::getParam($link_vars,'task',""))
         {
             case "user":
-                $tag = xmap_com_k2::getParam($link_vars, 'id', $id);
+                $tag = osmap_com_k2::getParam($link_vars, 'id', $id);
                 $ids = array_key_exists('userCategoriesFilter',$parm_vars) ? $parm_vars['userCategoriesFilter'] : array("");
                 $mode = "single user";
                 break;
             case "tag":
-                $tag = xmap_com_k2::getParam($link_vars, 'tag',"");
+                $tag = osmap_com_k2::getParam($link_vars, 'tag',"");
                 $ids = array_key_exists('categoriesFilter',$parm_vars) ? $parm_vars['categoriesFilter'] : array("");
                 $mode = "tag";
                 break;
             case "category":
-                $ids = explode("|", xmap_com_k2::getParam($link_vars, 'id',""));
+                $ids = explode("|", osmap_com_k2::getParam($link_vars, 'id',""));
                 $mode = "category";
                 break;
             case "":
-                switch(xmap_com_k2::getParam($link_vars,'layout',""))
+                switch(osmap_com_k2::getParam($link_vars,'layout',""))
                 {
                     case "category":
                         if(array_key_exists('categories', $parm_vars)) $ids = $parm_vars["categories"];
@@ -92,8 +92,8 @@ class xmap_com_k2
                         $mode = "categories";
                         break;
                     case "latest":
-                        $limit = xmap_com_k2::getParam($parm_vars, 'latestItemsLimit', "");
-                        if (xmap_com_k2::getParam($parm_vars, 'source', "") == "0")
+                        $limit = osmap_com_k2::getParam($parm_vars, 'latestItemsLimit', "");
+                        if (osmap_com_k2::getParam($parm_vars, 'source', "") == "0")
                         {
                             $ids = array_key_exists("userIDs",$parm_vars) ? $parm_vars["userIDs"] : '';
                             $mode = "latest user";
@@ -111,8 +111,8 @@ class xmap_com_k2
             default:
                 return;
         }
-        $priority = xmap_com_k2::getParam($params,'priority',$parent->priority);
-        $changefreq = xmap_com_k2::getParam($params,'changefreq',$parent->changefreq);
+        $priority = osmap_com_k2::getParam($params,'priority',$parent->priority);
+        $changefreq = osmap_com_k2::getParam($params,'changefreq',$parent->changefreq);
         if ($priority == '-1')
             $priority = $parent->priority;
         if ($changefreq == '-1')
@@ -122,7 +122,7 @@ class xmap_com_k2
         $params['changefreq'] = $changefreq;
 
         $db = JFactory::getDBO();
-        xmap_com_k2::processTree($db, $xmap, $parent, $params, $mode, $ids, $tag, $limit);
+        osmap_com_k2::processTree($db, $osmap, $parent, $params, $mode, $ids, $tag, $limit);
 
         return;
     }
@@ -146,11 +146,11 @@ class xmap_com_k2
 
         foreach ($rows as $row)
         {
-            xmap_com_k2::collectByCat($db, $row->id, $allrows);
+            osmap_com_k2::collectByCat($db, $row->id, $allrows);
         }
     }
 
-    static function processTree($db, &$xmap, &$parent, &$params, $mode, $ids, $tag, $limit)
+    static function processTree($db, &$osmap, &$parent, &$params, $mode, $ids, $tag, $limit)
     {
         $baseQuery = "select id,title,alias,UNIX_TIMESTAMP(created) as created, UNIX_TIMESTAMP(modified) as modified, metakey from  #__k2_items where "
                     ."published = 1 and trash = 0 and (publish_down = \"0000-00-00\" OR publish_down > NOW()) and "
@@ -196,7 +196,7 @@ class xmap_com_k2
                         foreach($ids as $id)
                         {
                             $allrows = array();
-                            xmap_com_k2::collectByCat($db, $id, $allrows);
+                            osmap_com_k2::collectByCat($db, $id, $allrows);
                             $rows = array_merge($rows, $allrows);
                         }
                     }
@@ -234,7 +234,7 @@ class xmap_com_k2
                 return;
         }
 
-        $xmap->changeLevel(1);
+        $osmap->changeLevel(1);
         $node = new stdclass ();
         $node->id = $parent->id;
 
@@ -244,8 +244,8 @@ class xmap_com_k2
         }
         foreach ($rows as $row )
         {
-            if (!(self::$suppressDups && isset($xmap->IDS) && strstr($xmap->IDS, "|".$row->id)))
-                xmap_com_k2::addNode($xmap, $node, $row, false, $parent, $params);
+            if (!(self::$suppressDups && isset($osmap->IDS) && strstr($osmap->IDS, "|".$row->id)))
+                osmap_com_k2::addNode($osmap, $node, $row, false, $parent, $params);
         }
 
         if ($mode == "category" && !self::$suppressSub)
@@ -261,25 +261,25 @@ class xmap_com_k2
 
             foreach ($rows as $row)
             {
-                if (!isset($xmap->IDS))
-                        $xmap->IDS = "";
-                if (!(self::$suppressDups && strstr($xmap->IDS, "|c".$row->id)))
+                if (!isset($osmap->IDS))
+                        $osmap->IDS = "";
+                if (!(self::$suppressDups && strstr($osmap->IDS, "|c".$row->id)))
                 {
-                    xmap_com_k2::addNode($xmap, $node, $row, true, $parent, $params);
+                    osmap_com_k2::addNode($osmap, $node, $row, true, $parent, $params);
                     $newID = array();
                     $newID[0] = $row->id;
-                    xmap_com_k2::processTree($db, $xmap, $parent, $params, $mode, $newID, "", "");
+                    osmap_com_k2::processTree($db, $osmap, $parent, $params, $mode, $newID, "", "");
                 }
             }
         }
-        $xmap->changeLevel (-1);
+        $osmap->changeLevel (-1);
     }
 
-    static function addNode($xmap, $node, $row, $iscat, &$parent, &$params)
+    static function addNode($osmap, $node, $row, $iscat, &$parent, &$params)
     {
         $sef = ($_REQUEST['option'] == "com_sefservicemap"); // verallgemeinern
 
-        if ($xmap->isNews && ($row->modified ? $row->modified : $row->created) > ($xmap->now - (2 * 86400)))
+        if ($osmap->isNews && ($row->modified ? $row->modified : $row->created) > ($osmap->now - (2 * 86400)))
         {
             $node->newsItem = 1;
             $node->keywords = $row->metakey;
@@ -289,8 +289,8 @@ class xmap_com_k2
             $node->newsItem = 0;
             $node->keywords = "";
         }
-        if (!isset($xmap->IDS))
-            $xmap->IDS = "";
+        if (!isset($osmap->IDS))
+            $osmap->IDS = "";
 
         $node->browserNav = $parent->browserNav;
         $node->pid = $row->id;
@@ -308,18 +308,18 @@ class xmap_com_k2
 
         if ($iscat)
         {
-            $xmap->IDS .= "|c".$row->id;
+            $osmap->IDS .= "|c".$row->id;
             $node->link = 'index.php?option=com_k2&view=itemlist&task=category&id='.$row->id.':'.$row->alias.'&Itemid='.$parent->id;
             $node->expandible = true;
         }
         else
         {
-            $xmap->IDS .= "|".$row->id;
+            $osmap->IDS .= "|".$row->id;
             $node->link = 'index.php?option=com_k2&view=item&id='.$row->id.':'.$row->alias.'&Itemid='.$parent->id;
             $node->expandible = false;
         }
         $node->tree = array ();
-        $xmap->printNode($node);
+        $osmap->printNode($node);
 
     }
 

@@ -30,7 +30,7 @@ jimport('joomla.application.component.controlleradmin');
 
 /**
  * @package     Xmap
- * @subpackage  com_xmap
+ * @subpackage  com_osmap
  * @since       2.0
  */
 class XmapControllerSitemaps extends JControllerAdmin
@@ -80,7 +80,7 @@ class XmapControllerSitemaps extends JControllerAdmin
             }
         }
 
-        $this->setRedirect('index.php?option=com_xmap&view=sitemaps');
+        $this->setRedirect('index.php?option=com_osmap&view=sitemaps');
     }
 
     /**

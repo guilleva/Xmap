@@ -30,7 +30,7 @@ JTable::addIncludePath( JPATH_COMPONENT . '/tables' );
 
 /**
  * @package       Xmap
- * @subpackage    com_xmap
+ * @subpackage    com_osmap
  */
 abstract class JHtmlOSMap
 {

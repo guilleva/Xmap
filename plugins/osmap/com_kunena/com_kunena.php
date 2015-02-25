@@ -26,7 +26,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 /** Handles Kunena forum structure */
-class xmap_com_kunena {
+class osmap_com_kunena {
     /*
      * This function is called before a menu item is printed. We use it to set the
      * proper uniqueid for the item
@@ -51,13 +51,13 @@ class xmap_com_kunena {
         }
     }
 
-    static function getTree($xmap, $parent, &$params)
+    static function getTree($osmap, $parent, &$params)
     {
-        if ($xmap->isNews) // This component does not provide news content. don't waste time/resources
+        if ($osmap->isNews) // This component does not provide news content. don't waste time/resources
             return false;
 
         // Make sure that we can load the kunena api
-        if (!xmap_com_kunena::loadKunenaApi()) {
+        if (!osmap_com_kunena::loadKunenaApi()) {
             return false;
         }
 
@@ -93,9 +93,9 @@ class xmap_com_kunena {
 
         $include_topics = JArrayHelper::getValue($params, 'include_topics', 1);
         $include_topics = ( $include_topics == 1
-            || ( $include_topics == 2 && $xmap->view == 'xml')
-            || ( $include_topics == 3 && $xmap->view == 'html')
-            || $xmap->view == 'navigator');
+            || ( $include_topics == 2 && $osmap->view == 'xml')
+            || ( $include_topics == 3 && $osmap->view == 'html')
+            || $osmap->view == 'navigator');
         $params['include_topics'] = $include_topics;
 
         $priority = JArrayHelper::getValue($params, 'cat_priority', $parent->priority);
@@ -125,7 +125,7 @@ class xmap_com_kunena {
             if ( !in_array($ordering,array('id', 'ordering','time','subject','hits')) )
                 $ordering = 'ordering';
             $params['topics_order'] = 't.`'.$ordering.'`';
-            $params['include_pagination'] = ($xmap->view == 'xml');
+            $params['include_pagination'] = ($osmap->view == 'xml');
 
             $params['limit'] = '';
             $params['days'] = '';
@@ -136,18 +136,18 @@ class xmap_com_kunena {
             $days = JArrayHelper::getValue($params, 'max_age', '');
             $params['days'] = false;
             if (intval($days))
-                $params['days'] =  ($xmap->now - (intval($days) * 86400));
+                $params['days'] =  ($osmap->now - (intval($days) * 86400));
         }
 
-        $params['table_prefix'] = xmap_com_kunena::getTablePrefix();
+        $params['table_prefix'] = osmap_com_kunena::getTablePrefix();
 
-        xmap_com_kunena::getCategoryTree($xmap, $parent, $params, $catid);
+        osmap_com_kunena::getCategoryTree($osmap, $parent, $params, $catid);
     }
 
     /*
      * Builds the Kunena's tree
      */
-    static function getCategoryTree($xmap, $parent, &$params, $parentCat)
+    static function getCategoryTree($osmap, $parent, &$params, $parentCat)
     {
         $db = JFactory::getDBO();
 
@@ -179,7 +179,7 @@ class xmap_com_kunena {
         }
 
         /* get list of categories */
-        $xmap->changeLevel(1);
+        $osmap->changeLevel(1);
         foreach ($categories as $cat) {
             $node = new stdclass;
             $node->id = $parent->id;
@@ -191,8 +191,8 @@ class xmap_com_kunena {
             $node->link = sprintf($catlink, $cat->id);
             $node->expandible = true;
             $node->secure = $parent->secure;
-            if ($xmap->printNode($node) !== FALSE) {
-                xmap_com_kunena::getCategoryTree($xmap, $parent, $params, $cat->id);
+            if ($osmap->printNode($node) !== FALSE) {
+                osmap_com_kunena::getCategoryTree($osmap, $parent, $params, $cat->id);
             }
         }
 
@@ -238,7 +238,7 @@ class xmap_com_kunena {
                 $node->link = sprintf($toplink, (@$topic->category_id? $topic->category_id : $topic->catid), $topic->id);
                 $node->expandible = false;
                 $node->secure = $parent->secure;
-                if ($xmap->printNode($node) !== FALSE) {
+                if ($osmap->printNode($node) !== FALSE) {
                     // Pagination will not work with K2.0, revisit this when that version is out and stable
                     if ($params['include_pagination'] && isset($topic->msgcount) && $topic->msgcount > self::$config->messages_per_page ){
                         $msgPerPage = self::$config->messages_per_page;
@@ -255,13 +255,13 @@ class xmap_com_kunena {
                             $subnode->changefreq = $node->changefreq;
                             $subnode->modified = $node->modified;
                             $subnode->secure = $node->secure;
-                            $xmap->printNode($subnode);
+                            $osmap->printNode($subnode);
                         }
                     }
                 }
             }
         }
-        $xmap->changeLevel(-1);
+        $osmap->changeLevel(-1);
     }
 
     private static function loadKunenaApi()

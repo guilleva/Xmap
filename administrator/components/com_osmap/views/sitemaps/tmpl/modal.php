@@ -32,7 +32,7 @@ JHtml::_('behavior.tooltip');
 $function = JRequest::getVar('function', 'jSelectSitemap');
 $n = count($this->items);
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_xmap&view=sitemaps');?>" method="post" name="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=com_osmap&view=sitemaps');?>" method="post" name="adminForm">
     <fieldset class="filter clearfix">
         <div class="left">
             <label for="search">

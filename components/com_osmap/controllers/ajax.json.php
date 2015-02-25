@@ -31,7 +31,7 @@ jimport('joomla.application.component.controller');
  * Xmap Ajax Controller
  *
  * @package      Xmap
- * @subpackage   com_xmap
+ * @subpackage   com_osmap
  * @since        2.0
  */
 class XmapControllerAjax extends JControllerLegacy
@@ -48,7 +48,7 @@ class XmapControllerAjax extends JControllerLegacy
         $result = new JRegistry('_default');
         $sitemapId = JREquest::getInt('id');
 
-        if (!$user->authorise('core.edit', 'com_xmap.sitemap.'.$sitemapId)) {
+        if (!$user->authorise('core.edit', 'com_osmap.sitemap.'.$sitemapId)) {
             $result->setValue('result', 'KO');
             $result->setValue('message', 'You are not authorized to perform this action!');
         } else {

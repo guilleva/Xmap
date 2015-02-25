@@ -27,7 +27,7 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * @package         Xmap
- * @subpackage      com_xmap
+ * @subpackage      com_osmap
  * @since           2.0
  */
 class XmapTableSitemap extends JTable
@@ -115,7 +115,7 @@ class XmapTableSitemap extends JTable
      */
     function __construct(&$db)
     {
-        parent::__construct('#__xmap_sitemap', 'id', $db);
+        parent::__construct('#__osmap_sitemap', 'id', $db);
     }
 
     /**
@@ -243,7 +243,7 @@ class XmapTableSitemap extends JTable
 
         // Update the publishing state for rows with the given primary keys.
         $query =  $this->_db->getQuery(true)
-                       ->update($this->_db->quoteName('#__xmap_sitemap'))
+                       ->update($this->_db->quoteName('#__osmap_sitemap'))
                        ->set($this->_db->quoteName('state').' = '. (int) $state)
                        ->where($where);
 

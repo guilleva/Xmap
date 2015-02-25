@@ -26,11 +26,11 @@
 defined('_JEXEC') or die('Restricted access');
 
 /** Handles Mosets Tree component */
-class xmap_com_mtree
+class osmap_com_mtree
 {
-    static function getTree( $xmap, $parent, &$params )
+    static function getTree( $osmap, $parent, &$params )
     {
-        if ($xmap->isNews) // This component does not provide news content. don't waste time/resources
+        if ($osmap->isNews) // This component does not provide news content. don't waste time/resources
             return false;
 
         $db = JFactory::getDbo();
@@ -44,9 +44,9 @@ class xmap_com_mtree
 
         $include_links = JArrayHelper::getValue($params,'include_links',1);
         $include_links = ( $include_links == 1
-            || ( $include_links == 2 && $xmap->view == 'xml')
-            || ( $include_links == 3 && $xmap->view == 'html')
-            ||   $xmap->view == 'navigator');
+            || ( $include_links == 2 && $osmap->view == 'xml')
+            || ( $include_links == 3 && $osmap->view == 'html')
+            ||   $osmap->view == 'navigator');
         $params['include_links'] = $include_links;
 
         $priority = JArrayHelper::getValue($params,'cat_priority',$parent->priority);
@@ -101,14 +101,14 @@ class xmap_com_mtree
 
             $days = JArrayHelper::getValue($params,'max_age','');
             if ( intval($days) )
-                $params['days'] = ' AND a.link_created >=\''.date('Y-m-d H:i:s',($xmap->now - ($days*86400))) ."' ";
+                $params['days'] = ' AND a.link_created >=\''.date('Y-m-d H:i:s',($osmap->now - ($days*86400))) ."' ";
         }
 
-        xmap_com_mtree::getMtreeCategory($xmap,$parent,$params,$catid);
+        osmap_com_mtree::getMtreeCategory($osmap,$parent,$params,$catid);
     }
 
     /* Returns URLs of all Categories and links in of one category using recursion */
-    static function getMtreeCategory ($xmap, $parent, &$params, $catid )
+    static function getMtreeCategory ($osmap, $parent, &$params, $catid )
     {
         $database =& JFactory::getDbo();
 
@@ -119,7 +119,7 @@ class xmap_com_mtree
         $database->setQuery($query);
         $rows = $database->loadObjectList();
 
-        $xmap->changeLevel(1);
+        $osmap->changeLevel(1);
         foreach($rows as $row) {
             $node = new stdclass;
             $node->name = $row->cat_name;
@@ -133,8 +133,8 @@ class xmap_com_mtree
             $node->expandible = true;
             $node->secure = $parent->secure;
 
-            if ( $xmap->printNode($node) !== FALSE) {
-                xmap_com_mtree::getMtreeCategory($xmap,$parent,$params,$row->cat_id);
+            if ( $osmap->printNode($node) !== FALSE) {
+                osmap_com_mtree::getMtreeCategory($osmap,$parent,$params,$row->cat_id);
             }
         }
 
@@ -169,10 +169,10 @@ class xmap_com_mtree
                 $node->changefreq = $params['link_changefreq'];
                 $node->expandible = false;
                 $node->secure = $parent->secure;
-                $xmap->printNode($node);
+                $osmap->printNode($node);
             }
         }
-        $xmap->changeLevel(-1);
+        $osmap->changeLevel(-1);
 
     }
 }

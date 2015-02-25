@@ -17,15 +17,15 @@ $params = $this->item->params;
 if ($this->displayer->canEdit) {
     $live_site = JURI::root();
     JHTML::_('behavior.framework', true);
-    $ajaxurl = "{$live_site}index.php?option=com_xmap&format=json&task=ajax.editElement&action=toggleElement&".JSession::getFormToken().'=1';
+    $ajaxurl = "{$live_site}index.php?option=com_osmap&format=json&task=ajax.editElement&action=toggleElement&".JSession::getFormToken().'=1';
 
-    $css = '.xmapexcl img{ border:0px; }'."\n";
-    $css .= '.xmapexcloff { text-decoration:line-through; }';
+    $css = '.osmapexcl img{ border:0px; }'."\n";
+    $css .= '.osmapexcloff { text-decoration:line-through; }';
     //$css .= "\n.".$this->item->classname .' li {float:left;}';
 
     $js = "
         window.addEvent('domready',function (){
-            $$('.xmapexcl').each(function(el){
+            $$('.osmapexcl').each(function(el){
                 el.onclick = function(){
                     if (this && this.rel) {
                         options = JSON.decode(this.rel);
@@ -41,14 +41,14 @@ if ($this->displayer->canEdit) {
             });
         });
         checkExcludeResult = function (response) {
-            //this.set('class','xmapexcl xmapexcloff');
+            //this.set('class','osmapexcl osmapexcloff');
             var imgs = this.getElementsByTagName('img');
             if (response.result == 'OK') {
                 var state = response.state;
                 if (state==0) {
-                    imgs[0].src='{$live_site}/components/com_xmap/assets/images/unpublished.png';
+                    imgs[0].src='{$live_site}/components/com_osmap/assets/images/unpublished.png';
                 } else {
-                    imgs[0].src='{$live_site}/components/com_xmap/assets/images/tick.png';
+                    imgs[0].src='{$live_site}/components/com_osmap/assets/images/tick.png';
                 }
             } else {
                 alert('The element couldn\\'t be published or upublished!');
@@ -60,7 +60,7 @@ if ($this->displayer->canEdit) {
     $doc->addScriptDeclaration ($js);
 }
 ?>
-<div id="xmap">
+<div id="osmap">
 <?php if ($params->get('show_page_heading', 1) && $params->get('page_heading') != '') : ?>
     <h1>
         <?php echo $this->escape($params->get('page_heading')); ?>
@@ -96,7 +96,7 @@ if ($this->displayer->canEdit) {
     <?php echo $this->loadTemplate('items'); ?>
 
 <?php if ($params->get('include_link', 1) )  : ?>
-    <div class="muted" style="font-size:10px;width:100%;clear:both;text-align:center;">Powered by <a href="http://www.jooxmap.com/">Xmap</a></div>
+    <div class="muted" style="font-size:10px;width:100%;clear:both;text-align:center;">Powered by <a href="http://www.alledia.com/">Alledia</a></div>
 <?php endif; ?>
 
     <span class="article_separator">&nbsp;</span>

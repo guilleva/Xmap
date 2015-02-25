@@ -32,7 +32,7 @@ jimport('joomla.form.form');
 JForm::addFieldPath( JPATH_COMPONENT.'/models/fields' );
 
 // Register helper class
-JLoader::register('OSMapHelper', dirname(__FILE__) . '/helpers/xmap.php');
+JLoader::register('OSMapHelper', dirname(__FILE__) . '/helpers/osmap.php');
 
 // Include dependancies
 jimport('joomla.application.component.controller');
@@ -44,6 +44,6 @@ if (!class_exists('JControllerLegacy')){
     }
 }
 
-$controller = JControllerLegacy::getInstance('Xmap');
+$controller = JControllerLegacy::getInstance('OSMap');
 $controller->execute(JFactory::getApplication()->input->get('task'));
 $controller->redirect();

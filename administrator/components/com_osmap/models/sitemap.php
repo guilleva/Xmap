@@ -32,11 +32,11 @@ jimport('joomla.application.component.modeladmin');
  * Sitemap model.
  *
  * @package       Xmap
- * @subpackage    com_xmap
+ * @subpackage    com_osmap
  */
 class XmapModelSitemap extends JModelAdmin
 {
-    protected $_context = 'com_xmap';
+    protected $_context = 'com_osmap';
 
     /**
      * Constructor.
@@ -49,7 +49,7 @@ class XmapModelSitemap extends JModelAdmin
         parent::__construct($config);
 
         $this->_item = 'sitemap';
-        $this->_option = 'com_xmap';
+        $this->_option = 'com_osmap';
     }
 
     /**
@@ -60,13 +60,13 @@ class XmapModelSitemap extends JModelAdmin
         $app = JFactory::getApplication('administrator');
 
         // Load the User state.
-        if (!($pk = (int) $app->getUserState('com_xmap.edit.sitemap.id'))) {
+        if (!($pk = (int) $app->getUserState('com_osmap.edit.sitemap.id'))) {
             $pk = (int) JRequest::getInt('id');
         }
         $this->setState('sitemap.id', $pk);
 
         // Load the parameters.
-        $params    = JComponentHelper::getParams('com_xmap');
+        $params    = JComponentHelper::getParams('com_osmap');
         $this->setState('params', $params);
     }
 
@@ -137,7 +137,7 @@ class XmapModelSitemap extends JModelAdmin
     public function getForm($data = array(), $loadData = true)
     {
         // Get the form.
-        $form = $this->loadForm('com_xmap.sitemap', 'sitemap', array('control' => 'jform', 'load_data' => $loadData));
+        $form = $this->loadForm('com_osmap.sitemap', 'sitemap', array('control' => 'jform', 'load_data' => $loadData));
         if (empty($form)) {
             return false;
         }
@@ -154,7 +154,7 @@ class XmapModelSitemap extends JModelAdmin
     protected function loadFormData()
     {
         // Check the session for previously entered form data.
-        $data = JFactory::getApplication()->getUserState('com_xmap.edit.sitemap.data', array());
+        $data = JFactory::getApplication()->getUserState('com_osmap.edit.sitemap.data', array());
 
         if (empty($data)) {
             $data = $this->getItem();
@@ -216,7 +216,7 @@ class XmapModelSitemap extends JModelAdmin
 
         if ($table->is_default) {
             $query =  $this->_db->getQuery(true)
-                           ->update($this->_db->quoteName('#__xmap_sitemap'))
+                           ->update($this->_db->quoteName('#__osmap_sitemap'))
                            ->set($this->_db->quoteName('is_default').' = 0')
                            ->where($this->_db->quoteName('id').' <> '.$table->id);
 
@@ -228,7 +228,7 @@ class XmapModelSitemap extends JModelAdmin
         }
 
         // Clean the cache.
-        $cache = JFactory::getCache('com_xmap');
+        $cache = JFactory::getCache('com_osmap');
         $cache->clean();
 
         $this->setState('sitemap.id', $table->id);
@@ -256,7 +256,7 @@ class XmapModelSitemap extends JModelAdmin
         if ($table->load($id)) {
             $db = JFactory::getDbo();
             $query = $db->getQuery(true)
-                        ->update($db->quoteName('#__xmap_sitemap'))
+                        ->update($db->quoteName('#__osmap_sitemap'))
                         ->set($db->quoteName('is_default').' = 0')
                         ->where($db->quoteName('id').' <> '.$table->id);
             $this->_db->setQuery($query);
@@ -268,7 +268,7 @@ class XmapModelSitemap extends JModelAdmin
             $table->store();
 
             // Clean the cache.
-            $cache = JFactory::getCache('com_xmap');
+            $cache = JFactory::getCache('com_osmap');
             $cache->clean();
             return true;
         }
@@ -288,7 +288,7 @@ class XmapModelSitemap extends JModelAdmin
         $db = JFactory::getDBO();
         $query  = $db->getQuery(true);
         $query->select('id');
-        $query->from($db->quoteName('#__xmap_sitemap'));
+        $query->from($db->quoteName('#__osmap_sitemap'));
         $query->where('is_default=1');
         $db->setQuery($query);
         return $db->loadResult();

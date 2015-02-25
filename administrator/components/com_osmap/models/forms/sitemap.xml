@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- $Id$ -->
 <form>
-    <fields addpath="administrator/components/com_xmap/elements">
+    <fields addpath="administrator/components/com_osmap/elements">
         <field
             id="id"
             name="id"

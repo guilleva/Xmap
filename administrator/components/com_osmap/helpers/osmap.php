@@ -31,7 +31,7 @@ defined('_JEXEC') or die('Restricted access');
  * OSMap component helper.
  *
  * @package     Xmap
- * @subpackage  com_xmap
+ * @subpackage  com_osmap
  * @since       2.0
  */
 class OSMapHelper
@@ -48,22 +48,22 @@ class OSMapHelper
         if (version_compare($version->getShortVersion(), '3.0.0', '<')) {
             JSubMenuHelper::addEntry(
                 JText::_('Xmap_Submenu_Sitemaps'),
-                'index.php?option=com_xmap',
+                'index.php?option=com_osmap',
                 $vName == 'sitemaps'
             );
             JSubMenuHelper::addEntry(
                 JText::_('Xmap_Submenu_Extensions'),
-                'index.php?option=com_plugins&view=plugins&filter_folder=xmap',
+                'index.php?option=com_plugins&view=plugins&filter_folder=osmap',
                 $vName == 'extensions');
         } else {
             JHtmlSidebar::addEntry(
                 JText::_('Xmap_Submenu_Sitemaps'),
-                'index.php?option=com_xmap',
+                'index.php?option=com_osmap',
                 $vName == 'sitemaps'
             );
             JHtmlSidebar::addEntry(
                 JText::_('Xmap_Submenu_Extensions'),
-                'index.php?option=com_plugins&view=plugins&filter_folder=xmap',
+                'index.php?option=com_plugins&view=plugins&filter_folder=osmap',
                 $vName == 'extensions');
         }
     }

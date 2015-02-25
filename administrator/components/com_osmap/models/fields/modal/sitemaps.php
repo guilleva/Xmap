@@ -30,7 +30,7 @@ jimport('joomla.form.field');
  * Supports a modal sitemap picker.
  *
  * @package             Xmap
- * @subpackage          com_xmap
+ * @subpackage          com_osmap
  * @since               2.0
  */
 class JFormFieldModal_Sitemaps extends JFormField
@@ -61,7 +61,7 @@ class JFormFieldModal_Sitemaps extends JFormField
         if ($this->value) {
             $db->setQuery(
                     'SELECT title' .
-                    ' FROM #__xmap_sitemap' .
+                    ' FROM #__osmap_sitemap' .
                     ' WHERE id = ' . (int) $this->value
             );
             $title = $db->loadResult();
@@ -85,7 +85,7 @@ class JFormFieldModal_Sitemaps extends JFormField
                   }"
         );
 
-        $link = 'index.php?option=com_xmap&amp;view=sitemaps&amp;layout=modal&amp;tmpl=component&amp;function=jSelectSitemap_' . $this->id;
+        $link = 'index.php?option=com_osmap&amp;view=sitemaps&amp;layout=modal&amp;tmpl=component&amp;function=jSelectSitemap_' . $this->id;
 
         JHTML::_('behavior.modal', 'a.modal');
         $html = '<span class="input-append">';

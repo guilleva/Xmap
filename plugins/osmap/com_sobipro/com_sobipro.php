@@ -26,7 +26,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 /** Adds support for SobiPro categories to Xmap */
-class xmap_com_sobipro {
+class osmap_com_sobipro {
 
     static $sectionConfig = array();
     /*
@@ -51,9 +51,9 @@ class xmap_com_sobipro {
     }
 
     /** Get the content tree for this kind of content */
-    function getTree( $xmap, $parent, &$params ) {
+    function getTree( $osmap, $parent, &$params ) {
 
-        if ($xmap->isNews) // This component does not provide news content. don't waste time/resources
+        if ($osmap->isNews) // This component does not provide news content. don't waste time/resources
             return false;
 
         if (!self::loadSobi()){
@@ -85,9 +85,9 @@ class xmap_com_sobipro {
 
         $include_entries =JArrayHelper::getValue($params,'include_entries',1);
         $include_entries = ( $include_entries == 1
-            || ( $include_entries == 2 && $xmap->view == 'xml')
-            || ( $include_entries == 3 && $xmap->view == 'html')
-            ||   $xmap->view == 'navigator');
+            || ( $include_entries == 2 && $osmap->view == 'xml')
+            || ( $include_entries == 3 && $osmap->view == 'html')
+            ||   $osmap->view == 'navigator');
         $params['include_entries'] = $include_entries;
 
         $priority =JArrayHelper::getValue($params,'cat_priority',$parent->priority);
@@ -134,14 +134,14 @@ class xmap_com_sobipro {
 
             $days = JArrayHelper::getValue($params,'max_age','');
             if ( intval($days) )
-                $params['days'] = ' AND a.publish_up >=\''.strftime("%Y-%m-%d %H:%M:%S",$xmap->now - ($days*86400)) ."' ";
+                $params['days'] = ' AND a.publish_up >=\''.strftime("%Y-%m-%d %H:%M:%S",$osmap->now - ($days*86400)) ."' ";
         }
 
-        xmap_com_sobipro::getCategoryTree($xmap, $parent, $sid, $params);
+        osmap_com_sobipro::getCategoryTree($osmap, $parent, $sid, $params);
     }
 
     /** SobiPro support */
-    function getCategoryTree( $xmap, $parent, $sid, &$params ) {
+    function getCategoryTree( $osmap, $parent, $sid, &$params ) {
         $database =& JFactory::getDBO();
 
         $query  =
@@ -159,7 +159,7 @@ class xmap_com_sobipro {
         $rows = $database->loadObjectList();
 
         $modified = time();
-        $xmap->changeLevel(1);
+        $osmap->changeLevel(1);
         foreach($rows as $row) {
             $node = new stdclass;
             $node->id = $parent->id;
@@ -173,8 +173,8 @@ class xmap_com_sobipro {
             $node->changefreq = $params['cat_changefreq'];
             $node->expandible = true;
             $node->secure = $parent->secure;
-            if ( $xmap->printNode($node) !== FALSE ) {
-                xmap_com_sobipro::getCategoryTree($xmap, $parent, $row->id, $params);
+            if ( $osmap->printNode($node) !== FALSE ) {
+                osmap_com_sobipro::getCategoryTree($osmap, $parent, $row->id, $params);
             }
         }
 
@@ -210,11 +210,11 @@ class xmap_com_sobipro {
                 $node->secure = $parent->secure;
                 # $node->link = 'index.php?option=com_sobipro&pid='.$row->catid . '&sid=' . $row->id.':'.trim( SPLang::urlSafe( $row->name )).'&Itemid='.$parent->id;
                 $node->link = SPJoomlaMainFrame::url( array('sid' => $row->id, 'pid' => $row->catid, 'title' => $row->name), false, false );
-                $xmap->printNode($node);
+                $osmap->printNode($node);
             }
 
         }
-        $xmap->changeLevel(-1);
+        $osmap->changeLevel(-1);
     }
 
     static protected function getSectionConfig($sectionId)

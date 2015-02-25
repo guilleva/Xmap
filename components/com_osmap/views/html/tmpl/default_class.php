@@ -86,7 +86,7 @@ class XmapHtmlDisplayer extends XmapDisplayer {
             case 1:        // open url in new window
                 $ext_image = '';
                 if ( $this->sitemap->params->get('exlinks') ) {
-                    $ext_image = '&nbsp;<img src="'. $this->live_site .'/components/com_xmap/assets/images/'. $this->sitemap->params->get('exlinks') .'" alt="' . JText::_('COM_OSMAP_SHOW_AS_EXTERN_ALT') . '" title="' . JText::_('COM_OSMAP_SHOW_AS_EXTERN_ALT') . '" border="0" />';
+                    $ext_image = '&nbsp;<img src="'. $this->live_site .'/components/com_osmap/assets/images/'. $this->sitemap->params->get('exlinks') .'" alt="' . JText::_('COM_OSMAP_SHOW_AS_EXTERN_ALT') . '" title="' . JText::_('COM_OSMAP_SHOW_AS_EXTERN_ALT') . '" border="0" />';
                 }
                 $out .= '<a href="'. $link .'" title="'. htmlspecialchars($node->name) .'" target="_blank">'. $node->name . $ext_image .'</a>';
                 break;
@@ -94,7 +94,7 @@ class XmapHtmlDisplayer extends XmapDisplayer {
             case 2:        // open url in javascript popup window
                 $ext_image = '';
                 if( $this->sitemap->params->get('exlinks') ) {
-                    $ext_image = '&nbsp;<img src="'. $this->live_site .'/components/com_xmap/assets/images/'. $this->sitemap->params->get('exlinks') .'" alt="' . JText::_('COM_OSMAP_SHOW_AS_EXTERN_ALT') . '" title="' . JText::_('COM_OSMAP_SHOW_AS_EXTERN_ALT') . '" border="0" />';
+                    $ext_image = '&nbsp;<img src="'. $this->live_site .'/components/com_osmap/assets/images/'. $this->sitemap->params->get('exlinks') .'" alt="' . JText::_('COM_OSMAP_SHOW_AS_EXTERN_ALT') . '" title="' . JText::_('COM_OSMAP_SHOW_AS_EXTERN_ALT') . '" border="0" />';
                 }
                 $out .= '<a href="'. $link .'" title="'. $node->name .'" target="_blank" '. "onClick=\"javascript: window.open('". $link ."', '', 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=780,height=550'); return false;\">". $node->name . $ext_image."</a>";
                 break;
@@ -114,13 +114,13 @@ class XmapHtmlDisplayer extends XmapDisplayer {
 
         if ($this->canEdit) {
             if ( $this->isExcluded($node->id,$node->uid) ) {
-                $img = '<img src="'.$this->live_site.'/components/com_xmap/assets/images/unpublished.png" alt="v" title="'.JText::_('JUNPUBLISHED').'">';
-                $class= 'xmapexclon';
+                $img = '<img src="'.$this->live_site.'/components/com_osmap/assets/images/unpublished.png" alt="v" title="'.JText::_('JUNPUBLISHED').'">';
+                $class= 'osmapexclon';
             } else {
-                $img = '<img src="'.$this->live_site.'/components/com_xmap/assets/images/tick.png" alt="x" title="'.JText::_('JPUBLISHED').'" />';
-                $class= 'xmapexcloff';
+                $img = '<img src="'.$this->live_site.'/components/com_osmap/assets/images/tick.png" alt="x" title="'.JText::_('JPUBLISHED').'" />';
+                $class= 'osmapexcloff';
             }
-            echo ' <a href= "#" class="xmapexcl '.$class.'" rel="{uid:\''.$node->uid.'\',itemid:'.$node->id.'}">'.$img.'</a>';
+            echo ' <a href= "#" class="osmapexcl '.$class.'" rel="{uid:\''.$node->uid.'\',itemid:'.$node->id.'}">'.$img.'</a>';
         }
         $this->count++;
 

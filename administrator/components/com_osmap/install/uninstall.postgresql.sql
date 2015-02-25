@@ -1,2 +1,2 @@
-drop table "#__xmap_items";
-drop table "#__xmap_sitemap";
+drop table "#__osmap_items";
+drop table "#__osmap_sitemap";

@@ -32,7 +32,7 @@ jimport('joomla.database.query');
  * Sitemaps Model Class
  *
  * @package         Xmap
- * @subpackage      com_xmap
+ * @subpackage      com_osmap
  * @since           2.0
  */
 class XmapModelSitemaps extends JModelList
@@ -133,7 +133,7 @@ class XmapModelSitemaps extends JModelList
                           'list.select',
                           'a.*')
         );
-        $query->from('#__xmap_sitemap AS a');
+        $query->from('#__osmap_sitemap AS a');
 
         // Join over the asset groups.
         $query->select('ag.title AS access_level');
@@ -176,7 +176,7 @@ class XmapModelSitemaps extends JModelList
         $query = $db->getQuery(true);
         $query->select('e.*');
         $query->from($db->quoteName('#__extensions'). 'AS e');
-        $query->join('INNER', '#__extensions AS p ON e.element=p.element and p.enabled=0 and p.type=\'plugin\' and p.folder=\'xmap\'');
+        $query->join('INNER', '#__extensions AS p ON e.element=p.element and p.enabled=0 and p.type=\'plugin\' and p.folder=\'osmap\'');
         $query->where('e.type=\'component\' and e.enabled=1');
 
         $db->setQuery($query);

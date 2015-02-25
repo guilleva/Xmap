@@ -39,7 +39,7 @@ $baseUrl = JUri::root();
 $version = new JVersion;
 
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_xmap&view=sitemaps');?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=com_osmap&view=sitemaps');?>" method="post" name="adminForm" id="adminForm">
 <?php if (!empty( $this->sidebar)): ?>
     <div id="j-sidebar-container" class="span2">
         <?php echo $this->sidebar; ?>
@@ -134,7 +134,7 @@ $version = new JVersion;
                         <?php echo JHtml::_('grid.id', $i, $item->id); ?>
                     </td>
                     <td>
-                        <a href="<?php echo JRoute::_('index.php?option=com_xmap&task=sitemap.edit&id='.$item->id);?>">
+                        <a href="<?php echo JRoute::_('index.php?option=com_osmap&task=sitemap.edit&id='.$item->id);?>">
                             <?php echo $this->escape($item->title); ?></a>
                             <?php if ($item->is_default == 1) : ?>
                                 <?php if (version_compare($version->getShortVersion(), '3.0.0', '>=')): ?>
@@ -144,9 +144,9 @@ $version = new JVersion;
                                 <?php endif; ?>
                             <?php endif; ?>
                                 <?php if ($item->state): ?>
-                                    <small>[<a href="<?php echo $baseUrl. 'index.php?option=com_xmap&amp;view=xml&tmpl=component&id='.$item->id; ?>" target="_blank" title="<?php echo JText::_('OSMAP_XML_LINK_TOOLTIP',true); ?>"><?php echo JText::_('OSMAP_XML_LINK'); ?></a>]</small>
-                                    <small>[<a href="<?php echo $baseUrl. 'index.php?option=com_xmap&amp;view=xml&tmpl=component&news=1&id='.$item->id; ?>" target="_blank" title="<?php echo JText::_('OSMAP_NEWS_LINK_TOOLTIP',true); ?>"><?php echo JText::_('OSMAP_NEWS_LINK'); ?></a>]</small>
-                                    <small>[<a href="<?php echo $baseUrl. 'index.php?option=com_xmap&amp;view=xml&tmpl=component&images=1&id='.$item->id; ?>" target="_blank" title="<?php echo JText::_('OSMAP_IMAGES_LINK_TOOLTIP',true); ?>"><?php echo JText::_('OSMAP_IMAGES_LINK'); ?></a>]</small>
+                                    <small>[<a href="<?php echo $baseUrl. 'index.php?option=com_osmap&amp;view=xml&tmpl=component&id='.$item->id; ?>" target="_blank" title="<?php echo JText::_('OSMAP_XML_LINK_TOOLTIP',true); ?>"><?php echo JText::_('OSMAP_XML_LINK'); ?></a>]</small>
+                                    <small>[<a href="<?php echo $baseUrl. 'index.php?option=com_osmap&amp;view=xml&tmpl=component&news=1&id='.$item->id; ?>" target="_blank" title="<?php echo JText::_('OSMAP_NEWS_LINK_TOOLTIP',true); ?>"><?php echo JText::_('OSMAP_NEWS_LINK'); ?></a>]</small>
+                                    <small>[<a href="<?php echo $baseUrl. 'index.php?option=com_osmap&amp;view=xml&tmpl=component&images=1&id='.$item->id; ?>" target="_blank" title="<?php echo JText::_('OSMAP_IMAGES_LINK_TOOLTIP',true); ?>"><?php echo JText::_('OSMAP_IMAGES_LINK'); ?></a>]</small>
                                 <?php endif; ?>
                                      <br />
 									 <small>(<?php echo $this->escape($item->alias); ?>)</small>

@@ -36,7 +36,7 @@ if (!class_exists('JViewLegacy')){
 
 /**
  * @package    Xmap
- * @subpackage com_xmap
+ * @subpackage com_osmap
  */
 class XmapViewSitemap extends JViewLegacy
 {
@@ -89,7 +89,7 @@ class XmapViewSitemap extends JViewLegacy
      */
     function navigator($tpl = null)
     {
-        require_once(JPATH_COMPONENT_SITE . '/helpers/xmap.php');
+        require_once(JPATH_COMPONENT_SITE . '/helpers/osmap.php');
         $app = JFactory::getApplication();
         $this->state = $this->get('State');
         $this->item = $this->get('Item');
@@ -114,7 +114,7 @@ class XmapViewSitemap extends JViewLegacy
     function navigatorLinks($tpl = null)
     {
 
-        require_once(JPATH_COMPONENT_SITE . '/helpers/xmap.php');
+        require_once(JPATH_COMPONENT_SITE . '/helpers/osmap.php');
         $link = urldecode(JRequest::getVar('link', ''));
         $name = JRequest::getCmd('e_name', '');
         $Itemid = JRequest::getInt('Itemid');

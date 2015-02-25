@@ -110,7 +110,7 @@ class XmapNavigatorDisplayer extends XmapDisplayer {
             if ( $option ) {
                 if ( !empty($extensions[$option]) ) {
                     $parent->uid = $option;
-                    $className = 'xmap_'.$option;
+                    $className = 'osmap_'.$option;
                     $result = call_user_func_array(array($className, 'getTree'),array(&$this,&$parent,$extensions[$option]->params));
                 }
             }

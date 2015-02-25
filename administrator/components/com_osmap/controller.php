@@ -30,10 +30,10 @@ jimport('joomla.application.component.controller');
 /**
  * Component Controller
  *
- * @package     Xmap
- * @subpackage  com_xmap
+ * @package     OSMap
+ * @subpackage  com_osmap
  */
-class XmapController extends JControllerLegacy
+class OSMapController extends JControllerLegacy
 {
 
     function __construct()
@@ -48,7 +48,7 @@ class XmapController extends JControllerLegacy
      */
     public function display($cachable = false, $urlparams = false)
     {
-        require_once JPATH_COMPONENT . '/helpers/xmap.php';
+        require_once JPATH_COMPONENT . '/helpers/osmap.php';
 
         // Get the document object.
         $document = JFactory::getDocument();
@@ -93,7 +93,7 @@ class XmapController extends JControllerLegacy
             return false;
         }
 
-        $app->setUserState('com_xmap.edit.sitemap.id', $id);
+        $app->setUserState('com_osmap.edit.sitemap.id', $id);
 
         $view = $this->getView('sitemap', $document->getType());
         $model = $this->getModel('Sitemap');
@@ -125,7 +125,7 @@ class XmapController extends JControllerLegacy
             return false;
         }
 
-        $app->setUserState('com_xmap.edit.sitemap.id', $id);
+        $app->setUserState('com_osmap.edit.sitemap.id', $id);
 
         $view = $this->getView('sitemap', $document->getType());
         $model = $this->getModel('Sitemap');
@@ -143,7 +143,7 @@ class XmapController extends JControllerLegacy
         $db = JFactory::getDBO();
         $query  = $db->getQuery(true);
         $query->select('id');
-        $query->from($db->quoteName('#__xmap_sitemap'));
+        $query->from($db->quoteName('#__osmap_sitemap'));
         $query->where('is_default=1');
         $db->setQuery($query);
         return $db->loadResult();

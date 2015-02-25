@@ -31,7 +31,7 @@ jimport('joomla.database.query');
  * Xmap Component Sitemap Model
  *
  * @package        Xmap
- * @subpackage     com_xmap
+ * @subpackage     com_osmap
  * @since          2.0
  */
 class OSMapHelper
@@ -138,7 +138,7 @@ class OSMapHelper
         $query = $db->getQuery(true);
         $query->select('*');
         $query->from('#__extensions AS n');
-        $query->where('n.folder = \'xmap\'');
+        $query->where('n.folder = \'osmap\'');
         $query->where('n.enabled = 1');
 
         // Get the list of menu items.
@@ -168,7 +168,7 @@ class OSMapHelper
     {
         $extensions = OSMapHelper::getExtensions();
         if (!empty($extensions[$item->option])) {
-            $className = 'xmap_' . $item->option;
+            $className = 'osmap_' . $item->option;
             $obj = new $className;
             if (method_exists($obj, 'prepareMenuItem')) {
                 $obj->prepareMenuItem($item,$extensions[$item->option]->params);

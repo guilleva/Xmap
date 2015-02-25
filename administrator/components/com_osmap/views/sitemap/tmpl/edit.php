@@ -44,7 +44,7 @@ if(version_compare(JVERSION,'3.0.0','ge')) {
     }
 // -->
 </script>
-<form action="<?php echo JRoute::_('index.php?option=com_xmap&layout=edit&id='.$this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
+<form action="<?php echo JRoute::_('index.php?option=com_osmap&layout=edit&id='.$this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
     <div class="row-fluid">
         <!-- Begin Content -->
         <div class="span10 form-horizontal">

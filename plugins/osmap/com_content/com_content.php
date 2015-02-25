@@ -37,7 +37,7 @@ require_once JPATH_SITE . '/components/com_content/helpers/query.php';
  * for other component, I suggest you to take a look to another plugis as
  * they are usually most simple. ;)
  */
-class xmap_com_content
+class osmap_com_content
 {
     /**
      * This function is called before a menu item is printed. We use it to set the
@@ -125,7 +125,7 @@ class xmap_com_content
      * @return void
      * @since  1.0
      */
-    static function getTree($xmap, $parent, &$params)
+    static function getTree($osmap, $parent, &$params)
     {
         $db = JFactory::getDBO();
         $app = JFactory::getApplication();
@@ -147,46 +147,46 @@ class xmap_com_content
         //----- Set expand_categories param
         $expand_categories = JArrayHelper::getValue($params, 'expand_categories', 1);
         $expand_categories = ( $expand_categories == 1
-            || ( $expand_categories == 2 && $xmap->view == 'xml')
-            || ( $expand_categories == 3 && $xmap->view == 'html')
-            || $xmap->view == 'navigator');
+            || ( $expand_categories == 2 && $osmap->view == 'xml')
+            || ( $expand_categories == 3 && $osmap->view == 'html')
+            || $osmap->view == 'navigator');
         $params['expand_categories'] = $expand_categories;
 
         //----- Set expand_featured param
         $expand_featured = JArrayHelper::getValue($params, 'expand_featured', 1);
         $expand_featured = ( $expand_featured == 1
-            || ( $expand_featured == 2 && $xmap->view == 'xml')
-            || ( $expand_featured == 3 && $xmap->view == 'html')
-            || $xmap->view == 'navigator');
+            || ( $expand_featured == 2 && $osmap->view == 'xml')
+            || ( $expand_featured == 3 && $osmap->view == 'html')
+            || $osmap->view == 'navigator');
         $params['expand_featured'] = $expand_featured;
 
         //----- Set expand_featured param
         $include_archived = JArrayHelper::getValue($params, 'include_archived', 2);
         $include_archived = ( $include_archived == 1
-            || ( $include_archived == 2 && $xmap->view == 'xml')
-            || ( $include_archived == 3 && $xmap->view == 'html')
-            || $xmap->view == 'navigator');
+            || ( $include_archived == 2 && $osmap->view == 'xml')
+            || ( $include_archived == 3 && $osmap->view == 'html')
+            || $osmap->view == 'navigator');
         $params['include_archived'] = $include_archived;
 
         //----- Set show_unauth param
         $show_unauth = JArrayHelper::getValue($params, 'show_unauth', 1);
         $show_unauth = ( $show_unauth == 1
-            || ( $show_unauth == 2 && $xmap->view == 'xml')
-            || ( $show_unauth == 3 && $xmap->view == 'html'));
+            || ( $show_unauth == 2 && $osmap->view == 'xml')
+            || ( $show_unauth == 3 && $osmap->view == 'html'));
         $params['show_unauth'] = $show_unauth;
 
         //----- Set add_images param
-        $add_images = JArrayHelper::getValue($params, 'add_images', 0) && $xmap->isImages;
-        $add_images = ( $add_images && $xmap->view == 'xml');
+        $add_images = JArrayHelper::getValue($params, 'add_images', 0) && $osmap->isImages;
+        $add_images = ( $add_images && $osmap->view == 'xml');
         $params['add_images'] = $add_images;
         $params['max_images'] = JArrayHelper::getValue($params, 'max_images', 1000);
 
         //----- Set add pagebreaks param
         $add_pagebreaks = JArrayHelper::getValue($params, 'add_pagebreaks', 1);
         $add_pagebreaks = ( $add_pagebreaks == 1
-            || ( $add_pagebreaks == 2 && $xmap->view == 'xml')
-            || ( $add_pagebreaks == 3 && $xmap->view == 'html')
-            || $xmap->view == 'navigator');
+            || ( $add_pagebreaks == 2 && $osmap->view == 'xml')
+            || ( $add_pagebreaks == 3 && $osmap->view == 'html')
+            || $osmap->view == 'navigator');
         $params['add_pagebreaks'] = $add_pagebreaks;
 
         if ($params['add_pagebreaks'] && !defined('_OSMAP_COM_CONTENT_LOADED')) {
@@ -234,22 +234,22 @@ class xmap_com_content
                     $id = intval(JArrayHelper::getValue($params, 'id', 0));
                 }
                 if ($params['expand_categories'] && $id) {
-                    $result = self::expandCategory($xmap, $parent, $id, $params, $parent->id);
+                    $result = self::expandCategory($osmap, $parent, $id, $params, $parent->id);
                 }
                 break;
             case 'featured':
                 if ($params['expand_featured']) {
-                    $result = self::includeCategoryContent($xmap, $parent, 'featured', $params,$parent->id);
+                    $result = self::includeCategoryContent($osmap, $parent, 'featured', $params,$parent->id);
                 }
                 break;
             case 'categories':
                 if ($params['expand_categories']) {
-                    $result = self::expandCategory($xmap, $parent, ($id ? $id : 1), $params, $parent->id);
+                    $result = self::expandCategory($osmap, $parent, ($id ? $id : 1), $params, $parent->id);
                 }
                 break;
             case 'archive':
                 if ($params['expand_featured']) {
-                    $result = self::includeCategoryContent($xmap, $parent, 'archived', $params,$parent->id);
+                    $result = self::includeCategoryContent($osmap, $parent, 'archived', $params,$parent->id);
                 }
                 break;
             case 'article':
@@ -272,7 +272,7 @@ class xmap_com_content
                     $parent->link = ContentHelperRoute::getArticleRoute($parent->slug, $row->catid);
 
                     $subnodes = OSMapHelper::getPagebreaks($row->introtext.$row->fulltext,$parent->link);
-                    self::printNodes($xmap, $parent, $params, $subnodes);
+                    self::printNodes($osmap, $parent, $params, $subnodes);
                 }
 
         }
@@ -283,13 +283,13 @@ class xmap_com_content
      * Get all content items within a content category.
      * Returns an array of all contained content items.
      *
-     * @param object  $xmap
+     * @param object  $osmap
      * @param object  $parent   the menu item
      * @param int     $catid    the id of the category to be expanded
      * @param array   $params   an assoc array with the params for this plugin on Xmap
      * @param int     $itemid   the itemid to use for this category's children
      */
-    static function expandCategory($xmap, $parent, $catid, &$params, $itemid)
+    static function expandCategory($osmap, $parent, $catid, &$params, $itemid)
     {
         $db = JFactory::getDBO();
 
@@ -308,14 +308,14 @@ class xmap_com_content
                . 'a.created_time created, a.modified_time modified '
                . 'FROM #__categories AS a '
                . 'WHERE '. implode(' AND ',$where)
-               . ( $xmap->view != 'xml' ? "\n ORDER BY " . $orderby . "" : '' );
+               . ( $osmap->view != 'xml' ? "\n ORDER BY " . $orderby . "" : '' );
 
         $db->setQuery($query);
         #echo nl2br(str_replace('#__','jos_',$db->getQuery()));exit;
         $items = $db->loadObjectList();
 
         if (count($items) > 0) {
-            $xmap->changeLevel(1);
+            $osmap->changeLevel(1);
             foreach ($items as $item) {
                 $node = new stdclass();
                 $node->id = $parent->id;
@@ -332,7 +332,7 @@ class xmap_com_content
 
                 // For the google news we should use te publication date instead
                 // the last modification date. See
-                if ($xmap->isNews || !$item->modified)
+                if ($osmap->isNews || !$item->modified)
                     $item->modified = $item->created;
 
                 $node->slug = $item->route ? ($item->id . ':' . $item->route) : $item->id;
@@ -343,15 +343,15 @@ class xmap_com_content
                 } else {
                     $node->itemid = preg_replace('/.*Itemid=([0-9]+).*/','$1',$node->link);
                 }
-                if ($xmap->printNode($node)) {
-                    self::expandCategory($xmap, $parent, $item->id, $params, $node->itemid);
+                if ($osmap->printNode($node)) {
+                    self::expandCategory($osmap, $parent, $item->id, $params, $node->itemid);
                 }
             }
-            $xmap->changeLevel(-1);
+            $osmap->changeLevel(-1);
         }
 
         // Include Category's content
-        self::includeCategoryContent($xmap, $parent, $catid, $params, $itemid);
+        self::includeCategoryContent($osmap, $parent, $catid, $params, $itemid);
         return true;
     }
 
@@ -361,12 +361,12 @@ class xmap_com_content
      *
      * @since 2.0
      */
-    static function includeCategoryContent($xmap, $parent, $catid, &$params,$Itemid)
+    static function includeCategoryContent($osmap, $parent, $catid, &$params,$Itemid)
     {
         $db = JFactory::getDBO();
 
         // We do not do ordering for XML sitemap.
-        if ($xmap->view != 'xml') {
+        if ($osmap->view != 'xml') {
             $orderby = self::buildContentOrderBy($parent->params,$parent->id,$Itemid);
             //$orderby = !empty($menuparams['orderby']) ? $menuparams['orderby'] : (!empty($menuparams['orderby_sec']) ? $menuparams['orderby_sec'] : 'rdate' );
             //$orderby = self::orderby_sec($orderby);
@@ -386,8 +386,8 @@ class xmap_com_content
             $where[] = 'a.catid='.(int) $catid;
         }
 
-        if ($params['max_art_age'] || $xmap->isNews) {
-            $days = (($xmap->isNews && ($params['max_art_age'] > 3 || !$params['max_art_age'])) ? 3 : $params['max_art_age']);
+        if ($params['max_art_age'] || $osmap->isNews) {
+            $days = (($osmap->isNews && ($params['max_art_age'] > 3 || !$params['max_art_age'])) ? 3 : $params['max_art_age']);
             $where[] = "( a.created >= '"
                       . date('Y-m-d H:i:s', time() - $days * 86400) . "' ) ";
         }
@@ -411,7 +411,7 @@ class xmap_com_content
                . ' OR a.publish_up <= ' . $params['nowDate'] . ') AND '
                . '      (a.publish_down = ' . $params['nullDate']
                . ' OR a.publish_down >= ' . $params['nowDate'] . ') '
-               . ( $xmap->view != 'xml' ? "\n ORDER BY $orderby  " : '' )
+               . ( $osmap->view != 'xml' ? "\n ORDER BY $orderby  " : '' )
                . ( $params['max_art'] ? "\n LIMIT {$params['max_art']}" : '');
 
         $db->setQuery($query);
@@ -419,7 +419,7 @@ class xmap_com_content
         $items = $db->loadObjectList();
 
         if (count($items) > 0) {
-            $xmap->changeLevel(1);
+            $osmap->changeLevel(1);
             foreach ($items as $item) {
                 $node = new stdclass();
                 $node->id = $parent->id;
@@ -438,7 +438,7 @@ class xmap_com_content
 
                 // For the google news we should use te publication date instead
                 // the last modification date. See
-                if ($xmap->isNews || !$node->modified)
+                if ($osmap->isNews || !$node->modified)
                     $node->modified = $item->created;
 
                 $node->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
@@ -457,18 +457,18 @@ class xmap_com_content
                     $node->expandible = (count($subnodes) > 0); // This article has children
                 }
 
-                if ($xmap->printNode($node) && $node->expandible) {
-                    self::printNodes($xmap, $parent, $params, $subnodes);
+                if ($osmap->printNode($node) && $node->expandible) {
+                    self::printNodes($osmap, $parent, $params, $subnodes);
                 }
             }
-            $xmap->changeLevel(-1);
+            $osmap->changeLevel(-1);
         }
         return true;
     }
 
-    static private function printNodes($xmap, $parent, &$params, &$subnodes)
+    static private function printNodes($osmap, $parent, &$params, &$subnodes)
     {
-        $xmap->changeLevel(1);
+        $osmap->changeLevel(1);
         $i=0;
         foreach ($subnodes as $subnode) {
             $i++;
@@ -478,9 +478,9 @@ class xmap_com_content
             $subnode->priority = $params['art_priority'];
             $subnode->changefreq = $params['art_changefreq'];
             $subnode->secure = $parent->secure;
-            $xmap->printNode($subnode);
+            $osmap->printNode($subnode);
         }
-        $xmap->changeLevel(-1);
+        $osmap->changeLevel(-1);
     }
 
     /**

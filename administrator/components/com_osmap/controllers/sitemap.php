@@ -30,7 +30,7 @@ jimport('joomla.application.component.controllerform');
 
 /**
  * @package     Xmap
- * @subpackage  com_xmap
+ * @subpackage  com_osmap
  * @since       2.0
  */
 class XmapControllerSitemap extends JControllerForm
@@ -49,6 +49,6 @@ class XmapControllerSitemap extends JControllerForm
         $recordId = (int) isset($data[$key]) ? $data[$key] : 0;
 
         // Assets are being tracked, so no need to look into the category.
-        return JFactory::getUser()->authorise('core.edit', 'com_xmap.sitemap.'.$recordId);
+        return JFactory::getUser()->authorise('core.edit', 'com_osmap.sitemap.'.$recordId);
     }
 }
