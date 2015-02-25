@@ -1,39 +1,29 @@
 <?php
 /**
-* @author Martin Herbst - http://www.mherbst.de
-* @email webmaster@mherbst.de
-* @package Xmap
-* @license GNU/GPL
-* @description Xmap plugin for K2 component
-*
-* Changes:
-* + 0.51   2009/08/21  Do not show deleted items resp. categories
-* + 0.60   2009/08/21  New options "Show K2 Items" added
-* # 0.65   2009/09/28  Correct modification date now shown in XML sitemap
-* # 0.66   2009/10/07  Small bugfix to avoid PHP Notice:  Undefined variable
-* # 0.67   2010/01/30  Small bugfix to avoid PHP warnings in case of null returned from queries
-* + 0.80   2010/02/07  Support of new features of K2 2.2
-* + 0.81   2010/02/19  Modified date was not correct for all items
-* + 0.85   2010/04/11  New option to avoid duplicate items
-*                      Change the date format if used together with SEFServiceMap
-* # 0.86   2010/05/24  Expired items are no longer contained in the site map
-* # 0.86   2010/05/24  Expired items are no longer contained in the site map
-*                      Warnings regarding undefined properties solved
-* # 0.90   2010/08/14  User rights are now taken into account (reported by http://walplanet.com)
-* # 0.91   2010/08/21  Bugfix: wrong SQL statement created
-* # 0.92   2010/10/13  Fixed a bug if last users or last categories has no entries
-* + 0.93   2010/11/28  Add support for Google News sitemap
-* # 0.94   2011/02/13  Small bugfix to avoid PHP warning
-* # 0.95   2011/08/13  Bugfixes regarding empty categories and invalid SQL statements
-* + 1.00   2011/09/22  Support of Joomla 1.7 and K2 2.5
-* # 1.01   2011/09/27  XML sitemap did not show K2 items
-* # 1.05   2011/11/02  Fixed some problems with menu items pointing to multiple categories
-* # 1.06   2011/11/03  Fixed a bug with empty arrays
-* # 1.07   2011/11/11  Follow subcategories did not work as expected
-* # 1.2    2013/01/31  Comatiable with joomla 3.0 and k2 2.6.3 - Mohammad Hasani Eghtedar (m.h.eghtedar@gmail.com)
-*/
+ * @package   OSMap
+ * @copyright 2007-2014 XMap - Joomla! Vargas. All rights reserved.
+ * @copyright 2015 Alledia.com, All rights reserved.
+ * @author    Guillermo Vargas <guille@vargas.co.cr>
+ * @author    Alledia <support@alledia.com>
+ * @license   http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL
+ *
+ * This file is part of OSMap.
+ *
+ * OSMap is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * OSMap is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with OSMap. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /** Adds support for K2  to Xmap */
 class xmap_com_k2
@@ -63,7 +53,7 @@ class xmap_com_k2
             return;
         self::$suppressDups = (xmap_com_k2::getParam($params,'suppressdups', 'yes') == "yes");
         self::$suppressSub = (xmap_com_k2::getParam($params,'subcategories',"yes") != "yes");
-            
+
         if ($view == "item")   // for Items the sitemap already contains the correct reference
         {
             if (!isset($xmap->IDS))
@@ -162,7 +152,7 @@ class xmap_com_k2
 
     static function processTree($db, &$xmap, &$parent, &$params, $mode, $ids, $tag, $limit)
     {
-        $baseQuery = "select id,title,alias,UNIX_TIMESTAMP(created) as created, UNIX_TIMESTAMP(modified) as modified, metakey from  #__k2_items where " 
+        $baseQuery = "select id,title,alias,UNIX_TIMESTAMP(created) as created, UNIX_TIMESTAMP(modified) as modified, metakey from  #__k2_items where "
                     ."published = 1 and trash = 0 and (publish_down = \"0000-00-00\" OR publish_down > NOW()) and "
                     ."access in (".self::$maxAccess.") and ";
 
