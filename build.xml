@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Alledia Extension Builder" default="">
+    <if>
+        <available file="./build.properties" type="file" />
+        <then>
+            <property file="./build.properties" />
+        </then>
+        <else>
+            <fail message="Missed build.properties file on the project root folder. Duplicate the build.properties.dist file and customize with your settings" />
+        </else>
+    </if>
+
+    <fail unless="builder.path" message="Missed builder.path property" />
+
+    <import file="${builder.path}/src/build.xml"/>
+</project>

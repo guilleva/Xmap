@@ -1,0 +1,62 @@
+# General exclusion of system files
+###################################
+.*
+*~
+!.gitignore
+!.gitkeep
+
+# Icon must ends with two \r.
+Icon
+
+
+# Windows Files #
+#################
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+
+# Eclipse #
+###########
+bin/**
+tmp/**
+tmp/**/*
+local.properties
+
+# JetBrains Apps #
+## IntelliJ
+out/
+
+# NetBeans IDE #
+################
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+nb-configuration.xml
+
+# Phing #
+#########
+packages/*
+!.gitkeep
+
+# misc other files #
+####################
+_notes/
+error_log
+
+config.codekit
+.DS_Store
+phing/.DS_Store
+vendor
+
+build.properties
+composer.lock
