@@ -31,7 +31,7 @@ class osmap_com_sobipro {
     static $sectionConfig = array();
     /*
     * This function is called before a menu item is printed. We use it to set the
-    * proper uniqueid for the item and indicate whether the node is expandible or not
+    * proper uniqueid for the item and indicate whether the node is expendable or not
     */
     function prepareMenuItem($node, &$params) {
         $link_query = parse_url( $node->link );
