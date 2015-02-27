@@ -138,7 +138,7 @@ class OSMapHelper
         $query = $db->getQuery(true);
         $query->select('*');
         $query->from('#__extensions AS n');
-        $query->where('n.folder = \'osmap\'');
+        $query->where('n.folder = \'xmap\'');
         $query->where('n.enabled = 1');
 
         // Get the list of menu items.
@@ -168,7 +168,7 @@ class OSMapHelper
     {
         $extensions = OSMapHelper::getExtensions();
         if (!empty($extensions[$item->option])) {
-            $className = 'osmap_' . $item->option;
+            $className = 'xmap_' . $item->option;
             $obj = new $className;
             if (method_exists($obj, 'prepareMenuItem')) {
                 $obj->prepareMenuItem($item,$extensions[$item->option]->params);

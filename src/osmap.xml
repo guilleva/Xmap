@@ -28,38 +28,38 @@
 
             <extension
                 type="plugin"
-                group="osmap"
-                element="com_content">plg_osmap_com_content</extension>
+                group="xmap"
+                element="com_content">plg_xmap_com_content</extension>
 
             <extension
                 type="plugin"
-                group="osmap"
-                element="com_k2">plg_osmap_com_k2</extension>
+                group="xmap"
+                element="com_k2">plg_xmap_com_k2</extension>
 
             <extension
                 type="plugin"
-                group="osmap"
-                element="com_kunena">plg_osmap_com_kunena</extension>
+                group="xmap"
+                element="com_kunena">plg_xmap_com_kunena</extension>
 
             <extension
                 type="plugin"
-                group="osmap"
-                element="com_mtree">plg_osmap_com_mtree</extension>
+                group="xmap"
+                element="com_mtree">plg_xmap_com_mtree</extension>
 
             <extension
                 type="plugin"
-                group="osmap"
-                element="com_sobipro">plg_osmap_com_sobipro</extension>
+                group="xmap"
+                element="com_sobipro">plg_xmap_com_sobipro</extension>
 
             <extension
                 type="plugin"
-                group="osmap"
-                element="com_virtuemart">plg_osmap_com_virtuemart</extension>
+                group="xmap"
+                element="com_virtuemart">plg_xmap_com_virtuemart</extension>
 
             <extension
                 type="plugin"
-                group="osmap"
-                element="com_weblinks">plg_osmap_com_weblinks</extension>
+                group="xmap"
+                element="com_weblinks">plg_xmap_com_weblinks</extension>
         </relatedExtensions>
 
         <include>AllediaFreeDefaultFiles</include>
