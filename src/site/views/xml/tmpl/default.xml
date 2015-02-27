@@ -7,7 +7,7 @@
     </layout>
     <fields name="request">
         <fieldset name="request"
-            addfieldpath="/administrator/components/COM_OSMAP/models/fields">
+            addfieldpath="/administrator/components/com_osmap/models/fields">
             <field
                 name="id"
                 type="modal_sitemaps"
