@@ -42,5 +42,32 @@ use Alledia\Installer\AbstractScript;
  */
 class Com_OSMapInstallerScript extends AbstractScript
 {
+    protected $isXmapDataFound = false;
 
+    /**
+     * @param string                     $type
+     * @param JInstallerAdapterComponent $parent
+     *
+     * @return void
+     */
+    public function postFlight($type, $parent)
+    {
+        $this->isXmapDataFound = $this->lookForXmapData();
+
+        parent::postFlight($type, $parent);
+    }
+
+    protected function lookForXmapData()
+    {
+        $db = JFactory::getDbo();
+
+        // Do we have any Xmap sitemap?
+        $query = $db->getQuery(true)
+            ->select('COUNT(*)')
+            ->from('#__xmap_sitemap');
+        $db->setQuery($query);
+        $total = (int) $db->loadResult();
+
+        return $total > 0;
+    }
 }

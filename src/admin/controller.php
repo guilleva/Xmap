@@ -41,6 +41,7 @@ class OSMapController extends JControllerLegacy
         parent::__construct();
 
         $this->registerTask('navigator-links', 'navigatorLinks');
+        $this->registerTask('migrate-xmap', 'migrateXmapData');
     }
 
     /**
@@ -149,4 +150,111 @@ class OSMapController extends JControllerLegacy
         return $db->loadResult();
     }
 
+    public function migrateXmapData()
+    {
+        $result = new stdClass;
+        $result->success = false;
+
+        $db = JFactory::getDbo();
+        $db->startTransaction();
+
+        try {
+            // Do we have any Xmap sitemap?
+            $sitemapIds       = array();
+            $itemIds          = array();
+            $sitemapFailedIds = array();
+            $itemFailedIds = array();
+            $query = $db->getQuery(true)
+                ->select('*')
+                ->from('#__xmap_sitemap');
+            $db->setQuery($query);
+            $sitemaps = $db->loadObjectList();
+
+            if (!empty($sitemaps)) {
+                // Clean up OSMap db tables
+                $db->setQuery('DELETE FROM ' . $db->quoteName('#__osmap_sitemap'));
+                $db->execute();
+
+                $db->setQuery('DELETE FROM ' . $db->quoteName('#__osmap_items'));
+                $db->execute();
+
+                // Import the sitemaps
+                foreach ($sitemaps as $sitemap) {
+                    $query = $db->getQuery(true)
+                        ->set(
+                            array(
+                                $db->quoteName('title') . '=' . $db->quote($sitemap->title),
+                                $db->quoteName('alias') . '=' . $db->quote($sitemap->alias),
+                                $db->quoteName('introtext') . '=' . $db->quote($sitemap->introtext),
+                                $db->quoteName('metadesc') . '=' . $db->quote($sitemap->metadesc),
+                                $db->quoteName('metakey') . '=' . $db->quote($sitemap->metakey),
+                                $db->quoteName('attribs') . '=' . $db->quote($sitemap->attribs),
+                                $db->quoteName('selections') . '=' . $db->quote($sitemap->selections),
+                                $db->quoteName('excluded_items') . '=' . $db->quote($sitemap->excluded_items),
+                                $db->quoteName('is_default') . '=' . $db->quote($sitemap->is_default),
+                                $db->quoteName('state') . '=' . $db->quote($sitemap->state),
+                                $db->quoteName('access') . '=' . $db->quote($sitemap->access),
+                                $db->quoteName('created') . '=' . $db->quote($sitemap->created),
+                                $db->quoteName('count_xml') . '=' . $db->quote($sitemap->count_xml),
+                                $db->quoteName('count_html') . '=' . $db->quote($sitemap->count_html),
+                                $db->quoteName('views_xml') . '=' . $db->quote($sitemap->views_xml),
+                                $db->quoteName('views_html') . '=' . $db->quote($sitemap->views_html),
+                                $db->quoteName('lastvisit_xml') . '=' . $db->quote($sitemap->lastvisit_xml),
+                                $db->quoteName('lastvisit_html') . '=' . $db->quote($sitemap->lastvisit_html)
+                            )
+                        )
+                        ->insert('#__osmap_sitemap');
+                    $db->setQuery($query);
+
+                    if ($db->execute()) {
+                        $sitemapIds[$sitemap->id] = $db->insertId();
+                    } else {
+                        $sitemapFailedIds = $sitemap->id;
+                    }
+                }
+
+                // Import the Items
+                $query = $db->getQuery(true)
+                    ->select('*')
+                    ->from('#__xmap_items');
+                $db->setQuery($query);
+                $items = $db->loadObjectList();
+
+                if (!empty($items)) {
+                    foreach ($items as $item) {
+                        $query = $db->getQuery(true)
+                            ->set(
+                                array(
+                                    $db->quoteName('uid') . '=' . $db->quote($item->uid),
+                                    $db->quoteName('itemid') . '=' . $db->quote($item->itemid),
+                                    $db->quoteName('view') . '=' . $db->quote($item->view),
+                                    $db->quoteName('sitemap_id') . '=' . $db->quote($sitemapIds[$item->sitemap_id]),
+                                    $db->quoteName('properties') . '=' . $db->quote($item->properties)
+                                )
+                            )
+                            ->insert('#__osmap_items');
+                        $db->setQuery($query);
+
+                        if ($db->execute()) {
+                            $itemIds[$item->itemid] = $db->insertId();
+                        } else {
+                            $itemFailedIds = $item->itemid;
+                        }
+                    }
+                }
+            }
+
+            if (!empty($sitemapFailedIds) || !empty($itemFailedIds)) {
+                throw new Exception("Failed the sitemap or item migration");
+            }
+
+            $db->commitTransaction();
+
+            $result->success = true;
+        } catch(Exception $e) {
+            $db->rollbackTransaction();
+        }
+
+        echo json_encode($result);
+    }
 }
