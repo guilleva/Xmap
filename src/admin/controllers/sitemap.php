@@ -28,6 +28,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controllerform');
 
+
 /**
  * @package     OSMap
  * @subpackage  com_osmap
@@ -49,6 +50,6 @@ class OSMapControllerSitemap extends JControllerForm
         $recordId = (int) isset($data[$key]) ? $data[$key] : 0;
 
         // Assets are being tracked, so no need to look into the category.
-        return JFactory::getUser()->authorise('core.edit', 'com_osmap.sitemap.'.$recordId);
+        return JFactory::getUser()->authorise('core.edit', 'com_osmap.sitemap.' . $recordId);
     }
 }

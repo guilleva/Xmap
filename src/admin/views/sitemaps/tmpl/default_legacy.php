@@ -154,7 +154,7 @@ $version = new JVersion;
                                 <small>[<a href="<?php echo $baseUrl. 'index.php?option=com_osmap&amp;view=xml&tmpl=component&images=1&id='.$item->id; ?>" target="_blank" title="<?php echo JText::_('OSMAP_IMAGES_LINK_TOOLTIP',true); ?>"><?php echo JText::_('OSMAP_IMAGES_LINK'); ?></a>]</small>
                             <?php endif; ?>
                                 <br />
-								<small>(<?php echo $this->escape($item->alias); ?>)</small>
+                                <small>(<?php echo $this->escape($item->alias); ?>)</small>
                 </td>
                 <td class="center">
                     <?php echo JHtml::_('jgrid.published', $item->state, $i, 'sitemaps.'); ?>

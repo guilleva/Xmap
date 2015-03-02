@@ -49,18 +49,20 @@ class xmap_com_content
      * @return void
      * @since  1.2
      */
-    static function prepareMenuItem($node, &$params)
+    public static function prepareMenuItem($node, &$params)
     {
         $db = JFactory::getDbo();
         $link_query = parse_url($node->link);
+
         if (!isset($link_query['query'])) {
             return;
         }
 
         parse_str(html_entity_decode($link_query['query']), $link_vars);
-        $view = JArrayHelper::getValue($link_vars, 'view', '');
+
+        $view   = JArrayHelper::getValue($link_vars, 'view', '');
         $layout = JArrayHelper::getValue($link_vars, 'layout', '');
-        $id = JArrayHelper::getValue($link_vars, 'id', 0);
+        $id     = JArrayHelper::getValue($link_vars, 'id', 0);
 
         //----- Set add_images param
         $params['add_images'] = JArrayHelper::getValue($params, 'add_images', 0);
@@ -78,6 +80,7 @@ class xmap_com_content
                 }
                 $node->expandible = true;
                 break;
+
             case 'article':
                 $node->uid = 'com_contenta' . $id;
                 $node->expandible = false;
@@ -85,17 +88,17 @@ class xmap_com_content
                 $query = $db->getQuery(true);
 
                 $query->select($db->quoteName('created'))
-                      ->select($db->quoteName('modified'))
-                      ->from($db->quoteName('#__content'))
-                      ->where($db->quoteName('id').'='.intval($id));
+                    ->select($db->quoteName('modified'))
+                    ->from($db->quoteName('#__content'))
+                    ->where($db->quoteName('id').'='.intval($id));
 
-                if ($params['add_pagebreaks'] || $params['add_images']){
+                if ($params['add_pagebreaks'] || $params['add_images']) {
                     $query->select($db->quoteName('introtext'))
-                          ->select($db->quoteName('fulltext'));
+                        ->select($db->quoteName('fulltext'));
                 }
 
-
                 $db->setQuery($query);
+
                 if (($row = $db->loadObject()) != NULL) {
                     $node->modified = $row->modified;
 
@@ -105,16 +108,18 @@ class xmap_com_content
                     }
 
                     if ($params['add_pagebreaks']) {
-                        $node->subnodes = XmapHelper::getPagebreaks($text,$node->link);
+                        $node->subnodes   = XmapHelper::getPagebreaks($text,$node->link);
                         $node->expandible = (count($node->subnodes) > 0); // This article has children
                     }
                 }
                 break;
+
             case 'archive':
                 $node->expandible = true;
                 break;
+
             case 'featured':
-                $node->uid = 'com_contentfeatured';
+                $node->uid        = 'com_contentfeatured';
                 $node->expandible = false;
         }
     }
@@ -125,21 +130,22 @@ class xmap_com_content
      * @return void
      * @since  1.0
      */
-    static function getTree($xmap, $parent, &$params)
+    public static function getTree($xmap, $parent, &$params)
     {
-        $db = JFactory::getDBO();
-        $app = JFactory::getApplication();
-        $user = JFactory::getUser();
+        $db     = JFactory::getDBO();
+        $app    = JFactory::getApplication();
+        $user   = JFactory::getUser();
         $result = null;
 
         $link_query = parse_url($parent->link);
+
         if (!isset($link_query['query'])) {
             return;
         }
 
         parse_str(html_entity_decode($link_query['query']), $link_vars);
         $view = JArrayHelper::getValue($link_vars, 'view', '');
-        $id = intval(JArrayHelper::getValue($link_vars, 'id', ''));
+        $id   = intval(JArrayHelper::getValue($link_vars, 'id', ''));
 
         /*         * *
          * Parameters Initialitation
@@ -289,7 +295,7 @@ class xmap_com_content
      * @param array   $params   an assoc array with the params for this plugin on Xmap
      * @param int     $itemid   the itemid to use for this category's children
      */
-    static function expandCategory($xmap, $parent, $catid, &$params, $itemid)
+    public static function expandCategory($xmap, $parent, $catid, &$params, $itemid)
     {
         $db = JFactory::getDBO();
 
@@ -318,17 +324,17 @@ class xmap_com_content
             $xmap->changeLevel(1);
             foreach ($items as $item) {
                 $node = new stdclass();
-                $node->id = $parent->id;
-                $node->uid = $parent->uid . 'c' . $item->id;
-                $node->browserNav = $parent->browserNav;
-                $node->priority = $params['cat_priority'];
-                $node->changefreq = $params['cat_changefreq'];
-                $node->name = $item->title;
-                $node->expandible = true;
-                $node->secure = $parent->secure;
+                $node->id          = $parent->id;
+                $node->uid         = $parent->uid . 'c' . $item->id;
+                $node->browserNav  = $parent->browserNav;
+                $node->priority    = $params['cat_priority'];
+                $node->changefreq  = $params['cat_changefreq'];
+                $node->name        = $item->title;
+                $node->expandible  = true;
+                $node->secure      = $parent->secure;
                 // TODO: Should we include category name or metakey here?
                 // $node->keywords = $item->metakey;
-                $node->newsItem = 0;
+                $node->newsItem    = 0;
 
                 // For the google news we should use te publication date instead
                 // the last modification date. See
@@ -347,11 +353,13 @@ class xmap_com_content
                     self::expandCategory($xmap, $parent, $item->id, $params, $node->itemid);
                 }
             }
+
             $xmap->changeLevel(-1);
         }
 
         // Include Category's content
         self::includeCategoryContent($xmap, $parent, $catid, $params, $itemid);
+
         return true;
     }
 
@@ -361,7 +369,7 @@ class xmap_com_content
      *
      * @since 2.0
      */
-    static function includeCategoryContent($xmap, $parent, $catid, &$params,$Itemid)
+    public static function includeCategoryContent($xmap, $parent, $catid, &$params,$Itemid)
     {
         $db = JFactory::getDBO();
 
@@ -389,7 +397,7 @@ class xmap_com_content
         if ($params['max_art_age'] || $xmap->isNews) {
             $days = (($xmap->isNews && ($params['max_art_age'] > 3 || !$params['max_art_age'])) ? 3 : $params['max_art_age']);
             $where[] = "( a.created >= '"
-                      . date('Y-m-d H:i:s', time() - $days * 86400) . "' ) ";
+                . date('Y-m-d H:i:s', time() - $days * 86400) . "' ) ";
         }
 
         if ($params['language_filter'] ) {
@@ -422,19 +430,19 @@ class xmap_com_content
             $xmap->changeLevel(1);
             foreach ($items as $item) {
                 $node = new stdclass();
-                $node->id = $parent->id;
-                $node->uid = $parent->uid . 'a' . $item->id;
-                $node->browserNav = $parent->browserNav;
-                $node->priority = $params['art_priority'];
-                $node->changefreq = $params['art_changefreq'];
-                $node->name = $item->title;
-                $node->modified = $item->modified;
-                $node->expandible = false;
-                $node->secure = $parent->secure;
+                $node->id          = $parent->id;
+                $node->uid         = $parent->uid . 'a' . $item->id;
+                $node->browserNav  = $parent->browserNav;
+                $node->priority    = $params['art_priority'];
+                $node->changefreq  = $params['art_changefreq'];
+                $node->name        = $item->title;
+                $node->modified    = $item->modified;
+                $node->expandible  = false;
+                $node->secure      = $parent->secure;
                 // TODO: Should we include category name or metakey here?
                 // $node->keywords = $item->metakey;
-                $node->newsItem = 1;
-                $node->language = $item->language;
+                $node->newsItem    = 1;
+                $node->language    = $item->language;
 
                 // For the google news we should use te publication date instead
                 // the last modification date. See
@@ -444,10 +452,11 @@ class xmap_com_content
                 $node->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
                 //$node->catslug = $item->category_route ? ($catid . ':' . $item->category_route) : $catid;
                 $node->catslug = $item->catid;
-                $node->link = ContentHelperRoute::getArticleRoute($node->slug, $node->catslug);
+                $node->link    = ContentHelperRoute::getArticleRoute($node->slug, $node->catslug);
 
                 // Add images to the article
                 $text = @$item->introtext . @$item->fulltext;
+
                 if ($params['add_images']) {
                     $node->images = XmapHelper::getImages($text,$params['max_images']);
                 }
@@ -461,8 +470,10 @@ class xmap_com_content
                     self::printNodes($xmap, $parent, $params, $subnodes);
                 }
             }
+
             $xmap->changeLevel(-1);
         }
+
         return true;
     }
 
@@ -495,7 +506,7 @@ class xmap_com_content
      */
     static function buildContentOrderBy(&$params,$parentId,$itemid)
     {
-        $app    = JFactory::getApplication('site');
+        $app = JFactory::getApplication('site');
 
         // Case when the child gets a different menu itemid than it's parent
         if ($parentId != $itemid) {
@@ -508,7 +519,7 @@ class xmap_com_content
             $menuParams =& $params;
         }
 
-        $filter_order = $app->getUserStateFromRequest('com_content.category.list.' . $itemid . '.filter_order', 'filter_order', '', 'string');
+        $filter_order     = $app->getUserStateFromRequest('com_content.category.list.' . $itemid . '.filter_order', 'filter_order', '', 'string');
         $filter_order_Dir = $app->getUserStateFromRequest('com_content.category.list.' . $itemid . '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
         $orderby = ' ';
 

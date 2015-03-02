@@ -25,6 +25,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.html.html');
+
 require_once JPATH_LIBRARIES . '/joomla/form/fields/list.php';
 
 /**
@@ -86,10 +87,8 @@ class JFormFieldOSMapMenus extends JFormFieldList
             JError::raiseWarning(500, $db->getErrorMsg());
         }
 
-        $options = array_merge(
-                       parent::getOptions(),
-                       $options
-        );
+        $options = array_merge(parent::getOptions(), $options);
+
         return $options;
     }
 
@@ -105,14 +104,17 @@ class JFormFieldOSMapMenus extends JFormFieldList
         $attributes = ' ';
 
         $type = 'radio';
+
         if ($v = $this->element['size']) {
             $attributes .= 'size="' . $v . '" ';
         }
+
         if ($v = $this->element['class']) {
             $attributes .= 'class="' . $v . '" ';
         } else {
             $attributes .= 'class="inputbox" ';
         }
+
         if ($m = $this->element['multiple']) {
             $type = 'checkbox';
         }
@@ -173,16 +175,20 @@ class JFormFieldOSMapMenus extends JFormFieldList
             $return .= '</div>';
             $return .= '</li>';
         }
+
         $return .= "</ul>";
+
         return $return;
     }
 
     public function myCompare($a, $b) {
         $indexA = array_search($a->value, $this->currentItems);
         $indexB = array_search($b->value, $this->currentItems);
+
         if ($indexA === $indexB && $indexA !== false) {
             return 0;
         }
+
         if ($indexA === false && $indexA === $indexB) {
             return ($a->value < $b->value) ? -1 : 1;
         }
@@ -190,6 +196,7 @@ class JFormFieldOSMapMenus extends JFormFieldList
         if ($indexA === false) {
             return 1;
         }
+
         if ($indexB === false) {
             return -1;
         }

@@ -38,7 +38,7 @@ jimport('joomla.application.component.controller');
 class OSMapController extends JControllerLegacy
 {
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
 
@@ -57,9 +57,9 @@ class OSMapController extends JControllerLegacy
         $document = JFactory::getDocument();
 
         // Set the default view name and format from the Request.
-        $vName = JRequest::getWord('view', 'sitemaps');
+        $vName   = JRequest::getWord('view', 'sitemaps');
         $vFormat = $document->getType();
-        $lName = JRequest::getWord('layout', 'default');
+        $lName   = JRequest::getWord('layout', 'default');
 
         // Get and render the view.
         if ($view = $this->getView($vName, $vFormat)) {
@@ -74,32 +74,34 @@ class OSMapController extends JControllerLegacy
             $view->assignRef('document', $document);
 
             $view->display();
-
         }
     }
 
-    function navigator()
+    public function navigator()
     {
-        $db = JFactory::getDBO();
+        $db       = JFactory::getDBO();
         $document = JFactory::getDocument();
-        $app = JFactory::getApplication('administrator');
+        $app      = JFactory::getApplication('administrator');
 
-        $id = JRequest::getInt('sitemap', 0);
+        $id   = JRequest::getInt('sitemap', 0);
         $link = urldecode(JRequest::getVar('link', ''));
         $name = JRequest::getCmd('e_name', '');
+
         if (!$id) {
             $id = $this->getDefaultSitemapId();
         }
 
         if (!$id) {
             JError::raiseWarning(500, JText::_('OSMAP_NOT_SITEMAP_SELECTED'));
+
             return false;
         }
 
         $app->setUserState('com_osmap.edit.sitemap.id', $id);
 
-        $view = $this->getView('sitemap', $document->getType());
+        $view  = $this->getView('sitemap', $document->getType());
         $model = $this->getModel('Sitemap');
+
         $view->setLayout('navigator');
         $view->setModel($model, true);
 
@@ -109,29 +111,31 @@ class OSMapController extends JControllerLegacy
         $view->navigator();
     }
 
-    function navigatorLinks()
+    public function navigatorLinks()
     {
-
-        $db = JFactory::getDBO();
+        $db       = JFactory::getDBO();
         $document = JFactory::getDocument();
-        $app = JFactory::getApplication('administrator');
+        $app      = JFactory::getApplication('administrator');
 
-        $id = JRequest::getInt('sitemap', 0);
+        $id   = JRequest::getInt('sitemap', 0);
         $link = urldecode(JRequest::getVar('link', ''));
         $name = JRequest::getCmd('e_name', '');
+
         if (!$id) {
             $id = $this->getDefaultSitemapId();
         }
 
         if (!$id) {
             JError::raiseWarning(500, JText::_('OSMAP_NOT_SITEMAP_SELECTED'));
+
             return false;
         }
 
         $app->setUserState('com_osmap.edit.sitemap.id', $id);
 
-        $view = $this->getView('sitemap', $document->getType());
+        $view  = $this->getView('sitemap', $document->getType());
         $model = $this->getModel('Sitemap');
+
         $view->setLayout('navigator');
         $view->setModel($model, true);
 
@@ -149,6 +153,7 @@ class OSMapController extends JControllerLegacy
         $query->from($db->quoteName('#__osmap_sitemap'));
         $query->where('is_default=1');
         $db->setQuery($query);
+
         return $db->loadResult();
     }
 

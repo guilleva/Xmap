@@ -28,6 +28,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controlleradmin');
 
+
 /**
  * @package     OSMap
  * @subpackage  com_osmap
@@ -45,9 +46,9 @@ class OSMapControllerSitemaps extends JControllerAdmin
     {
         parent::__construct($config);
 
-        $this->registerTask('unpublish',    'publish');
-        $this->registerTask('trash',        'publish');
-        $this->registerTask('unfeatured',   'featured');
+        $this->registerTask('unpublish', 'publish');
+        $this->registerTask('trash', 'publish');
+        $this->registerTask('unfeatured', 'featured');
     }
 
 
@@ -57,7 +58,7 @@ class OSMapControllerSitemaps extends JControllerAdmin
      * @return      void
      * @since       2.0
      */
-    function setDefault()
+    public function setDefault()
     {
         // Check for request forgeries
         JRequest::checkToken() or die('Invalid Token');
@@ -68,9 +69,7 @@ class OSMapControllerSitemaps extends JControllerAdmin
 
         if (!$id) {
             JError::raiseWarning(500, JText::_('Select an item to set as default'));
-        }
-        else
-        {
+        } else {
             // Get the model.
             $model = $this->getModel();
 

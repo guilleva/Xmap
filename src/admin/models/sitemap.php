@@ -48,7 +48,7 @@ class OSMapModelSitemap extends JModelAdmin
     {
         parent::__construct($config);
 
-        $this->_item = 'sitemap';
+        $this->_item   = 'sitemap';
         $this->_option = 'com_osmap';
     }
 
@@ -66,7 +66,7 @@ class OSMapModelSitemap extends JModelAdmin
         $this->setState('sitemap.id', $pk);
 
         // Load the parameters.
-        $params    = JComponentHelper::getParams('com_osmap');
+        $params = JComponentHelper::getParams('com_osmap');
         $this->setState('params', $params);
     }
 
@@ -215,14 +215,16 @@ class OSMapModelSitemap extends JModelAdmin
         }
 
         if ($table->is_default) {
-            $query =  $this->_db->getQuery(true)
-                           ->update($this->_db->quoteName('#__osmap_sitemap'))
-                           ->set($this->_db->quoteName('is_default').' = 0')
-                           ->where($this->_db->quoteName('id').' <> '.$table->id);
+            $query = $this->_db->getQuery(true)
+               ->update($this->_db->quoteName('#__osmap_sitemap'))
+               ->set($this->_db->quoteName('is_default').' = 0')
+               ->where($this->_db->quoteName('id').' <> '.$table->id);
 
             $this->_db->setQuery($query);
+
             if (!$this->_db->query()) {
                 $this->setError($table->_db->getErrorMsg());
+
                 return false;
             }
         }
@@ -244,32 +246,37 @@ class OSMapModelSitemap extends JModelAdmin
         // TODO.
     }
 
-    function _orderConditions($table = null)
+    protected function _orderConditions($table = null)
     {
         $condition = array();
+
         return $condition;
     }
 
-    function setDefault($id)
+    public function setDefault($id)
     {
         $table = $this->getTable();
         if ($table->load($id)) {
             $db = JFactory::getDbo();
             $query = $db->getQuery(true)
-                        ->update($db->quoteName('#__osmap_sitemap'))
-                        ->set($db->quoteName('is_default').' = 0')
-                        ->where($db->quoteName('id').' <> '.$table->id);
+                ->update($db->quoteName('#__osmap_sitemap'))
+                ->set($db->quoteName('is_default').' = 0')
+                ->where($db->quoteName('id').' <> '.$table->id);
             $this->_db->setQuery($query);
+
             if (!$this->_db->query()) {
                 $this->setError($table->_db->getErrorMsg());
+
                 return false;
             }
+
             $table->is_default = 1;
             $table->store();
 
             // Clean the cache.
             $cache = JFactory::getCache('com_osmap');
             $cache->clean();
+
             return true;
         }
     }
@@ -285,12 +292,13 @@ class OSMapModelSitemap extends JModelAdmin
 
     private function getDefaultSitemapId()
     {
-        $db = JFactory::getDBO();
-        $query  = $db->getQuery(true);
+        $db    = JFactory::getDBO();
+        $query = $db->getQuery(true);
         $query->select('id');
         $query->from($db->quoteName('#__osmap_sitemap'));
         $query->where('is_default=1');
         $db->setQuery($query);
+
         return $db->loadResult();
     }
 }

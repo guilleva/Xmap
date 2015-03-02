@@ -79,16 +79,16 @@ class OSMapModelSitemaps extends JModelList
     {
         // Adjust the context to support modal layouts.
         if ($layout = JRequest::getVar('layout')) {
-            $this->context .= '.'.$layout;
+            $this->context .= '.' . $layout;
         }
 
-        $access = $this->getUserStateFromRequest($this->context.'.filter.access', 'filter_access', 0, 'int');
+        $access = $this->getUserStateFromRequest($this->context . '.filter.access', 'filter_access', 0, 'int');
         $this->setState('filter.access', $access);
 
-        $published = $this->getUserStateFromRequest($this->context.'.filter.published', 'filter_published', '');
+        $published = $this->getUserStateFromRequest($this->context . '.filter.published', 'filter_published', '');
         $this->setState('filter.published', $published);
 
-        $search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
+        $search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
         $this->setState('filter.search', $search);
 
         // List state information.
@@ -109,9 +109,9 @@ class OSMapModelSitemaps extends JModelList
     protected function getStoreId($id = '')
     {
         // Compile the store id.
-        $id .= ':'.$this->getState('filter.search');
-        $id .= ':'.$this->getState('filter.access');
-        $id .= ':'.$this->getState('filter.published');
+        $id .= ':' . $this->getState('filter.search');
+        $id .= ':' . $this->getState('filter.access');
+        $id .= ':' . $this->getState('filter.published');
 
         return parent::getStoreId($id);
     }
@@ -123,15 +123,14 @@ class OSMapModelSitemaps extends JModelList
      */
     protected function getListQuery($resolveFKs = true)
     {
-        $db     = $this->getDbo();
+        $db = $this->getDbo();
+
         // Create a new query object.
         $query = $db->getQuery(true);
 
         // Select the required fields from the table.
         $query->select(
-                $this->getState(
-                          'list.select',
-                          'a.*')
+            $this->getState('list.select', 'a.*')
         );
         $query->from('#__osmap_sitemap AS a');
 
@@ -146,6 +145,7 @@ class OSMapModelSitemaps extends JModelList
 
         // Filter by published state
         $published = $this->getState('filter.published');
+
         if (is_numeric($published)) {
             $query->where('a.state = ' . (int) $published);
         } else if ($published === '') {
@@ -157,8 +157,7 @@ class OSMapModelSitemaps extends JModelList
         if (!empty($search)) {
             if (stripos($search, 'id:') === 0) {
                 $query->where('a.id = '.(int) substr($search, 3));
-            }
-            else {
+            } else {
                 $search = $db->Quote('%'.$db->escape($search, true).'%');
                 $query->where('(a.title LIKE '.$search.' OR a.alias LIKE '.$search.')');
             }
@@ -166,13 +165,14 @@ class OSMapModelSitemaps extends JModelList
 
         // Add the list ordering clause.
         $query->order($db->escape($this->state->get('list.ordering', 'a.title')) . ' ' . $db->escape($this->state->get('list.direction', 'ASC')));
+
         //echo nl2br(str_replace('#__','jos_',$query));
         return $query;
     }
 
     public function getExtensionsMessage()
     {
-        $db    = $this->getDbo();
+        $db = $this->getDbo();
         $query = $db->getQuery(true);
         $query->select('e.*');
         $query->from($db->quoteName('#__extensions'). 'AS e');
@@ -181,8 +181,10 @@ class OSMapModelSitemaps extends JModelList
 
         $db->setQuery($query);
         $extensions = $db->loadObjectList();
+
         if ( count($extensions) ) {
             $sep = $extensionsNameList = '';
+
             foreach ($extensions as $extension) {
                 $extensionsNameList .= "$sep$extension->element";
                 $sep = ', ';
@@ -193,5 +195,4 @@ class OSMapModelSitemaps extends JModelList
             return "";
         }
     }
-
 }

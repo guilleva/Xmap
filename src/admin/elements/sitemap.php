@@ -26,6 +26,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+
 class JElementSitemap extends JElement
 {
     /**
@@ -37,16 +38,18 @@ class JElementSitemap extends JElement
 
     public function fetchElement($name, $value, &$node, $control_name)
     {
-        global $mainframe;
-
         $db        = JFactory::getDBO();
-        $fieldName = $control_name.'['.$name.']';
+        $fieldName = $control_name . '[' . $name . ']';
 
-        $sql = "SELECT id, name from #__osmap_sitemap order by name";
-        $db->setQuery($sql);
+        $query = $db->getQuery(true)
+            ->select('id')
+            ->select('name')
+            ->from('#__osmap_sitemap')
+            ->order('name');
+        $db->setQuery($query);
         $rows = $db->loadObjectList();
 
-        $html = JHTML::_('select.genericlist',$rows,$fieldName,'','id','name',$value);
+        $html = JHTML::_('select.genericlist', $rows, $fieldName, '', 'id', 'name', $value);
 
         return $html;
     }

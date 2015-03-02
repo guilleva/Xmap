@@ -32,88 +32,106 @@ defined('_JEXEC') or die('Restricted access');
  */
 class OSMapTableSitemap extends JTable
 {
-
     /**
      * @var int Primary key
      */
     var $id = null;
+
     /**
      * @var string
      */
     var $title = null;
+
     /**
      * @var string
      */
     var $alias = null;
+
     /**
      * @var string
      */
     var $introtext = null;
+
     /**
      * @var string
      */
     var $metakey = null;
+
     /**
      * @var string
      */
     var $attribs = null;
+
     /**
      * @var string
      */
     var $selections = null;
+
     /**
      * @var string
      */
     var $created = null;
+
     /**
      * @var string
      */
     var $metadesc = null;
+
     /**
      * @var string
      */
     var $excluded_items = null;
+
     /**
      * @var int
      */
     var $is_default = 0;
+
     /**
      * @var int
      */
     var $state = 0;
+
     /**
      * @var int
      */
     var $access = 0;
+
     /**
      * @var int
      */
     var $count_xml = 0;
+
     /**
      * @var int
      */
     var $count_html = 0;
+
     /**
      * @var int
      */
     var $views_xml = 0;
+
     /**
      * @var int
      */
     var $views_html = 0;
+
     /**
      * @var int
      */
     var $lastvisit_xml = 0;
+
     /**
      * @var int
      */
     var $lastvisit_html = 0;
 
+
     /**
      * @param    JDatabase    A database connector object
      */
-    function __construct(&$db)
+    public function __construct(&$db)
     {
         parent::__construct('#__osmap_sitemap', 'id', $db);
     }
@@ -127,7 +145,7 @@ class OSMapTableSitemap extends JTable
      * @see         JTable:bind
      * @since       2.0
      */
-    function bind($array, $ignore = '')
+    public function bind($array, $ignore = '')
     {
         if (isset($array['attribs']) && is_array($array['attribs'])) {
             $registry = new JRegistry();
@@ -139,9 +157,9 @@ class OSMapTableSitemap extends JTable
             $selections = array();
             foreach ($array['selections'] as $i => $menu) {
                 $selections[$menu] = array(
-                    'priority' => $array['selections_priority'][$i],
+                    'priority'   => $array['selections_priority'][$i],
                     'changefreq' => $array['selections_changefreq'][$i],
-                    'ordering' => $i
+                    'ordering'   => $i
                 );
             }
 
@@ -167,17 +185,19 @@ class OSMapTableSitemap extends JTable
      * @see         JTable::check
      * @since       2.0
      */
-    function check()
+    public function check()
     {
 
         if (empty($this->title)) {
             $this->setError(JText::_('Sitemap must have a title'));
+
             return false;
         }
 
         if (empty($this->alias)) {
             $this->alias = $this->title;
         }
+
         $this->alias = JApplication::stringURLSafe($this->alias);
 
         if (trim(str_replace('-', '', $this->alias)) == '') {
@@ -198,9 +218,11 @@ class OSMapTableSitemap extends JTable
     public function store($updateNulls = false)
     {
         $date = JFactory::getDate();
+
         if (!$this->id) {
             $this->created = $date->toSql();
         }
+
         return parent::store($updateNulls);
     }
 
@@ -229,10 +251,10 @@ class OSMapTableSitemap extends JTable
         if (empty($pks)) {
             if ($this->$k) {
                 $pks = array($this->$k);
-            }
-            // Nothing to set publishing state on, return false.
-            else {
+            } else {
+                // Nothing to set publishing state on, return false.
                 $this->setError(JText::_('NO_ROWS_SELECTED'));
+
                 return false;
             }
         }
@@ -240,12 +262,11 @@ class OSMapTableSitemap extends JTable
         // Build the WHERE clause for the primary keys.
         $where = $k . '=' . implode(' OR ' . $k . '=', $pks);
 
-
         // Update the publishing state for rows with the given primary keys.
         $query =  $this->_db->getQuery(true)
-                       ->update($this->_db->quoteName('#__osmap_sitemap'))
-                       ->set($this->_db->quoteName('state').' = '. (int) $state)
-                       ->where($where);
+            ->update($this->_db->quoteName('#__osmap_sitemap'))
+            ->set($this->_db->quoteName('state').' = '. (int) $state)
+            ->where($where);
 
         $this->_db->setQuery($query);
         $this->_db->query();
@@ -262,7 +283,7 @@ class OSMapTableSitemap extends JTable
         }
 
         $this->setError('');
+
         return true;
     }
-
 }

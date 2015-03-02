@@ -28,6 +28,7 @@ defined('_JEXEC') or die('Restricted access');
 
 JTable::addIncludePath( JPATH_COMPONENT . '/tables' );
 
+
 /**
  * @package       OSMap
  * @subpackage    com_osmap
@@ -43,10 +44,11 @@ abstract class JHtmlOSMap
     public static function priorities($name, $value = '0.5', $j)
     {
         // Array of options
-        for ($i=0.1; $i<=1;$i+=0.1) {
-            $options[] = JHTML::_('select.option',$i,$i);;
+        for ($i = 0.1; $i <= 1; $i += 0.1) {
+            $options[] = JHTML::_('select.option', $i, $i);
         }
-        return JHtml::_('select.genericlist', $options, $name, null, 'value', 'text', $value, $name.$j);
+
+        return JHtml::_('select.genericlist', $options, $name, null, 'value', 'text', $value, $name . $j);
     }
 
     /**
@@ -57,13 +59,13 @@ abstract class JHtmlOSMap
     public static function changefrequency($name, $value = 'weekly', $j)
     {
         // Array of options
-        $options[] = JHTML::_('select.option','hourly','hourly');
-        $options[] = JHTML::_('select.option','daily','daily');
-        $options[] = JHTML::_('select.option','weekly','weekly');
-        $options[] = JHTML::_('select.option','monthly','monthly');
-        $options[] = JHTML::_('select.option','yearly','yearly');
-        $options[] = JHTML::_('select.option','never','never');
-        return JHtml::_('select.genericlist', $options, $name, null, 'value', 'text', $value, $name.$j);
-    }
+        $options[] = JHTML::_('select.option', 'hourly', 'hourly');
+        $options[] = JHTML::_('select.option', 'daily', 'daily');
+        $options[] = JHTML::_('select.option', 'weekly', 'weekly');
+        $options[] = JHTML::_('select.option', 'monthly', 'monthly');
+        $options[] = JHTML::_('select.option', 'yearly', 'yearly');
+        $options[] = JHTML::_('select.option', 'never', 'never');
 
+        return JHtml::_('select.genericlist', $options, $name, null, 'value', 'text', $value, $name . $j);
+    }
 }

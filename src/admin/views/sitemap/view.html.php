@@ -40,33 +40,38 @@ if (!class_exists('JViewLegacy')){
  */
 class OSMapViewSitemap extends JViewLegacy
 {
-
     protected $item;
+
     protected $list;
+
     protected $form;
+
     protected $state;
+
 
     /**
      * Display the view
      *
      * @access    public
      */
-    function display($tpl = null)
+    public function display($tpl = null)
     {
         $app = JFactory::getApplication();
         $this->state = $this->get('State');
-        $this->item = $this->get('Item');
-        $this->form = $this->get('Form');
+        $this->item  = $this->get('Item');
+        $this->form  = $this->get('Form');
 
         $version = new JVersion;
 
         // Check for errors.
         if (count($errors = $this->get('Errors'))) {
             JError::raiseError(500, implode("\n", $errors));
+
             return false;
         }
 
         JHTML::stylesheet('administrator/components/com_osmap/css/osmap.css');
+
         // Convert dates from UTC
         $offset = $app->getCfg('offset');
         if (intval($this->item->created)) {
@@ -78,7 +83,9 @@ class OSMapViewSitemap extends JViewLegacy
         if (version_compare($version->getShortVersion(), '3.0.0', '<')) {
             $tpl = 'legacy';
         }
+
         parent::display($tpl);
+
         JRequest::setVar('hidemainmenu', true);
     }
 
@@ -87,18 +94,20 @@ class OSMapViewSitemap extends JViewLegacy
      *
      * @access    public
      */
-    function navigator($tpl = null)
+    public function navigator($tpl = null)
     {
         require_once(JPATH_COMPONENT_SITE . '/helpers/osmap.php');
-        $app = JFactory::getApplication();
+
+        $app         = JFactory::getApplication();
         $this->state = $this->get('State');
-        $this->item = $this->get('Item');
+        $this->item  = $this->get('Item');
 
         # $menuItems = OSMapHelper::getMenuItems($item->selections);
         # $extensions = OSMapHelper::getExtensions();
         // Check for errors.
         if (count($errors = $this->get('Errors'))) {
             JError::raiseError(500, implode("\n", $errors));
+
             return false;
         }
 
@@ -111,17 +120,19 @@ class OSMapViewSitemap extends JViewLegacy
         parent::display($tpl);
     }
 
-    function navigatorLinks($tpl = null)
+    public function navigatorLinks($tpl = null)
     {
 
         require_once(JPATH_COMPONENT_SITE . '/helpers/osmap.php');
-        $link = urldecode(JRequest::getVar('link', ''));
-        $name = JRequest::getCmd('e_name', '');
+
+        $link   = urldecode(JRequest::getVar('link', ''));
+        $name   = JRequest::getCmd('e_name', '');
         $Itemid = JRequest::getInt('Itemid');
 
-        $this->item = $this->get('Item');
+        $this->item  = $this->get('Item');
         $this->state = $this->get('State');
-        $menuItems = OSMapHelper::getMenuItems($item->selections);
+
+        $menuItems  = OSMapHelper::getMenuItems($item->selections);
         $extensions = OSMapHelper::getExtensions();
 
         $this->loadTemplate('class');
@@ -129,6 +140,7 @@ class OSMapViewSitemap extends JViewLegacy
         $nav->setExtensions($extensions);
 
         $this->list = array();
+
         // Show the menu list
         if (!$link && !$Itemid) {
             foreach ($menuItems as $menutype => &$menu) {
@@ -156,6 +168,7 @@ class OSMapViewSitemap extends JViewLegacy
             }
         } else {
             $parent = new stdClass;
+
             if ($Itemid) {
                 // Expand a menu Item
                 $items = &JSite::getMenu();
@@ -177,10 +190,12 @@ class OSMapViewSitemap extends JViewLegacy
                 $parent->id = 1;
                 $parent->link = $link;
             }
+
             $this->list = $nav->expandLink($parent);
         }
 
         parent::display('links');
+
         exit;
     }
 
@@ -189,9 +204,10 @@ class OSMapViewSitemap extends JViewLegacy
      *
      * @access    private
      */
-    function _setToolbar()
+    private function _setToolbar()
     {
         $user = JFactory::getUser();
+
         $isNew = ($this->item->id == 0);
 
         JToolBarHelper::title(JText::_('OSMAP_PAGE_' . ($isNew ? 'ADD_SITEMAP' : 'EDIT_SITEMAP')), 'article-add.png');
