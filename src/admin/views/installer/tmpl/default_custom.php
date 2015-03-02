@@ -30,27 +30,18 @@ defined('_JEXEC') or die('Restricted access');
 <?php if ($this->isXmapDataFound) : ?>
 
     <div class="alledia-xmap-import">
-        <h4 class="warning"><?php echo JText::_('COM_OSMAP_INSTALLER_IMPORT_XMAP_TITLE'); ?></h4>
-
         <div id="alledia-installer-xmap-import-message">
-            <p>
-                <?php echo JText::_('COM_OSMAP_INSTALLER_IMPORT_XMAP_DESCRIPTION'); ?>
+            <div id="alledia-installer-xmap-import-wipe-warning" class="alert alert-warning">
+                <h4 class="alert-heading"><?php echo JText::_('COM_OSMAP_INSTALLER_IMPORT_XMAP_TITLE'); ?></h4>
+                <p><?php echo JText::_('COM_OSMAP_INSTALLER_IMPORT_XMAP_DESCRIPTION'); ?></p>
+                <p>
+                    <strong><?php echo JText::_('COM_OSMAP_INSTALLER_IMPORT_XMAP_WIPE_WARNING'); ?></strong>
+                </p>
 
-                <div id="alledia-installer-xmap-import-wipe-warning" class="alert alert-warning">
-                    <h4 class="alert-heading"><?php echo JText::_('COM_OSMAP_INSTALLER_IMPORT_XMAP_WIPE_WARNING_TITLE'); ?></h4>
-                    <?php echo JText::_('COM_OSMAP_INSTALLER_IMPORT_XMAP_WIPE_WARNING'); ?>
-                </div>
-            </p>
-
-            <a href="javascript:void(0);" id="alledia-installer-xmap-import-button" class="alledia-button">
-                <?php echo JText::_('COM_OSMAP_INSTALLER_IMPORT_XMAP_BUTTON'); ?>
-            </a>
-        </div>
-
-        <div id="alledia-installer-xmap-loading" style="display: none">
-            <p>
-                Wait... trying to import XMap data.
-            </p>
+                <a href="javascript:void(0);" id="alledia-installer-xmap-import-button" class="alledia-button">
+                    <?php echo JText::_('COM_OSMAP_INSTALLER_IMPORT_XMAP_BUTTON'); ?>
+                </a>
+            </div>
         </div>
 
         <div id="alledia-installer-xmap-import-success" class="alert alert-success" style="display: none">
