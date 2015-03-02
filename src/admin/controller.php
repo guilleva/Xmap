@@ -25,6 +25,8 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Alledia\Framework\Joomla\Extension\Generic as GenericExtension;
+
 jimport('joomla.application.component.controller');
 
 /**
@@ -248,6 +250,46 @@ class OSMapController extends JControllerLegacy
                 throw new Exception("Failed the sitemap or item migration");
             }
 
+            /*
+             * Menu Migration
+             */
+            $xmap  = new GenericExtension('Xmap', 'component');
+            $osmap = new GenericExtension('OSMap', 'component');
+
+            // Remove OSMap menus
+            $query = $db->getQuery(true)
+                ->delete('#__menu')
+                ->where('type = ' . $db->quote('component'))
+                ->where('component_id = ' . $db->quote($osmap->getId()));
+            $db->setQuery($query);
+            $db->execute();
+
+            // Get the Xmap menus
+            $query = $db->getQuery(true)
+                ->select('*')
+                ->from('#__menu')
+                ->where('type = ' . $db->quote('component'))
+                ->where('component_id = ' . $db->quote($xmap->getId()));
+            $db->setQuery($query);
+            $xmapMenus = $db->loadObjectList();
+
+            if (!empty($xmapMenus)) {
+                // Convert each menu to OSMap
+                foreach ($xmapMenus as $menu) {
+                    $query = $db->getQuery(true)
+                        ->set('title = ' . $db->quote($this->replaceXmapByOSMap($menu->title)))
+                        ->set('alias = ' . $db->quote($this->replaceXmapByOSMap($menu->alias)))
+                        ->set('path = ' . $db->quote($this->replaceXmapByOSMap($menu->path)))
+                        ->set('link = ' . $db->quote($this->replaceXmapByOSMap($menu->link)))
+                        ->set('img = ' . $db->quote($this->replaceXmapByOSMap($menu->img)))
+                        ->set('component_id = ' . $db->quote($osmap->getId()))
+                        ->update('#__menu')
+                        ->where('id = ' . $db->quote($menu->id));
+                    $db->setQuery($query);
+                    $db->execute();
+                }
+            }
+
             $db->commitTransaction();
 
             $result->success = true;
@@ -256,5 +298,15 @@ class OSMapController extends JControllerLegacy
         }
 
         echo json_encode($result);
+    }
+
+    private function replaceXmapByOSMap($str)
+    {
+        $str = str_replace('XMAP', 'OSMAP', $str);
+        $str = str_replace('XMap', 'OSMap', $str);
+        $str = str_replace('xMap', 'OSMap', $str);
+        $str = str_replace('xmap', 'osmap', $str);
+
+        return $str;
     }
 }
