@@ -290,6 +290,14 @@ class OSMapController extends JControllerLegacy
                 }
             }
 
+            // Disable Xmap
+            $query = $db->getQuery(true)
+                ->set('enabled = 0')
+                ->update('#__extensions')
+                ->where('extension_id = ' . $db->quote($xmap->getId()));
+            $db->setQuery($query);
+            $db->execute();
+
             $db->commitTransaction();
 
             $result->success = true;
