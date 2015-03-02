@@ -38,7 +38,7 @@ use Alledia\Installer\AbstractScript;
 /**
  * OSMap Installer Script
  *
- * @since  2.4.0a1
+ * @since  2.4.0a2
  */
 class Com_OSMapInstallerScript extends AbstractScript
 {
