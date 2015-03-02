@@ -29,36 +29,43 @@
             <extension
                 type="plugin"
                 group="xmap"
+                publish="true"
                 element="com_content">plg_xmap_com_content</extension>
 
             <extension
                 type="plugin"
                 group="xmap"
+                publish="true"
                 element="com_k2">plg_xmap_com_k2</extension>
 
             <extension
                 type="plugin"
                 group="xmap"
+                publish="true"
                 element="com_kunena">plg_xmap_com_kunena</extension>
 
             <extension
                 type="plugin"
                 group="xmap"
+                publish="true"
                 element="com_mtree">plg_xmap_com_mtree</extension>
 
             <extension
                 type="plugin"
                 group="xmap"
+                publish="true"
                 element="com_sobipro">plg_xmap_com_sobipro</extension>
 
             <extension
                 type="plugin"
                 group="xmap"
+                publish="true"
                 element="com_virtuemart">plg_xmap_com_virtuemart</extension>
 
             <extension
                 type="plugin"
                 group="xmap"
+                publish="true"
                 element="com_weblinks">plg_xmap_com_weblinks</extension>
         </relatedExtensions>
 
