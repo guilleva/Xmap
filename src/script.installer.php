@@ -57,17 +57,26 @@ class Com_OSMapInstallerScript extends AbstractScript
         parent::postFlight($type, $parent);
     }
 
+    /**
+     * Look for the Xmap data to suggest a data migration
+     *
+     * @return bool True if Xmap data was found
+     */
     protected function lookForXmapData()
     {
-        $db = JFactory::getDbo();
+        if ($this->tableExists('#__xmap_sitemap')) {
+            $db = JFactory::getDbo();
 
-        // Do we have any Xmap sitemap?
-        $query = $db->getQuery(true)
-            ->select('COUNT(*)')
-            ->from('#__xmap_sitemap');
-        $db->setQuery($query);
-        $total = (int) $db->loadResult();
+            // Do we have any Xmap sitemap?
+            $query = $db->getQuery(true)
+                ->select('COUNT(*)')
+                ->from('#__xmap_sitemap');
+            $db->setQuery($query);
+            $total = (int) $db->loadResult();
 
-        return $total > 0;
+            return $total > 0;
+        }
+
+        return false;
     }
 }
