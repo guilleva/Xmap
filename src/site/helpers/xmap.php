@@ -37,7 +37,10 @@ require_once __DIR__ . '/osmap.php';
  * @since       2.0
  * @deprecated  Use OSMapHelper instead
  */
-class XmapHelper extends OSMapHelper
-{
 
+if (!class_exists('XmapHelper')) {
+    class XmapHelper extends OSMapHelper
+    {
+
+    }
 }

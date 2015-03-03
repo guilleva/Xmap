@@ -24,6 +24,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+require_once JPATH_SITE . '/components/com_osmap/helpers/xmap.php';
 require_once JPATH_SITE . '/components/com_content/helpers/route.php';
 require_once JPATH_SITE . '/components/com_content/helpers/query.php';
 
