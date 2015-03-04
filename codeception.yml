@@ -15,3 +15,8 @@ modules:
             user: ''
             password: ''
             dump: tests/_data/dump.sql
+groups:
+    all_except_xmap:
+        - tests/acceptance/ExtensionInstallerCest.php
+    xmap:
+        - tests/acceptance/XmapMigrationCest.php
