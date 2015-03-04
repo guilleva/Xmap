@@ -145,6 +145,6 @@
     </administration>
 
     <updateservers>
-        <server type="extension" priority="1" name="OSMap"><![CDATA[https://deploy.ostraining.com/client/update/free/stable/com_osmap]]></server>
+        <server type="extension" priority="1" name="OSMap"><![CDATA[http://deploy.ostraining.com/client/update/free/stable/com_osmap]]></server>
     </updateservers>
 </extension>
