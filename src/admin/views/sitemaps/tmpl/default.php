@@ -178,3 +178,5 @@ $version = new JVersion;
         <?php echo JHtml::_('form.token'); ?>
     </div>
 </form>
+
+<?php echo $this->extension->getFooterMarkup(); ?>

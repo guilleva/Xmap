@@ -26,6 +26,8 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Alledia\Framework\Factory;
+
 jimport('joomla.application.component.view');
 
 # For compatibility with older versions of Joola 2.5
@@ -79,6 +81,12 @@ class OSMapViewSitemaps extends JViewLegacy
             }
             $this->addToolbar();
         }
+
+        // Load the extension
+        $extension = Factory::getExtension('OSMap', 'component');
+        $extension->loadLibrary();
+
+        $this->assignRef("extension", $extension);
 
         parent::display($tpl);
     }

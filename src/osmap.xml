@@ -121,6 +121,7 @@
         <files folder="admin">
             <filename>osmap.php</filename>
             <filename>controller.php</filename>
+            <filename>config.xml</filename>
             <filename>LICENSE.txt</filename>
             <folder>css</folder>
             <folder>elements</folder>

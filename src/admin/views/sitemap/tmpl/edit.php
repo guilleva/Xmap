@@ -136,3 +136,5 @@ if(version_compare(JVERSION,'3.0.0','ge')) {
     <?php echo JHtml::_('form.token'); ?>
 </form>
 <div class="clr"></div>
+
+<?php echo $this->extension->getFooterMarkup(); ?>

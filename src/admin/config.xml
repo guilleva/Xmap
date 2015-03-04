@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+    <fieldset
+        name="general"
+        label="COM_OSMAP_GENERAL"
+        addfieldpath="/administrator/components/com_osmap/form/fields">
+
+        <field
+            type="customfooter"
+            name="customfooter"
+            media="com_osmap"
+            showgoproad="0"
+            jedurl="http://extensions.joomla.org/extensions/extension/osmap" />
+    </fieldset>
+</config>

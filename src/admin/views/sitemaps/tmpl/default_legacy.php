@@ -182,3 +182,5 @@ $version = new JVersion;
     <input type="hidden" name="filter_order_Dir" value="<?php echo $this->state->get('list.direction'); ?>" />
     <?php echo JHtml::_('form.token'); ?>
 </form>
+
+<?php echo $this->extension->getFooterMarkup(); ?>
