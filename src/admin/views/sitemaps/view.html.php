@@ -97,7 +97,7 @@ class OSMapViewSitemaps extends JViewLegacy
         JToolBarHelper::addNew('sitemap.add');
         JToolBarHelper::custom('sitemap.edit', 'edit.png', 'edit_f2.png', 'JTOOLBAR_EDIT', true);
 
-        $doc->addStyleDeclaration('.icon-48-sitemap {background-image: url(components/com_osmap/images/sitemap-icon.png);}');
+        $doc->addStyleDeclaration('.icon-48-sitemap {background-image: url(administrator/components/com_osmap/images/osmap-icon.png);}');
         JToolBarHelper::title(JText::_('OSMAP_SITEMAPS_TITLE'), 'sitemap.png');
         JToolBarHelper::custom('sitemaps.publish', 'publish.png', 'publish_f2.png', 'JTOOLBAR_Publish', true);
         JToolBarHelper::custom('sitemaps.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
