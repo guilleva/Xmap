@@ -134,6 +134,7 @@
             <folder>models</folder>
             <folder>library</folder>
             <folder>form</folder>
+            <folder>language</folder>
         </files>
         <languages folder="admin/language">
             <language tag="en-GB">en-GB/en-GB.com_osmap.ini</language>
