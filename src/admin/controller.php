@@ -178,13 +178,6 @@ class OSMapController extends JControllerLegacy
             $sitemaps = $db->loadObjectList();
 
             if (!empty($sitemaps)) {
-                // Clean up OSMap db tables
-                $db->setQuery('DELETE FROM ' . $db->quoteName('#__osmap_sitemap'));
-                $db->execute();
-
-                $db->setQuery('DELETE FROM ' . $db->quoteName('#__osmap_items'));
-                $db->execute();
-
                 // Import the sitemaps
                 foreach ($sitemaps as $sitemap) {
                     $query = $db->getQuery(true)
@@ -301,6 +294,13 @@ class OSMapController extends JControllerLegacy
                 ->update('#__extensions')
                 ->where('extension_id = ' . $db->quote($xmap->getId()));
             $db->setQuery($query);
+            $db->execute();
+
+            // Clean up Xmap db tables
+            $db->setQuery('DELETE FROM ' . $db->quoteName('#__xmap_sitemap'));
+            $db->execute();
+
+            $db->setQuery('DELETE FROM ' . $db->quoteName('#__xmap_items'));
             $db->execute();
 
             $db->commitTransaction();
