@@ -99,7 +99,7 @@ class OSMapXmlDisplayer extends OSMapDisplayer
             if (!isset($node->changefreq))
                 $node->changefreq = 'daily';
 
-            // Get the chancefrequency and priority for this item
+            // Get the changefrequency and priority for this item
             $changefreq = $this->getProperty('changefreq', $node->changefreq, $node->id, 'xml', $node->uid);
             $priority = $this->getProperty('priority', $node->priority, $node->id, 'xml', $node->uid);
 
