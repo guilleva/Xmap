@@ -8,7 +8,7 @@
     <authorEmail>support@alledia.com</authorEmail>
     <authorUrl>http://www.alledia.com</authorUrl>
     <version>2.4.0</version>
-    <description>OSMap - Sitemap Generator for Joomla!</description>
+    <description>OSMap - Sitemap Generator for Joomla!, based on Xmap.</description>
 
     <alledia>
         <element>osmap</element>
