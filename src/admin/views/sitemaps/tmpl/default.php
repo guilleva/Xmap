@@ -66,13 +66,19 @@ $version = new JVersion;
                         <input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="if (typeof Joomla != 'undefined'){Joomla.checkAll(this)} else {checkAll(this)}" />
                     </th>
                     <th class="title">
-                        <?php echo JHtml::_('grid.sort', 'OSMap_Heading_Sitemap', 'a.title', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
+                        <?php echo JHtml::_('grid.sort', 'OSMAP_HEADING_TITLE', 'a.title', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
                     </th>
-                    <th width="5%">
-                        <?php echo JHtml::_('grid.sort', 'OSMap_Heading_Published', 'a.state', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
+                    <th width="5%" class="center">
+                        <?php echo JHtml::_('grid.sort', 'OSMAP_HEADING_DEFAULT', 'a.is_default', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
+                    </th>
+                    <th width="5%" class="center">
+                        <?php echo JHtml::_('grid.sort', 'OSMAP_HEADING_PUBLISHED', 'a.state', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
                     </th>
                     <th width="10%">
-                        <?php echo JHtml::_('grid.sort',  'OSMap_Heading_Access', 'access_level', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
+                        <?php echo JHtml::_('grid.sort',  'OSMAP_HEADING_ACCESS', 'access_level', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
+                    </th>
+                    <th width="190" class="center">
+                        <?php echo JText::_('OSMAP_HEADING_SITEMAP_LINKS'); ?>
                     </th>
                     <?php if ($this->displayLegacyStats) : ?>
                         <th width="10%" class="nowrap">
@@ -89,13 +95,13 @@ $version = new JVersion;
                         </th>
                     <?php endif; ?>
                     <th width="1%" class="nowrap">
-                        <?php echo JHtml::_('grid.sort', 'OSMap_Heading_ID', 'a.id', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
+                        <?php echo JHtml::_('grid.sort', 'OSMAP_HEADING_ID', 'a.id', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
                     </th>
                 </tr>
             </thead>
             <tfoot>
                 <tr>
-                    <?php $colspan = $this->displayLegacyStats ? 7 : 6; ?>
+                    <?php $colspan = $this->displayLegacyStats ? 10 : 9; ?>
                     <td colspan="<?php echo $colspan; ?>">
                         <?php echo $this->pagination->getListFooter(); ?>
                     </td>
@@ -145,26 +151,29 @@ $version = new JVersion;
                     <td>
                         <a href="<?php echo JRoute::_('index.php?option=com_osmap&task=sitemap.edit&id='.$item->id);?>">
                             <?php echo $this->escape($item->title); ?></a>
-                            <?php if ($item->is_default == 1) : ?>
-                                <?php if (version_compare($version->getShortVersion(), '3.0.0', '>=')): ?>
-                                    <span class="icon-featured"></span>
-                                <?php else: ?>
-                                    <img src="templates/bluestork/images/menu/icon-16-default.png" alt="<?php echo JText::_('DEFAULT'); ?>" />
-                                <?php endif; ?>
+                            <small>(<?php echo JText::_('OSMAP_ALIAS'); ?>: <?php echo $this->escape($item->alias); ?>)</small>
+                    </td>
+                    <td class="center">
+                        <?php if ($item->is_default == 1) : ?>
+                            <?php if (version_compare($version->getShortVersion(), '3.0.0', '>=')): ?>
+                                <span class="icon-featured"></span>
+                            <?php else: ?>
+                                <img src="templates/bluestork/images/menu/icon-16-default.png" alt="<?php echo JText::_('DEFAULT'); ?>" />
                             <?php endif; ?>
-                                <?php if ($item->state): ?>
-                                    <small>[<a href="<?php echo $baseUrl. 'index.php?option=com_osmap&amp;view=xml&tmpl=component&id='.$item->id; ?>" target="_blank" title="<?php echo JText::_('OSMAP_XML_LINK_TOOLTIP',true); ?>"><?php echo JText::_('OSMAP_XML_LINK'); ?></a>]</small>
-                                    <small>[<a href="<?php echo $baseUrl. 'index.php?option=com_osmap&amp;view=xml&tmpl=component&news=1&id='.$item->id; ?>" target="_blank" title="<?php echo JText::_('OSMAP_NEWS_LINK_TOOLTIP',true); ?>"><?php echo JText::_('OSMAP_NEWS_LINK'); ?></a>]</small>
-                                    <small>[<a href="<?php echo $baseUrl. 'index.php?option=com_osmap&amp;view=xml&tmpl=component&images=1&id='.$item->id; ?>" target="_blank" title="<?php echo JText::_('OSMAP_IMAGES_LINK_TOOLTIP',true); ?>"><?php echo JText::_('OSMAP_IMAGES_LINK'); ?></a>]</small>
-                                <?php endif; ?>
-                                     <br />
-                                     <small>(<?php echo $this->escape($item->alias); ?>)</small>
+                        <?php endif; ?>
                     </td>
                     <td class="center">
                         <?php echo JHtml::_('jgrid.published', $item->state, $i, 'sitemaps.'); ?>
                     </td>
                     <td>
                         <?php echo $this->escape($item->access_level); ?>
+                    </td>
+                    <td class="center small">
+                        <a href="<?php echo $baseUrl. 'index.php?option=com_osmap&amp;view=xml&tmpl=component&id='.$item->id; ?>" target="_blank" title="<?php echo JText::_('OSMAP_XML_LINK_TOOLTIP', true); ?>"><?php echo JText::_('OSMAP_XML_LINK'); ?><span class="icon-out-2"></span></a>
+                        &nbsp;&nbsp;
+                        <a href="<?php echo $baseUrl. 'index.php?option=com_osmap&amp;view=xml&tmpl=component&news=1&id='.$item->id; ?>" target="_blank" title="<?php echo JText::_('OSMAP_NEWS_LINK_TOOLTIP', true); ?>"><?php echo JText::_('OSMAP_NEWS_LINK'); ?><span class="icon-out-2"></span></a>
+                        &nbsp;&nbsp;
+                        <a href="<?php echo $baseUrl. 'index.php?option=com_osmap&amp;view=xml&tmpl=component&images=1&id='.$item->id; ?>" target="_blank" title="<?php echo JText::_('OSMAP_IMAGES_LINK_TOOLTIP', true); ?>"><?php echo JText::_('OSMAP_IMAGES_LINK'); ?><span class="icon-out-2"></span></a>
                     </td>
                     <?php if ($this->displayLegacyStats) : ?>
                         <td class="center">
