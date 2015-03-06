@@ -7,7 +7,7 @@
     <author>Alledia</author>
     <authorEmail>support@alledia.com</authorEmail>
     <authorUrl>http://www.alledia.com</authorUrl>
-    <version>2.4.0</version>
+    <version>3.0.0</version>
     <description>OSMap - Sitemap Generator for Joomla!, based on Xmap.</description>
 
     <alledia>
@@ -107,10 +107,6 @@
         <folder>images</folder>
         <folder>fonts</folder>
     </media>
-
-    <images folder="admin">
-        <folder>images</folder>
-    </images>
 
     <languages folder="site/language">
         <language tag="en-GB">en-GB.com_osmap.ini</language>
