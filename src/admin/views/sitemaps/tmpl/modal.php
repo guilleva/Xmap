@@ -136,7 +136,7 @@ $n = count($this->items);
                 <td align="center">
                     <?php echo JHtml::_('jgrid.published', $item->state, $i, 'sitemaps.'); ?>
                 </td>
-                <td align="center">
+                <td>
                     <?php echo $this->escape($item->access_level); ?>
                 </td>
                 <td class="center">

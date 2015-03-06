@@ -154,7 +154,7 @@ $version = new JVersion;
                     <td class="center">
                         <?php echo JHtml::_('jgrid.published', $item->state, $i, 'sitemaps.'); ?>
                     </td>
-                    <td class="center">
+                    <td>
                         <?php echo $this->escape($item->access_level); ?>
                     </td>
                     <td class="center">
