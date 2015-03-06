@@ -86,7 +86,10 @@ class OSMapViewSitemaps extends JViewLegacy
         $extension = Factory::getExtension('OSMap', 'component');
         $extension->loadLibrary();
 
+        $displayLegacyStats = (bool) $extension->params->get('display_legacy_stats', 0);
+
         $this->assignRef("extension", $extension);
+        $this->assignRef("displayLegacyStats", $displayLegacyStats);
 
         parent::display($tpl);
     }
@@ -123,6 +126,7 @@ class OSMapViewSitemaps extends JViewLegacy
         }
         JToolBarHelper::divider();
 
+        JToolbarHelper::preferences('com_osmap');
 
         if (class_exists('JHtmlSidebar')){
             JHtmlSidebar::addFilter(

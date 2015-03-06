@@ -6,6 +6,16 @@
         addfieldpath="/administrator/components/com_osmap/form/fields">
 
         <field
+            name="display_legacy_stats"
+            type="list"
+            default="0"
+            label="COM_OSMAP_DISPLAY_LEGACY_STATS_LABEL"
+            description="COM_OSMAP_DISPLAY_LEGACY_STATS_DESC">
+                <option value="1">JYES</option>
+                <option value="0">JNO</option>
+        </field>
+
+        <field
             type="customfooter"
             name="customfooter"
             media="com_osmap"

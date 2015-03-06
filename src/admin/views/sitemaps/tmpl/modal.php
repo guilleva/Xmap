@@ -72,14 +72,6 @@ $n = count($this->items);
                 <th width="10%">
                     <?php echo JHtml::_('grid.sort',  'JGrid_Heading_Access', 'access_level', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
                 </th>
-                <th width="10%" nowrap="nowrap">
-                    <?php echo JText::_('OSMAP_HEADING_HTML_STATS'); ?><br />
-                    (<?php echo JText::_('OSMAP_HEADING_NUM_LINKS') . ' / '. JText::_('OSMAP_HEADING_NUM_HITS') . ' / ' . JText::_('OSMAP_HEADING_LAST_VISIT'); ?>)
-                </th>
-                <th width="10%" nowrap="nowrap">
-                    <?php echo JText::_('OSMAP_HEADING_XML_STATS'); ?><br />
-                    <?php echo JText::_('OSMAP_HEADING_NUM_LINKS') . '/'. JText::_('OSMAP_HEADING_NUM_HITS') . '/' . JText::_('OSMAP_HEADING_LAST_VISIT'); ?>
-                </th>
                 <th width="1%" nowrap="nowrap">
                     <?php echo JHtml::_('grid.sort', 'JGrid_Heading_ID', 'a.id', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
                 </th>
@@ -87,7 +79,7 @@ $n = count($this->items);
         </thead>
         <tfoot>
             <tr>
-                <td colspan="15">
+                <td colspan="4">
                     <?php echo $this->pagination->getListFooter(); ?>
                 </td>
             </tr>
@@ -96,38 +88,7 @@ $n = count($this->items);
         <?php
         foreach ($this->items as $i => $item) :
 
-            $now = JFactory::getDate()->toUnix();
-            if ( !$item->lastvisit_html ) {
-                $htmlDate = JText::_('DATE_NEVER');
-            }elseif ( $item->lastvisit_html > ($now-3600)) { // Less than one hour
-                $htmlDate = JText::sprintf('Date_Minutes_Ago',intval(($now-$item->lastvisit_html)/60));
-            } elseif ( $item->lastvisit_html > ($now-86400)) { // Less than one day
-                $hours = intval (($now-$item->lastvisit_html)/3600 );
-                $htmlDate = JText::sprintf('Date_Hours_Minutes_Ago',$hours,($now-($hours*3600)-$item->lastvisit_html)/60);
-            } elseif ( $item->lastvisit_html > ($now-259200)) { // Less than three days
-                $days = intval(($now-$item->lastvisit_html)/86400);
-                $htmlDate = JText::sprintf('Date_Days_Hours_Ago',$days,intval(($now-($days*86400)-$item->lastvisit_html)/3600));
-            } else {
-                $date = new JDate($item->lastvisit_html);
-                $htmlDate = $date->toFormat('%Y-%m-%d %H:%M');
-            }
-
-            if ( !$item->lastvisit_xml ) {
-                $xmlDate = JText::_('DATE_NEVER');
-            } elseif ( $item->lastvisit_xml > ($now-3600)) { // Less than one hour
-                $xmlDate = JText::sprintf('Date_Minutes_Ago',intval(($now-$item->lastvisit_xml)/60));
-            } elseif ( $item->lastvisit_xml > ($now-86400)) { // Less than one day
-                $hours = intval (($now-$item->lastvisit_xml)/3600 );
-                $xmlDate = JText::sprintf('Date_Hours_Minutes_Ago',$hours,($now-($hours*3600)-$item->lastvisit_xml)/60);
-            } elseif ( $item->lastvisit_xml > ($now-259200)) { // Less than three days
-                $days = intval(($now-$item->lastvisit_xml)/86400);
-                $xmlDate = JText::sprintf('Date_Days_Hours_Ago',$days,intval(($now-($days*86400)-$item->lastvisit_xml)/3600));
-            } else {
-                $date = new JDate($item->lastvisit_xml);
-                $xmlDate = $date->format('%Y-%m-%d %H:%M');
-            }
-
-        ?>
+            ?>
             <tr class="row<?php echo $i % 2; ?>">
                 <td>
                     <a style="cursor: pointer;" onclick="if (window.parent) window.parent.<?php echo $function;?>('<?php echo $item->id; ?>', '<?php echo $this->escape($item->title); ?>');">
@@ -138,12 +99,6 @@ $n = count($this->items);
                 </td>
                 <td>
                     <?php echo $this->escape($item->access_level); ?>
-                </td>
-                <td class="center">
-                    <?php echo $item->count_html .' / '.$item->views_html. ' / ' . $htmlDate; ?>
-                </td>
-                <td class="center">
-                    <?php echo $item->count_xml .' / '.$item->views_xml. ' / ' . $xmlDate; ?>
                 </td>
                 <td align="center">
                     <?php echo (int) $item->id; ?>
