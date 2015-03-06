@@ -6,7 +6,7 @@
  * @copyright 2015 Alledia.com, All rights reserved.
  * @author    Guillermo Vargas <guille@vargas.co.cr>
  * @author    Alledia <support@alledia.com>
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL
+ * @license   GNU General Public License version 3 or later; see LICENSE
  *
  * This file is part of OSMap.
  *
