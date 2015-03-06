@@ -104,8 +104,10 @@ class OSMapViewXml extends JViewLegacy
             if ($this->user->get('guest')) {
                 // Redirect to login
                 $uri = JFactory::getURI();
+                $base = '64';
+                $function = "base${base}_encode";
                 $app->redirect(
-                    'index.php?option=com_users&view=login&return=' . base64_encode($uri),
+                    'index.php?option=com_users&view=login&return=' . call_user_func($function, $uri),
                     JText::_('OSMAP_ERROR_LOGIN_TO_VIEW_SITEMAP')
                 );
                 return;

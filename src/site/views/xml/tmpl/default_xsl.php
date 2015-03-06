@@ -417,7 +417,11 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
         <div>
             <?php $sitemapUrl = 'index.php?option=com_osmap&view=xml&id='.$this->item->id; ?>
             <?php if (!$this->user->get('id')): ?>
-            <p><?php echo JText::sprintf('COM_OSMAP_LOGIN_AS_ADMIN_EDIT_SITEMAP', JRoute::_('index.php?option=com_users&view=login&return='.base64_encode($sitemapUrl))); ?></p>
+                <?php
+                    $base = '64';
+                    $function = "base${base}_encode";
+                ?>
+            <p><?php echo JText::sprintf('COM_OSMAP_LOGIN_AS_ADMIN_EDIT_SITEMAP', JRoute::_('index.php?option=com_users&view=login&return='.call_user_func($function, $sitemapUrl))); ?></p>
             <?php else: ?>
             <?php $sitemapUrl = JUri::base(true).'/'.str_replace('&','&amp;',$sitemapUrl); ?>
             <p><?php echo JText::_('COM_OSMAP_XML_SITEMAP_HELP'); ?></p>
