@@ -109,21 +109,23 @@ class OSMapViewSitemaps extends JViewLegacy
         JToolBarHelper::custom('sitemap.edit', 'edit.png', 'edit_f2.png', 'JTOOLBAR_EDIT', true);
 
         $doc->addStyleDeclaration('.icon-48-sitemap {background-image: url(administrator/components/com_osmap/images/osmap-icon.png);}');
-        JToolBarHelper::title(JText::_('OSMAP_SITEMAPS_TITLE'), 'sitemap.png');
         JToolBarHelper::custom('sitemaps.publish', 'publish.png', 'publish_f2.png', 'JTOOLBAR_Publish', true);
         JToolBarHelper::custom('sitemaps.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
 
         if (version_compare($version->getShortVersion(), '3.0.0', '>=')) {
+            JToolBarHelper::title(JText::_('OSMAP_SITEMAPS_TITLE'), 'tree-2');
             JToolBarHelper::custom('sitemaps.setdefault', 'featured.png', 'featured_f2.png', 'OSMAP_TOOLBAR_SET_DEFAULT', true);
         } else {
+            JToolBarHelper::title(JText::_('OSMAP_SITEMAPS_TITLE'), 'sitemap.png');
             JToolBarHelper::custom('sitemaps.setdefault', 'default.png', 'default_f2.png', 'OSMAP_TOOLBAR_SET_DEFAULT', true);
         }
+
         if ($state->get('filter.published') == -2) {
             JToolBarHelper::deleteList('', 'sitemaps.delete','JTOOLBAR_DELETE');
-        }
-        else {
+        } else {
             JToolBarHelper::trash('sitemaps.trash','JTOOLBAR_TRASH');
         }
+
         JToolBarHelper::divider();
 
         JToolbarHelper::preferences('com_osmap');
