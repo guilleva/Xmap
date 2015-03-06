@@ -93,6 +93,7 @@
         <filename>displayer.php</filename>
         <filename>metadata.xml</filename>
         <filename>router.php</filename>
+        <filename>include.php</filename>
         <filename>osmap.php</filename>
         <folder>assets</folder>
         <folder>controllers</folder>
@@ -116,6 +117,7 @@
         <menu img="components/com_osmap/images/osmap-favicon.png">COM_OSMAP_TITLE</menu>
         <files folder="admin">
             <filename>osmap.php</filename>
+            <filename>include.php</filename>
             <filename>controller.php</filename>
             <filename>config.xml</filename>
             <filename>LICENSE.txt</filename>

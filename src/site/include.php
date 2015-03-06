@@ -25,8 +25,6 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-require_once 'include.php';
+require_once JPATH_ADMINISTRATOR . '/components/com_osmap/include.php';
+require_once JPATH_COMPONENT . '/displayer.php';
 
-$controller = JControllerLegacy::getInstance('OSMap');
-$controller->execute(JRequest::getVar('task'));
-$controller->redirect();

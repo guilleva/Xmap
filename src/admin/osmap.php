@@ -26,24 +26,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-JTable::addIncludePath( JPATH_COMPONENT.'/tables' );
-
-jimport('joomla.form.form');
-JForm::addFieldPath( JPATH_COMPONENT.'/models/fields' );
-
-// Register helper class
-JLoader::register('OSMapHelper', dirname(__FILE__) . '/helpers/osmap.php');
-
-// Include dependancies
-jimport('joomla.application.component.controller');
-
-# For compatibility with older versions of Joola 2.5
-if (!class_exists('JControllerLegacy')){
-    class JControllerLegacy extends JController
-    {
-
-    }
-}
+require_once 'include.php';
 
 $controller = JControllerLegacy::getInstance('OSMap');
 $controller->execute(JFactory::getApplication()->input->get('task'));

@@ -22,11 +22,40 @@
  * You should have received a copy of the GNU General Public License
  * along with OSMap. If not, see <http://www.gnu.org/licenses/>.
  */
+
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-require_once 'include.php';
+use Alledia\Framework\Joomla\Extension\Helper as ExtensionHelper;
 
-$controller = JControllerLegacy::getInstance('OSMap');
-$controller->execute(JRequest::getVar('task'));
-$controller->redirect();
+// Alledia Framework
+if (!defined('ALLEDIA_FRAMEWORK_LOADED')) {
+    $allediaFrameworkPath = JPATH_SITE . '/libraries/allediaframework/include.php';
+
+    if (file_exists($allediaFrameworkPath)) {
+        require_once $allediaFrameworkPath;
+    } else {
+        JFactory::getApplication()
+            ->enqueueMessage('[OSMap] Alledia framework not found', 'error');
+    }
+}
+
+ExtensionHelper::loadLibrary('com_osmap');
+
+jimport('joomla.application.component.controller');
+
+JTable::addIncludePath(JPATH_COMPONENT . '/tables');
+
+jimport('joomla.form.form');
+JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
+
+// Register helper class
+JLoader::register('OSMapHelper', dirname(__FILE__) . '/helpers/osmap.php');
+
+# For compatibility with older versions of Joola 2.5
+if (!class_exists('JControllerLegacy')){
+    class JControllerLegacy extends JController
+    {
+
+    }
+}
