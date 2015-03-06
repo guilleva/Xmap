@@ -10,6 +10,6 @@
             name="customfooter"
             media="com_osmap"
             showgoproad="0"
-            jedurl="http://extensions.joomla.org/extensions/extension/osmap" />
+            jedurl="http://extensions.joomla.org/extensions/extension/structure-a-navigation/site-map/osmap" />
     </fieldset>
 </config>
