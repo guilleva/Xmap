@@ -5,13 +5,13 @@
  * @copyright 2015 Alledia.com, All rights reserved.
  * @author    Guillermo Vargas <guille@vargas.co.cr>
  * @author    Alledia <support@alledia.com>
- * @license   GNU General Public License version 3 or later; see LICENSE
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  *
  * This file is part of OSMap.
  *
  * OSMap is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * any later version.
  *
  * OSMap is distributed in the hope that it will be useful,
