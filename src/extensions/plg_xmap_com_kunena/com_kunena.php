@@ -26,13 +26,11 @@
 defined('_JEXEC') or die('Restricted access');
 
 /** Handles Kunena forum structure */
-class xmap_com_kunena {
-    /*
-     * This function is called before a menu item is printed. We use it to set the
-     * proper uniqueid for the item
-     */
+class xmap_com_kunena
+{
 
     static $profile;
+
     static $config;
 
     static function prepareMenuItem($node, &$params)
@@ -62,8 +60,8 @@ class xmap_com_kunena {
         }
 
         if (!self::$profile) {
-            self::$config = KunenaFactory::getConfig ();;
-            self::$profile = KunenaFactory::getUser ();
+            self::$config = KunenaFactory::getConfig();;
+            self::$profile = KunenaFactory::getUser();
         }
 
         $user = JFactory::getUser();
@@ -77,8 +75,9 @@ class xmap_com_kunena {
         parse_str(html_entity_decode($link_query['query']), $link_vars);
         $view = JArrayHelper::getValue($link_vars, 'view', '');
 
-        switch ($view){
-            case 'showcat': case 'category':
+        switch ($view) {
+            case 'showcat':
+            case 'category':
                 $link_query = parse_url($parent->link);
                 parse_str(html_entity_decode($link_query['query']), $link_vars);
                 $catid = JArrayHelper::getValue($link_vars, 'catid', 0);
@@ -92,9 +91,9 @@ class xmap_com_kunena {
         }
 
         $include_topics = JArrayHelper::getValue($params, 'include_topics', 1);
-        $include_topics = ( $include_topics == 1
-            || ( $include_topics == 2 && $xmap->view == 'xml')
-            || ( $include_topics == 3 && $xmap->view == 'html')
+        $include_topics = ($include_topics == 1
+            || ($include_topics == 2 && $xmap->view == 'xml')
+            || ($include_topics == 3 && $xmap->view == 'html')
             || $xmap->view == 'navigator');
         $params['include_topics'] = $include_topics;
 
@@ -122,9 +121,9 @@ class xmap_com_kunena {
 
         if ($include_topics) {
             $ordering = JArrayHelper::getValue($params, 'topics_order', 'ordering');
-            if ( !in_array($ordering,array('id', 'ordering','time','subject','hits')) )
+            if (!in_array($ordering, array('id', 'ordering', 'time', 'subject', 'hits')))
                 $ordering = 'ordering';
-            $params['topics_order'] = 't.`'.$ordering.'`';
+            $params['topics_order'] = 't.`' . $ordering . '`';
             $params['include_pagination'] = ($xmap->view == 'xml');
 
             $params['limit'] = '';
@@ -136,7 +135,7 @@ class xmap_com_kunena {
             $days = JArrayHelper::getValue($params, 'max_age', '');
             $params['days'] = false;
             if (intval($days))
-                $params['days'] =  ($xmap->now - (intval($days) * 86400));
+                $params['days'] = ($xmap->now - (intval($days) * 86400));
         }
 
         $params['table_prefix'] = xmap_com_kunena::getTablePrefix();
@@ -154,14 +153,14 @@ class xmap_com_kunena {
         // Load categories
         if (self::getKunenaMajorVersion() >= '2.0') {
             // Kunena 2.0+
-            $catlink = 'index.php?option=com_kunena&view=category&catid=%s&Itemid='.$parent->id;
-            $toplink = 'index.php?option=com_kunena&view=topic&catid=%s&id=%s&Itemid='.$parent->id;
+            $catlink = 'index.php?option=com_kunena&view=category&catid=%s&Itemid=' . $parent->id;
+            $toplink = 'index.php?option=com_kunena&view=topic&catid=%s&id=%s&Itemid=' . $parent->id;
 
             // kimport('kunena.forum.category.helper');
             $categories = KunenaForumCategoryHelper::getChildren($parentCat);
         } else {
-            $catlink = 'index.php?option=com_kunena&func=showcat&catid=%s&Itemid='.$parent->id;
-            $toplink = 'index.php?option=com_kunena&func=view&catid=%s&id=%s&Itemid='.$parent->id;
+            $catlink = 'index.php?option=com_kunena&func=showcat&catid=%s&Itemid=' . $parent->id;
+            $toplink = 'index.php?option=com_kunena&func=view&catid=%s&id=%s&Itemid=' . $parent->id;
 
             if (self::getKunenaMajorVersion() >= '1.6') {
                 // Kunena 1.6+
@@ -202,7 +201,7 @@ class xmap_com_kunena {
                 // kimport('kunena.forum.topic.helper');
                 // TODO: orderby parameter is missing:
                 $topics = KunenaForumTopicHelper::getLatestTopics($parentCat, 0, $params['limit'], array('starttime', $params['days']));
-                if (count($topics)==2 && is_numeric($topics[0])){
+                if (count($topics) == 2 && is_numeric($topics[0])) {
                     $topics = $topics[1];
                 }
             } else {
@@ -234,22 +233,22 @@ class xmap_com_kunena {
                 $node->name = $topic->subject;
                 $node->priority = $params['topic_priority'];
                 $node->changefreq = $params['topic_changefreq'];
-                $node->modified = intval(@$topic->last_post_time? $topic->last_post_time : $topic->time);
-                $node->link = sprintf($toplink, (@$topic->category_id? $topic->category_id : $topic->catid), $topic->id);
+                $node->modified = intval(@$topic->last_post_time ? $topic->last_post_time : $topic->time);
+                $node->link = sprintf($toplink, (@$topic->category_id ? $topic->category_id : $topic->catid), $topic->id);
                 $node->expandible = false;
                 $node->secure = $parent->secure;
                 if ($xmap->printNode($node) !== FALSE) {
                     // Pagination will not work with K2.0, revisit this when that version is out and stable
-                    if ($params['include_pagination'] && isset($topic->msgcount) && $topic->msgcount > self::$config->messages_per_page ){
+                    if ($params['include_pagination'] && isset($topic->msgcount) && $topic->msgcount > self::$config->messages_per_page) {
                         $msgPerPage = self::$config->messages_per_page;
-                        $threadPages = ceil ( $topic->msgcount / $msgPerPage );
-                        for ($i=2;$i<=$threadPages;$i++) {
+                        $threadPages = ceil($topic->msgcount / $msgPerPage);
+                        for ($i = 2; $i <= $threadPages; $i++) {
                             $subnode = new stdclass;
                             $subnode->id = $node->id;
-                            $subnode->uid = $node->uid.'p'.$i;
+                            $subnode->uid = $node->uid . 'p' . $i;
                             $subnode->name = "[$i]";
                             $subnode->seq = $i;
-                            $subnode->link = $node->link.'&limit='.$msgPerPage.'&limitstart='.(($i-1)*$msgPerPage);
+                            $subnode->link = $node->link . '&limit=' . $msgPerPage . '&limitstart=' . (($i - 1) * $msgPerPage);
                             $subnode->browserNav = $node->browserNav;
                             $subnode->priority = $node->priority;
                             $subnode->changefreq = $node->changefreq;
@@ -267,45 +266,47 @@ class xmap_com_kunena {
     private static function loadKunenaApi()
     {
         if (!defined('KUNENA_LOADED')) {
-            jimport ( 'joomla.application.component.helper' );
+            jimport('joomla.application.component.helper');
             // Check if Kunena component is installed/enabled
-            if (! JComponentHelper::isEnabled ( 'com_kunena', true )) {
+            if (!JComponentHelper::isEnabled('com_kunena', true)) {
                 return false;
             }
 
             // Check if Kunena API exists
             $kunena_api = JPATH_ADMINISTRATOR . '/components/com_kunena/api.php';
-            if (! is_file ( $kunena_api ))
+            if (!is_file($kunena_api))
                 return false;
 
             // Load Kunena API
-            require_once ($kunena_api);
+            require_once($kunena_api);
         }
         return true;
     }
 
 
     /**
-    * Based on Matias' version (Thanks)
-    * See: http://docs.kunena.org/index.php/Developing_Kunena_Router
-    */
-    static function getKunenaMajorVersion() {
+     * Based on Matias' version (Thanks)
+     * See: http://docs.kunena.org/index.php/Developing_Kunena_Router
+     */
+    static function getKunenaMajorVersion()
+    {
         static $version;
         if (!$version) {
             if (class_exists('KunenaForum')) {
                 $version = KunenaForum::versionMajor();
             } elseif (class_exists('Kunena')) {
                 $version = substr(Kunena::version(), 0, 3);
-            } elseif (is_file(JPATH_ROOT.'/components/com_kunena/lib/kunena.defines.php')) {
+            } elseif (is_file(JPATH_ROOT . '/components/com_kunena/lib/kunena.defines.php')) {
                 $version = '1.5';
-            } elseif (is_file(JPATH_ROOT.'/components/com_kunena/lib/kunena.version.php')) {
+            } elseif (is_file(JPATH_ROOT . '/components/com_kunena/lib/kunena.version.php')) {
                 $version = '1.0';
             }
         }
         return $version;
     }
 
-    static function getTablePrefix() {
+    static function getTablePrefix()
+    {
         $version = self::getKunenaMajorVersion();
         if ($version <= 1.5) {
             return '#__fb';
