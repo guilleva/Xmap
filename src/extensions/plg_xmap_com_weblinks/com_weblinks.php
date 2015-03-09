@@ -27,161 +27,166 @@ defined('_JEXEC') or die('Restricted access');
 
 class xmap_com_weblinks
 {
+    private static $views = array('categories', 'category');
 
-    static private $_initialized = false;
-    /*
-     * This function is called before a menu item is printed. We use it to set the
-     * proper uniqueid for the item and indicate whether the node is expandible or not
-     */
+    private static $enabled = false;
 
-    static function prepareMenuItem($node, &$params)
+    public function __construct()
     {
-        $link_query = parse_url($node->link);
-        parse_str(html_entity_decode($link_query['query']), $link_vars);
-        $view = JArrayHelper::getValue($link_vars, 'view', '');
-        if ($view == 'weblink') {
-            $id = intval(JArrayHelper::getValue($link_vars, 'id', 0));
-            if ($id) {
-                $node->uid = 'com_weblinksi' . $id;
-                $node->expandible = false;
-            }
-        } elseif ($view == 'categories') {
-            $node->uid = 'com_weblinkscategories';
-            $node->expandible = true;
-        } elseif ($view == 'category') {
-            $catid = intval(JArrayHelper::getValue($link_vars, 'id', 0));
-            $node->uid = 'com_weblinksc' . $catid;
-            $node->expandible = true;
-        }
+        self::$enabled = JComponentHelper::isEnabled('com_weblinks');
+
+        JLoader::register('WeblinksHelperRoute', JPATH_SITE . '/components/com_weblinks/helpers/route.php');
     }
 
-    static function getTree($xmap, $parent, &$params)
+    public static function getTree(XmapDisplayer &$xmap, stdClass &$parent, array &$params)
     {
-        self::initialize($params);
+        $uri = new JUri($parent->link);
 
-        $app = JFactory::getApplication();
-        $weblinks_params = $app->getParams('com_weblinks');
-
-        $link_query = parse_url($parent->link);
-        parse_str(html_entity_decode($link_query['query']), $link_vars);
-        $view = JArrayHelper::getValue($link_vars, 'view', 0);
-
-        $app = JFactory::getApplication();
-        $menu = $app->getMenu();
-        $menuparams = $menu->getParams($parent->id);
-
-        if ($view == 'category') {
-            $catid = intval(JArrayHelper::getValue($link_vars, 'id', 0));
-        } elseif ($view == 'categories') {
-            $catid = 0;
-        } else { // Only expand category menu items
+        if (!self::$enabled || !in_array($uri->getVar('view'), self::$views)) {
             return;
         }
 
-        $include_links = JArrayHelper::getValue($params, 'include_links', 1, '');
-        $include_links = ( $include_links == 1
-            || ( $include_links == 2 && $xmap->view == 'xml')
-            || ( $include_links == 3 && $xmap->view == 'html')
-            || $xmap->view == 'navigator');
-        $params['include_links'] = $include_links;
+        $params['groups']              = implode(',', JFactory::getUser()->getAuthorisedViewLevels());
 
-        $priority = JArrayHelper::getValue($params, 'cat_priority', $parent->priority, '');
-        $changefreq = JArrayHelper::getValue($params, 'cat_changefreq', $parent->changefreq, '');
-        if ($priority == '-1')
-            $priority = $parent->priority;
-        if ($changefreq == '-1')
-            $changefreq = $parent->changefreq;
+        $params['language_filter']     = JFactory::getApplication()->getLanguageFilter();
 
-        $params['cat_priority'] = $priority;
-        $params['cat_changefreq'] = $changefreq;
+        $params['include_links']       = JArrayHelper::getValue($params, 'include_links', 1);
+        $params['include_links']       = ($params['include_links'] == 1 || ($params['include_links'] == 2 && $xmap->view == 'xml') || ($params['include_links'] == 3 && $xmap->view == 'html'));
 
-        $priority = JArrayHelper::getValue($params, 'link_priority', $parent->priority, '');
-        $changefreq = JArrayHelper::getValue($params, 'link_changefreq', $parent->changefreq, '');
-        if ($priority == '-1')
-            $priority = $parent->priority;
+        $params['show_unauth']         = JArrayHelper::getValue($params, 'show_unauth', 0);
+        $params['show_unauth']         = ($params['show_unauth'] == 1 || ($params['show_unauth'] == 2 && $xmap->view == 'xml') || ($params['show_unauth'] == 3 && $xmap->view == 'html'));
 
-        if ($changefreq == '-1')
-            $changefreq = $parent->changefreq;
+        $params['category_priority']   = JArrayHelper::getValue($params, 'category_priority', $parent->priority);
+        $params['category_changefreq'] = JArrayHelper::getValue($params, 'category_changefreq', $parent->changefreq);
 
-        $params['link_priority'] = $priority;
-        $params['link_changefreq'] = $changefreq;
+        if ($params['category_priority'] == -1) {
+            $params['category_priority'] = $parent->priority;
+        }
 
-        $options = array();
-        $options['countItems'] = false;
-        $options['catid'] = rand();
-        $categories = JCategories::getInstance('Weblinks', $options);
-        $category = $categories->get($catid? $catid : 'root', true);
+        if ($params['category_changefreq'] == -1) {
+            $params['category_changefreq'] = $parent->changefreq;
+        }
 
-        $params['count_clicks'] = $weblinks_params->get('count_clicks');
+        $params['link_priority']   = JArrayHelper::getValue($params, 'link_priority', $parent->priority);
+        $params['link_changefreq'] = JArrayHelper::getValue($params, 'link_changefreq', $parent->changefreq);
 
-        xmap_com_weblinks::getCategoryTree($xmap, $parent, $params, $category);
+        if ($params['link_priority'] == -1) {
+            $params['link_priority'] = $parent->priority;
+        }
+
+        if ($params['link_changefreq'] == -1) {
+            $params['link_changefreq'] = $parent->changefreq;
+        }
+
+        switch ($uri->getVar('view')) {
+            case 'categories':
+                self::getCategoryTree($xmap, $parent, $params, $uri->getVar('id'));
+                break;
+
+            case 'category':
+                self::getlinks($xmap, $parent, $params, $uri->getVar('id'));
+                break;
+        }
     }
 
-    static function getCategoryTree($xmap, $parent, &$params, $category)
+    private static function getCategoryTree(XmapDisplayer &$xmap, stdClass &$parent, array &$params, $parent_id)
     {
-        $db = JFactory::getDBO();
+        $db = JFactory::getDbo();
 
-        $children = $category->getChildren();
+        $query = $db->getQuery(true)
+            ->select(array('c.id', 'c.alias', 'c.title', 'c.parent_id'))
+            ->from('#__categories AS c')
+            ->where('c.parent_id = ' . $db->quote($parent_id ? $parent_id : 1))
+            ->where('c.extension = ' . $db->quote('com_weblinks'))
+            ->where('c.published = 1')
+            ->order('c.lft');
+
+        if (!$params['show_unauth']) {
+            $query->where('c.access IN(' . $params['groups'] . ')');
+        }
+
+        if ($params['language_filter']) {
+            $query->where('c.language IN(' . $db->quote(JFactory::getLanguage()->getTag()) . ', ' . $db->quote('*') . ')');
+        }
+
+        $db->setQuery($query);
+        $rows = $db->loadObjectList();
+
+        if (empty($rows)) {
+            return;
+        }
+
         $xmap->changeLevel(1);
-        foreach ($children as $cat) {
+
+        foreach ($rows as $row) {
             $node = new stdclass;
-            $node->id = $parent->id;
-            $node->uid = $parent->uid . 'c' . $cat->id;
-            $node->name = $cat->title;
-            $node->link = WeblinksHelperRoute::getCategoryRoute($cat);
-            $node->priority = $params['cat_priority'];
-            $node->changefreq = $params['cat_changefreq'];
-            $node->expandible = true;
-            if ($xmap->printNode($node) !== FALSE) {
-                xmap_com_weblinks::getCategoryTree($xmap, $parent, $params, $cat);
+            $node->id         = $parent->id;
+            $node->name       = $row->title;
+            $node->uid        = $parent->uid . '_cid_' . $row->id;
+            $node->browserNav = $parent->browserNav;
+            $node->priority   = $params['category_priority'];
+            $node->changefreq = $params['category_changefreq'];
+            $node->pid        = $row->parent_id;
+            $node->link       = WeblinksHelperRoute::getCategoryRoute($row->id);
+
+            if ($xmap->printNode($node) !== false) {
+                self::getlinks($xmap, $parent, $params, $row->id);
             }
         }
+
         $xmap->changeLevel(-1);
-
-        if ($params['include_links']) { //view=category&catid=...
-            $linksModel = new WeblinksModelCategory();
-            $linksModel->getState(); // To force the populate state
-            $linksModel->setState('list.limit', JArrayHelper::getValue($params, 'max_links', NULL));
-            $linksModel->setState('list.start', 0);
-            $linksModel->setState('list.ordering', 'ordering');
-            $linksModel->setState('list.direction', 'ASC');
-            $linksModel->setState('category.id', $category->id);
-            $links = $linksModel->getItems();
-            $xmap->changeLevel(1);
-            foreach ($links as $link) {
-                $item_params = new JRegistry;
-                $item_params->loadString($link->params);
-
-                $node = new stdclass;
-                $node->id = $parent->id;
-                $node->uid = $parent->uid . 'i' . $link->id;
-                $node->name = $link->title;
-
-                // Find the Itemid
-                $Itemid = intval(preg_replace('/.*Itemid=([0-9]+).*/','$1',WeblinksHelperRoute::getWeblinkRoute($link->id, $category->id)));
-
-                if ($item_params->get('count_clicks', $params['count_clicks']) == 1) {
-                    $node->link = 'index.php?option=com_weblinks&task=weblink.go&id='. $link->id.'&Itemid='.($Itemid ? $Itemid : $parent->id);
-                } else {
-                    $node->link = $link->url;
-                }
-                $node->priority = $params['link_priority'];
-                $node->changefreq = $params['link_changefreq'];
-                $node->expandible = false;
-                $xmap->printNode($node);
-            }
-            $xmap->changeLevel(-1);
-        }
     }
 
-    static public function initialize(&$params)
+    private static function getlinks(XmapDisplayer &$xmap, stdClass &$parent, array &$params, $catid)
     {
-        if (self::$_initialized) {
+        self::getCategoryTree($xmap, $parent, $params, $catid);
+
+        if (!$params['include_links']) {
             return;
         }
 
-        self::$_initialized = true;
-        require_once JPATH_SITE.'/components/com_weblinks/models/category.php';
-        require_once JPATH_SITE.'/components/com_weblinks/helpers/route.php';
+        $db  = JFactory::getDbo();
+        $now = JFactory::getDate('now', 'UTC')->toSql();
+
+        $query = $db->getQuery(true)
+            ->select(array('w.id', 'w.alias', 'w.title'))
+            ->from('#__weblinks AS w')
+            ->where('w.catid = ' . $db->Quote($catid))
+            ->where('w.state = 1')
+            ->where('(w.publish_up = ' . $db->quote($db->getNullDate()) . ' OR w.publish_up <= ' . $db->quote($now) . ')')
+            ->where('(w.publish_down = ' . $db->quote($db->getNullDate()) . ' OR w.publish_down >= ' . $db->quote($now) . ')')
+            ->order('w.ordering');
+
+        if (!$params['show_unauth']) {
+            $query->where('w.access IN(' . $params['groups'] . ')');
+        }
+
+        if ($params['language_filter']) {
+            $query->where('w.language IN(' . $db->quote(JFactory::getLanguage()->getTag()) . ', ' . $db->quote('*') . ')');
+        }
+
+        $db->setQuery($query);
+        $rows = $db->loadObjectList();
+
+        if (empty($rows)) {
+            return;
+        }
+
+        $xmap->changeLevel(1);
+
+        foreach ($rows as $row) {
+            $node = new stdclass;
+            $node->id         = $parent->id;
+            $node->name       = $row->title;
+            $node->uid        = $parent->uid . '_' . $row->id;
+            $node->browserNav = $parent->browserNav;
+            $node->priority   = $params['link_priority'];
+            $node->changefreq = $params['link_changefreq'];
+            $node->link       = WeblinksHelperRoute::getWeblinkRoute($row->id . ':' . $row->alias, $catid);
+
+            $xmap->printNode($node);
+        }
+
+        $xmap->changeLevel(-1);
     }
 }
