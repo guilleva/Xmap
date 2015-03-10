@@ -35,7 +35,7 @@ class xmap_com_kunena
     static $profile;
     static $config;
 
-    function prepareMenuItem($node, &$params)
+    public static function prepareMenuItem($node, &$params)
     {
         $link_query = parse_url($node->link);
         parse_str(html_entity_decode($link_query['query']), $link_vars);
@@ -54,13 +54,13 @@ class xmap_com_kunena
         }
     }
 
-    function getTree($xmap, $parent, &$params)
+    public static function getTree($xmap, $parent, &$params)
     {
         if($xmap->isNews) // This component does not provide news content. don't waste time/resources
             return false;
 
         // Make sure that we can load the kunena api
-        if(!xmap_com_kunena::loadKunenaApi())
+        if(!static::loadKunenaApi())
         {
             return false;
         }
@@ -104,8 +104,9 @@ class xmap_com_kunena
 
             // Get ItemID of the main menu entry of the component
             $component = JComponentHelper::getComponent('com_kunena');
+            $app       = JFactory::getApplication();
 
-            $menus = JApplication::getMenu('site', array());
+            $menus = $app->getMenu('site', array());
             $items = $menus->getItems('component_id', $component->id);
 
             foreach($items as $item)
@@ -139,7 +140,7 @@ class xmap_com_kunena
 
         $params['cat_priority'] = $priority;
         $params['cat_changefreq'] = $changefreq;
-        $params['groups'] = implode(',', $user->authorisedLevels());
+        $params['groups'] = implode(',', $user->getAuthorisedViewLevels());
 
         $priority = JArrayHelper::getValue($params, 'topic_priority', $parent->priority);
         $changefreq = JArrayHelper::getValue($params, 'topic_changefreq', $parent->changefreq);
@@ -181,16 +182,16 @@ class xmap_com_kunena
             // Kubik-Rubik Solution - END
         }
 
-        $params['table_prefix'] = xmap_com_kunena::getTablePrefix();
+        $params['table_prefix'] = static::getTablePrefix();
 
-        xmap_com_kunena::getCategoryTree($xmap, $parent, $params, $catid);
+        static::getCategoryTree($xmap, $parent, $params, $catid);
     }
 
     /*
      * Builds the Kunena's tree
      */
 
-    function getCategoryTree($xmap, $parent, &$params, $parentCat)
+    protected static function getCategoryTree($xmap, $parent, &$params, $parentCat)
     {
         $db = JFactory::getDBO();
 
@@ -242,7 +243,7 @@ class xmap_com_kunena
             $node->secure = $parent->secure;
             if($xmap->printNode($node) !== FALSE)
             {
-                xmap_com_kunena::getCategoryTree($xmap, $parent, $params, $cat->id);
+                static::getCategoryTree($xmap, $parent, $params, $cat->id);
             }
         }
 
@@ -349,7 +350,7 @@ class xmap_com_kunena
      * Based on Matias' version (Thanks)
      * See: http://docs.kunena.org/index.php/Developing_Kunena_Router
      */
-    function getKunenaMajorVersion()
+    protected static function getKunenaMajorVersion()
     {
         static $version;
         if(!$version)
@@ -374,7 +375,7 @@ class xmap_com_kunena
         return $version;
     }
 
-    function getTablePrefix()
+    protected static function getTablePrefix()
     {
         $version = self::getKunenaMajorVersion();
         if($version <= 1.5)
