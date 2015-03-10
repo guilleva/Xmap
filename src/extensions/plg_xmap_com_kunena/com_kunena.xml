@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id$ -->
 <extension type="plugin" group="xmap" version="1.6" method="upgrade">
     <name>Xmap - Kunena Plugin</name>
-    <author>Guillermo Vargas</author>
-    <creationDate>September 2007</creationDate>
-    <copyright>GNU General Public License version 2 or later; see LICENSE.txt</copyright>
-    <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
-    <authorEmail>guille@vargas.co.cr</authorEmail>
-    <authorUrl>joomla.vargas.co.cr</authorUrl>
+    <creationDate>March 10, 2015</creationDate>
+    <copyright>Copyright (C) 2015 Alledia.com. All rights reserved.</copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <author>Alledia</author>
+    <authorEmail>support@alledia.com</authorEmail>
+    <authorUrl>http://www.alledia.com</authorUrl>
     <version>3.0.0a1</version>
     <description>Xmap Plugin for Kunena component</description>
     <files>
