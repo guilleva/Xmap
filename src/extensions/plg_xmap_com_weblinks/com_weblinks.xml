@@ -7,7 +7,7 @@
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
     <authorEmail>guille@vargas.co.cr</authorEmail>
     <authorUrl>joomla.vargas.co.cr</authorUrl>
-    <version>2.0.1</version>
+    <version>3.0.0a1</version>
     <description>XMAP_WL_PLUGIN_DESCRIPTION</description>
     <files>
         <filename plugin="com_weblinks">com_weblinks.php</filename>

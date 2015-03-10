@@ -7,7 +7,7 @@
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
     <authorEmail>m.h.eghtedar@gmail.com</authorEmail>
     <authorUrl>https://github.com/mhehm/Xmap</authorUrl>
-    <version>1.3</version>
+    <version>3.0.0a1</version>
     <description>XMAP_PLUGIN_K2_DESC</description>
     <files>
         <filename plugin="com_k2">com_k2.php</filename>
