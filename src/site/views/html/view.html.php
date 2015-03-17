@@ -129,14 +129,20 @@ class OSMapViewHtml extends JViewLegacy
         $app = JFactory::getApplication();
         $pathway = $app->getPathway();
         $menus = $app->getMenu();
-        $title = null;
+
+        $title = $this->item->title;
 
         // Because the application sets a default page title, we need to get it from the menu item itself
         if ($menu = $menus->getActive()) {
             if (isset($menu->query['view']) && isset($menu->query['id'])) {
 
                 if ($menu->query['view'] == 'html' && $menu->query['id'] == $this->item->id) {
-                    $title = $menu->title;
+                    $title = $menu->params->get('page_title', '');
+
+                    if (empty($title)) {
+                        $title = $menu->title;
+                    }
+
                     if (empty($title)) {
                         $title = $app->getCfg('sitename');
                     } else if ($app->getCfg('sitename_pagetitles', 0) == 1) {
@@ -152,6 +158,7 @@ class OSMapViewHtml extends JViewLegacy
                 }
             }
         }
+
         $this->document->setTitle($title);
 
         if ($app->getCfg('MetaTitle') == '1') {
