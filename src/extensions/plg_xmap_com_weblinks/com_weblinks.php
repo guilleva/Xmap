@@ -35,7 +35,9 @@ class xmap_com_weblinks
     {
         self::$enabled = JComponentHelper::isEnabled('com_weblinks');
 
-        JLoader::register('WeblinksHelperRoute', JPATH_SITE . '/components/com_weblinks/helpers/route.php');
+        if (self::$enabled) {
+            JLoader::register('WeblinksHelperRoute', JPATH_SITE . '/components/com_weblinks/helpers/route.php');
+        }
     }
 
     public static function getTree(XmapDisplayer &$xmap, stdClass &$parent, array &$params)
