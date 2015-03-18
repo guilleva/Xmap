@@ -95,8 +95,8 @@ class xmap_com_virtuemart
         $include_products = JArrayHelper::getValue($params, 'include_products', 1);
         $include_products = (
             $include_products == 1
-            || ( $include_products == 2 && $xmap->view == 'xml')
-            || ( $include_products == 3 && $xmap->view == 'html')
+            || ($include_products == 2 && $xmap->view == 'xml')
+            || ($include_products == 3 && $xmap->view == 'html')
         );
 
         $params['include_products']          = $include_products;
@@ -149,8 +149,7 @@ class xmap_com_virtuemart
         $vendorId = 1;
         $cache    = JFactory::getCache('com_virtuemart','callback');
 
-        // var_dump($vendorId, $catid); die();
-        $children = $cache->call( array( 'VirtueMartModelCategory', 'getChildCategoryList' ), $vendorId, $catid);
+        $children = $cache->call(array('VirtueMartModelCategory', 'getChildCategoryList'), $vendorId, $catid);
 
         $xmap->changeLevel(1);
 
@@ -227,7 +226,7 @@ class xmap_com_virtuemart
 
         $app = JFactory::getApplication();
 
-        if (!class_exists( 'VmConfig' )) {
+        if (!class_exists('VmConfig')) {
             require JPATH_ADMINISTRATOR . '/components/com_virtuemart/helpers/config.php';
 
             VmConfig::loadConfig();
