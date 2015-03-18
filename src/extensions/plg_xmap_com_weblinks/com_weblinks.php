@@ -40,7 +40,7 @@ class xmap_com_weblinks
         }
     }
 
-    public static function getTree(XmapDisplayer &$xmap, stdClass &$parent, array &$params)
+    public static function getTree($xmap, $parent, &$params)
     {
         $uri = new JUri($parent->link);
 
@@ -91,7 +91,7 @@ class xmap_com_weblinks
         }
     }
 
-    private static function getCategoryTree(XmapDisplayer &$xmap, stdClass &$parent, array &$params, $parent_id)
+    private static function getCategoryTree(&$xmap, &$parent, &$params, $parent_id)
     {
         $db = JFactory::getDbo();
 
@@ -139,7 +139,7 @@ class xmap_com_weblinks
         $xmap->changeLevel(-1);
     }
 
-    private static function getlinks(XmapDisplayer &$xmap, stdClass &$parent, array &$params, $catid)
+    private static function getlinks(&$xmap, &$parent, &$params, $catid)
     {
         self::getCategoryTree($xmap, $parent, $params, $catid);
 
