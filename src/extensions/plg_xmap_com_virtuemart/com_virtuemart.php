@@ -32,7 +32,7 @@ class xmap_com_virtuemart
     protected static $productModel;
     protected static $initialized = false;
 
-    static $urlBase;
+    public static $urlBase;
 
     /*
      * This function is called before a menu item is printed. We use it to set the
@@ -64,7 +64,7 @@ class xmap_com_virtuemart
         if ($prodid && $catid) {
             $node->uid        = 'com_virtuemartc' . $catid . 'p' . $prodid;
             $node->expandible = false;
-        } elseif($catid) {
+        } elseif ($catid) {
             $node->uid        = 'com_virtuemartc' . $catid;
             $node->expandible = true;
         }
@@ -138,7 +138,7 @@ class xmap_com_virtuemart
     }
 
     /** Virtuemart support */
-    public static function getCategoryTree($xmap, $parent, &$params, $catid=0)
+    public static function getCategoryTree($xmap, $parent, &$params, $catid = 0)
     {
         $database = JFactory::getDBO();
 
@@ -177,7 +177,7 @@ class xmap_com_virtuemart
             $products = self::$productModel->getProductsInCategory($catid);
 
             if ($params['include_product_images']) {
-                self::$categoryModel->addImages($products,1);
+                self::$categoryModel->addImages($products, 1);
             }
 
             $xmap->changeLevel(1);
@@ -234,7 +234,7 @@ class xmap_com_virtuemart
 
         JTable::addIncludePath(JPATH_VM_ADMINISTRATOR . '/tables');
 
-        VmConfig::set ('llimit_init_FE', 9000);
+        VmConfig::set('llimit_init_FE', 9000);
 
         $app->setUserState('com_virtuemart.htmlc-1.limit', 9000);
         $app->setUserState('com_virtuemart.htmlc0.limit', 9000);
