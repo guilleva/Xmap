@@ -109,6 +109,10 @@ class OSMapHtmlDisplayer extends OSMapDisplayer {
         }
 
         $this->_closeItem = "</li>\n";
+
+        if (!isset($this->_childs[$this->level])) {
+            $this->_childs[$this->level] = 0;
+        }
         $this->_childs[$this->level]++;
         echo $out;
 
