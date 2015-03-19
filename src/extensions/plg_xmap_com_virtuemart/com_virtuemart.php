@@ -145,27 +145,32 @@ class xmap_com_virtuemart
         }
 
         $vendorId = 1;
-        $cache    = JFactory::getCache('com_virtuemart','callback');
 
-        $children = $cache->call(array('VirtueMartModelCategory', 'getChildCategoryList'), $vendorId, $catid);
+        $m = VirtueMartModelCategory::getInstance('Category', 'VirtueMartModel');
 
-        $xmap->changeLevel(1);
+        $cache = JFactory::getCache('com_virtuemart', 'callback');
+        $cache->setCaching(true);
+        $children = $cache->call(array($m, 'getChildCategoryList'), $vendorId, $catid);
 
-        foreach ($children as $row) {
-            $node = new stdclass;
+        if (!empty($children)) {
+            $xmap->changeLevel(1);
 
-            $node->id         = $parent->id;
-            $node->uid        = $parent->uid . 'c' . $row->virtuemart_category_id;
-            $node->browserNav = $parent->browserNav;
-            $node->name       = stripslashes($row->category_name);
-            $node->priority   = $params['cat_priority'];
-            $node->changefreq = $params['cat_changefreq'];
-            $node->expandible = true;
-            $node->link       = 'index.php?option=com_virtuemart&amp;view=category&amp;virtuemart_category_id='
-                . $row->virtuemart_category_id . '&amp;Itemid='.$parent->id;
+            foreach ($children as $row) {
+                $node = new stdclass;
 
-            if ($xmap->printNode($node) !== FALSE) {
-                self::getCategoryTree($xmap, $parent, $params, $row->virtuemart_category_id);
+                $node->id         = $parent->id;
+                $node->uid        = $parent->uid . 'c' . $row->virtuemart_category_id;
+                $node->browserNav = $parent->browserNav;
+                $node->name       = stripslashes($row->category_name);
+                $node->priority   = $params['cat_priority'];
+                $node->changefreq = $params['cat_changefreq'];
+                $node->expandible = true;
+                $node->link       = 'index.php?option=com_virtuemart&amp;view=category&amp;virtuemart_category_id='
+                    . $row->virtuemart_category_id . '&amp;Itemid='.$parent->id;
+
+                if ($xmap->printNode($node) !== FALSE) {
+                    self::getCategoryTree($xmap, $parent, $params, $row->virtuemart_category_id);
+                }
             }
         }
 
