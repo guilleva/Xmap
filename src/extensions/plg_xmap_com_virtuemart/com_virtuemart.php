@@ -140,8 +140,6 @@ class xmap_com_virtuemart
     /** Virtuemart support */
     public static function getCategoryTree($xmap, $parent, &$params, $catid = 0)
     {
-        $database = JFactory::getDBO();
-
         if (!isset($urlBase)) {
             $urlBase = JURI::base();
         }
