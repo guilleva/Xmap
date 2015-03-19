@@ -132,7 +132,7 @@ class xmap_com_virtuemart
         $params['prod_priority']   = $priority;
         $params['prod_changefreq'] = $changefreq;
 
-        xmap_com_virtuemart::getCategoryTree($xmap, $parent, $params, $catid);
+        self::getCategoryTree($xmap, $parent, $params, $catid);
 
         return true;
     }
@@ -167,7 +167,7 @@ class xmap_com_virtuemart
                 . $row->virtuemart_category_id . '&amp;Itemid='.$parent->id;
 
             if ($xmap->printNode($node) !== FALSE) {
-                xmap_com_virtuemart::getCategoryTree($xmap, $parent, $params, $row->virtuemart_category_id);
+                self::getCategoryTree($xmap, $parent, $params, $row->virtuemart_category_id);
             }
         }
 
