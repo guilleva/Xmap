@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="2.5" method="upgrade">
     <name>com_osmap</name>
-    <creationDate>March 10, 2015</creationDate>
+    <creationDate>March 18, 2015</creationDate>
     <copyright>Copyright (C) 2015 Alledia.com. All rights reserved.</copyright>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <author>Alledia</author>
