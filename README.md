@@ -5,7 +5,7 @@ OSMap
 
 ## About
 
-OSMap is a sitemap generator for Joomla CMS, based on XMap.
+OSMap - the easiest way to create a Joomla sitemap.
 
 ## How to migrate from Xmap
 
