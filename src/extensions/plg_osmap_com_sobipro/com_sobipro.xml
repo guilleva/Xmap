@@ -1,57 +1,47 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <extension type="plugin" group="xmap" version="1.6" method="upgrade">
-    <name>Xmap - Mosets Tree Plugin</name>
+    <name>OSMap - SobiPro Plugin</name>
     <author>Guillermo Vargas</author>
-    <creationDate>07/20/2011</creationDate>
+    <creationDate>07/15/2011</creationDate>
     <copyright>GNU General Public License version 2 or later; see LICENSE.txt</copyright>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
     <authorEmail>guille@vargas.co.cr</authorEmail>
     <authorUrl>joomla.vargas.co.cr</authorUrl>
     <version>2.0.2</version>
-    <description>XMAP_MTREE_PLUGIN_DESCRIPTION</description>
+    <description>Xmap Plugin for SobiPro component</description>
     <files>
-        <filename plugin="com_mtree">com_mtree.php</filename>
+        <filename plugin="com_sobipro">com_sobipro.php</filename>
     </files>
     <languages folder="language">
         <!--
         these files will be installed in the administrator/language folder.
         -->
-        <language tag="en-GB">en-GB.plg_xmap_com_mtree.ini</language>
+        <language tag="en-GB">en-GB.plg_osmap_com_sobipro.ini</language>
     </languages>
     <config>
         <fields name="params">
             <fieldset name="basic">
-                <field name="cats_order" type="list" default="cat_name" label="XMAP_SETTING_CATEGORIES_ORDER_LABEL" description="XMAP_SETTING_CATEGORIES_ORDER_DESC">
-                    <option value="ordering">XMAP_SETTING_OPTION_ORDERING_DEFAULT</option>
-                    <option value="cat_name">XMAP_SETTING_OPTION_ORDERING_NAME</option>
-                    <option value="cat_created">XMAP_SETTING_OPTION_ORDERING_CREATED</option>
-                </field>
-                <field name="cats_orderdir" type="list" default="ASC" label="XMAP_SETTING_CATEGORIES_ORDER_DIR_LABEL" description="XMAP_SETTING_CATEGORIES_ORDER_DIR_DESC">
-                    <option value="ASC">XMAP_SETTING_OPTION_ORDERING_DIR_ASC</option>
-                    <option value="DESC">XMAP_SETTING_OPTION_ORDERING_DIR_DESC</option>
-                </field>
-                <field name="include_links" type="list" default="1" label="XMAP_SETTING_SHOW_LISTINGS_LABEL" description="XMAP_SETTING_SHOW_LISTINGS_DESC">
+                <field name="include_entries" type="list" default="1" label="XMAP_SETTING_SHOW_ENTRIES_LABEL" description="XMAP_SETTING_SHOW_ENTRIES_DESC">
                     <option value="0">XMAP_OPTION_NEVER</option>
                     <option value="1">XMAP_OPTION_ALWAYS</option>
                     <option value="2">XMAP_OPTION_XML_ONLY</option>
                     <option value="3">XMAP_OPTION_HTML_ONLY</option>
                 </field>
-                <field name="links_order" type="list" default="ordering" label="XMAP_SETTING_LISTINGS_ORDER_LABEL" description="XMAP_SETTING_LISTINGS_ORDER_DESC">
-                    <option value="ordering">XMAP_SETTING_OPTION_ORDERING_DEFAULT</option>
-                    <option value="link_name">XMAP_SETTING_OPTION_ORDERING_NAME</option>
-                    <option value="link_created">XMAP_SETTING_OPTION_ORDERING_CREATED</option>
-                    <option value="link_modified">XMAP_SETTING_OPTION_ORDERING_MODIFIED</option>
-                    <option value="link_hits">XMAP_SETTING_OPTION_ORDERING_HITS</option>
+                <field name="max_entries" type="text" default="" label="XMAP_SETTING_MAX_ENTRIES_LABEL" description="XMAP_SETTING_MAX_ENTRIES_DESC" />
+                <field name="max_age" type="text" default="" label="XMAP_SOBIPRO_NEWEST_THAN_LABEL" description="XMAP_SOBIPRO_NEWEST_THAN_DESC" />
+                <field name="entries_order" type="list" default="a.ordering" label="XMAP_OPTION_ENTRIES_ORDER" description="XMAP_OPTION_ENTRIES_ORDER_DESC">
+                    <option value="b.position">XMAP_OPTION_DEFAULT</option>
+                    <option value="a.counter">XMAP_OPTION_VISITS</option>
+                    <option value="b.validSince">XMAP_OPTION_PUBLISH</option>
+                    <option value="a.updatedTime">XMAP_OPTION_MOD</option>
                 </field>
-                <field name="entries_orderdir" type="list" default="ASC" label="XMAP_SETTING_LISTINGS_ORDER_DIR_LABEL" description="XMAP_SETTING_LISTINGS_ORDER_DIR_DESC">
+                <field name="entries_orderdir" type="list" default="DESC" label="XMAP_SETTING_CATEGORIES_ORDER_DIR_LABEL" description="XMAP_SETTING_CATEGORIES_ORDER_DIR_DESC">
                     <option value="ASC">XMAP_SETTING_OPTION_ORDERING_DIR_ASC</option>
                     <option value="DESC">XMAP_SETTING_OPTION_ORDERING_DIR_DESC</option>
                 </field>
-                <field name="max_links" type="text" default="" label="XMAP_SETTING_MAX_ENTRIES_LABEL" description="XMAP_SETTING_MAX_ENTRIES_DESC" />
-                <field name="max_age" type="text" default="" label="XMAP_SETTING_LISTINGS_NEWER_THAN_LABEL" description="XMAP_SETTING_LISTINGS_NEWER_THAN_LABEL" />
             </fieldset>
             <fieldset name="xml">
-                <field name="cat_priority" type="list" default="0.5" label="XMAP_MTREE_CATEGORY_PRIORITY_LABEL" description="XMAP_MTREE_CATEGORY_PRIORITY_DESC">
+                <field name="cat_priority" type="list" default="-1" label="XMAP_SOBIPRO_CATEGORY_PRIORITY_LABEL" description="XMAP_SOBIPRO_CATEGORY_PRIORITY_DESC">
                     <option value="-1">XMAP_OPTION_USE_PARENT_MENU</option>
                     <option value="0.0">0.0</option>
                     <option value="0.1">0.1</option>
@@ -65,7 +55,7 @@
                     <option value="0.9">0.9</option>
                     <option value="1">1</option>
                 </field>
-                <field name="cat_changefreq" type="list" default="weekly" label="XMAP_MTREE_CATEGORY_CHANGEFREQ_LABEL" description="XMAP_MTREE_CATEGORY_CHANGEFREQ_DESC">
+                <field name="cat_changefreq" type="list" default="weekly" label="XMAP_SOBIPRO_CATEGORY_CHANGEFREQ_LABEL" description="XMAP_SOBIPRO_CATEGORY_CHANGEFREQ_DESC">
                     <option value="-1">XMAP_OPTION_USE_PARENT_MENU</option>
                     <option value="always">XMAP_OPTION_ALWAYS</option>
                     <option value="hourly">XMAP_OPTION_HOURLY</option>
@@ -75,7 +65,7 @@
                     <option value="yearly">XMAP_OPTION_YEARLY</option>
                     <option value="never">XMAP_OPTION_NEVER</option>
                 </field>
-                <field name="link_priority" type="list" default="0.5" label="XMAP_MTREE_LISTING_PRIORITY_LABEL" description="XMAP_MTREE_LISTING_PRIORITY_DESC">
+                <field name="entry_priority" type="list" default="-1" label="XMAP_SOBIPRO_ENTRIES_PRIORITY_LABEL" description="XMAP_SOBIPRO_ENTRIES_PRIORITY_DESC">
                     <option value="-1">XMAP_OPTION_USE_PARENT_MENU</option>
                     <option value="0.0">0.0</option>
                     <option value="0.1">0.1</option>
@@ -89,7 +79,7 @@
                     <option value="0.9">0.9</option>
                     <option value="1">1</option>
                 </field>
-                <field name="link_changefreq" type="list" default="weekly" label="XMAP_MTREE_LISTING_CHANGEFREQ_LABEL" description="XMAP_MTREE_LISTING_CHANGEFREQ_DESC">
+                <field name="entry_changefreq" type="list" default="weekly" label="XMAP_SOBIPRO_ENTRIES_CHANGEFREQ_LABEL" description="XMAP_SOBIPRO_ENTRIES_CHANGEFREQ_DESC">
                     <option value="-1">XMAP_OPTION_USE_PARENT_MENU</option>
                     <option value="always">XMAP_OPTION_ALWAYS</option>
                     <option value="hourly">XMAP_OPTION_HOURLY</option>

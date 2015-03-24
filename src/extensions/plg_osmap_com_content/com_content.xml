@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension type="plugin" group="xmap" version="1.6" method="upgrade">
-    <name>Xmap - Content Plugin</name>
+    <name>OSMap - Content Plugin</name>
     <creationDate>March 10, 2015</creationDate>
     <copyright>Copyright (C) 2015 Alledia.com. All rights reserved.</copyright>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
@@ -16,7 +16,7 @@
         <!--
         these files will be installed in the administrator/language folder.
         -->
-        <language tag="en-GB">en-GB.plg_xmap_com_content.ini</language>
+        <language tag="en-GB">en-GB.plg_osmap_com_content.ini</language>
     </languages>
     <config>
         <fields name="params">
