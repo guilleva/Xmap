@@ -1,37 +1,42 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="iso-8859-1"?>
 <extension type="plugin" group="xmap" version="1.6" method="upgrade">
-    <name>OSMap - Kunena Plugin</name>
-    <creationDate>March 10, 2015</creationDate>
+    <name>Xmap - Virtuemart Plugin</name>
+    <author>Alledia / Guillermo Vargas</author>
+    <creationDate>March 18, 2015</creationDate>
     <copyright>Copyright (C) 2015 Alledia.com. All rights reserved.</copyright>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-    <author>Alledia</author>
     <authorEmail>support@alledia.com</authorEmail>
     <authorUrl>http://www.alledia.com</authorUrl>
-    <version>3.0.0</version>
-    <description>Xmap Plugin for Kunena component</description>
+    <version>3.0.1</version>
+    <description>XMAP_VM_PLUGIN_DESCRIPTION</description>
     <files>
-        <filename plugin="com_kunena">com_kunena.php</filename>
+        <filename plugin="com_virtuemart">com_virtuemart.php</filename>
     </files>
     <languages folder="language">
         <!--
         these files will be installed in the administrator/language folder.
         -->
-        <language tag="en-GB">en-GB.plg_osmap_com_kunena.ini</language>
+        <language tag="en-GB">en-GB.plg_xmap_com_virtuemart.ini</language>
     </languages>
     <config>
         <fields name="params">
             <fieldset name="basic">
-                <field name="include_topics" type="list" default="1" label="XMAP_KUNENA_SHOW_TOPICS_LABEL" description="XMAP_KUNENA_SHOW_TOPICS_DESC">
+                <field name="include_products" type="list" default="1" label="XMAP_VM_SETTING_SHOW_PRODUCTS_LABEL" description="XMAP_VM_SETTING_SHOW_PRODUCTS_DESC">
                     <option value="0">XMAP_OPTION_NEVER</option>
                     <option value="1">XMAP_OPTION_ALWAYS</option>
                     <option value="2">XMAP_OPTION_XML_ONLY</option>
                     <option value="3">XMAP_OPTION_HTML_ONLY</option>
                 </field>
-                <field name="max_topics" type="text" default="" label="XMAP_KUNENA_MAX_TOPICS_LABEL" description="XMAP_KUNENA_MAX_TOPICS_DESC" />
-                <field name="max_age" type="text" default="" label="XMAP_KUNENA_NEWEST_THAN_LABEL" description="XMAP_KUNENA_NEWEST_THAN_DESC" />
+                <!-- not yet supported on Xmap 2
+                <field name="include_product_images" type="list" default="0" label="Include Product Images" description="Should we include product images in the sitemap?">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </field>
+                <field name="product_image_license_url" type="text" default="" label="Image License URL" description="URL of a page giving the license for images included in your sitemap"/>
+                -->
             </fieldset>
             <fieldset name="xml">
-                <field name="cat_priority" type="list" default="-1" label="XMAP_KUNENA_CATEGORY_PRIORITY_LABEL" description="XMAP_KUNENA_CATEGORY_PRIORITY_DESC">
+                <field name="cat_priority" type="list" default="-1" label="XMAP_VM_CATEGORY_PRIORITY_LABEL" description="XMAP_VM_CATEGORY_PRIORITY_DESC">
                     <option value="-1">XMAP_OPTION_USE_PARENT_MENU</option>
                     <option value="0.0">0.0</option>
                     <option value="0.1">0.1</option>
@@ -45,7 +50,7 @@
                     <option value="0.9">0.9</option>
                     <option value="1">1</option>
                 </field>
-                <field name="cat_changefreq" type="list" default="-1" label="XMAP_KUNENA_CATEGORY_CHANGEFREQ_LABEL" description="XMAP_KUNENA_CATEGORY_CHANGEFREQ_DESC">
+                <field name="cat_changefreq" type="list" default="-1" label="XMAP_VM_CATEGORY_CHANGEFREQ_LABEL" description="XMAP_VM_CATEGORY_CHANGEFREQ_DESC">
                     <option value="-1">XMAP_OPTION_USE_PARENT_MENU</option>
                     <option value="always">XMAP_OPTION_ALWAYS</option>
                     <option value="hourly">XMAP_OPTION_HOURLY</option>
@@ -55,7 +60,7 @@
                     <option value="yearly">XMAP_OPTION_YEARLY</option>
                     <option value="never">XMAP_OPTION_NEVER</option>
                 </field>
-                <field name="topic_priority" type="list" default="-1" label="XMAP_KUNENA_TOPIC_PRIORITY_LABEL" description="XMAP_KUNENA_TOPIC_PRIORITY_DESC">
+                <field name="prod_priority" type="list" default="-1" label="XMAP_VM_PRODUCT_PRIORITY_LABEL" description="XMAP_VM_PRODUCT_PRIORITY_DESC">
                     <option value="-1">XMAP_OPTION_USE_PARENT_MENU</option>
                     <option value="0.0">0.0</option>
                     <option value="0.1">0.1</option>
@@ -69,7 +74,7 @@
                     <option value="0.9">0.9</option>
                     <option value="1">1</option>
                 </field>
-                <field name="topic_changefreq" type="list" default="-1" label="XMAP_KUNENA_TOPIC_CHANGEFREQ_LABEL" description="XMAP_KUNENA_TOPIC_CHANGEFREQ_DESC">
+                <field name="prod_changefreq" type="list" default="-1" label="XMAP_VM_PRODUCT_CHANGEFREQ_LABEL" description="XMAP_VM_PRODUCT_CHANGEFREQ_DESC">
                     <option value="-1">XMAP_OPTION_USE_PARENT_MENU</option>
                     <option value="always">XMAP_OPTION_ALWAYS</option>
                     <option value="hourly">XMAP_OPTION_HOURLY</option>
