@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <extension type="plugin" group="xmap" version="1.6" method="upgrade">
-    <name>Xmap - Virtuemart Plugin</name>
+    <name>OSMap - Virtuemart Plugin</name>
     <author>Alledia / Guillermo Vargas</author>
     <creationDate>March 18, 2015</creationDate>
     <copyright>Copyright (C) 2015 Alledia.com. All rights reserved.</copyright>
