@@ -81,13 +81,13 @@ $version = new JVersion;
                         <?php echo JText::_('OSMAP_HEADING_SITEMAP_LINKS'); ?>
                     </th>
                     <?php if ($this->displayLegacyStats) : ?>
-                        <th width="10%" class="nowrap">
+                        <th width="10%" class="nowrap center">
                             <?php echo JText::_('OSMAP_HEADING_HTML_STATS'); ?><br />
-                            (<?php echo JText::_('OSMAP_HEADING_NUM_LINKS') . ' / '. JText::_('OSMAP_HEADING_NUM_HITS') . ' / ' . JText::_('OSMAP_HEADING_LAST_VISIT'); ?>)
+                            <?php echo JText::_('OSMAP_HEADING_NUM_LINKS') . ' / '. JText::_('OSMAP_HEADING_NUM_HITS') . ' / ' . JText::_('OSMAP_HEADING_LAST_VISIT'); ?>
                         </th>
-                        <th width="10%" class="nowrap">
+                        <th width="10%" class="nowrap center">
                             <?php echo JText::_('OSMAP_HEADING_XML_STATS'); ?><br />
-                            <?php echo JText::_('OSMAP_HEADING_NUM_LINKS') . '/'. JText::_('OSMAP_HEADING_NUM_HITS') . '/' . JText::_('OSMAP_HEADING_LAST_VISIT'); ?>
+                            <?php echo JText::_('OSMAP_HEADING_NUM_LINKS') . ' / '. JText::_('OSMAP_HEADING_NUM_HITS') . ' / ' . JText::_('OSMAP_HEADING_LAST_VISIT'); ?>
                         </th>
                     <?php else : ?>
                         <th width="8%" class="nowrap center">
