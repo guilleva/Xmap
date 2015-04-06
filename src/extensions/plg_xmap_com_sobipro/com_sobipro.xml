@@ -2,12 +2,12 @@
 <extension type="plugin" group="xmap" version="1.6" method="upgrade">
     <name>Xmap - SobiPro Plugin</name>
     <author>Guillermo Vargas</author>
-    <creationDate>07/15/2011</creationDate>
-    <copyright>GNU General Public License version 2 or later; see LICENSE.txt</copyright>
-    <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+    <creationDate>April 06, 2015</creationDate>
+    <copyright>Copyright (C) 2014, Guillermo Vargas - guille@vargas.co.cr</copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <authorEmail>guille@vargas.co.cr</authorEmail>
     <authorUrl>joomla.vargas.co.cr</authorUrl>
-    <version>2.0.2</version>
+    <version>3.0.2</version>
     <description>Xmap Plugin for SobiPro component</description>
     <files>
         <filename plugin="com_sobipro">com_sobipro.php</filename>

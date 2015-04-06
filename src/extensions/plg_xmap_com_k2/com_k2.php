@@ -2,7 +2,7 @@
 /**
  * @package   OSMap
  * @copyright 2007-2014 XMap - Joomla! Vargas. All rights reserved.
- * @copyright 2015 Alledia.com, All rights reserved.
+ * @copyright 2015 Open Source Training, LLC. All rights reserved..
  * @author    Guillermo Vargas <guille@vargas.co.cr>
  * @author    Mohammad Hasani Eghtedar <m.h.eghtedar@gmail.com>
  * @author    Alledia <support@alledia.com>
