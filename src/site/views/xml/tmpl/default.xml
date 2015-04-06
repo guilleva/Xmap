@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+    <layout title="COM_OSMAP_SITEMAP_XML_VIEW_DEFAULT_TITLE">
+        <message>
+            <![CDATA[COM_OSMAP_SITEMAP_XML_VIEW_DEFAULT_DESC]]>
+        </message>
+    </layout>
+    <fields name="request">
+        <fieldset name="request"
+            addfieldpath="/administrator/components/com_osmap/models/fields">
+            <field
+                name="id"
+                type="modal_sitemaps"
+                default=""
+                required="true"
+                label="COM_OSMAP_SELECT_AN_SITEMAP"
+                description="COM_OSMAP_SELECT_A_SITEMAP" />
+        </fieldset>
+    </fields>
+</metadata>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="2.5" method="upgrade">
+    <name>com_osmap</name>
+    <creationDate>March 06, 2015</creationDate>
+    <copyright>Copyright (C) 2015 Open Source Training, LLC. All rights reserved. / Forked from XMap - Guillermo Vargas - guille@vargas.co.cr</copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <author>Alledia</author>
+    <authorEmail>support@alledia.com</authorEmail>
+    <authorUrl>http://www.alledia.com</authorUrl>
+    <version>3.0.2</version>
+    <description>OSMap - the easiest way to create a Joomla sitemap.</description>
+
+    <alledia>
+        <element>osmap</element>
+        <namespace>OSMap</namespace>
+        <license>free</license>
+        <relatedExtensions>
+            <extension
+                type="library"
+                element="allediaframework">AllediaFramework</extension>
+
+            <extension
+                type="plugin"
+                group="system"
+                element="ossystem"
+                publish="true"
+                ordering="first">OSSystem</extension>
+
+            <extension
+                type="plugin"
+                group="xmap"
+                publish="true"
+                element="com_content">plg_xmap_com_content</extension>
+
+            <extension
+                type="plugin"
+                group="xmap"
+                publish="true"
+                element="com_k2">plg_xmap_com_k2</extension>
+
+            <extension
+                type="plugin"
+                group="xmap"
+                publish="true"
+                element="com_kunena">plg_xmap_com_kunena</extension>
+
+            <extension
+                type="plugin"
+                group="xmap"
+                publish="true"
+                element="com_mtree">plg_xmap_com_mtree</extension>
+
+            <extension
+                type="plugin"
+                group="xmap"
+                publish="true"
+                element="com_sobipro">plg_xmap_com_sobipro</extension>
+
+            <extension
+                type="plugin"
+                group="xmap"
+                publish="true"
+                element="com_virtuemart">plg_xmap_com_virtuemart</extension>
+
+            <extension
+                type="plugin"
+                group="xmap"
+                publish="true"
+                element="com_weblinks">plg_xmap_com_weblinks</extension>
+        </relatedExtensions>
+
+        <include>AllediaFreeDefaultFiles</include>
+    </alledia>
+
+    <scriptfile>script.installer.php</scriptfile>
+
+    <install folder="admin">
+        <sql>
+            <file driver="mysql" charset="utf8">install/install.utf8.sql</file>
+            <file driver="postgresql" charset="utf8">install/install.postgresql.sql</file>
+        </sql>
+    </install>
+
+    <uninstall>
+        <sql>
+            <file driver="mysql" charset="utf8">install/uninstall.utf8.sql</file>
+            <file driver="postgresql" charset="utf8">install/uninstall.postgresql.sql</file>
+        </sql>
+    </uninstall>
+
+    <files folder="site">
+        <filename>controller.php</filename>
+        <filename>displayer.php</filename>
+        <filename>metadata.xml</filename>
+        <filename>router.php</filename>
+        <filename>include.php</filename>
+        <filename>osmap.php</filename>
+        <folder>assets</folder>
+        <folder>controllers</folder>
+        <folder>helpers</folder>
+        <folder>models</folder>
+        <folder>views</folder>
+    </files>
+
+    <media destination="com_osmap" folder="media">
+        <folder>css</folder>
+        <folder>js</folder>
+        <folder>images</folder>
+        <folder>fonts</folder>
+    </media>
+
+    <languages folder="site/language">
+        <language tag="en-GB">en-GB.com_osmap.ini</language>
+    </languages>
+
+    <administration>
+        <menu img="components/com_osmap/images/osmap-favicon.png">COM_OSMAP_TITLE</menu>
+        <files folder="admin">
+            <filename>osmap.php</filename>
+            <filename>include.php</filename>
+            <filename>controller.php</filename>
+            <filename>config.xml</filename>
+            <filename>LICENSE.txt</filename>
+            <folder>css</folder>
+            <folder>elements</folder>
+            <folder>images</folder>
+            <folder>install</folder>
+            <folder>helpers</folder>
+            <folder>controllers</folder>
+            <folder>tables</folder>
+            <folder>views</folder>
+            <folder>models</folder>
+            <folder>library</folder>
+            <folder>form</folder>
+            <folder>language</folder>
+        </files>
+        <languages folder="admin/language">
+            <language tag="en-GB">en-GB/en-GB.com_osmap.ini</language>
+            <language tag="en-GB">en-GB/en-GB.com_osmap.sys.ini</language>
+        </languages>
+        <images folder="admin">
+            <folder>images</folder>
+        </images>
+    </administration>
+
+    <updateservers>
+        <server type="extension" priority="1" name="OSMap"><![CDATA[http://deploy.ostraining.com/client/update/free/stable/com_osmap]]></server>
+    </updateservers>
+</extension>
