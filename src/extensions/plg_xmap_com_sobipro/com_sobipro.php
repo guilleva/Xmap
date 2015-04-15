@@ -113,7 +113,12 @@ class xmap_com_sobipro {
         $params['entry_changefreq'] = $changefreq;
 
         $date = JFactory::getDate();
-        $params['now'] = $date->toMySql();
+
+        if (version_compare(JVERSION, '3.0', '<')) {
+            $params['now'] = $date->toMySql();
+        } else {
+            $params['now'] = $date->toSql();
+        }
 
         if ( $include_entries ) {
             $ordering = JArrayHelper::getValue($params,'entries_order','b.position');
