@@ -26,7 +26,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-header('Content-Type: text/xml; charset="utf-8"');
+header('Content-Type: text/xsl; charset="utf-8"');
 header('Content-Disposition: inline');
 
 $showTitle = $this->canEdit && JRequest::getBool('filter_showtitle', 0);
