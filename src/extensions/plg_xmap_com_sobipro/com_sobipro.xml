@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <extension type="plugin" group="xmap" version="1.6" method="upgrade">
-    <name>Xmap - SobiPro Plugin</name>
+    <name>OSMap - SobiPro Plugin</name>
     <author>Guillermo Vargas</author>
     <creationDate>April 06, 2015</creationDate>
     <copyright>Copyright (C) 2014, Guillermo Vargas - guille@vargas.co.cr</copyright>
@@ -8,7 +8,7 @@
     <authorEmail>guille@vargas.co.cr</authorEmail>
     <authorUrl>joomla.vargas.co.cr</authorUrl>
     <version>3.1.0a1</version>
-    <description>Xmap Plugin for SobiPro component</description>
+    <description>OSMap Plugin for SobiPro component</description>
     <files>
         <filename plugin="com_sobipro">com_sobipro.php</filename>
     </files>

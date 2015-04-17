@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <extension type="plugin" group="xmap" version="1.6" method="upgrade">
-    <name>Xmap - Mosets Tree Plugin</name>
+    <name>OSMap - Mosets Tree Plugin</name>
     <author>Guillermo Vargas</author>
     <creationDate>April 06, 2015</creationDate>
     <copyright>Copyright (C) 2014, Guillermo Vargas - guille@vargas.co.cr</copyright>
