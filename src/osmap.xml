@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="2.5" method="upgrade">
     <name>com_osmap</name>
-    <creationDate>March 06, 2015</creationDate>
+    <creationDate>April 17th, 2015</creationDate>
     <copyright>Copyright (C) 2015 Open Source Training, LLC. All rights reserved. / Forked from XMap - Guillermo Vargas - guille@vargas.co.cr</copyright>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <author>Alledia</author>
@@ -26,6 +26,52 @@
                 publish="true"
                 ordering="first">OSSystem</extension>
 
+            <extension
+                type="plugin"
+                group="osmap"
+                publish="true"
+                element="com_content">plg_osmap_com_content</extension>
+
+            <extension
+                type="plugin"
+                group="osmap"
+                publish="true"
+                element="com_k2">plg_osmap_com_k2</extension>
+
+            <extension
+                type="plugin"
+                group="osmap"
+                publish="true"
+                element="com_kunena">plg_osmap_com_kunena</extension>
+
+            <extension
+                type="plugin"
+                group="osmap"
+                publish="true"
+                element="com_mtree">plg_osmap_com_mtree</extension>
+
+            <extension
+                type="plugin"
+                group="osmap"
+                publish="true"
+                element="com_sobipro">plg_osmap_com_sobipro</extension>
+
+            <extension
+                type="plugin"
+                group="osmap"
+                publish="true"
+                element="com_virtuemart">plg_osmap_com_virtuemart</extension>
+
+            <extension
+                type="plugin"
+                group="osmap"
+                publish="true"
+                element="com_weblinks">plg_osmap_com_weblinks</extension>
+        </relatedExtensions>
+
+        <include>AllediaFreeDefaultFiles</include>
+
+        <obsolete>
             <extension
                 type="plugin"
                 group="xmap"
@@ -67,9 +113,7 @@
                 group="xmap"
                 publish="true"
                 element="com_weblinks">plg_xmap_com_weblinks</extension>
-        </relatedExtensions>
-
-        <include>AllediaFreeDefaultFiles</include>
+        </obsolete>
     </alledia>
 
     <scriptfile>script.installer.php</scriptfile>
@@ -119,7 +163,7 @@
             <filename>osmap.php</filename>
             <filename>include.php</filename>
             <filename>controller.php</filename>
-            <filename>config.xml</filename>
+            <filename>abstract.script.installer.php</filename>
             <filename>LICENSE.txt</filename>
             <folder>css</folder>
             <folder>elements</folder>

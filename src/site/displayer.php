@@ -215,7 +215,7 @@ class OSMapDisplayer {
                 if ( $node->option ) {
                     if ( !empty($this->jview->extensions[$node->option]) ) {
                          $node->uid = $node->option;
-                        $className = 'xmap_'.$node->option;
+                        $className = 'osmap_'.$node->option;
                         $result = call_user_func_array(array($className, 'getTree'),array(&$this,&$node,&$this->jview->extensions[$node->option]->params));
                     }
                 }

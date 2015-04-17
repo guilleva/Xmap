@@ -32,7 +32,7 @@ if (file_exists(__DIR__ . '/admin/abstract.script.installer.php')) {
     require_once __DIR__ . '/abstract.script.installer.php';
 }
 
-class Com_OSMapsInstallerScript extends AbstractOSMapInstallerScript
+class Com_OSMapInstallerScript extends AbstractOSMapInstallerScript
 {
 
 }

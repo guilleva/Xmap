@@ -176,7 +176,7 @@ class OSMapModelSitemaps extends JModelList
         $query = $db->getQuery(true);
         $query->select('e.*');
         $query->from($db->quoteName('#__extensions'). 'AS e');
-        $query->join('INNER', '#__extensions AS p ON e.element=p.element and p.enabled=0 and p.type=\'plugin\' and p.folder=\'xmap\'');
+        $query->join('INNER', '#__extensions AS p ON e.element=p.element and p.enabled=0 and p.type=\'plugin\' and p.folder=\'osmap\'');
         $query->where('e.type=\'component\' and e.enabled=1');
 
         $db->setQuery($query);
