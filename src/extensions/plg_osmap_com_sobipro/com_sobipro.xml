@@ -7,7 +7,7 @@
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <authorEmail>guille@vargas.co.cr</authorEmail>
     <authorUrl>joomla.vargas.co.cr</authorUrl>
-    <version>3.1.0a1</version>
+    <version>3.1.0a2</version>
     <description>OSMap Plugin for SobiPro component</description>
     <files>
         <filename plugin="com_sobipro">com_sobipro.php</filename>
