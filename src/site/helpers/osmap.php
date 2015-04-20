@@ -137,20 +137,29 @@ class OSMapHelper
         // Get the menu items as a tree.
         $query = $db->getQuery(true);
         $query->select('*');
-        $query->from('#__extensions AS n');
-        $query->where('n.folder = \'osmap\'');
-        $query->where('n.enabled = 1');
+        $query->from('#__extensions');
+        $query->where("folder IN (" . $db->quote('osmap') . ',' . $db->quote('xmap') . ")");
+        $query->where("type = " . $db->quote('plugin'));
+        $query->where('enabled = 1');
 
         // Get the list of menu items.
         $db->setQuery($query);
-        $extensions = $db->loadObjectList('element');
+        $extensions = $db->loadObjectList();
 
-        foreach ($extensions as $element => $extension) {
-            if (file_exists(JPATH_PLUGINS . '/' . $extension->folder . '/' . $element. '/'. $element . '.php')) {
-                require_once(JPATH_PLUGINS . '/' . $extension->folder . '/' . $element. '/'. $element . '.php');
+        foreach ($extensions as $extension) {
+            $path = JPATH_PLUGINS . '/' . $extension->folder . '/' . $extension->element. '/'. $extension->element . '.php';
+
+            if (file_exists($path)) {
+                $extension->className = $extension->folder . '_' . $extension->element;
+
                 $params = new JRegistry($extension->params);
                 $extension->params = $params->toArray();
-                $list[$element] = $extension;
+
+                if (!class_exists($extension->className)) {
+                    require_once($path);
+                }
+
+                $list[$extension->element] = $extension;
             }
         }
 
@@ -167,11 +176,14 @@ class OSMapHelper
     public static function prepareMenuItem($item)
     {
         $extensions = OSMapHelper::getExtensions();
+
         if (!empty($extensions[$item->option])) {
-            $className = 'osmap_' . $item->option;
-            $obj = new $className;
+            $plugin = $extensions[$item->option];
+
+            $obj = new $plugin->className;
+
             if (method_exists($obj, 'prepareMenuItem')) {
-                $obj->prepareMenuItem($item,$extensions[$item->option]->params);
+                $obj->prepareMenuItem($item, $plugin->params);
             }
         }
     }

@@ -211,15 +211,12 @@ class OSMapDisplayer {
                 $node->link             = $item->link;
                 $this->printMenuTree($node,$item->items);
                 $matches=array();
-                //if ( preg_match('#^/?index.php.*option=(com_[^&]+)#',$node->link,$matches) ) {
-                if ( $node->option ) {
-                    if ( !empty($this->jview->extensions[$node->option]) ) {
-                         $node->uid = $node->option;
-                        $className = 'osmap_'.$node->option;
-                        $result = call_user_func_array(array($className, 'getTree'),array(&$this,&$node,&$this->jview->extensions[$node->option]->params));
-                    }
+
+                if ($node->option && !empty($this->jview->extensions[$node->option])) {
+                    $plugin = $this->jview->extensions[$node->option];
+                    $node->uid = $node->option;
+                    $result = call_user_func_array(array($plugin->className, 'getTree'), array(&$this, &$node, &$plugin->params));
                 }
-                //OSMapPlugins::printTree( $this, $node, $this->jview->extensions );    // Determine the menu entry's type and call it's handler
             }
         }
         $this->changeLevel(-1);

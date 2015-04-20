@@ -92,34 +92,41 @@ class OSMapNavigatorDisplayer extends OSMapDisplayer {
             }
 
         }
+
         if ($parent->id) {
             $option = null;
-            if ( preg_match('#^/?index.php.*option=(com_[^&]+)#',$parent->link,$matches) ) {
+
+            if (preg_match('#^/?index.php.*option=(com_[^&]+)#', $parent->link, $matches)) {
                 $option = $matches[1];
             }
+
             $Itemid = JRequest::getInt('Itemid');
+
             if (!$option && $Itemid) {
                 $item = $items->getItem($Itemid);
-                $link_query = parse_url( $item->link );
+                $link_query = parse_url($item->link);
                 parse_str( html_entity_decode($link_query['query']), $link_vars);
+
                 $option = JArrayHelper::getValue($link_vars,'option','');
-                if ( $option ) {
+
+                if ($option) {
                     $parent->link = $item->link;
                 }
             }
-            if ( $option ) {
-                if ( !empty($extensions[$option]) ) {
-                    $parent->uid = $option;
-                    $className = 'osmap_'.$option;
-                    $result = call_user_func_array(array($className, 'getTree'),array(&$this,&$parent,$extensions[$option]->params));
-                }
+
+            if ($option && !empty($extensions[$option])) {
+                $plugin = $extensions[$option];
+                $parent->uid = $option;
+                $result = call_user_func_array(array($plugin->className, 'getTree'), array(&$this, &$parent, $plugin->params));
             }
         }
-        return $this->_list;;
+
+        return $this->_list;
     }
 
     function &getParam($arr, $name, $def) {
-        $var = JArrayHelper::getValue( $arr, $name, $def, '' );
+        $var = JArrayHelper::getValue($arr, $name, $def, '');
+
         return $var;
     }
 }
