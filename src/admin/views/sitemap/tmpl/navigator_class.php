@@ -116,8 +116,19 @@ class OSMapNavigatorDisplayer extends OSMapDisplayer {
 
             if ($option && !empty($extensions[$option])) {
                 $plugin = $extensions[$option];
+
+                // Check if the method is static or not
+                $method       = new ReflectionMethod($plugin->className, 'getTree');
+                $methodParams = array(&$this, &$node, &$plugin->params);
+
+                if ($method->isStatic()) {
+                    $result = call_user_func_array("{$plugin->className}::getTree", $methodParams);
+                } else {
+                    $pluginInstance = new $plugin->className;
+                    $result = call_user_func_array(array($pluginInstance, 'getTree'), $methodParams);
+                }
+
                 $parent->uid = $option;
-                $result = call_user_func_array(array($plugin->className, 'getTree'), array(&$this, &$parent, $plugin->params));
             }
         }
 
