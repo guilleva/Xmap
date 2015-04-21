@@ -204,23 +204,25 @@ class OSMapDisplayer {
                     }
                     break;
             }
-
             if ($excludeExternal || $this->printNode($node)) {
 
-                //Restore the original link
-                $node->link             = $item->link;
+                // Restore the original link
+                $node->link = $item->link;
                 $this->printMenuTree($node,$item->items);
-                $matches=array();
-                //if ( preg_match('#^/?index.php.*option=(com_[^&]+)#',$node->link,$matches) ) {
-                if ( $node->option ) {
-                    if ( !empty($this->jview->extensions[$node->option]) ) {
-                         $node->uid = $node->option;
-                        $className = 'xmap_'.$node->option;
-                        $result = call_user_func_array(array($className, 'getTree'),array(&$this,&$node,&$this->jview->extensions[$node->option]->params));
-                    }
+                $matches = array();
+
+                if ($node->option && !empty($this->jview->extensions[$node->option])) {
+                    $plugin = $this->jview->extensions[$node->option];
+
+                    // Check if the method is static or not
+                    $methodParams = array(&$this, &$node, &$plugin->params);
+
+                    Alledia\Framework\Helper::callMethod($plugin->className, 'getTree', $methodParams);
+
+                    $node->uid = $node->option;
                 }
-                //OSMapPlugins::printTree( $this, $node, $this->jview->extensions );    // Determine the menu entry's type and call it's handler
             }
+
         }
         $this->changeLevel(-1);
     }

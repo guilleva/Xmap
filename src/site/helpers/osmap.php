@@ -87,6 +87,15 @@ class OSMapHelper
                 $item->items = array();
 
                 $params = new JRegistry($item->params);
+
+                if (OSMAP_LICENSE === 'pro') {
+                    $menuItem = new Alledia\OSMap\Pro\Joomla\Item($item);
+
+                    if (!$menuItem->isVisibleForRobots()) {
+                        continue;
+                    }
+                }
+
                 $item->uid = 'itemid'.$item->id;
 
                 if (preg_match('#^/?index.php.*option=(com_[^&]+)#', $item->link, $matches)) {
@@ -106,7 +115,9 @@ class OSMapHelper
                     $item->priority = $menuOptions['priority'];
                     $item->changefreq = $menuOptions['changefreq'];
 
-                    OSMapHelper::prepareMenuItem($item);
+                    if (false === OSMapHelper::prepareMenuItem($item)) {
+                        continue;
+                    }
                 } else {
                     $item->priority = null;
                     $item->changefreq = null;
@@ -137,20 +148,36 @@ class OSMapHelper
         // Get the menu items as a tree.
         $query = $db->getQuery(true);
         $query->select('*');
-        $query->from('#__extensions AS n');
-        $query->where('n.folder = \'xmap\'');
-        $query->where('n.enabled = 1');
+        $query->from('#__extensions');
+        $query->where("folder IN (" . $db->quote('osmap') . ',' . $db->quote('xmap') . ")");
+        $query->where("type = " . $db->quote('plugin'));
+        $query->where('enabled = 1');
 
         // Get the list of menu items.
         $db->setQuery($query);
-        $extensions = $db->loadObjectList('element');
+        $extensions = $db->loadObjectList();
 
-        foreach ($extensions as $element => $extension) {
-            if (file_exists(JPATH_PLUGINS . '/' . $extension->folder . '/' . $element. '/'. $element . '.php')) {
-                require_once(JPATH_PLUGINS . '/' . $extension->folder . '/' . $element. '/'. $element . '.php');
+        foreach ($extensions as $extension) {
+            $path = JPATH_PLUGINS . '/' . $extension->folder . '/' . $extension->element. '/'. $extension->element . '.php';
+
+            if (file_exists($path)) {
+                $extension->className = $extension->folder . '_' . $extension->element;
+
                 $params = new JRegistry($extension->params);
                 $extension->params = $params->toArray();
-                $list[$element] = $extension;
+
+                if (!class_exists($extension->className)) {
+                    require $path;
+
+                    $className = $extension->className;
+
+                    if (method_exists($className, 'getInstance')) {
+                        $instance = $className::getInstance();
+                    }
+
+                }
+
+                $list[$extension->element] = $extension;
             }
         }
 
@@ -167,13 +194,20 @@ class OSMapHelper
     public static function prepareMenuItem($item)
     {
         $extensions = OSMapHelper::getExtensions();
+        $result     = true;
+
         if (!empty($extensions[$item->option])) {
-            $className = 'xmap_' . $item->option;
-            $obj = new $className;
-            if (method_exists($obj, 'prepareMenuItem')) {
-                $obj->prepareMenuItem($item,$extensions[$item->option]->params);
-            }
+            $plugin = $extensions[$item->option];
+
+            // Check if the method is static or not
+            $result = Alledia\Framework\Helper::callMethod($plugin->className, 'prepareMenuItem', array($item, &$plugin->params));
         }
+
+        if ($result === null) {
+            $result = true;
+        }
+
+        return $result;
     }
 
 

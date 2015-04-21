@@ -73,8 +73,12 @@ class OSMapNavigatorDisplayer extends OSMapDisplayer {
                     $node->link = $item->link;
                     $node->expandible = true;
                     $node->selectable=true;
+
                     // Prepare the node link
-                    OSMapHelper::prepareMenuItem($node);
+                    if (false === OSMapHelper::prepareMenuItem($node)) {
+                        continue;
+                    }
+
                     if ( $item->home ) {
                         $node->link = JURI::root();
                     } elseif (substr($item->link,0,9) == 'index.php' && $item->type != 'url' ) {
@@ -92,34 +96,45 @@ class OSMapNavigatorDisplayer extends OSMapDisplayer {
             }
 
         }
+
         if ($parent->id) {
             $option = null;
-            if ( preg_match('#^/?index.php.*option=(com_[^&]+)#',$parent->link,$matches) ) {
+
+            if (preg_match('#^/?index.php.*option=(com_[^&]+)#', $parent->link, $matches)) {
                 $option = $matches[1];
             }
+
             $Itemid = JRequest::getInt('Itemid');
+
             if (!$option && $Itemid) {
                 $item = $items->getItem($Itemid);
-                $link_query = parse_url( $item->link );
+                $link_query = parse_url($item->link);
                 parse_str( html_entity_decode($link_query['query']), $link_vars);
+
                 $option = JArrayHelper::getValue($link_vars,'option','');
-                if ( $option ) {
+
+                if ($option) {
                     $parent->link = $item->link;
                 }
             }
-            if ( $option ) {
-                if ( !empty($extensions[$option]) ) {
-                    $parent->uid = $option;
-                    $className = 'xmap_'.$option;
-                    $result = call_user_func_array(array($className, 'getTree'),array(&$this,&$parent,$extensions[$option]->params));
-                }
+
+            if ($option && !empty($extensions[$option])) {
+                $plugin = $extensions[$option];
+
+                $methodParams = array(&$this, &$node, &$plugin->params);
+
+                $result = Alledia\Framework\Helper::callMethod($plugin->className, 'getTree', $methodParams);
+
+                $parent->uid = $option;
             }
         }
-        return $this->_list;;
+
+        return $this->_list;
     }
 
     function &getParam($arr, $name, $def) {
-        $var = JArrayHelper::getValue( $arr, $name, $def, '' );
+        $var = JArrayHelper::getValue($arr, $name, $def, '');
+
         return $var;
     }
 }

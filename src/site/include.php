@@ -25,6 +25,30 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Alledia\Framework\Joomla\Extension\Helper as ExtensionHelper;
+use Alledia\Framework\Joomla\Extension\Licensed as Licensed;
+
+// Alledia Framework
+if (!defined('ALLEDIA_FRAMEWORK_LOADED')) {
+    $allediaFrameworkPath = JPATH_SITE . '/libraries/allediaframework/include.php';
+
+    if (file_exists($allediaFrameworkPath)) {
+        require_once $allediaFrameworkPath;
+    } else {
+        JFactory::getApplication()
+            ->enqueueMessage('[OSMap] Alledia framework not found', 'error');
+    }
+}
+
+$osmap = new Licensed('OSMap', 'component');
+
+if (!defined('OSMAP_LICENSE')) {
+    $license = $osmap->isPro() ? 'pro' : 'free';
+
+    define('OSMAP_LICENSE', $license);
+}
+
+$osmap->loadLibrary();
+
 require_once JPATH_ADMINISTRATOR . '/components/com_osmap/include.php';
 require_once JPATH_COMPONENT . '/displayer.php';
-

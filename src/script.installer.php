@@ -26,119 +26,13 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-$includePath = __DIR__ . '/admin/library/Installer/include.php';
-if (! file_exists($includePath)) {
-    $includePath = __DIR__ . '/library/Installer/include.php';
+if (file_exists(__DIR__ . '/admin/abstract.script.installer.php')) {
+    require_once __DIR__ . '/admin/abstract.script.installer.php';
+} else {
+    require_once __DIR__ . '/abstract.script.installer.php';
 }
 
-require_once $includePath;
-require_once JPATH_ADMINISTRATOR . '/modules/mod_menu/helper.php';
-
-use Alledia\Installer\AbstractScript;
-
-/**
- * OSMap Installer Script
- *
- * @since  2.4.0
- */
-class Com_OSMapInstallerScript extends AbstractScript
+class Com_OSMapInstallerScript extends AbstractOSMapInstallerScript
 {
-    protected $isXmapDataFound = false;
 
-    /**
-     * @param string                     $type
-     * @param JInstallerAdapterComponent $parent
-     *
-     * @return void
-     */
-    public function postFlight($type, $parent)
-    {
-        $this->isXmapDataFound = $this->lookForXmapData();
-        $this->createDefaultSitemap();
-
-        parent::postFlight($type, $parent);
-    }
-
-    /**
-     * Look for the Xmap data to suggest a data migration
-     *
-     * @return bool True if Xmap data was found
-     */
-    protected function lookForXmapData()
-    {
-        if ($this->tableExists('#__xmap_sitemap')) {
-            $db = JFactory::getDbo();
-
-            // Do we have any Xmap sitemap?
-            $query = $db->getQuery(true)
-                ->select('COUNT(*)')
-                ->from('#__xmap_sitemap');
-            $db->setQuery($query);
-            $total = (int) $db->loadResult();
-
-            return $total > 0;
-        }
-
-        return false;
-    }
-
-    protected function createDefaultSitemap()
-    {
-        $db = JFactory::getDbo();
-
-        // Check if we have any sitemap, otherwise lets create a default one
-        $query = $db->getQuery(true)
-            ->select('COUNT(*)')
-            ->from('#__osmap_sitemap');
-        $db->setQuery($query);
-        $noSitemaps = ((int) $db->loadResult()) === 0;
-
-        if ($noSitemaps) {
-            // Get all menus
-            $menus = ModMenuHelper::getMenus();
-
-            if (!empty($menus)) {
-                $selections = new stdClass;
-                $i = 0;
-
-                foreach ($menus as $menu) {
-                    $selection = new stdClass;
-                    $selection->priority   = 0.5;
-                    $selection->changefreq = 'weekly';
-                    $selection->ordering   = $i++;
-
-                    $selections->{$menu->menutype} = $selection;
-                }
-
-                $attribs = new stdClass;
-                $attribs->showintro             = "1";
-                $attribs->show_menutitle        = "1";
-                $attribs->classname             = "";
-                $attribs->columns               = "";
-                $attribs->exlinks               = "img_blue.gif";
-                $attribs->compress_xml          = "1";
-                $attribs->beautify_xml          = "1";
-                $attribs->include_link          = "1";
-                $attribs->news_publication_name = "";
-
-                $config = JFactory::getConfig();
-
-                $data = array(
-                    'title'      => 'Sitemap',
-                    'alias'      => 'sitemap',
-                    'attribs'    => json_encode($attribs),
-                    'selections' => json_encode($selections),
-                    'is_default' => 1,
-                    'state'      => 1,
-                    'access'     => (int) $config->get('access', 1)
-                );
-
-                JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_osmap/tables');
-
-                $table = JTable::getInstance('Sitemap', 'OSMapTable');
-                $table->bind($data);
-                $table->store();
-            }
-        }
-    }
 }
