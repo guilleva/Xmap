@@ -73,8 +73,12 @@ class OSMapNavigatorDisplayer extends OSMapDisplayer {
                     $node->link = $item->link;
                     $node->expandible = true;
                     $node->selectable=true;
+
                     // Prepare the node link
-                    OSMapHelper::prepareMenuItem($node);
+                    if (false === OSMapHelper::prepareMenuItem($node)) {
+                        continue;
+                    }
+
                     if ( $item->home ) {
                         $node->link = JURI::root();
                     } elseif (substr($item->link,0,9) == 'index.php' && $item->type != 'url' ) {
@@ -117,16 +121,9 @@ class OSMapNavigatorDisplayer extends OSMapDisplayer {
             if ($option && !empty($extensions[$option])) {
                 $plugin = $extensions[$option];
 
-                // Check if the method is static or not
-                $method       = new ReflectionMethod($plugin->className, 'getTree');
                 $methodParams = array(&$this, &$node, &$plugin->params);
 
-                if ($method->isStatic()) {
-                    $result = call_user_func_array("{$plugin->className}::getTree", $methodParams);
-                } else {
-                    $pluginInstance = new $plugin->className;
-                    $result = call_user_func_array(array($pluginInstance, 'getTree'), $methodParams);
-                }
+                $result = Alledia\Framework\Helper::callMethod($plugin->className, 'getTree', $methodParams);
 
                 $parent->uid = $option;
             }

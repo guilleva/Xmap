@@ -2,12 +2,12 @@
 <extension type="plugin" group="osmap" version="1.6" method="upgrade">
     <name>OSMap - Mosets Tree Plugin</name>
     <author>Alledia</author>
-    <creationDate>April 17th, 2015</creationDate>
+    <creationDate>April 21, 2015</creationDate>
     <copyright>Copyright (C) 2015 Open Source Training, LLC. All rights reserved. / Forked from XMap - Guillermo Vargas - guille@vargas.co.cr</copyright>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <authorEmail>guille@vargas.co.cr</authorEmail>
     <authorUrl>joomla.vargas.co.cr</authorUrl>
-    <version>3.1.0a2</version>
+    <version>3.1.0</version>
     <description>OSMAP_MTREE_PLUGIN_DESCRIPTION</description>
     <files>
         <filename plugin="com_mtree">com_mtree.php</filename>

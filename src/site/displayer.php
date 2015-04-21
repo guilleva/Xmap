@@ -204,31 +204,25 @@ class OSMapDisplayer {
                     }
                     break;
             }
-
             if ($excludeExternal || $this->printNode($node)) {
 
-                //Restore the original link
-                $node->link             = $item->link;
+                // Restore the original link
+                $node->link = $item->link;
                 $this->printMenuTree($node,$item->items);
-                $matches=array();
+                $matches = array();
 
                 if ($node->option && !empty($this->jview->extensions[$node->option])) {
                     $plugin = $this->jview->extensions[$node->option];
 
                     // Check if the method is static or not
-                    $method       = new ReflectionMethod($plugin->className, 'getTree');
                     $methodParams = array(&$this, &$node, &$plugin->params);
 
-                    if ($method->isStatic()) {
-                        $result = call_user_func_array("{$plugin->className}::getTree", $methodParams);
-                    } else {
-                        $pluginInstance = new $plugin->className;
-                        $result = call_user_func_array(array($pluginInstance, 'getTree'), $methodParams);
-                    }
+                    Alledia\Framework\Helper::callMethod($plugin->className, 'getTree', $methodParams);
 
                     $node->uid = $node->option;
                 }
             }
+
         }
         $this->changeLevel(-1);
     }

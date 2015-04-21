@@ -71,6 +71,7 @@ class OSMapViewHtml extends JViewLegacy
         }
 
         $this->extensions = $this->get('Extensions');
+
         // Add router helpers.
         $this->item->slug = $this->item->alias ? ($this->item->id . ':' . $this->item->alias) : $this->item->id;
 

@@ -87,6 +87,15 @@ class OSMapHelper
                 $item->items = array();
 
                 $params = new JRegistry($item->params);
+
+                if (OSMAP_LICENSE === 'pro') {
+                    $menuItem = new Alledia\OSMap\Pro\Joomla\Item($item);
+
+                    if (!$menuItem->isVisibleForRobots()) {
+                        continue;
+                    }
+                }
+
                 $item->uid = 'itemid'.$item->id;
 
                 if (preg_match('#^/?index.php.*option=(com_[^&]+)#', $item->link, $matches)) {
@@ -106,7 +115,9 @@ class OSMapHelper
                     $item->priority = $menuOptions['priority'];
                     $item->changefreq = $menuOptions['changefreq'];
 
-                    OSMapHelper::prepareMenuItem($item);
+                    if (false === OSMapHelper::prepareMenuItem($item)) {
+                        continue;
+                    }
                 } else {
                     $item->priority = null;
                     $item->changefreq = null;
@@ -156,7 +167,14 @@ class OSMapHelper
                 $extension->params = $params->toArray();
 
                 if (!class_exists($extension->className)) {
-                    require_once($path);
+                    require $path;
+
+                    $className = $extension->className;
+
+                    if (method_exists($className, 'getInstance')) {
+                        $instance = $className::getInstance();
+                    }
+
                 }
 
                 $list[$extension->element] = $extension;
@@ -176,16 +194,20 @@ class OSMapHelper
     public static function prepareMenuItem($item)
     {
         $extensions = OSMapHelper::getExtensions();
+        $result     = true;
 
         if (!empty($extensions[$item->option])) {
             $plugin = $extensions[$item->option];
 
-            $obj = new $plugin->className;
-
-            if (method_exists($obj, 'prepareMenuItem')) {
-                $obj->prepareMenuItem($item, $plugin->params);
-            }
+            // Check if the method is static or not
+            $result = Alledia\Framework\Helper::callMethod($plugin->className, 'prepareMenuItem', array($item, &$plugin->params));
         }
+
+        if ($result === null) {
+            $result = true;
+        }
+
+        return $result;
     }
 
 

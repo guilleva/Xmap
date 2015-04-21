@@ -40,6 +40,19 @@ require_once JPATH_SITE . '/components/com_content/helpers/query.php';
  */
 class osmap_com_content
 {
+    private static $instance = null;
+
+    public static function getInstance()
+    {
+        if (empty(static::$instance)) {
+            $instance = new self;
+
+            static::$instance = $instance;
+        }
+
+        return static::$instance;
+    }
+
     /**
      * This function is called before a menu item is printed. We use it to set the
      * proper uniqueid for the item
@@ -76,10 +89,33 @@ class osmap_com_content
             case 'category':
                 if ($id) {
                     $node->uid = 'com_contentc' . $id;
+
+                    $query = $db->getQuery(true);
+
+                    if (OSMAP_LICENSE === 'pro') {
+                        $query->select($db->quoteName('metadata'))
+                            ->select($db->quoteName('params'))
+                            ->from($db->quoteName('#__categories'))
+                            ->where($db->quoteName('id') . '=' . (int) $id);
+                        $db->setQuery($query);
+
+                        if (($row = $db->loadObject()) != null) {
+
+                            $category = new Alledia\OSMap\Pro\Joomla\Item($row);
+
+                            if (!$category->isVisibleForRobots()) {
+                                return false;
+                            }
+                        } else {
+                            return false;
+                        }
+                    }
                 } else {
                     $node->uid = 'com_content' . $layout;
                 }
+
                 $node->expandible = true;
+
                 break;
 
             case 'article':
@@ -90,8 +126,10 @@ class osmap_com_content
 
                 $query->select($db->quoteName('created'))
                     ->select($db->quoteName('modified'))
+                    ->select($db->quoteName('metadata'))
+                    ->select($db->quoteName('attribs'))
                     ->from($db->quoteName('#__content'))
-                    ->where($db->quoteName('id').'='.intval($id));
+                    ->where($db->quoteName('id') . '=' . (int) $id);
 
                 if ($params['add_pagebreaks'] || $params['add_images']) {
                     $query->select($db->quoteName('introtext'))
@@ -100,8 +138,17 @@ class osmap_com_content
 
                 $db->setQuery($query);
 
-                if (($row = $db->loadObject()) != NULL) {
+                if (($row = $db->loadObject()) != null) {
                     $node->modified = $row->modified;
+
+                    $row->params = $row->attribs;
+
+                    if (OSMAP_LICENSE === 'pro') {
+                        $content = new Alledia\OSMap\Pro\Joomla\Item($row);
+                        if (!$content->isVisibleForRobots()) {
+                            return false;
+                        }
+                    }
 
                     $text = @$item->introtext . @$item->fulltext;
                     if ($params['add_images']) {
@@ -112,7 +159,10 @@ class osmap_com_content
                         $node->subnodes   = OSMapHelper::getPagebreaks($text,$node->link);
                         $node->expandible = (count($node->subnodes) > 0); // This article has children
                     }
+                } else {
+                    return false;
                 }
+
                 break;
 
             case 'archive':
@@ -123,6 +173,8 @@ class osmap_com_content
                 $node->uid        = 'com_contentfeatured';
                 $node->expandible = false;
         }
+
+        return true;
     }
 
     /**
@@ -141,7 +193,7 @@ class osmap_com_content
         $link_query = parse_url($parent->link);
 
         if (!isset($link_query['query'])) {
-            return;
+            return false;
         }
 
         parse_str(html_entity_decode($link_query['query']), $link_vars);
@@ -269,11 +321,20 @@ class osmap_com_content
                           ->select($db->quoteName('fulltext'))
                           ->select($db->quoteName('alias'))
                           ->select($db->quoteName('catid'))
+                          ->select($db->quoteName('attribs as params'))
+                          ->select($db->quoteName('metadata'))
                           ->from($db->quoteName('#__content'))
-                          ->where($db->quoteName('id').'='.intval($id));
+                          ->where($db->quoteName('id') . '=' . (int) $id);
                     $db->setQuery($query);
 
                     $row = $db->loadObject();
+
+                    if (OSMAP_LICENSE === 'pro') {
+                        $content = new Alledia\OSMap\Pro\Joomla\Item($row);
+                        if (!$content->isVisibleForRobots()) {
+                            return false;
+                        }
+                    }
 
                     $parent->slug = $row->alias ? ($id . ':' . $row->alias) : $id;
                     $parent->link = ContentHelperRoute::getArticleRoute($parent->slug, $row->catid);
@@ -283,6 +344,7 @@ class osmap_com_content
                 }
 
         }
+
         return $result;
     }
 
@@ -312,18 +374,25 @@ class osmap_com_content
 
         $orderby = 'a.lft';
         $query = 'SELECT a.id, a.title, a.alias, a.access, a.path AS route, '
-               . 'a.created_time created, a.modified_time modified '
+               . 'a.created_time created, a.modified_time modified, params, metadata '
                . 'FROM #__categories AS a '
                . 'WHERE '. implode(' AND ',$where)
                . ( $osmap->view != 'xml' ? "\n ORDER BY " . $orderby . "" : '' );
 
         $db->setQuery($query);
-        #echo nl2br(str_replace('#__','jos_',$db->getQuery()));exit;
+
         $items = $db->loadObjectList();
 
         if (count($items) > 0) {
             $osmap->changeLevel(1);
             foreach ($items as $item) {
+                if (OSMAP_LICENSE === 'pro') {
+                    $content = new Alledia\OSMap\Pro\Joomla\Item($item);
+                    if (!$content->isVisibleForRobots()) {
+                        return false;
+                    }
+                }
+
                 $node = new stdclass();
                 $node->id          = $parent->id;
                 $node->uid         = $parent->uid . 'c' . $item->id;
@@ -410,7 +479,7 @@ class osmap_com_content
         }
 
         $query = 'SELECT a.id, a.title, a.alias, a.catid, '
-               . 'a.created created, a.modified modified'
+               . 'a.created created, a.modified modified, attribs as params, metadata'
                . ',a.language'
                . (($params['add_images'] || $params['add_pagebreaks']) ? ',a.introtext, a.fulltext ' : ' ')
                . 'FROM #__content AS a '
@@ -424,12 +493,21 @@ class osmap_com_content
                . ( $params['max_art'] ? "\n LIMIT {$params['max_art']}" : '');
 
         $db->setQuery($query);
-        //echo nl2br(str_replace('#__','mgbj2_',$db->getQuery()));
+
         $items = $db->loadObjectList();
 
         if (count($items) > 0) {
             $osmap->changeLevel(1);
             foreach ($items as $item) {
+
+                if (OSMAP_LICENSE === 'pro') {
+                    $content = new Alledia\OSMap\Pro\Joomla\Item($item);
+
+                    if (!$content->isVisibleForRobots()) {
+                        continue;
+                    }
+                }
+
                 $node = new stdclass();
                 $node->id          = $parent->id;
                 $node->uid         = $parent->uid . 'a' . $item->id;

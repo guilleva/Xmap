@@ -29,22 +29,33 @@ class osmap_com_weblinks
 {
     private static $views = array('categories', 'category');
 
-    private static $enabled = false;
+    private static $enabled = null;
+
+    private static $instance = null;
 
     public function __construct()
     {
-        self::$enabled = JComponentHelper::isEnabled('com_weblinks');
-
-        if (self::$enabled) {
+        if (static::isEnabled()) {
             JLoader::register('WeblinksHelperRoute', JPATH_SITE . '/components/com_weblinks/helpers/route.php');
         }
     }
 
-    public static function getTree($osmap, $parent, &$params)
+    public static function getInstance()
+    {
+        if (empty(static::$instance)) {
+            $instance = new self;
+
+            static::$instance = $instance;
+        }
+
+        return static::$instance;
+    }
+
+    public function getTree($osmap, $parent, &$params)
     {
         $uri = new JUri($parent->link);
 
-        if (!self::$enabled || !in_array($uri->getVar('view'), self::$views)) {
+        if (!static::isEnabled() || !in_array($uri->getVar('view'), static::$views)) {
             return;
         }
 
@@ -79,14 +90,13 @@ class osmap_com_weblinks
         if ($params['link_changefreq'] == -1) {
             $params['link_changefreq'] = $parent->changefreq;
         }
-
         switch ($uri->getVar('view')) {
             case 'categories':
-                self::getCategoryTree($osmap, $parent, $params, $uri->getVar('id'));
+                static::getCategoryTree($osmap, $parent, $params, $uri->getVar('id'));
                 break;
 
             case 'category':
-                self::getlinks($osmap, $parent, $params, $uri->getVar('id'));
+                static::getlinks($osmap, $parent, $params, $uri->getVar('id'));
                 break;
         }
     }
@@ -96,7 +106,7 @@ class osmap_com_weblinks
         $db = JFactory::getDbo();
 
         $query = $db->getQuery(true)
-            ->select(array('c.id', 'c.alias', 'c.title', 'c.parent_id'))
+            ->select(array('c.id', 'c.alias', 'c.title', 'c.parent_id, params, metadata'))
             ->from('#__categories AS c')
             ->where('c.parent_id = ' . $db->quote($parent_id ? $parent_id : 1))
             ->where('c.extension = ' . $db->quote('com_weblinks'))
@@ -121,6 +131,14 @@ class osmap_com_weblinks
         $osmap->changeLevel(1);
 
         foreach ($rows as $row) {
+
+            if (OSMAP_LICENSE === 'pro') {
+                $content = new Alledia\OSMap\Pro\Joomla\Item($row);
+                if (!$content->isVisibleForRobots()) {
+                    continue;
+                }
+            }
+
             $node = new stdclass;
             $node->id         = $parent->id;
             $node->name       = $row->title;
@@ -132,7 +150,7 @@ class osmap_com_weblinks
             $node->link       = WeblinksHelperRoute::getCategoryRoute($row->id);
 
             if ($osmap->printNode($node) !== false) {
-                self::getlinks($osmap, $parent, $params, $row->id);
+                static::getlinks($osmap, $parent, $params, $row->id);
             }
         }
 
@@ -141,7 +159,7 @@ class osmap_com_weblinks
 
     private static function getlinks(&$osmap, &$parent, &$params, $catid)
     {
-        self::getCategoryTree($osmap, $parent, $params, $catid);
+        static::getCategoryTree($osmap, $parent, $params, $catid);
 
         if (!$params['include_links']) {
             return;
@@ -151,7 +169,7 @@ class osmap_com_weblinks
         $now = JFactory::getDate('now', 'UTC')->toSql();
 
         $query = $db->getQuery(true)
-            ->select(array('w.id', 'w.alias', 'w.title'))
+            ->select(array('w.id', 'w.alias', 'w.title', 'params', 'metadata'))
             ->from('#__weblinks AS w')
             ->where('w.catid = ' . $db->Quote($catid))
             ->where('w.state = 1')
@@ -177,6 +195,13 @@ class osmap_com_weblinks
         $osmap->changeLevel(1);
 
         foreach ($rows as $row) {
+            if (OSMAP_LICENSE === 'pro') {
+                $content = new Alledia\OSMap\Pro\Joomla\Item($row);
+                if (!$content->isVisibleForRobots()) {
+                    continue;
+                }
+            }
+
             $node = new stdclass;
             $node->id         = $parent->id;
             $node->name       = $row->title;
@@ -190,5 +215,14 @@ class osmap_com_weblinks
         }
 
         $osmap->changeLevel(-1);
+    }
+
+    protected static function isEnabled()
+    {
+        if (null === static::$enabled) {
+            static::$enabled = JComponentHelper::isEnabled('com_weblinks');
+        }
+
+        return (bool) static::$enabled;
     }
 }
