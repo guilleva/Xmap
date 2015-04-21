@@ -321,7 +321,7 @@ class osmap_com_content
                           ->select($db->quoteName('fulltext'))
                           ->select($db->quoteName('alias'))
                           ->select($db->quoteName('catid'))
-                          ->select($db->quoteName('attribs as params'))
+                          ->select($db->quoteName('attribs') . ' AS params')
                           ->select($db->quoteName('metadata'))
                           ->from($db->quoteName('#__content'))
                           ->where($db->quoteName('id') . '=' . (int) $id);
