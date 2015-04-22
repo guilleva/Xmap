@@ -62,10 +62,9 @@ class OSMapViewXml extends JViewLegacy
 
         // force to not display errors on XML sitemap
         @ini_set('display_errors', 0);
-        # Increase memory and max execution time for XML sitemaps to make it work
-        # with very large sites
-        @ini_set('memory_limit','512M');
-        @ini_set('max_execution_time',300);
+
+        # Increase max execution time for XML sitemaps to make it work with very large sites
+        @ini_set('max_execution_time', 300);
 
         $layout = $this->getLayout();
 
