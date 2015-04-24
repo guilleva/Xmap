@@ -1,0 +1,26 @@
+{
+    "name"             : "Alledia/OSMap",
+    "description"      : "OSMap",
+    "minimum-stability": "stable",
+    "license"          : "GPL-2+",
+    "type"             : "joomla.component",
+    "extra"            : {
+        "element"        : "com_osmap",
+        "element-short"  : "osmap",
+        "name"           : "OSMap",
+        "client"         : "administrator",
+        "package-license": "free"
+    },
+    "authors": [
+        {
+            "name" : "Alledia.com",
+            "email": "support@alledia.com"
+        }
+    ],
+    "require": {
+        "php": ">= 5.3"
+    },
+    "require-dev": {
+        "codeception/codeception": "~2.0"
+    }
+}

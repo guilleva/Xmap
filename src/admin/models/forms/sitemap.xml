@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fields addpath="administrator/components/com_osmap/elements">
+        <field
+            id="id"
+            name="id"
+            type="hidden"
+            label="OSMAP_ID_LABEL"
+            size="10"
+            default="0"
+            required="true"
+            readonly="true"/>
+
+        <field
+            id="title"
+            name="title"
+            type="text"
+            label="JGLOBAL_TITLE"
+            description="JFIELD_TITLE_DESC"
+            class="inputbox input-xlarge"
+            labelclass="control-label"
+            size="30"
+            required="true" />
+
+        <field
+            id="alias"
+            name="alias"
+            type="text"
+            label="JFIELD_ALIAS_LABEL"
+            description="JFIELD_ALIAS_DESC"
+            class="inputbox"
+            labelclass="control-label"
+            size="30"
+            default=""/>
+
+        <field
+            id="introtext"
+            name="introtext"
+            type="editor"
+            class="inputbox"
+            labelclass="control-label"
+            label="OSMAP_INTROTEXT_LABEL"
+            description="OSMAP_INTROTEXT_DESC"
+            filter="safehtml"
+            default=""/>
+
+        <field
+            id="is_default"
+            name="is_default"
+            type="hidden"
+            class="inputbox"
+            size="1"
+            default="0" />
+
+        <field
+            id="state"
+            name="state"
+            type="list"
+            label="JSTATUS"
+            description="JFIELD_PUBLISHED_DESC"
+            class="inputbox"
+            labelclass="control-label"
+            size="1"
+            default="1">
+            <option
+                value="1">
+                JPUBLISHED</option>
+            <option
+                value="0">
+                JUNPUBLISHED</option>
+        </field>
+
+        <field
+            id="created"
+            name="created"
+            type="calendar"
+            label="OSMAP_CREATED_LABEL"
+            description="OSMAP_CREATED_DESC"
+            class="inputbox"
+            labelclass="control-label"
+            size="16"
+            format="%Y-%m-%d %H-%M-%S" />
+
+        <field
+            id="access"
+            name="access"
+            type="accesslevel"
+            label="JFIELD_ACCESS_LABEL"
+            description="JFIELD_ACCESS_DESC"
+            class="inputbox"
+            labelclass="control-label"
+            size="1" />
+
+        <field
+            id="count_html"
+            name="hits"
+            type="text"
+            label="OSMAP_HITSHTML_LABEL"
+            description="OSMAP_HITS_DESC"
+            class="readonly"
+            labelclass="control-label"
+            size="6"
+            readonly="true"
+            filter="unset"/>
+
+        <field
+            id="count_xml"
+            name="hits"
+            type="text"
+            label="OSMAP_HITSXML_LABEL"
+            description="OSMAP_HITS_DESC"
+            class="readonly"
+            labelclass="control-label"
+            size="6"
+            readonly="true"
+            filter="unset"/>
+
+        <field
+            id="visits_html"
+            name="visits_html"
+            type="text"
+            label="OSMAP_VISITSHTML_LABEL"
+            description="OSMAP_HITS_DESC"
+            class="readonly"
+            labelclass="control-label"
+            size="6"
+            readonly="true"
+            filter="unset"/>
+
+        <field
+            id="visits_xml"
+            name="visits_xml"
+            type="text"
+            label="OSMAP_VISITSXML_LABEL"
+            description="OSMAP_HITS_DESC"
+            class="readonly"
+            labelclass="control-label"
+            size="6"
+            readonly="true"
+            filter="unset"/>
+
+        <field
+            id="selections"
+            name="selections"
+            type="OSMapMenus"
+            label="OSMAP_MENUASSIGMENT_LABEL"
+            description="OSMAP_MENUASSIGMENT_DESC"
+            class="inputbox"
+            labelclass="control-label"
+            multiple="multiple"
+            array="true"
+            size="5"/>
+
+        <field
+            id="selections_priority"
+            name="selections_priority"
+            type="hidden"
+            class="inputbox"
+            labelclass="control-label"
+            multiple="multiple"
+            size="5"/>
+
+        <field
+            id="selections_changefreq"
+            name="selections_changefreq"
+            type="hidden"
+            class="inputbox"
+            labelclass="control-label"
+            multiple="multiple"
+            size="5"/>
+    </fields>
+
+    <fields name="attribs">
+        <fieldset name="general" label="OSMAP_FIELDSET_OPTIONS">
+
+            <field
+                name="showintro"
+                type="radio"
+                class="btn-group"
+                labelclass="control-label"
+                label="OSMAP_ATTRIBS_SHOW_INTRO_LABEL"
+                description="OSMAP_ATTRIBS_SHOW_INTRO_DESC"
+                default="1">
+                <option
+                    value="0">No</option>
+                <option
+                    value="1">Yes</option>
+            </field>
+
+            <field
+                name="show_menutitle"
+                type="radio"
+                class="btn-group"
+                label="OSMAP_ATTRIBS_SHOW_MENU_TITLE_LABEL"
+                description="OSMAP_ATTRIBS_SHOW_MENU_TITLE_DESC"
+                labelclass="control-label"
+                default="1">
+                <option
+                    value="0">No</option>
+                <option
+                    value="1">Yes</option>
+            </field>
+
+            <field
+                name="classname"
+                type="text"
+                default=""
+                label="OSMAP_ATTRIBS_CLASSNAME_LABEL"
+                labelclass="control-label"
+                description="OSMAP_ATTRIBS_CLASSNAME_DESC" />
+
+            <field
+                name="columns"
+                type="text"
+                default=""
+                labelclass="control-label"
+                label="OSMAP_ATTRIBS_COLUMNS_LABEL"
+                description="OSMAP_ATTRIBS_COLUMNS_DESC" />
+
+            <field
+                name="exlinks"
+                type="radio"
+                class="btn-group"
+                labelclass="control-label"
+                label="OSMAP_ATTRIBS_EXTERNAL_LINKS_LABEL"
+                description="OSMAP_ATTRIBS_EXTERNAL_LINKS_DESC"
+                default="1">
+                <option
+                    value="0">No</option>
+                <option
+                    value="1">Yes</option>
+            </field>
+
+            <field
+                name="exlinks"
+                type="list"
+                label="OSMAP_ATTRIBS_EXTERNAL_LINKS_IMAGE_LABEL"
+                description="OSMAP_ATTRIBS_EXTERNAL_LINKS_IMAGE_DESC"
+                labelclass="control-label"
+                default="1">
+                <option
+                    value="img_blue.gif">img_blue.gif</option>
+                <option
+                    value="img_green.gif">img_green.gif</option>
+                <option
+                    value="img_grey.gif">img_grey.gif</option>
+                <option
+                    value="img_orange.gif">img_orange.gif</option>
+                <option
+                    value="img_red.gif">img_red.gif</option>
+                <option
+                    value="txt_blue.gif">txt_blue.gif</option>
+                <option
+                    value="txt_green.gif">txt_green.gif</option>
+                <option
+                    value="txt_grey.gif">txt_grey.gif</option>
+                <option
+                    value="txt_orange.gif">txt_orange.gif</option>
+                <option
+                    value="txt_red.gif">txt_red.gif</option>
+            </field>
+
+            <field
+                name="compress_xml"
+                type="radio"
+                class="btn-group"
+                label="OSMAP_ATTRIBS_COMPRESS_XML_LABEL"
+                description="OSMAP_ATTRIBS_COMPRESS_XML_DESC"
+                labelclass="control-label"
+                default="1">
+                <option
+                    value="0">No</option>
+                <option
+                    value="1">Yes</option>
+            </field>
+
+            <field
+                name="beautify_xml"
+                type="radio"
+                class="btn-group"
+                label="OSMAP_ATTRIBS_BEAUTIFY_XML_LABEL"
+                description="OSMAP_ATTRIBS_BEAUTIFY_XML_DESC"
+                labelclass="control-label"
+                default="1">
+                <option
+                    value="0">No</option>
+                <option
+                    value="1">Yes</option>
+            </field>
+
+            <field
+                name="include_link"
+                type="radio"
+                class="btn-group"
+                label="OSMAP_ATTRIBS_INCLUDE_LINK_LABEL"
+                description="OSMAP_ATTRIBS_INCLUDE_LINK_DESC"
+                labelclass="control-label"
+                default="1">
+                <option
+                    value="0">No</option>
+                <option
+                    value="1">Yes</option>
+            </field>
+        </fieldset>
+
+        <fieldset name="news" label="OSMAP_FIELDSET_NEWS_OPTIONS">
+          <field
+              name="news_publication_name"
+              type="text"
+              default=""
+              labelclass="control-label"
+              label="OSMAP_ATTRIBS_NEWS_PUBLICATION_NAME_LABEL"
+              description="OSMAP_ATTRIBS_NEWS_PUBLICATION_NAME_DESC" />
+<!--
+          <field
+              name="news_posts_keywords"
+              type="text"
+              default=""
+              label="OSMAP_ATTRIBS_NEWS_POSTS_KEYWORDS_LABEL"
+              description="OSMAP_ATTRIBS_NEWS_POSTS_KEYWORDS_DESC" />
+-->
+        </fieldset>
+    </fields>
+
+</form>

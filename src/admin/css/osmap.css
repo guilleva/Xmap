@@ -1,0 +1,35 @@
+.osmap-menu-options {
+    border-bottom: 1px solid #CCC;
+    padding:10px;
+}
+
+.osmap-menu-options label {
+    cursor:move;
+}
+
+.osmap-menu-options input, .osmap-menu-options select {
+    margin: 5px 5px 2px 0px;
+}
+
+ul.ul_sortable {
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+
+ul.ul_sortable li {
+    cursor:move;
+    background-color: #eee;
+    margin:5px;
+    padding: 5px;
+}
+
+ul.ul_sortable li label.menu_label {
+    font-weight: bold;
+    display: inline-block;
+    margin-bottom: 0px;
+}
+
+ul.ul_sortable input[type="checkbox"] {
+    margin: 0 3px 0 3px;
+}

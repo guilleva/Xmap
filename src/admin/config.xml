@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+    <fieldset
+        name="general"
+        label="COM_OSMAP_GENERAL"
+        addfieldpath="/administrator/components/com_osmap/form/fields">
+
+        <field
+            name="display_legacy_stats"
+            type="list"
+            default="0"
+            label="COM_OSMAP_DISPLAY_LEGACY_STATS_LABEL"
+            description="COM_OSMAP_DISPLAY_LEGACY_STATS_DESC">
+                <option value="1">JYES</option>
+                <option value="0">JNO</option>
+        </field>
+
+        <field
+            type="customfooter"
+            name="customfooter"
+            media="com_osmap"
+            showgoproad="0"
+            jedurl="http://extensions.joomla.org/extensions/extension/structure-a-navigation/site-map/osmap" />
+    </fieldset>
+</config>

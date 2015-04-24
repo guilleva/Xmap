@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension type="plugin" group="osmap" version="2.5" method="upgrade">
+    <name>OSMAP_PLUGIN_K2</name>
+    <author>Mohammad Hasani Eghtedar</author>
+    <creationDate>April 22, 2015</creationDate>
+    <copyright>Copyright (C) 2015 Open Source Training, LLC. All rights reserved. / Forked from XMap - Guillermo Vargas - guille@vargas.co.cr / Copyright (C) Mohammad Hasani Eghtedar - m.h.eghtedar@gmail.com</copyright>
+    <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+    <authorEmail>support@alledia.com</authorEmail>
+    <authorUrl>https://www.alledia.com</authorUrl>
+    <version>3.1.0</version>
+    <description>OSMAP_PLUGIN_K2_DESC</description>
+    <files>
+        <filename plugin="com_k2">com_k2.php</filename>
+    </files>
+    <languages folder="language">
+        <language tag="en-GB">en-GB/en-GB.plg_osmap_com_k2.ini</language>
+        <language tag="en-GB">en-GB/en-GB.plg_osmap_com_k2.sys.ini</language>
+    </languages>
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field name="subcategories" type="list" default="no" label="OSMAP_K2_FOLLOW_SUBCATEGORIES" description="OSMAP_K2_FOLLOW_SUBCATEGORIES_DESC">
+                    <option value="yes">JYES</option>
+                    <option value="no">JNO</option>
+                </field>
+                <field name="showk2items" type="list" default="always" label="OSMAP_K2_SHOW_ITEMS_LABEL" description="OSMAP_K2_SHOW_ITEMS_LABEL_DESC">
+                    <option value="0">OSMAP_OPTION_NEVER</option>
+                    <option value="1">OSMAP_OPTION_ALWAYS</option>
+                    <option value="2">OSMAP_OPTION_XML_ONLY</option>
+                    <option value="3">OSMAP_OPTION_HTML_ONLY</option>
+                </field>
+                <field name="suppressdups" type="list" default="no" label="OSMAP_K2_SUPRESS_DUPLICATES" description="OSMAP_K2_SUPRESS_DUPLICATES_DESC">
+                    <option value="yes">JYES</option>
+                    <option value="no">JNO</option>
+                </field>
+            </fieldset>
+            <fieldset name="xml">
+                <field name="priority" type="list" default="0.5" label="OSMAP_K2_PRIORITY" description="OSMAP_K2_PRIORITY_DESC">
+                    <option value="-1">OSMAP_OPTION_USE_PARENT_MENU</option>
+                    <option value="0.0">0.0</option>
+                    <option value="0.1">0.1</option>
+                    <option value="0.2">0.2</option>
+                    <option value="0.3">0.3</option>
+                    <option value="0.4">0.4</option>
+                    <option value="0.5">0.5</option>
+                    <option value="0.6">0.6</option>
+                    <option value="0.7">0.7</option>
+                    <option value="0.8">0.8</option>
+                    <option value="0.9">0.9</option>
+                    <option value="1">1</option>
+                </field>
+                <field name="changefreq" type="list" default="weekly" label="OSMAP_K2_CHANGEFREQ_LABEL" description="OSMAP_K2_CHANGEFREQ_LABEL_DESC">
+                    <option value="-1">OSMAP_OPTION_USE_PARENT_MENU</option>
+                    <option value="always">OSMAP_OPTION_ALWAYS</option>
+                    <option value="hourly">OSMAP_OPTION_HOURLY</option>
+                    <option value="daily">OSMAP_OPTION_DAILY</option>
+                    <option value="weekly">OSMAP_OPTION_WEEKLY</option>
+                    <option value="monthly">OSMAP_OPTION_MONTHLY</option>
+                    <option value="yearly">OSMAP_OPTION_YEARLY</option>
+                    <option value="never">OSMAP_OPTION_NEVER</option>
+                </field>
+            </fieldset>
+        </fields>
+    </config>
+</extension>
