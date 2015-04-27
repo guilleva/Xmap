@@ -220,9 +220,11 @@ class osmap_com_weblinks
     protected static function isEnabled()
     {
         if (null === static::$enabled) {
-            static::$enabled = JComponentHelper::isEnabled('com_weblinks');
+            $db = JFactory::getDbo();
+            $db->setQuery('Select enabled From #__extensions Where name=' . $db->quote('com_weblinks'));
+            static::$enabled = (bool)$db->loadResult();
         }
 
-        return (bool) static::$enabled;
+        return static::$enabled;
     }
 }
