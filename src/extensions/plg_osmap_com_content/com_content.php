@@ -483,7 +483,7 @@ class osmap_com_content
                . ',a.language'
                . (($params['add_images'] || $params['add_pagebreaks']) ? ',a.introtext, a.fulltext ' : ' ')
                . 'FROM #__content AS a '
-               . ($catid =='featured'? 'LEFT JOIN #__content_frontpage AS fp ON a.id = fp.content_id ' : ' ')
+               . 'LEFT JOIN #__content_frontpage AS fp ON a.id = fp.content_id '
                . 'WHERE ' . implode(' AND ',$where) . ' AND '
                . '      (a.publish_up = ' . $params['nullDate']
                . ' OR a.publish_up <= ' . $params['nowDate'] . ') AND '
