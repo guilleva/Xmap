@@ -97,3 +97,4 @@ if ($this->displayer->canEdit) {
 
     <span class="article_separator">&nbsp;</span>
 </div>
+<div class="clearfix"></div>
