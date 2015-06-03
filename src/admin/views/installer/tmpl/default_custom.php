@@ -25,6 +25,10 @@
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
+
+$app = JFactory::getApplication();
+$link = '<a href="index.php?option=com_plugins&view=plugins&filter.search=OSMap">' . JText::_('COM_OSMAP_INSTALLER_PLUGINS_PAGE') . '</a>';
+$app->enqueueMessage(JText::sprintf('COM_OSMAP_INSTALLER_GOTOPLUGINS', $link), 'warning');
 ?>
 
 <?php if ($this->isXmapDataFound) : ?>
