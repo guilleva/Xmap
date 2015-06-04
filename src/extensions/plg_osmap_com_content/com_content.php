@@ -155,7 +155,7 @@ class osmap_com_content
                         if (OSMAP_LICENSE === 'pro') {
                             $node->images = Alledia\OSMap\Pro\Joomla\Helper::getImages($text, JArrayHelper::getValue($params, 'max_images', 1000));
                         } else {
-                            $node->images = OSMapHelper::getImages($text,JArrayHelper::getValue($params, 'max_images', 1000));
+                            $node->images = OSMapHelper::getImages($text, JArrayHelper::getValue($params, 'max_images', 1000));
                         }
                     }
 
