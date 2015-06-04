@@ -152,7 +152,11 @@ class osmap_com_content
 
                     $text = @$item->introtext . @$item->fulltext;
                     if ($params['add_images']) {
-                        $node->images = OSMapHelper::getImages($text,JArrayHelper::getValue($params, 'max_images', 1000));
+                        if (OSMAP_LICENSE === 'pro') {
+                            $node->images = Alledia\OSMap\Pro\Joomla\Helper::getImages($text, JArrayHelper::getValue($params, 'max_images', 1000));
+                        } else {
+                            $node->images = OSMapHelper::getImages($text,JArrayHelper::getValue($params, 'max_images', 1000));
+                        }
                     }
 
                     if ($params['add_pagebreaks']) {
@@ -537,7 +541,11 @@ class osmap_com_content
                 $text = @$item->introtext . @$item->fulltext;
 
                 if ($params['add_images']) {
-                    $node->images = OSMapHelper::getImages($text,$params['max_images']);
+                    if (OSMAP_LICENSE === 'pro') {
+                        $node->images = Alledia\OSMap\Pro\Joomla\Helper::getImages($text, JArrayHelper::getValue($params, 'max_images', 1000));
+                    } else {
+                        $node->images = OSMapHelper::getImages($text, JArrayHelper::getValue($params, 'max_images', 1000));
+                    }
                 }
 
                 if ($params['add_pagebreaks']) {
