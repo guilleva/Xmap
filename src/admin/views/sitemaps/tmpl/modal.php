@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 JHtml::_('behavior.tooltip');
 
-$function = JRequest::getVar('function', 'jSelectSitemap');
+$function = JRequest::getString('function', 'jSelectSitemap');
 $n = count($this->items);
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_osmap&view=sitemaps');?>" method="post" name="adminForm">

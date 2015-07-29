@@ -29,5 +29,5 @@ defined('_JEXEC') or die('Restricted access');
 require_once 'include.php';
 
 $controller = JControllerLegacy::getInstance('OSMap');
-$controller->execute(JFactory::getApplication()->input->get('task'));
+$controller->execute(JFactory::getApplication()->input->getCmd('task'));
 $controller->redirect();

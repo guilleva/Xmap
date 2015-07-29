@@ -78,7 +78,7 @@ class OSMapModelSitemaps extends JModelList
     protected function populateState($ordering = null, $direction = null)
     {
         // Adjust the context to support modal layouts.
-        if ($layout = JRequest::getVar('layout')) {
+        if ($layout = JRequest::getCmd('layout')) {
             $this->context .= '.' . $layout;
         }
 

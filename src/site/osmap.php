@@ -30,5 +30,5 @@ jimport('legacy.controller.legacy');
 require_once __DIR__ . '/include.php';
 
 $controller = JControllerLegacy::getInstance('OSMap');
-$controller->execute(JRequest::getVar('task'));
+$controller->execute(JRequest::getCmd('task'));
 $controller->redirect();
