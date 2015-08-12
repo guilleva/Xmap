@@ -222,7 +222,7 @@ class OSMapHelper
         $matches = $matches1 = $matches2 = array();
         // Look <img> tags
         preg_match_all('/<img[^>]*?(?:(?:[^>]*src="(?P<src>[^"]+)")|(?:[^>]*alt="(?P<alt>[^"]+)")|(?:[^>]*title="(?P<title>[^"]+)"))+[^>]*>/i', $text, $matches1, PREG_SET_ORDER);
-        // Loog for <a> tags with href to images
+        // Look for <a> tags with href to images
         preg_match_all('/<a[^>]*?(?:(?:[^>]*href="(?P<src>[^"]+\.(gif|png|jpg|jpeg))")|(?:[^>]*alt="(?P<alt>[^"]+)")|(?:[^>]*title="(?P<title>[^"]+)"))+[^>]*>/i', $text, $matches2, PREG_SET_ORDER);
         $matches = array_merge($matches1,$matches2);
         if (count($matches)) {
