@@ -29,7 +29,7 @@ if ($this->displayer->canEdit) {
                 el.onclick = function(){
                     if (this && this.rel) {
                         options = JSON.decode(this.rel);
-                        this.onComplete = checkExcludeResult
+                        this.onComplete = checkExcludeResult;
                         var myAjax = new Request.JSON({
                             url:'{$ajaxurl}',
                             onSuccess: checkExcludeResult.bind(this)
