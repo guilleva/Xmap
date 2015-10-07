@@ -223,7 +223,7 @@ class osmap_com_content
             || $osmap->view == 'navigator');
         $params['expand_featured'] = $expand_featured;
 
-        //----- Set expand_featured param
+        //----- Set include_archived param
         $include_archived = JArrayHelper::getValue($params, 'include_archived', 2);
         $include_archived = ( $include_archived == 1
             || ( $include_archived == 2 && $osmap->view == 'xml')
@@ -311,7 +311,7 @@ class osmap_com_content
                 }
                 break;
             case 'archive':
-                if ($params['expand_featured']) {
+                if ($params['include_archived']) {
                     $result = self::includeCategoryContent($osmap, $parent, 'archived', $params,$parent->id);
                 }
                 break;
