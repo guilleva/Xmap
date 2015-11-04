@@ -128,7 +128,10 @@ class OSMapViewSitemaps extends JViewLegacy
 
         JToolBarHelper::divider();
 
-        JToolbarHelper::preferences('com_osmap');
+        // Access check.
+        if (JFactory::getUser()->authorise('core.admin', 'com_osmap')) {
+            JToolbarHelper::preferences('com_osmap');
+        }
 
         if (class_exists('JHtmlSidebar')){
             JHtmlSidebar::addFilter(

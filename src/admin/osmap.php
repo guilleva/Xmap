@@ -26,6 +26,11 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+// Access check
+if (!JFactory::getUser()->authorise('core.manage', 'com_osmap')) {
+    return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+}
+
 require_once 'include.php';
 
 $controller = JControllerLegacy::getInstance('OSMap');
