@@ -175,9 +175,8 @@ class OSMapXmlDisplayer extends OSMapDisplayer
                 echo "</news:news>\n";
             }
             echo '</url>', "\n";
-        } else {
-            return empty($this->_links[$link]);
         }
+
         return true;
     }
 
