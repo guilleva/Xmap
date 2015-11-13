@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="2.5" method="upgrade">
     <name>com_osmap</name>
-    <creationDate>November 05 2015</creationDate>
+    <creationDate>November 13 2015</creationDate>
     <copyright>Copyright (C) 2015 Open Source Training, LLC. All rights reserved. / Forked from XMap - Guillermo Vargas - guille@vargas.co.cr</copyright>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <author>Alledia</author>
     <authorEmail>support@alledia.com</authorEmail>
     <authorUrl>http://www.alledia.com</authorUrl>
-    <version>3.1.7</version>
+    <version>3.1.8</version>
     <description>OSMap - the easiest way to create a Joomla sitemap.</description>
 
     <alledia>
