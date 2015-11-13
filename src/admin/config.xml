@@ -19,7 +19,7 @@
             type="customfooter"
             name="customfooter"
             media="com_osmap"
-            showgoproad="0"
+            showgoproad="1"
             jedurl="http://extensions.joomla.org/extensions/extension/structure-a-navigation/site-map/osmap" />
     </fieldset>
 
