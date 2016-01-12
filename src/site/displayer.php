@@ -75,7 +75,7 @@ class OSMapDisplayer {
         $this->canEdit  = false;
     }
 
-    public function printNode( &$node ) {
+    public function printNode($node) {
         return false;
     }
 
