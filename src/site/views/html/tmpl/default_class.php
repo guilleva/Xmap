@@ -51,7 +51,7 @@ class OSMapHtmlDisplayer extends OSMapDisplayer {
     * @param object $node
     * @return boolean
     */
-    function printNode( &$node )
+    function printNode($node)
     {
 
         $out = '';
