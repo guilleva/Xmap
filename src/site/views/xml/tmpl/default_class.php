@@ -197,37 +197,4 @@ class OSMapXmlDisplayer extends OSMapDisplayer
         }
         return $value;
     }
-
-    /**
-     * Called on every level change
-     *
-     * @param int $level
-     * @return boolean
-     */
-    function changeLevel($level)
-    {
-        return true;
-    }
-
-    /**
-     * Function called before displaying the menu
-     *
-     * @param stdclass $menu The menu node item
-     * @return boolean
-     */
-    function startMenu($menu)
-    {
-        return true;
-    }
-
-    /**
-     * Function called after displaying the menu
-     *
-     * @param stdclass $menu The menu node item
-     * @return boolean
-     */
-    function endMenu($menu)
-    {
-        return true;
-    }
 }
