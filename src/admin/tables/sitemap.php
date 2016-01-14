@@ -90,7 +90,7 @@ class OSMapTableSitemap extends JTable
     /**
      * @var int
      */
-    var $state = 0;
+    var $state = 1; //JPUBLISHED's value is 1
 
     /**
      * @var int
