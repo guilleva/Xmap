@@ -34,14 +34,6 @@ class OSMapHtmlDisplayer extends OSMapDisplayer {
     function setJView($view)
     {
         parent::setJView($view);
-
-        $columns = $this->sitemap->params->get('columns',0);
-        if( $columns > 1 ) { // calculate column widths
-            $total = count($view->items);
-            $columns = $total < $columns? $total : $columns;
-            $this->_width    = (100 / $columns) - 1;
-            $this->sitemap->params->set('columns',$columns);
-        }
     }
 
     /**
@@ -161,8 +153,6 @@ class OSMapHtmlDisplayer extends OSMapDisplayer {
     }
 
     function startMenu(&$menu) {
-        if( $this->sitemap->params->get('columns') > 1 )            // use columns
-            echo '<div style="float:left;width:'.$this->_width.'%;">';
         if( $this->sitemap->params->get('show_menutitle') )         // show menu titles
             echo '<h2 class="menutitle">'.$menu->name.'</h2>';
     }
@@ -170,8 +160,5 @@ class OSMapHtmlDisplayer extends OSMapDisplayer {
     function endMenu(&$menu) {
         $sitemap=&$this->sitemap;
         $this->_closeItem='';
-        if( $sitemap->params->get('columns')> 1 ) {
-            echo "</div>\n";
-        }
     }
 }
