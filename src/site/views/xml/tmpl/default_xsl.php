@@ -31,7 +31,6 @@ header('Content-Disposition: inline');
 
 $showTitle = $this->canEdit && JRequest::getBool('filter_showtitle', 0);
 $showExcluded = $this->canEdit && JRequest::getBool('filter_showexcluded', 0);
-$userToken = JSession::getFormToken();
 
 echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 ?>
@@ -446,8 +445,8 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 		            <input type="submit" name="Submit" class="btn btn-primary" value="Log out"/>
 		            <input type="hidden" name="option" value="com_users"/>
 		            <input type="hidden" name="task" value="user.logout"/>
-		            <input type="hidden" name="return" value="aHR0cDovL2xvY2FsaG9zdDo4ODg4L2pvb21sYTEvaW5kZXgucGhw"/>
-		            <input type="hidden" name="<?php echo $userToken; ?>" value="1"/>	</div>
+		            <input type="hidden" name="return" value="<?php echo base64_encode(JRoute::_('index.php')); ?>"/>
+		            <input type="hidden" name="<?php echo JSession::getFormToken(); ?>" value="1"/>	</div>
             </form>
             <p dir="ltr"><b><?php echo JText::_('COM_OSMAP_XML_SITEMAP_URL'); ?></b>: <?php echo $sitemapUrl; ?></p>
             <div id="filter_options">
