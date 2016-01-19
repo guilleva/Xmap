@@ -21,7 +21,6 @@ if ($this->displayer->canEdit) {
 
     $css = '.osmapexcl img{ border:0px; }'."\n";
     $css .= '.osmapexcloff { text-decoration:line-through; }';
-    //$css .= "\n.".$this->item->classname .' li {float:left;}';
 
     $js = "
         window.addEvent('domready',function (){

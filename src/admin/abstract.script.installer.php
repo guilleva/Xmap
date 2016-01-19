@@ -122,8 +122,6 @@ class AbstractOSMapInstallerScript extends AbstractScript
                 $attribs = new stdClass;
                 $attribs->showintro             = "1";
                 $attribs->show_menutitle        = "1";
-                $attribs->classname             = "";
-                $attribs->columns               = "";
                 $attribs->exlinks               = "img_blue.gif";
                 $attribs->compress_xml          = "1";
                 $attribs->beautify_xml          = "1";

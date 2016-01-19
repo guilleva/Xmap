@@ -202,22 +202,6 @@
             </field>
 
             <field
-                name="classname"
-                type="text"
-                default=""
-                label="OSMAP_ATTRIBS_CLASSNAME_LABEL"
-                labelclass="control-label"
-                description="OSMAP_ATTRIBS_CLASSNAME_DESC" />
-
-            <field
-                name="columns"
-                type="text"
-                default=""
-                labelclass="control-label"
-                label="OSMAP_ATTRIBS_COLUMNS_LABEL"
-                description="OSMAP_ATTRIBS_COLUMNS_DESC" />
-
-            <field
                 name="exlinks"
                 type="radio"
                 class="btn-group"
