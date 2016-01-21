@@ -188,7 +188,7 @@ class OSMapDisplayer {
                         // If this is an internal Joomla link, ensure the Itemid is set.
                         $node->link = $node->link.'&Itemid='.$node->id;
                     } elseif( strpos($node->link, JURI::base()) === false ) {
-                        $excludeExternal = $this->view;
+                        $excludeExternal = true;
                     }
                     break;
                 case 'alias':
