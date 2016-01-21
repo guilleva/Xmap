@@ -272,6 +272,19 @@
                     value="1">Yes</option>
             </field>
 
+            <field
+                name="debug_osmap"
+                type="radio"
+                class="btn-group"
+                label="OSMAP_ATTRIBS_DEBUG_OSMAP_LABEL"
+                description="OSMAP_ATTRIBS_DUBUG_OSMAP_DESC"
+                labelclass="control-label"
+                default="0">
+                <option
+                    value="0">No</option>
+                <option
+                    value="1">Yes</option>
+            </field>
         </fieldset>
 
         <fieldset name="news" label="OSMAP_FIELDSET_NEWS_OPTIONS">
