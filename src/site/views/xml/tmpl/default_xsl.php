@@ -174,6 +174,21 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
         padding:2px;
         float: left;
     }
+    .btn {
+        float: right;
+        padding: 7px 15px;
+        margin-top: -8px;
+        border: 0 none;
+        border-radius: 5px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        background-color: #525252;
+        color: #fff;
+        cursor: pointer;
+    }
+    .btn:focus, .btn:active:focus, .btn.active:focus {
+        outline: 0 none;
+    }
 <?php $doc = JFactory::getDocument(); if ($doc->direction == 'rtl') { ?>
     body {
         font-family: Tahoma;
@@ -425,6 +440,14 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
             <?php else: ?>
             <?php $sitemapUrl = JUri::base(true).'/'.str_replace('&','&amp;',$sitemapUrl); ?>
             <p><?php echo JText::_('COM_OSMAP_XML_SITEMAP_HELP'); ?></p>
+            <form action="../index.php" method="post" id="login-form" class="form-vertical">
+	            <div class="logout-button">
+		            <input type="submit" name="Submit" class="btn btn-primary" value="Log out"/>
+		            <input type="hidden" name="option" value="com_users"/>
+		            <input type="hidden" name="task" value="user.logout"/>
+		            <input type="hidden" name="return" value="<?php echo base64_encode(JRoute::_('index.php')); ?>"/>
+		            <input type="hidden" name="<?php echo JSession::getFormToken(); ?>" value="1"/>	</div>
+            </form>
             <p dir="ltr"><b><?php echo JText::_('COM_OSMAP_XML_SITEMAP_URL'); ?></b>: <?php echo $sitemapUrl; ?></p>
             <div id="filter_options">
                 <form method="get" action="<?php echo JRoute::_('index.php?option=com_osmap&view=xml'); ?>">
