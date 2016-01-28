@@ -14,7 +14,16 @@ $params = $this->item->params;
 
 $live_site = substr_replace(JURI::root(), "", -1, 1);
 
-header('Content-type: text/xml; charset=utf-8');
+if ($this->item->params->get('debug_osmap', "0") == "0") {
+    @ini_set('display_errors', 0);
+    header('Content-type: text/xml; charset=utf-8');
+}
+else {
+    @error_reporting(E_ALL);
+    @ini_set('display_errors', 1);
+    @ini_set('display_startup_errors', 1); 
+    header('Content-type: text/txt; charset=utf-8');
+}
 
 echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 if (($this->item->params->get('beautify_xml', 1) == 1) && !$this->displayer->isNews) {

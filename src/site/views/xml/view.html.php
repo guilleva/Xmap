@@ -60,9 +60,6 @@ class OSMapViewXml extends JViewLegacy
         $model = $this->getModel('Sitemap');
         $this->setModel($model);
 
-        // force to not display errors on XML sitemap
-        @ini_set('display_errors', 0);
-
         # Increase max execution time for XML sitemaps to make it work with very large sites
         @ini_set('max_execution_time', 300);
 

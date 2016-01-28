@@ -125,6 +125,7 @@ class AbstractOSMapInstallerScript extends AbstractScript
                 $attribs->exlinks               = "img_blue.gif";
                 $attribs->compress_xml          = "1";
                 $attribs->beautify_xml          = "1";
+                $attribs->debug_osmap           = "0";
                 $attribs->news_publication_name = "";
 
                 $config = JFactory::getConfig();
