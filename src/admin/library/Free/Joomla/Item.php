@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   OSMap
- * @copyright 2015 Open Source Training, LLC. All rights reserved..
+ * @copyright 2016 Open Source Training, LLC. All rights reserved..
  * @author    Alledia <support@alledia.com>
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  *
