@@ -124,7 +124,6 @@ class OSMapDisplayer {
         if ($module) {
             $title = $module->title;
         }
-            
         return $title;
     }
 
@@ -199,7 +198,7 @@ class OSMapDisplayer {
                     break;
             }
             if ($excludeExternal || $this->printNode($node)) {
-                
+
                 // Restore the original link
                 $node->link = $item->link;
                 $this->printMenuTree($node,$item->items);

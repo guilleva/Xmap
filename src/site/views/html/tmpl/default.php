@@ -60,7 +60,9 @@ if ($this->displayer->canEdit) {
 }
 ?>
 <div id="osmap">
-    <h1><?php echo $this->item->title; ?></h1>
+<?php if ($params->get('show_page_heading', 1) && $params->get('page_heading') != '') : ?>
+    <h1><?php echo $this->escape($params->get('page_heading')); ?></h1>
+<?php endif; ?>
 
 <?php if ($params->get('access-edit') || $params->get('show_title') ||  $params->get('show_print_icon') || $params->get('show_email_icon')) : ?>
     <ul>
