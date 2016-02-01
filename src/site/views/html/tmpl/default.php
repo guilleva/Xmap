@@ -60,11 +60,7 @@ if ($this->displayer->canEdit) {
 }
 ?>
 <div id="osmap">
-<?php if ($params->get('show_page_heading', 1) && $params->get('page_heading') != '') : ?>
-    <h1>
-        <?php echo $this->escape($params->get('page_heading')); ?>
-    </h1>
-<?php endif; ?>
+    <h1><?php echo $this->item->title; ?></h1>
 
 <?php if ($params->get('access-edit') || $params->get('show_title') ||  $params->get('show_print_icon') || $params->get('show_email_icon')) : ?>
     <ul>
@@ -91,7 +87,7 @@ if ($this->displayer->canEdit) {
 <?php if ($params->get('showintro', 1) )  : ?>
     <?php echo $this->item->introtext; ?>
 <?php endif; ?>
-
+    
     <?php echo $this->loadTemplate('items'); ?>
 
     <span class="article_separator">&nbsp;</span>
