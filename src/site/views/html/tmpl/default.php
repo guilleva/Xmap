@@ -87,7 +87,7 @@ if ($this->displayer->canEdit) {
 <?php if ($params->get('showintro', 1) )  : ?>
     <?php echo $this->item->introtext; ?>
 <?php endif; ?>
-    
+
     <?php echo $this->loadTemplate('items'); ?>
 
     <span class="article_separator">&nbsp;</span>

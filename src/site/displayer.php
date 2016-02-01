@@ -98,7 +98,6 @@ class OSMapDisplayer {
              * workaround
              */
             $node->name = $this->getMenuTitle($menutype); // Get the name of this menu
-            $this->jview->set('menutitle', $node->name);
 
             $this->startMenu($node);
             $this->printMenuTree($node, $items);
@@ -200,6 +199,7 @@ class OSMapDisplayer {
                     break;
             }
             if ($excludeExternal || $this->printNode($node)) {
+                
                 // Restore the original link
                 $node->link = $item->link;
                 $this->printMenuTree($node,$item->items);
