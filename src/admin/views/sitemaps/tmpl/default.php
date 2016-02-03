@@ -35,8 +35,8 @@ if(version_compare(JVERSION,'3.0.0','ge')) {
 $n = count($this->items);
 
 $baseUrl = JUri::root();
-
 $version = new JVersion;
+var_dump($this->items);
 
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_osmap&view=sitemaps');?>" method="post" name="adminForm" id="adminForm">
@@ -77,6 +77,9 @@ $version = new JVersion;
                     <th width="10%">
                         <?php echo JHtml::_('grid.sort',  'OSMAP_HEADING_ACCESS', 'access_level', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
                     </th>
+                    <th width="15%" class="center">
+                        <?php echo JText::_('OSMAP_HEADING_XML_DEBUG_STATUS'); ?>
+                    </th>
                     <th width="190" class="center">
                         <?php echo JText::_('OSMAP_HEADING_SITEMAP_LINKS'); ?>
                     </th>
@@ -109,6 +112,11 @@ $version = new JVersion;
             </tfoot>
             <tbody>
             <?php foreach ($this->items as $i => $item) :
+                
+                //converting attribs to array
+                $registry = new JRegistry('_default');
+                $registry->loadString($item->attribs);
+                $item->attribs = $registry->toArray();
 
                 if ($this->displayLegacyStats) {
                     $now = JFactory::getDate()->toUnix();
@@ -167,6 +175,9 @@ $version = new JVersion;
                     </td>
                     <td>
                         <?php echo $this->escape($item->access_level); ?>
+                    </td>
+                    <td class="center">
+                        <?php echo JHtml::_('jgrid.publish', $item->attribs["debug_osmap"], $i, 'debug.', true, 'cb', true, true); ?>
                     </td>
                     <td class="center small">
                         <a href="<?php echo $baseUrl. 'index.php?option=com_osmap&amp;view=xml&tmpl=component&id='.$item->id; ?>" target="_blank" title="<?php echo JText::_('OSMAP_XML_LINK_TOOLTIP', true); ?>"><?php echo JText::_('OSMAP_XML_LINK'); ?><span class="icon-out-2"></span></a>

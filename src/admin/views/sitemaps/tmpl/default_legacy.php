@@ -82,6 +82,9 @@ $version = new JVersion;
                 <th width="10%">
                     <?php echo JHtml::_('grid.sort',  'OSMAP_HEADING_ACCESS', 'access_level', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
                 </th>
+                <th width="15%" class="center">
+                    <?php echo JText::_('OSMAP_HEADING_XML_DEBUG_STATUS'); ?>
+                </th>
                 <th width="190" class="center">
                     <?php echo JText::_('OSMAP_HEADING_SITEMAP_LINKS'); ?>
                 </th>
@@ -171,6 +174,9 @@ $version = new JVersion;
                 </td>
                 <td>
                     <?php echo $this->escape($item->access_level); ?>
+                </td>
+                <td class="center">
+                    <?php echo JHtml::_('jgrid.published', $item->params->get('debug_osmap'), $i, 'sitemaps.'); ?>
                 </td>
                 <td class="center small">
                     <a href="<?php echo $baseUrl. 'index.php?option=com_osmap&amp;view=xml&tmpl=component&id='.$item->id; ?>" target="_blank" title="<?php echo JText::_('OSMAP_XML_LINK_TOOLTIP', true); ?>"><?php echo JText::_('OSMAP_XML_LINK'); ?><span class="icon-out-2"></span></a>
