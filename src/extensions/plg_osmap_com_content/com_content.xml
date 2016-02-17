@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension type="plugin" group="osmap" version="1.6" method="upgrade">
     <name>OSMap - Content Plugin</name>
-    <creationDate>April 22, 2015</creationDate>
+    <creationDate>February 17, 2016</creationDate>
     <copyright>Copyright (C) 2016 Open Source Training, LLC. All rights reserved. / Forked from XMap - Guillermo Vargas - guille@vargas.co.cr</copyright>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <author>Alledia</author>
     <authorEmail>support@alledia.com</authorEmail>
     <authorUrl>http://www.alledia.com</authorUrl>
-    <version>3.1.0</version>
+    <version>3.2.2</version>
     <description>OSMAP_CONTENT_PLUGIN_DESCRIPTION</description>
     <files>
         <filename plugin="com_content">com_content.php</filename>
