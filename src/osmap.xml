@@ -49,6 +49,12 @@
                 group="osmap"
                 publish="com_mtree:*"
                 element="com_mtree">plg_osmap_com_mtree</extension>
+                
+            <extension
+                type="plugin"
+                group="osmap"
+                publish="com_oscampus:*"
+                element="com_oscampus">plg_osmap_com_oscampus</extension>
 
             <extension
                 type="plugin"

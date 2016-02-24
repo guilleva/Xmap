@@ -157,6 +157,7 @@ class AbstractOSMapInstallerScript extends AbstractScript
             'com_k2',
             'com_kunena',
             'com_mtree',
+            'com_oscampus',
             'com_sobipro',
             'com_virtuemart',
             'com_weblinks'
