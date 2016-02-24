@@ -3,7 +3,9 @@
     <name>OSMap - OSCampus Plugin</name>
     <author>Alledia</author>
     <creationDate>April 22, 2015</creationDate>
-    <copyright>Copyright (C) 2016 Open Source Training, LLC. All rights reserved. / Forked from XMap - Guillermo Vargas - guille@vargas.co.cr</copyright>
+    <copyright>Copyright (C) 2016 Open Source Training, LLC. All rights reserved. / Forked from XMap - Guillermo Vargas
+        - guille@vargas.co.cr
+    </copyright>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <authorEmail>support@alledia.com</authorEmail>
     <authorUrl>http://www.alledia.com</authorUrl>
@@ -21,16 +23,31 @@
     <config>
         <fields name="params">
             <fieldset name="basic">
-                <field name="include_links" type="list" default="1" label="OSMAP_WL_SETTING_SHOW_LINKS_LABEL" description="OSMAP_WL_SETTING_SHOW_LINKS_DESC">
+                <field
+                    name="include_links"
+                    type="list"
+                    default="1"
+                    label="OSMAP_WL_SETTING_SHOW_LINKS_LABEL"
+                    description="OSMAP_WL_SETTING_SHOW_LINKS_DESC">
                     <option value="0">OSMAP_OPTION_NEVER</option>
                     <option value="1">OSMAP_OPTION_ALWAYS</option>
                     <option value="2">OSMAP_OPTION_XML_ONLY</option>
                     <option value="3">OSMAP_OPTION_HTML_ONLY</option>
                 </field>
-                <field name="max_links" type="text" default="" label="OSMAP_WL_SETTING_MAX_LINKS_LABEL" description="OSMAP_WL_SETTING_MAX_LINKS_DESC" />
+                <field
+                    name="max_links"
+                    type="text"
+                    default=""
+                    label="OSMAP_WL_SETTING_MAX_LINKS_LABEL"
+                    description="OSMAP_WL_SETTING_MAX_LINKS_DESC"/>
             </fieldset>
             <fieldset name="xml">
-                <field name="cat_priority" type="list" default="-1" label="OSMAP_WL_CATEGORY_PRIORITY_LABEL" description="OSMAP_WL_CATEGORY_PRIORITY_DESC">
+                <field
+                    name="cat_priority"
+                    type="list"
+                    default="-1"
+                    label="OSMAP_WL_CATEGORY_PRIORITY_LABEL"
+                    description="OSMAP_WL_CATEGORY_PRIORITY_DESC">
                     <option value="-1">OSMAP_OPTION_USE_PARENT_MENU</option>
                     <option value="0.0">0.0</option>
                     <option value="0.1">0.1</option>
@@ -44,7 +61,12 @@
                     <option value="0.9">0.9</option>
                     <option value="1">1</option>
                 </field>
-                <field name="cat_changefreq" type="list" default="-1" label="OSMAP_WL_CATEGORY_CHANGEFREQ_LABEL" description="OSMAP_WL_CATEGORY_CHANGEFREQ_DESC">
+                <field
+                    name="cat_changefreq"
+                    type="list"
+                    default="-1"
+                    label="OSMAP_WL_CATEGORY_CHANGEFREQ_LABEL"
+                    description="OSMAP_WL_CATEGORY_CHANGEFREQ_DESC">
                     <option value="-1">OSMAP_OPTION_USE_PARENT_MENU</option>
                     <option value="always">OSMAP_OPTION_ALWAYS</option>
                     <option value="hourly">OSMAP_OPTION_HOURLY</option>
@@ -54,7 +76,12 @@
                     <option value="yearly">OSMAP_OPTION_YEARLY</option>
                     <option value="never">OSMAP_OPTION_NEVER</option>
                 </field>
-                <field name="link_priority" type="list" default="-1" label="OSMAP_WL_LINK_PRIORITY_LABEL" description="OSMAP_WL_LINK_PRIORITY_DESC">
+                <field
+                    name="link_priority"
+                    type="list"
+                    default="-1"
+                    label="OSMAP_WL_LINK_PRIORITY_LABEL"
+                    description="OSMAP_WL_LINK_PRIORITY_DESC">
                     <option value="-1">OSMAP_OPTION_USE_PARENT_MENU</option>
                     <option value="0.0">0.0</option>
                     <option value="0.2">0.2</option>
@@ -67,7 +94,12 @@
                     <option value="0.9">0.9</option>
                     <option value="1">1</option>
                 </field>
-                <field name="link_changefreq" type="list" default="-1" label="OSMAP_WL_LINK_CHANGEFREQ_LABEL" description="OSMAP_WL_LINK_CHANGEFREQ_DESC">
+                <field
+                    name="link_changefreq"
+                    type="list"
+                    default="-1"
+                    label="OSMAP_WL_LINK_CHANGEFREQ_LABEL"
+                    description="OSMAP_WL_LINK_CHANGEFREQ_DESC">
                     <option value="-1">OSMAP_OPTION_USE_PARENT_MENU</option>
                     <option value="always">OSMAP_OPTION_ALWAYS</option>
                     <option value="hourly">OSMAP_OPTION_HOURLY</option>

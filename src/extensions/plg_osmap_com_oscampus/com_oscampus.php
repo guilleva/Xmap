@@ -28,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');
 class osmap_com_oscampus
 {
     private static $option = 'com_oscampus';
-    
+
     private static $views = array('pathways', 'course');
 
     private static $enabled = null;
@@ -57,19 +57,28 @@ class osmap_com_oscampus
     {
         $uri = new JUri($parent->link);
 
-        if (!static::isEnabled() || !in_array($uri->getVar('view'), static::$views) || $uri->getVar('option') !== static::$option) {
+        if (!static::isEnabled()
+            || !in_array($uri->getVar('view'), static::$views)
+            || $uri->getVar('option') !== static::$option
+        ) {
             return;
-        } 
+        }
 
-        $params['groups']              = implode(',', JFactory::getUser()->getAuthorisedViewLevels());
+        $params['groups'] = implode(',', JFactory::getUser()->getAuthorisedViewLevels());
 
-        $params['language_filter']     = JFactory::getApplication()->getLanguageFilter();
+        $params['language_filter'] = JFactory::getApplication()->getLanguageFilter();
 
-        $params['include_links']       = JArrayHelper::getValue($params, 'include_links', 1);
-        $params['include_links']       = ($params['include_links'] == 1 || ($params['include_links'] == 2 && $osmap->view == 'xml') || ($params['include_links'] == 3 && $osmap->view == 'html'));
+        $params['include_links'] = JArrayHelper::getValue($params, 'include_links', 1);
+        $params['include_links'] = ($params['include_links'] == 1
+            || ($params['include_links'] == 2 && $osmap->view == 'xml')
+            || ($params['include_links'] == 3 && $osmap->view == 'html')
+        );
 
-        $params['show_unauth']         = JArrayHelper::getValue($params, 'show_unauth', 0);
-        $params['show_unauth']         = ($params['show_unauth'] == 1 || ($params['show_unauth'] == 2 && $osmap->view == 'xml') || ($params['show_unauth'] == 3 && $osmap->view == 'html'));
+        $params['show_unauth'] = JArrayHelper::getValue($params, 'show_unauth', 0);
+        $params['show_unauth'] = ($params['show_unauth'] == 1
+            || ($params['show_unauth'] == 2 && $osmap->view == 'xml')
+            || ($params['show_unauth'] == 3 && $osmap->view == 'html')
+        );
 
         $params['category_priority']   = JArrayHelper::getValue($params, 'category_priority', $parent->priority);
         $params['category_changefreq'] = JArrayHelper::getValue($params, 'category_changefreq', $parent->changefreq);
@@ -96,21 +105,21 @@ class osmap_com_oscampus
             case 'pathways':
                 static::printPathwayLinks($osmap, $parent, $params);
                 break;
-                
+
             case 'course':
                 static::getCourselinks($osmap, $parent, $params);
                 break;
-        }         
+        }
     }
-    
+
     private static function printPathwayLinks(&$osmap, &$parent, &$params)
     {
         if (!$params['include_links']) {
             return;
         }
 
-        $db = JFactory::getDbo();
-        $viewLevels = JFactory::getUser()->getAuthorisedViewLevels();
+        $db            = JFactory::getDbo();
+        $viewLevels    = JFactory::getUser()->getAuthorisedViewLevels();
         $pathwaysQuery = $db->getQuery(true)
             ->select(
                 array(
@@ -125,16 +134,16 @@ class osmap_com_oscampus
                     'access IN (' . join(',', $viewLevels) . ')'
                 )
             );
-            
+
         $pathwayItems = $db->setQuery($pathwaysQuery)->loadObjectList();
-        
+
         if (empty($pathwayItems)) {
             return;
         }
-        
+
         foreach ($pathwayItems as $pathwayItem) {
             $osmap->changeLevel(1);
-            $node = new stdclass;
+            $node             = new stdclass;
             $node->id         = $parent->id;
             $node->name       = $pathwayItem->title;
             $node->uid        = $parent->uid . '_' . $pathwayItem->id;
@@ -154,8 +163,8 @@ class osmap_com_oscampus
             return;
         }
 
-        $db = JFactory::getDbo();
-        $viewLevels = JFactory::getUser()->getAuthorisedViewLevels();
+        $db                = JFactory::getDbo();
+        $viewLevels        = JFactory::getUser()->getAuthorisedViewLevels();
         $courseLessonQuery = $db->getQuery(true)
             ->select(
                 array(
@@ -179,30 +188,32 @@ class osmap_com_oscampus
                     'course.released <= NOW()'
                 )
             );
-            
+
         $courseItems = $db->setQuery($courseLessonQuery)->loadObjectList();
-        
+
         if (empty($courseItems)) {
             return;
         }
-        
+
+        $classItems  = array();
+        $lessonItems = array();
         foreach ($courseItems as $courseItem) {
-            $cid = $courseItem->courses_id;
-            $lessonPub = $courseItem->published;
-            $lid = $courseItem->id;
+            $cid          = $courseItem->courses_id;
+            $lessonPub    = $courseItem->published;
+            $lid          = $courseItem->id;
             $classItems[] = array(
                 'option' => 'com_oscampus',
-                'view' => 'course',
-                'cid' => $cid,
+                'view'   => 'course',
+                'cid'    => $cid,
                 'cTitle' => $courseItem->courseTitle
             );
-            
+
             if ($lessonPub === '1') {
-                $lessonItems[] = array (
+                $lessonItems[] = array(
                     'option' => 'com_oscampus',
-                    'view' => 'lesson',
-                    'cid' => $cid,
-                    'lid' => $lid,
+                    'view'   => 'lesson',
+                    'cid'    => $cid,
+                    'lid'    => $lid,
                     'lTitle' => $courseItem->lessonTitle
                 );
             }
@@ -210,17 +221,17 @@ class osmap_com_oscampus
         static::printCourseLinks($osmap, $parent, $params, $classItems, $lessonItems);
 
     }
-    
+
     private static function printCourseLinks(&$osmap, &$parent, &$params, $classItems, $lessonItems)
     {
-        $classItems = array_unique($classItems, SORT_REGULAR);
+        $classItems  = array_unique($classItems, SORT_REGULAR);
         $lessonItems = array_unique($lessonItems, SORT_REGULAR);
 
         foreach ($classItems as $classItem) {
             $classQuery = $classItem;
             unset($classQuery['cTitle']);
             $osmap->changeLevel(1);
-            $node = new stdclass;
+            $node             = new stdclass;
             $node->id         = $parent->id;
             $node->name       = $classItem['cTitle'];
             $node->uid        = $parent->uid . '_' . $classItem['cid'];
@@ -234,8 +245,8 @@ class osmap_com_oscampus
                 $lessonQuery = $lessonItem;
                 unset($lessonQuery['lTitle']);
                 $osmap->changeLevel(1);
-                if($classItem['cid'] == $lessonItem['cid']) {
-                    $node = new stdclass;
+                if ($classItem['cid'] == $lessonItem['cid']) {
+                    $node             = new stdclass;
                     $node->id         = $parent->id;
                     $node->name       = $lessonItem['lTitle'];
                     $node->uid        = $parent->uid . '_' . $lessonItem['lid'];
@@ -243,7 +254,7 @@ class osmap_com_oscampus
                     $node->priority   = $params['link_priority'];
                     $node->changefreq = $params['link_changefreq'];
                     $node->link       = 'index.php?' . http_build_query($lessonQuery);
-                    $osmap->printNode($node); 
+                    $osmap->printNode($node);
                 }
                 $osmap->changeLevel(-1);
             }
