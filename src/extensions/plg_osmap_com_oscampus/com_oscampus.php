@@ -27,21 +27,29 @@ defined('_JEXEC') or die('Restricted access');
 
 class osmap_com_oscampus
 {
-    private static $option = 'com_oscampus';
+    /*
+    * @var string Value for $_GET param 'option'
+    */
+    protected static $option = 'com_oscampus';
 
-    private static $views = array('pathways', 'course');
+    /*
+    * @var array view types to add links too
+    */
+    protected static $views = array('pathways', 'course');
 
+    /*
+    * @var boolean stores if plugin is enabled
+    */
     private static $enabled = null;
 
+    /*
+    * @var object stores instance of self
+    */
     private static $instance = null;
 
-    public function __construct()
-    {
-        if (static::isEnabled()) {
-            JLoader::register('OSCampusHelperRoute', JPATH_SITE . '/components/com_oscampus/helpers/pathway.php');
-        }
-    }
-
+    /*
+    * @return instance of this class
+    */
     public static function getInstance()
     {
         if (empty(static::$instance)) {
@@ -53,6 +61,14 @@ class osmap_com_oscampus
         return static::$instance;
     }
 
+    /*
+    * Runs through tree, checks if view is equal with
+    * current link then runs method for that view
+    *
+    * @param OSMapXmlDisplayer $osmap
+    * @param stdClass $parent (current osmap link)
+    * @param array $params (values form admin settings)
+    */
     public function getTree($osmap, $parent, &$params)
     {
         $uri = new JUri($parent->link);
@@ -112,7 +128,14 @@ class osmap_com_oscampus
         }
     }
 
-    private static function printPathwayLinks(&$osmap, &$parent, &$params)
+    /*
+    * Prints Links that are associated with pathways to osmap
+    *
+    * @param OSMapXmlDisplayer $osmap
+    * @param stdClass $parent (current osmap link)
+    * @param array $params (values form admin settings)
+    */
+    protected static function printPathwayLinks($osmap, $parent, $params)
     {
         if (!$params['include_links']) {
             return;
@@ -150,14 +173,22 @@ class osmap_com_oscampus
             $node->browserNav = $parent->browserNav;
             $node->priority   = $params['link_priority'];
             $node->changefreq = $params['link_changefreq'];
-            $node->link       = 'index.php?option=com_oscampus&view=pathways&pid=' . $pathwayItem->id;
+            $node->link       = 'index.php?option='.static::$option.'&view=pathways&pid=' . $pathwayItem->id;
             $osmap->printNode($node);
             $osmap->changeLevel(-1);
         }
 
     }
 
-    private static function getCourseLinks(&$osmap, &$parent, &$params)
+    /*
+    * Gets course links (along with lesson links)
+    * that need to be printed to osmap
+    *
+    * @param OSMapXmlDisplayer $osmap
+    * @param stdClass $parent (current osmap link)
+    * @param array $params (values form admin settings)
+    */
+    protected static function getCourseLinks($osmap, $parent, $params)
     {
         if (!$params['include_links']) {
             return;
@@ -202,7 +233,7 @@ class osmap_com_oscampus
             $lessonPub    = $courseItem->published;
             $lid          = $courseItem->id;
             $classItems[] = array(
-                'option' => 'com_oscampus',
+                'option' => static::$option,
                 'view'   => 'course',
                 'cid'    => $cid,
                 'cTitle' => $courseItem->courseTitle
@@ -210,7 +241,7 @@ class osmap_com_oscampus
 
             if ($lessonPub === '1') {
                 $lessonItems[] = array(
-                    'option' => 'com_oscampus',
+                    'option' => static::$option,
                     'view'   => 'lesson',
                     'cid'    => $cid,
                     'lid'    => $lid,
@@ -222,8 +253,19 @@ class osmap_com_oscampus
 
     }
 
-    private static function printCourseLinks(&$osmap, &$parent, &$params, $classItems, $lessonItems)
+    /*
+    * Prints links that are classes and lessons to osmap
+    * Also orders them in class and then lessons associated with that class
+    *
+    * @param OSMapXmlDisplayer $osmap
+    * @param stdClass $parent (current osmap link)
+    * @param array $params (values form admin settings)
+    * @param array $classItems (values needed to create link node)
+    * @param array $lessonItems (values needed to create link node)
+    */
+    protected static function printCourseLinks($osmap, $parent, $params, $classItems, $lessonItems)
     {
+        //making sure there is no duplicate classes and lessons printed
         $classItems  = array_unique($classItems, SORT_REGULAR);
         $lessonItems = array_unique($lessonItems, SORT_REGULAR);
 
@@ -262,6 +304,11 @@ class osmap_com_oscampus
         }
     }
 
+    /*
+    * Checks if plugin is enabled
+    *
+    * @return boolean static::$enabled
+    */
     protected static function isEnabled()
     {
         if (null === static::$enabled) {
