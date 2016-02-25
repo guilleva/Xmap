@@ -623,6 +623,6 @@ class osmap_com_content
         //$orderby .= $primary . ' ' . $secondary . ' a.created ';
         $orderby .=  $secondary . ' a.created ';
 
-        return $orderby;
+        return str_replace('m.', 'a.', $orderby);
     }
 }
