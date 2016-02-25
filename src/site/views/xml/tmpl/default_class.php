@@ -132,7 +132,7 @@ class OSMapXmlDisplayer extends OSMapDisplayer
                 if ($this->isImages) {
                     foreach ($node->images as $image) {
                         echo '<image:image>', "\n";
-                        echo '<image:loc>', $image->src, '</image:loc>', "\n";
+                        echo '<image:loc>', htmlspecialchars($image->src, ENT_QUOTES, 'UTF-8'), '</image:loc>', "\n";
                         if ($image->title) {
                             $image->title = str_replace('&', '&amp;', html_entity_decode($image->title, ENT_NOQUOTES, 'UTF-8'));
                             echo '<image:title>', $image->title, '</image:title>', "\n";
