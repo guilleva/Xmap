@@ -2,8 +2,12 @@
 ###################################
 .*
 *~
+*.bak
+build.properties
+
 !.gitignore
 !.gitkeep
+!.htaccess
 
 # Icon must ends with two \r.
 Icon
@@ -14,13 +18,8 @@ Icon
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
-
-# Folder config file
 Desktop.ini
-
-# Recycle Bin used on file shares
 $RECYCLE.BIN/
-
 
 # Eclipse #
 ###########
@@ -46,19 +45,10 @@ nb-configuration.xml
 # Phing #
 #########
 packages/*
-!.gitkeep
 
 # misc other files #
 ####################
 _notes/
 error_log
-
 config.codekit
-.DS_Store
-phing/.DS_Store
-vendor
-
-build.properties
-composer.lock
-
 tests/_output/*
