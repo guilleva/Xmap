@@ -53,6 +53,12 @@
             <extension
                 type="plugin"
                 group="osmap"
+                publish="com_oscampus:*"
+                element="com_oscampus">plg_osmap_com_oscampus</extension>
+
+            <extension
+                type="plugin"
+                group="osmap"
                 publish="com_sobipro:*"
                 element="com_sobipro">plg_osmap_com_sobipro</extension>
 
