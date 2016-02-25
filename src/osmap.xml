@@ -49,7 +49,7 @@
                 group="osmap"
                 publish="com_mtree:*"
                 element="com_mtree">plg_osmap_com_mtree</extension>
-                
+
             <extension
                 type="plugin"
                 group="osmap"
