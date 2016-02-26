@@ -29,7 +29,6 @@ defined('_JEXEC') or die('Restricted access');
 use Alledia\Framework\Factory;
 
 jimport('joomla.application.component.view');
-JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html/debug.php');
 
 # For compatibility with older versions of Joola 2.5
 if (!class_exists('JViewLegacy')){
@@ -112,8 +111,6 @@ class OSMapViewSitemaps extends JViewLegacy
         $doc->addStyleDeclaration('.icon-48-sitemap {background-image: url(components/com_osmap/images/osmap-icon.png);}');
         JToolBarHelper::custom('sitemaps.publish', 'publish.png', 'publish_f2.png', 'JTOOLBAR_Publish', true);
         JToolBarHelper::custom('sitemaps.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
-        JToolBarHelper::custom('debug.publish', 'publish.png', 'publish_f2.png', 'JTOOLBAR_Publish', true);
-        JToolBarHelper::custom('debug.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
 
         if (version_compare($version->getShortVersion(), '3.0.0', '>=')) {
             JToolBarHelper::title(JText::_('OSMAP_SITEMAPS_TITLE'), 'tree-2');

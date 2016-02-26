@@ -69,6 +69,32 @@ class OSMapModelSitemap extends JModelAdmin
         $params = JComponentHelper::getParams('com_osmap');
         $this->setState('params', $params);
     }
+    
+    public function enabled($cid, $attr, $value) {
+            $db = JFactory::getDbo();
+        
+            $query = $db->getQuery(true)
+                ->select('attribs')
+                ->from('#__osmap_sitemap')
+                ->where('id=' . $cid)
+                ->setLimit('1');
+        
+            $jsonString = $db->setQuery($query)->loadResult();
+            $jsonObject = json_decode($jsonString);
+            $jsonObject->$attr = $value;
+            $jsonString = json_encode($jsonObject);
+
+            $query = $db->getQuery(true)
+                ->update('#__osmap_sitemap')
+                ->set("attribs = '" . $jsonString . "'")
+                ->where('id = ' . $cid);
+            $db->setQuery($query);
+
+            if (!$this->_db->query()) {
+                $this->setError($table->_db->getErrorMsg());
+                return false;
+            }
+    }
 
     /**
      * Returns a Table object, always creating it.

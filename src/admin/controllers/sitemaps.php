@@ -49,6 +49,8 @@ class OSMapControllerSitemaps extends JControllerAdmin
         $this->registerTask('unpublish', 'publish');
         $this->registerTask('trash', 'publish');
         $this->registerTask('unfeatured', 'featured');
+        $this->registerTask('debug_osmap_disable', 'enable');
+        $this->registerTask('debug_osmap_enable', 'enable');
     }
 
 
@@ -97,4 +99,57 @@ class OSMapControllerSitemaps extends JControllerAdmin
 
         return $model;
     }
+    
+    public function enable()
+	{
+		// Check for request forgeries
+		JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
+
+		// Get items to publish from the request.
+		$cid = JFactory::getApplication()->input->get('cid', array(), 'array');
+		$data = array('enable' => 1, 'disable' => 0);
+		$task = $this->getTask();
+        $taskTemp = explode('_', $task);
+		$value = JArrayHelper::getValue($data, end($taskTemp), 0, 'int');
+
+		if (empty($cid))
+		{
+			JLog::add(JText::_($this->text_prefix . '_NO_ITEM_SELECTED'), JLog::WARNING, 'jerror');
+		}
+		else
+		{
+			$model = $this->getModel();
+
+            $attrs = (end($taskTemp) == 'disable') 
+                    ? substr($task, 0, strpos($task, '_disable'))
+                    : substr($task, 0, strpos($task, '_enable'));
+			// Make sure the item ids are integers
+			JArrayHelper::toInteger($cid);
+
+			// Publish the items.
+			try
+			{
+				$model->enabled($cid[0], $attrs, $value);
+
+				if ($value == 1)
+				{
+					$ntext = $this->text_prefix . '_N_ITEMS_PUBLISHED';
+				}
+				elseif ($value == 0)
+				{
+					$ntext = $this->text_prefix . '_N_ITEMS_UNPUBLISHED';
+				}
+
+				$this->setMessage(JText::plural($ntext, count($cid)));
+			}
+			catch (Exception $e)
+			{
+				$this->setMessage($e->getMessage(), 'error');
+			}
+		}
+
+		$extension = $this->input->get('extension');
+		$extensionURL = ($extension) ? '&extension=' . $extension : '';
+		$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_list . $extensionURL, false));
+	}
 }

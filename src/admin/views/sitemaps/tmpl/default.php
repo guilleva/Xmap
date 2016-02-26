@@ -32,11 +32,8 @@ if(version_compare(JVERSION,'3.0.0','ge')) {
     JHtml::_('formbehavior.chosen', 'select');
 }
 
-$n = count($this->items);
-
 $baseUrl = JUri::root();
 $version = new JVersion;
-var_dump($this->items);
 
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_osmap&view=sitemaps');?>" method="post" name="adminForm" id="adminForm">
@@ -177,7 +174,7 @@ var_dump($this->items);
                         <?php echo $this->escape($item->access_level); ?>
                     </td>
                     <td class="center">
-                        <?php echo JHtml::_('jgrid.publish', $item->attribs["debug_osmap"], $i, 'debug.', true, 'cb', true, true); ?>
+                        <?php echo JHtml::_('osmap.grid.enabled', $item->attribs["debug_osmap"], $i, 'debug_osmap_disable', 'debug_osmap_enable'); ?>
                     </td>
                     <td class="center small">
                         <a href="<?php echo $baseUrl. 'index.php?option=com_osmap&amp;view=xml&tmpl=component&id='.$item->id; ?>" target="_blank" title="<?php echo JText::_('OSMAP_XML_LINK_TOOLTIP', true); ?>"><?php echo JText::_('OSMAP_XML_LINK'); ?><span class="icon-out-2"></span></a>
