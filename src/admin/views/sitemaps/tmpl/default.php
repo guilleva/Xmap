@@ -32,7 +32,10 @@ if(version_compare(JVERSION,'3.0.0','ge')) {
     JHtml::_('formbehavior.chosen', 'select');
 }
 
+$n = count($this->items);
+
 $baseUrl = JUri::root();
+
 $version = new JVersion;
 
 ?>
