@@ -70,30 +70,48 @@ class OSMapModelSitemap extends JModelAdmin
         $this->setState('params', $params);
     }
     
-    public function enabled($cid, $attr, $value) {
-            $db = JFactory::getDbo();
-        
-            $query = $db->getQuery(true)
-                ->select('attribs')
-                ->from('#__osmap_sitemap')
-                ->where('id=' . $cid)
-                ->setLimit('1');
-        
-            $jsonString = $db->setQuery($query)->loadResult();
-            $jsonObject = json_decode($jsonString);
-            $jsonObject->$attr = $value;
-            $jsonString = json_encode($jsonObject);
+    /**
+     * Toggles attirbs items on admin view
+     *
+     * @param    string   $sitemapId      The specific sitemap id.
+     * @param    string   $attr           The item to be toggled.
+     * @param    string   $value          The value to change.
+     *
+     * @return   boolean                  If successful or not.
+    */
+    public function enabled($sitemapId, $attr, $value)
+    {
+        $db = JFactory::getDbo();
 
-            $query = $db->getQuery(true)
-                ->update('#__osmap_sitemap')
-                ->set("attribs = '" . $jsonString . "'")
-                ->where('id = ' . $cid);
-            $db->setQuery($query);
+        $query = $db->getQuery(true)
+            ->select('attribs')
+            ->from('#__osmap_sitemap')
+            ->where('id=' . $sitemapId);
+        $db->setQuery($query);
 
-            if (!$this->_db->query()) {
-                $this->setError($table->_db->getErrorMsg());
-                return false;
-            }
+        if (!$db->query()) {
+            $this->setError($db->getErrorMsg());
+
+            return false;
+        }
+
+        $jsonString = $db->loadResult();
+        $jsonObject = json_decode($jsonString);
+        $jsonObject->$attr = $value;
+        $jsonString = json_encode($jsonObject);
+
+        $query = $db->getQuery(true)
+            ->update('#__osmap_sitemap')
+            ->set("attribs = '" . $jsonString . "'")
+            ->where('id = ' . $sitemapId);
+        $db->setQuery($query);
+
+        if (!$db->query()) {
+            $this->setError($db->getErrorMsg());
+            return false;
+        }
+        
+        return true;
     }
 
     /**

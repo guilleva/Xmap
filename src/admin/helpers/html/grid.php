@@ -26,29 +26,56 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-JTable::addIncludePath( JPATH_COMPONENT . '/views/sitemaps/tmpl/default.php' );
-
-
+JLoader::register('JHtmlGrid', JPATH_LIBRARIES . '/joomla/html/html/grid.php');
 /**
  * @package       OSMap
  * @subpackage    com_osmap
  */
-abstract class OSMapGrid
+abstract class OSMapGrid extends JHtmlGrid
 {
-    public static function enabled($value, $i, $taskTrue, $taskFalse, $prefix='sitemaps.', $property = 'enabled', $img1 = 'tick.png', $img0 = 'publish_x.png')
-    {
-        if (is_object($value))
-        {
+    /**
+     * Toggles attirbs items on admin view
+     *
+     * @param    string  $value           Value of current item state.
+     * @param    string  $i               The index of the sitemap.
+     * @param    string  $taskDisable     If value is true run this task.
+     * @param    string  $taskEnable      If value is false run this task.
+     * @param    string  $jLegacy         If user has older version of Joomla!.
+     * @param    string  $prefix          The controller to run the task.
+     * @param    string  $property        If value is an object get its property.
+     * @return   string                   Returns the link with the state of the item.
+    */
+    public static function enabled(
+        $value,
+        $i,
+        $taskDisable,
+        $taskEnable,
+        $jLegacy = false,
+        $prefix = 'sitemaps.',
+        $property = 'enabled'
+    ) {
+        if (is_object($value)) {
             $value = $value->$property;
         }
-
-        $img = $value ? $img1 : $img0;
                 
-        $task = $value ? $taskTrue : $taskFalse;
-        $alt = $value ? JText::_('JPUBLISHED') : JText::_('JUNPUBLISHED');
-        $action = $value ? JText::_('JLIB_HTML_UNPUBLISH_ITEM') : JText::_('JLIB_HTML_PUBLISH_ITEM');
+        $task = $value ? $taskDisable : $taskEnable;
+        $alt = $value ? JText::_('OSMAP_ENABLED') : JText::_('OSMAP_DISABLED');
+        $action = $value ? JText::_('OSMAP_DISABLE_TOOLTIP') : JText::_('OSMAP_ENABLE_TOOLTIP');
 
-        return '<a href="#" onclick="return listItemTask(\'cb' . $i . '\',\'' . $prefix . $task . '\')" title="' . $action . '">'
-            . JHtml::_('image', 'admin/' . $img, $alt, null, true) . '</a>';
+        if ($jLegacy) {
+            $classes = "";
+            $title = 'title="' . $action . '"';
+            $img = $value ? 'tick.png' : 'publish_x.png';
+            $img = JHtml::_('image', 'admin/' . $img, $alt, null, true);
+        } else {
+            $classes = $value ? 'btn btn-micro active hasTooltip' : 'btn btn-micro hasTooltip';
+            $title = 'data-original-title="' . $action . '"';
+            $img = $value ? 'icon-publish' : 'icon-unpublish';
+            $img = '<span class="' . $img . '"></span>';
+        }
+
+        return '<a class="' . $classes . '" href="#" onclick="return listItemTask(\'cb' . $i . '\',\''
+            . $prefix . $task . '\')"' . $title . '>'
+            . $img . '</a>';
     }
 }
