@@ -88,7 +88,7 @@ class osmap_com_content
         switch ($view) {
             case 'category':
                 if ($id) {
-                    $node->uid = 'com_contentc' . $id;
+                    $node->uid .= 'c' . $id;
 
                     $query = $db->getQuery(true);
 
@@ -111,7 +111,7 @@ class osmap_com_content
                         }
                     }
                 } else {
-                    $node->uid = 'com_content' . $layout;
+                    $node->uid .= 'c' . $layout;
                 }
 
                 $node->expandible = true;
@@ -119,7 +119,7 @@ class osmap_com_content
                 break;
 
             case 'article':
-                $node->uid = 'com_contenta' . $id;
+                $node->uid .= 'a' . $id;
                 $node->expandible = false;
 
                 $query = $db->getQuery(true);
@@ -362,7 +362,7 @@ class osmap_com_content
      * @param array   $params   an assoc array with the params for this plugin on Xmap
      * @param int     $itemid   the itemid to use for this category's children
      */
-    public static function expandCategory($osmap, $parent, $catid, &$params, $itemid)
+    public static function expandCategory($osmap, $parent, $catid, &$params, $itemid, $prevnode = null, $curlevel = 0)
     {
         $db = JFactory::getDBO();
 
@@ -386,53 +386,63 @@ class osmap_com_content
         $db->setQuery($query);
 
         $items = $db->loadObjectList();
+		$curlevel++;
 
-        if (count($items) > 0) {
-            $osmap->changeLevel(1);
-            foreach ($items as $item) {
-                if (OSMAP_LICENSE === 'pro') {
-                    $content = new Alledia\OSMap\Pro\Joomla\Item($item);
-                    if (!$content->isVisibleForRobots()) {
-                        return false;
-                    }
-                }
+		if ($curlevel <= $parent->params->get('maxLevel') || $parent->params->get('maxLevel') == -1)
+		{
+			if (count($items) > 0) {
+				$osmap->changeLevel(1);
+				foreach ($items as $item) {
+					if (OSMAP_LICENSE === 'pro') {
+						$content = new Alledia\OSMap\Pro\Joomla\Item($item);
+						if (!$content->isVisibleForRobots()) {
+							return false;
+						}
+					}
 
-                $node = new stdclass();
-                $node->id          = $parent->id;
-                $node->uid         = $parent->uid . 'c' . $item->id;
-                $node->browserNav  = $parent->browserNav;
-                $node->priority    = $params['cat_priority'];
-                $node->changefreq  = $params['cat_changefreq'];
-                $node->name        = $item->title;
-                $node->expandible  = true;
-                $node->secure      = $parent->secure;
-                // TODO: Should we include category name or metakey here?
-                // $node->keywords = $item->metakey;
-                $node->newsItem    = 0;
+					$node = new stdclass();
+					$node->id          = $parent->id;
+					$node->uid         = (isset($prevnode)?$prevnode->uid:$parent->uid) . 'c' . $item->id;
+					$node->browserNav  = $parent->browserNav;
+					$node->priority    = $params['cat_priority'];
+					$node->changefreq  = $params['cat_changefreq'];
+					$node->name        = $item->title;
+					$node->expandible  = true;
+					$node->secure      = $parent->secure;
+					// TODO: Should we include category name or metakey here?
+					// $node->keywords = $item->metakey;
+					$node->newsItem    = 0;
 
-                // For the google news we should use te publication date instead
-                // the last modification date. See
-                if ($osmap->isNews || !$item->modified)
-                    $item->modified = $item->created;
+					// For the google news we should use te publication date instead
+					// the last modification date. See
+					if ($osmap->isNews || !$item->modified)
+						$item->modified = $item->created;
 
-                $node->slug = $item->route ? ($item->id . ':' . $item->route) : $item->id;
-                $node->link = ContentHelperRoute::getCategoryRoute($node->slug);
-                if (strpos($node->link,'Itemid=')===false) {
-                    $node->itemid = $itemid;
-                    $node->link .= '&Itemid='.$itemid;
-                } else {
-                    $node->itemid = preg_replace('/.*Itemid=([0-9]+).*/','$1',$node->link);
-                }
-                if ($osmap->printNode($node)) {
-                    self::expandCategory($osmap, $parent, $item->id, $params, $node->itemid);
-                }
-            }
+					$node->slug = $item->route ? ($item->id . ':' . $item->route) : $item->id;
+					$node->link = ContentHelperRoute::getCategoryRoute($node->slug);
 
-            $osmap->changeLevel(-1);
-        }
+					if (strpos($node->link,'Itemid=')===false) {
+						$node->itemid = $itemid;
+						$node->link .= '&Itemid='.$itemid;
+					} else {
+						$node->itemid = $itemid;
+						$node->link = preg_replace('/Itemid=([0-9]+)/','Itemid='.$itemid,$node->link);
+					}
+					
+					if ($osmap->printNode($node)) {
+						if ($curlevel <= $parent->params->get('maxLevel') || $parent->params->get('maxLevel') == -1)
+						{				
+							self::expandCategory($osmap, $parent, $item->id, $params, $node->itemid, $node, $curlevel);
+						}
+					}
+				}
 
+				$osmap->changeLevel(-1);
+			}
+		}
+		
         // Include Category's content
-        self::includeCategoryContent($osmap, $parent, $catid, $params, $itemid);
+		self::includeCategoryContent($osmap, $parent, $catid, $params, $itemid, $node);
 
         return true;
     }
@@ -443,7 +453,7 @@ class osmap_com_content
      *
      * @since 2.0
      */
-    public static function includeCategoryContent($osmap, $parent, $catid, &$params,$Itemid)
+    public static function includeCategoryContent($osmap, $parent, $catid, &$params,$Itemid, $prevnode = null)
     {
         $db = JFactory::getDBO();
 
@@ -514,7 +524,7 @@ class osmap_com_content
 
                 $node = new stdclass();
                 $node->id          = $parent->id;
-                $node->uid         = $parent->uid . 'a' . $item->id;
+                $node->uid         = (isset($prevnode)?$prevnode->uid:$parent->uid) . 'a' . $item->id;
                 $node->browserNav  = $parent->browserNav;
                 $node->priority    = $params['art_priority'];
                 $node->changefreq  = $params['art_changefreq'];
@@ -537,6 +547,13 @@ class osmap_com_content
                 $node->catslug = $item->catid;
                 $node->link    = ContentHelperRoute::getArticleRoute($node->slug, $node->catslug);
 
+                if (strpos($node->link,'Itemid=')===false) {
+                    $node->itemid = $itemid;
+                    $node->link .= '&Itemid='.$parent->id;
+                } else {
+                    $node->itemid = $itemid;
+					$node->link = preg_replace('/Itemid=([0-9]+)/','Itemid='.$parent->id,$node->link);
+                }
                 // Add images to the article
                 $text = @$item->introtext . @$item->fulltext;
 
