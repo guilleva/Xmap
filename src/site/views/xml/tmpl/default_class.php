@@ -134,7 +134,7 @@ class OSMapXmlDisplayer extends OSMapDisplayer
                         echo '<image:image>', "\n";
                         echo '<image:loc>', htmlspecialchars($image->src, ENT_QUOTES, 'UTF-8'), '</image:loc>', "\n";
                         if ($image->title) {
-                            echo '<image:title>', $image->title, '</image:title>', "\n";
+                            echo '<image:title>', htmlentities($image->title, ENT_QUOTES, 'UTF-8', false), '</image:title>', "\n";
                         } else {
                             echo '<image:title />';
                         }
