@@ -97,7 +97,7 @@ class OSMapDisplayer {
              * @todo allow the user to provide the module used to display that menu, or some other
              * workaround
              */
-            $node->name = $this->getMenuTitle($menutype,'mod_menu'); // Get the name of this menu
+            $node->name = $this->getMenuTitle($menutype); // Get the name of this menu
 
             $this->startMenu($node);
             $this->printMenuTree($node, $items);
@@ -110,22 +110,14 @@ class OSMapDisplayer {
         $this->jview = $view;
     }
 
-    public function getMenuTitle($menutype,$module='mod_menu')
+    public function getMenuTitle($menutype)
     {
         $app = JFactory::getApplication();
         $db = JFactory::getDbo();
-        $title = $extra = '';
-
-        // Filter by language
-        if ($app->getLanguageFilter()) {
-            $extra = ' AND language in ('.$db->quote(JFactory::getLanguage()->getTag()).','.$db->quote('*').')';
-        }
-
+        
+        //checking to see if menu is in menu_types table if not in modules table
         $db->setQuery(
-             "SELECT * FROM #__modules WHERE module='{$module}' AND params "
-            ."LIKE '%\"menutype\":\"{$menutype}\"%' AND access IN (".implode(',',$this->userLevels).") "
-            ."AND published=1 AND client_id=0 "
-            . $extra
+            "SELECT * FROM #__menu_types WHERE menutype='{$menutype}' "
             . "LIMIT 1"
         );
         $module = $db->loadObject();
