@@ -408,12 +408,6 @@ class osmap_com_content
                 $node->secure      = $parent->secure;
                 // TODO: Should we include category name or metakey here?
                 // $node->keywords = $item->metakey;
-                $node->newsItem    = 0;
-
-                // For the google news we should use te publication date instead
-                // the last modification date. See
-                if ($osmap->isNews || !$item->modified)
-                    $item->modified = $item->created;
 
                 $node->slug = $item->route ? ($item->id . ':' . $item->route) : $item->id;
                 $node->link = ContentHelperRoute::getCategoryRoute($node->slug);
@@ -468,12 +462,6 @@ class osmap_com_content
             $where[] = 'a.catid='.(int) $catid;
         }
 
-        if ($params['max_art_age'] || $osmap->isNews) {
-            $days = (($osmap->isNews && ($params['max_art_age'] > 3 || !$params['max_art_age'])) ? 3 : $params['max_art_age']);
-            $where[] = "( a.created >= '"
-                . date('Y-m-d H:i:s', time() - $days * 86400) . "' ) ";
-        }
-
         if ($params['language_filter'] ) {
             $where[] = 'a.language in ('.$db->quote(JFactory::getLanguage()->getTag()).','.$db->quote('*').')';
         }
@@ -524,13 +512,7 @@ class osmap_com_content
                 $node->secure      = $parent->secure;
                 // TODO: Should we include category name or metakey here?
                 // $node->keywords = $item->metakey;
-                $node->newsItem    = 1;
                 $node->language    = $item->language;
-
-                // For the google news we should use te publication date instead
-                // the last modification date. See
-                if ($osmap->isNews || !$node->modified)
-                    $node->modified = $item->created;
 
                 $node->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
                 //$node->catslug = $item->category_route ? ($catid . ':' . $item->category_route) : $catid;

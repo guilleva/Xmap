@@ -74,26 +74,12 @@ $version = new JVersion;
                     <th width="5%" class="center">
                         <?php echo JHtml::_('grid.sort', 'OSMAP_HEADING_PUBLISHED', 'a.state', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
                     </th>
-                    <th width="10%">
-                        <?php echo JHtml::_('grid.sort',  'OSMAP_HEADING_ACCESS', 'access_level', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
-                    </th>
                     <th width="190" class="center">
                         <?php echo JText::_('OSMAP_HEADING_SITEMAP_LINKS'); ?>
                     </th>
-                    <?php if ($this->displayLegacyStats) : ?>
-                        <th width="10%" class="nowrap center">
-                            <?php echo JText::_('OSMAP_HEADING_HTML_STATS'); ?><br />
-                            <?php echo JText::_('OSMAP_HEADING_NUM_LINKS') . ' / '. JText::_('OSMAP_HEADING_NUM_HITS') . ' / ' . JText::_('OSMAP_HEADING_LAST_VISIT'); ?>
-                        </th>
-                        <th width="10%" class="nowrap center">
-                            <?php echo JText::_('OSMAP_HEADING_XML_STATS'); ?><br />
-                            <?php echo JText::_('OSMAP_HEADING_NUM_LINKS') . ' / '. JText::_('OSMAP_HEADING_NUM_HITS') . ' / ' . JText::_('OSMAP_HEADING_LAST_VISIT'); ?>
-                        </th>
-                    <?php else : ?>
-                        <th width="8%" class="nowrap center">
-                            <?php echo JText::_('OSMAP_HEADING_NUM_LINKS'); ?>
-                        </th>
-                    <?php endif; ?>
+                    <th width="8%" class="nowrap center">
+                        <?php echo JText::_('OSMAP_HEADING_NUM_LINKS'); ?>
+                    </th>
                     <th width="1%" class="nowrap">
                         <?php echo JHtml::_('grid.sort', 'OSMAP_HEADING_ID', 'a.id', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
                     </th>
@@ -101,49 +87,13 @@ $version = new JVersion;
             </thead>
             <tfoot>
                 <tr>
-                    <?php $colspan = $this->displayLegacyStats ? 10 : 9; ?>
-                    <td colspan="<?php echo $colspan; ?>">
+                    <td colspan="9">
                         <?php echo $this->pagination->getListFooter(); ?>
                     </td>
                 </tr>
             </tfoot>
             <tbody>
-            <?php foreach ($this->items as $i => $item) :
-
-                if ($this->displayLegacyStats) {
-                    $now = JFactory::getDate()->toUnix();
-                    if ( !$item->lastvisit_html ) {
-                        $htmlDate = JText::_('DATE_NEVER');
-                    }elseif ( $item->lastvisit_html > ($now-3600)) { // Less than one hour
-                        $htmlDate = JText::sprintf('Date_Minutes_Ago',intval(($now-$item->lastvisit_html)/60));
-                    } elseif ( $item->lastvisit_html > ($now-86400)) { // Less than one day
-                        $hours = intval (($now-$item->lastvisit_html)/3600 );
-                        $htmlDate = JText::sprintf('Date_Hours_Minutes_Ago',$hours,($now-($hours*3600)-$item->lastvisit_html)/60);
-                    } elseif ( $item->lastvisit_html > ($now-259200)) { // Less than three days
-                        $days = intval(($now-$item->lastvisit_html)/86400);
-                        $htmlDate = JText::sprintf('Date_Days_Hours_Ago',$days,intval(($now-($days*86400)-$item->lastvisit_html)/3600));
-                    } else {
-                        $date = new JDate($item->lastvisit_html);
-                        $htmlDate = $date->format('Y-m-d H:i');
-                    }
-
-                    if ( !$item->lastvisit_xml ) {
-                        $xmlDate = JText::_('DATE_NEVER');
-                    } elseif ( $item->lastvisit_xml > ($now-3600)) { // Less than one hour
-                        $xmlDate = JText::sprintf('Date_Minutes_Ago',intval(($now-$item->lastvisit_xml)/60));
-                    } elseif ( $item->lastvisit_xml > ($now-86400)) { // Less than one day
-                        $hours = intval (($now-$item->lastvisit_xml)/3600 );
-                        $xmlDate = JText::sprintf('Date_Hours_Minutes_Ago',$hours,($now-($hours*3600)-$item->lastvisit_xml)/60);
-                    } elseif ( $item->lastvisit_xml > ($now-259200)) { // Less than three days
-                        $days = intval(($now-$item->lastvisit_xml)/86400);
-                        $xmlDate = JText::sprintf('Date_Days_Hours_Ago',$days,intval(($now-($days*86400)-$item->lastvisit_xml)/3600));
-                    } else {
-                        $date = new JDate($item->lastvisit_xml);
-                        $xmlDate = $date->format('Y-m-d H:i');
-                    }
-                }
-
-                ?>
+            <?php foreach ($this->items as $i => $item) : ?>
                 <tr class="row<?php echo $i % 2; ?>">
                     <td class="center">
                         <?php echo JHtml::_('grid.id', $i, $item->id); ?>
@@ -151,7 +101,6 @@ $version = new JVersion;
                     <td>
                         <a href="<?php echo JRoute::_('index.php?option=com_osmap&task=sitemap.edit&id='.$item->id);?>">
                             <?php echo $this->escape($item->title); ?></a>
-                            <small>(<?php echo JText::_('OSMAP_ALIAS'); ?>: <?php echo $this->escape($item->alias); ?>)</small>
                     </td>
                     <td class="center">
                         <?php if ($item->is_default == 1) : ?>
@@ -165,28 +114,16 @@ $version = new JVersion;
                     <td class="center">
                         <?php echo JHtml::_('jgrid.published', $item->state, $i, 'sitemaps.'); ?>
                     </td>
-                    <td>
-                        <?php echo $this->escape($item->access_level); ?>
-                    </td>
-                    <td class="center small">
+                    <td class="center">
                         <a href="<?php echo $baseUrl. 'index.php?option=com_osmap&amp;view=xml&tmpl=component&id='.$item->id; ?>" target="_blank" title="<?php echo JText::_('OSMAP_XML_LINK_TOOLTIP', true); ?>"><?php echo JText::_('OSMAP_XML_LINK'); ?><span class="icon-out-2"></span></a>
                         &nbsp;&nbsp;
-                        <a href="<?php echo $baseUrl. 'index.php?option=com_osmap&amp;view=xml&tmpl=component&news=1&id='.$item->id; ?>" target="_blank" title="<?php echo JText::_('OSMAP_NEWS_LINK_TOOLTIP', true); ?>"><?php echo JText::_('OSMAP_NEWS_LINK'); ?><span class="icon-out-2"></span></a>
+                        <a href="<?php echo $baseUrl. 'index.php?option=com_osmap&amp;view=html&id='.$item->id; ?>" target="_blank" title="<?php echo JText::_('OSMAP_HTML_LINK_TOOLTIP', true); ?>"><?php echo JText::_('OSMAP_HTML_LINK'); ?><span class="icon-out-2"></span></a>
                         &nbsp;&nbsp;
                         <a href="<?php echo $baseUrl. 'index.php?option=com_osmap&amp;view=xml&tmpl=component&images=1&id='.$item->id; ?>" target="_blank" title="<?php echo JText::_('OSMAP_IMAGES_LINK_TOOLTIP', true); ?>"><?php echo JText::_('OSMAP_IMAGES_LINK'); ?><span class="icon-out-2"></span></a>
                     </td>
-                    <?php if ($this->displayLegacyStats) : ?>
-                        <td class="center">
-                            <?php echo $item->count_html .' / '.$item->views_html. ' / ' . $htmlDate; ?>
-                        </td>
-                        <td class="center">
-                            <?php echo $item->count_xml .' / '.$item->views_xml. ' / ' . $xmlDate; ?>
-                        </td>
-                    <?php else : ?>
-                        <td class="center">
-                            <?php echo $item->count_xml; ?>
-                        </td>
-                    <?php endif; ?>
+                    <td class="center">
+                        <?php echo $item->count_xml; ?>
+                    </td>
                     <td class="center">
                         <?php echo (int) $item->id; ?>
                     </td>

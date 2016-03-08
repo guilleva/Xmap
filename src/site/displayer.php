@@ -69,7 +69,6 @@ class OSMapDisplayer {
         $this->now    = $date->toUnix();
         $this->config    = $config;
         $this->sitemap    = $sitemap;
-        $this->isNews   = false;
         $this->isImages    = false;
         $this->count    = 0;
         $this->canEdit  = false;
