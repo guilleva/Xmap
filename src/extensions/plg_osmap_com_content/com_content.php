@@ -150,7 +150,7 @@ class osmap_com_content
                         }
                     }
 
-                    $text = @$item->introtext . @$item->fulltext;
+                    $text = @$row->introtext . @$row->fulltext;
                     if ($params['add_images']) {
                         if (OSMAP_LICENSE === 'pro') {
                             $node->images = Alledia\OSMap\Pro\Joomla\Helper::getImages($text, JArrayHelper::getValue($params, 'max_images', 1000));
