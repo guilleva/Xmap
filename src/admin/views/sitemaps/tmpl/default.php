@@ -114,7 +114,11 @@ $version = new JVersion;
             <?php foreach ($this->items as $i => $item) :
 
                 //converting attribs to json object
-                $itemObject = json_decode($item->attribs);
+                $attribsObject = json_decode($item->attribs);
+                //for older versions upgrading to newer version.
+                if (!isset($attribsObject->debug_osmap)) {
+                    $attribsObject->debug_osmap = '0';
+                }
 
                 if ($this->displayLegacyStats) {
                     $now = JFactory::getDate()->toUnix();
@@ -175,7 +179,7 @@ $version = new JVersion;
                         <?php echo $this->escape($item->access_level); ?>
                     </td>
                     <td class="center">
-                        <?php echo JHtml::_('osmap.grid.enabled', $itemObject->debug_osmap, $i, 'debug_osmap_disable', 'debug_osmap_enable'); ?>
+                        <?php echo JHtml::_('osmap.grid.enabled', $attribsObject->debug_osmap, $i, 'debug_osmap_disable', 'debug_osmap_enable'); ?>
                     </td>
                     <td class="center small">
                         <a href="<?php echo $baseUrl. 'index.php?option=com_osmap&amp;view=xml&tmpl=component&id='.$item->id; ?>" target="_blank" title="<?php echo JText::_('OSMAP_XML_LINK_TOOLTIP', true); ?>"><?php echo JText::_('OSMAP_XML_LINK'); ?><span class="icon-out-2"></span></a>
