@@ -53,9 +53,6 @@ class osmap_com_sobipro {
     /** Get the content tree for this kind of content */
     function getTree( $osmap, $parent, &$params ) {
 
-        if ($osmap->isNews) // This component does not provide news content. don't waste time/resources
-            return false;
-
         if (!self::loadSobi()){
             return;
         }

@@ -69,9 +69,6 @@ $n = count($this->items);
                 <th width="5%">
                     <?php echo JHtml::_('grid.sort', 'OSMAP_HEADING_PUBLISHED', 'a.state', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
                 </th>
-                <th width="10%">
-                    <?php echo JHtml::_('grid.sort',  'JGRID_HEADING_ACCESS', 'access_level', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
-                </th>
                 <th width="1%" nowrap="nowrap">
                     <?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'a.id', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
                 </th>
@@ -96,9 +93,6 @@ $n = count($this->items);
                 </td>
                 <td align="center">
                     <?php echo JHtml::_('jgrid.published', $item->state, $i, 'sitemaps.'); ?>
-                </td>
-                <td>
-                    <?php echo $this->escape($item->access_level); ?>
                 </td>
                 <td align="center">
                     <?php echo (int) $item->id; ?>

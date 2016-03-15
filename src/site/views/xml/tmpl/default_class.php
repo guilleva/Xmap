@@ -29,16 +29,6 @@ class OSMapXmlDisplayer extends OSMapDisplayer
     protected $showTitle = false;
     protected $showExcluded = false;
 
-    /**
-     *
-     * @var int Indicates if this is a google news sitemap or not
-     */
-    var $isNews = 0;
-
-    /**
-     *
-     * @var int Indicates if this is a google news sitemap or not
-     */
     var $isImages = 0;
 
     function __construct($config, $sitemap)
@@ -71,10 +61,6 @@ class OSMapXmlDisplayer extends OSMapDisplayer
                 return false;
             }
             $node->isExcluded = true;
-        }
-
-        if ($this->isNews && (!isset($node->newsItem) || !$node->newsItem)) {
-            return true;
         }
 
         // For images sitemaps only display pages with images
@@ -116,9 +102,6 @@ class OSMapXmlDisplayer extends OSMapDisplayer
                 echo '<itemid>', $node->id, '</itemid>' . "\n";
             }
             $modified = (isset($node->modified) && $node->modified != FALSE && $node->modified != $this->nullDate && $node->modified != -1) ? $node->modified : NULL;
-            if (!$modified && $this->isNews) {
-                $modified = time();
-            }
             if ($modified && !is_numeric($modified)){
                 $date =  new JDate($modified);
                 $modified = $date->toUnix();
@@ -127,51 +110,27 @@ class OSMapXmlDisplayer extends OSMapDisplayer
                 $modified = gmdate('Y-m-d\TH:i:s\Z', $modified);
             }
 
-            // If this is not a news sitemap
-            if (!$this->isNews) {
-                if ($this->isImages) {
-                    foreach ($node->images as $image) {
-                        echo '<image:image>', "\n";
-                        echo '<image:loc>', htmlspecialchars($image->src, ENT_QUOTES, 'UTF-8'), '</image:loc>', "\n";
-                        if ($image->title) {
-                            echo '<image:title>', htmlentities($image->title, ENT_QUOTES, 'UTF-8', false), '</image:title>', "\n";
-                        } else {
-                            echo '<image:title />';
-                        }
-                        if (isset($image->license) && $image->license) {
-                            echo '<image:license>',str_replace('&', '&amp;',html_entity_decode($image->license, ENT_NOQUOTES, 'UTF-8')),'</image:license>',"\n";
-                        }
-                        echo '</image:image>', "\n";
+            if ($this->isImages) {
+                foreach ($node->images as $image) {
+                    echo '<image:image>', "\n";
+                    echo '<image:loc>', $image->src, '</image:loc>', "\n";
+                    if ($image->title) {
+                        $image->title = str_replace('&', '&amp;', html_entity_decode($image->title, ENT_NOQUOTES, 'UTF-8'));
+                        echo '<image:title>', $image->title, '</image:title>', "\n";
+                    } else {
+                        echo '<image:title />';
                     }
-                } else {
-                    if ($modified){
-                        echo '<lastmod>', $modified, '</lastmod>' . "\n";
+                    if (isset($image->license) && $image->license) {
+                        echo '<image:license>',str_replace('&', '&amp;',html_entity_decode($image->license, ENT_NOQUOTES, 'UTF-8')),'</image:license>',"\n";
                     }
-                    echo '<changefreq>', $changefreq, '</changefreq>' . "\n";
-                    echo '<priority>', $priority, '</priority>' . "\n";
+                    echo '</image:image>', "\n";
                 }
             } else {
-                if (isset($node->keywords)) {
-                    $keywords = htmlspecialchars($node->keywords);
-                } else {
-                    $keywords = '';
+                if ($modified){
+                    echo '<lastmod>', $modified, '</lastmod>' . "\n";
                 }
-
-                if (!isset($node->language) || $node->language == '*') {
-                    $node->language = $this->defaultLanguage;
-                }
-
-                echo "<news:news>\n";
-                echo '<news:publication>'."\n";
-                echo '  <news:name>'.(htmlspecialchars($this->sitemap->params->get('news_publication_name'))).'</news:name>'."\n";
-                echo '  <news:language>'.$node->language.'</news:language>'."\n";
-                echo '</news:publication>'."\n";
-                echo '<news:publication_date>', $modified, '</news:publication_date>' . "\n";
-                echo '<news:title><![CDATA['.$node->name.']]></news:title>' . "\n";
-                if ($keywords) {
-                    echo '<news:keywords>', $keywords, '</news:keywords>' . "\n";
-                }
-                echo "</news:news>\n";
+                echo '<changefreq>', $changefreq, '</changefreq>' . "\n";
+                echo '<priority>', $priority, '</priority>' . "\n";
             }
             echo '</url>', "\n";
         }

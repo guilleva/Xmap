@@ -108,14 +108,6 @@
                     <option value="never">OSMAP_OPTION_NEVER</option>
                 </field>
             </fieldset>
-            <fieldset name="news">
-                <field name="keywords" type="list" default="1" label="OSMAP_SETTING_NEWS_KEYWORDS_LABEL" description="OSMAP_SETTING_NEWS_KEYWORDS_DESC">
-                    <option value="metakey">OSMAP_SETTING_NEWS_KEYWORDS_METAKEYS</option>
-                    <option value="category">OSMAP_SETTING_NEWS_KEYWORDS_CATTITLE</option>
-                    <option value="both">OSMAP_SETTING_NEWS_KEYWORDS_METAKEYS_CATTITLE</option>
-                    <option value="none">OSMAP_SETTING_NEWS_KEYWORDS_NONE</option>
-                </field>
-            </fieldset>
         </fields>
     </config>
 </extension>
