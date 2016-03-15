@@ -362,7 +362,7 @@ class osmap_com_content
      * @param array   $params   an assoc array with the params for this plugin on Xmap
      * @param int     $itemid   the itemid to use for this category's children
      */
-    public static function expandCategory($osmap, $parent, $catid, &$params, $itemid)
+    public static function expandCategory($osmap, $parent, $catid, &$params, $itemid, $prevnode = null, $curlevel = 0)
     {
         $db = JFactory::getDBO();
 
@@ -414,8 +414,9 @@ class osmap_com_content
 
                     // For the google news we should use te publication date instead
                     // the last modification date. See
-                    if ($osmap->isNews || !$item->modified)
+                    if (!$item->modified) {
                         $item->modified = $item->created;
+                    }
 
                     $node->slug = $item->route ? ($item->id . ':' . $item->route) : $item->id;
                     $node->link = ContentHelperRoute::getCategoryRoute($node->slug);
@@ -480,8 +481,8 @@ class osmap_com_content
             $where[] = 'a.catid='.(int) $catid;
         }
 
-        if ($params['max_art_age'] || $osmap->isNews) {
-            $days = (($osmap->isNews && ($params['max_art_age'] > 3 || !$params['max_art_age'])) ? 3 : $params['max_art_age']);
+        if (isset($params['max_art_age']) && !empty($params['max_art_age'])) {
+            $days = $params['max_art_age'];
             $where[] = "( a.created >= '"
                 . date('Y-m-d H:i:s', time() - $days * 86400) . "' ) ";
         }
