@@ -302,7 +302,7 @@ class osmap_com_content
                 break;
             case 'featured':
                 if ($params['expand_featured']) {
-                    $result = self::includeCategoryContent($osmap, $parent, 'featured', $params,$parent->id);
+                    $result = self::includeCategoryContent($osmap, $parent, 'featured', $params, $parent->id);
                 }
                 break;
             case 'categories':
@@ -312,13 +312,13 @@ class osmap_com_content
                 break;
             case 'archive':
                 if ($params['include_archived']) {
-                    $result = self::includeCategoryContent($osmap, $parent, 'archived', $params,$parent->id);
+                    $result = self::includeCategoryContent($osmap, $parent, 'archived', $params, $parent->id);
                 }
                 break;
             case 'article':
                 // if it's an article menu item, we have to check if we have to expand the
                 // article's page breaks
-                if ($params['add_pagebreaks']){
+                if ($params['add_pagebreaks']) {
                     $query = $db->getQuery(true);
 
                     $query->select($db->quoteName('introtext'))
@@ -343,7 +343,7 @@ class osmap_com_content
                     $parent->slug = $row->alias ? ($id . ':' . $row->alias) : $id;
                     $parent->link = ContentHelperRoute::getArticleRoute($parent->slug, $row->catid);
 
-                    $subnodes = OSMapHelper::getPagebreaks($row->introtext.$row->fulltext,$parent->link);
+                    $subnodes = OSMapHelper::getPagebreaks($row->introtext.$row->fulltext, $parent->link);
                     self::printNodes($osmap, $parent, $params, $subnodes);
                 }
 
@@ -368,7 +368,7 @@ class osmap_com_content
 
         $where = array('a.parent_id = ' . $catid . ' AND a.published = 1 AND a.extension=\'com_content\'');
 
-        if ($params['language_filter'] ) {
+        if ($params['language_filter']) {
             $where[] = 'a.language in ('.$db->quote(JFactory::getLanguage()->getTag()).','.$db->quote('*').')';
         }
 
@@ -380,53 +380,71 @@ class osmap_com_content
         $query = 'SELECT a.id, a.title, a.alias, a.access, a.path AS route, '
                . 'a.created_time created, a.modified_time modified, params, metadata '
                . 'FROM #__categories AS a '
-               . 'WHERE '. implode(' AND ',$where)
-               . ( $osmap->view != 'xml' ? "\n ORDER BY " . $orderby . "" : '' );
+               . 'WHERE '. implode(' AND ', $where)
+               . ($osmap->view != 'xml' ? "\n ORDER BY " . $orderby . "" : '');
 
         $db->setQuery($query);
 
         $items = $db->loadObjectList();
+        $curlevel++;
 
-        if (count($items) > 0) {
-            $osmap->changeLevel(1);
-            foreach ($items as $item) {
-                if (OSMAP_LICENSE === 'pro') {
-                    $content = new Alledia\OSMap\Pro\Joomla\Item($item);
-                    if (!$content->isVisibleForRobots()) {
-                        return false;
+        if ($curlevel <= $parent->params->get('maxLevel') || $parent->params->get('maxLevel') == -1) {
+            if (count($items) > 0) {
+                $osmap->changeLevel(1);
+                foreach ($items as $item) {
+                    if (OSMAP_LICENSE === 'pro') {
+                        $content = new Alledia\OSMap\Pro\Joomla\Item($item);
+                        if (!$content->isVisibleForRobots()) {
+                            return false;
+                        }
+                    }
+
+                    $node = new stdclass();
+                    $node->id          = $parent->id;
+                    $node->uid         = (isset($prevnode)?$prevnode->uid:$parent->uid) . 'c' . $item->id;
+                    $node->browserNav  = $parent->browserNav;
+                    $node->priority    = $params['cat_priority'];
+                    $node->changefreq  = $params['cat_changefreq'];
+                    $node->name        = $item->title;
+                    $node->expandible  = true;
+                    $node->secure      = $parent->secure;
+                    // TODO: Should we include category name or metakey here?
+                    // $node->keywords = $item->metakey;
+                    $node->newsItem    = 0;
+
+                    // For the google news we should use te publication date instead
+                    // the last modification date. See
+                    if ($osmap->isNews || !$item->modified)
+                        $item->modified = $item->created;
+
+                    $node->slug = $item->route ? ($item->id . ':' . $item->route) : $item->id;
+                    $node->link = ContentHelperRoute::getCategoryRoute($node->slug);
+
+                    if (strpos($node->link, 'Itemid=')===false) {
+                        $node->itemid = $itemid;
+                        $node->link .= '&Itemid='.$itemid;
+                    } else {
+                        $node->itemid = $itemid;
+                        $node->link = preg_replace('/Itemid=([0-9]+)/', 'Itemid='.$itemid, $node->link);
+                    }
+
+                    if ($osmap->printNode($node)) {
+                        if ($curlevel <= $parent->params->get('maxLevel') || $parent->params->get('maxLevel') == -1) {
+                            self::expandCategory($osmap, $parent, $item->id, $params, $node->itemid, $node, $curlevel);
+                        }
                     }
                 }
 
-                $node = new stdclass();
-                $node->id          = $parent->id;
-                $node->uid         = $parent->uid . 'c' . $item->id;
-                $node->browserNav  = $parent->browserNav;
-                $node->priority    = $params['cat_priority'];
-                $node->changefreq  = $params['cat_changefreq'];
-                $node->name        = $item->title;
-                $node->expandible  = true;
-                $node->secure      = $parent->secure;
-                // TODO: Should we include category name or metakey here?
-                // $node->keywords = $item->metakey;
-
-                $node->slug = $item->route ? ($item->id . ':' . $item->route) : $item->id;
-                $node->link = ContentHelperRoute::getCategoryRoute($node->slug);
-                if (strpos($node->link,'Itemid=')===false) {
-                    $node->itemid = $itemid;
-                    $node->link .= '&Itemid='.$itemid;
-                } else {
-                    $node->itemid = preg_replace('/.*Itemid=([0-9]+).*/','$1',$node->link);
-                }
-                if ($osmap->printNode($node)) {
-                    self::expandCategory($osmap, $parent, $item->id, $params, $node->itemid);
-                }
+                $osmap->changeLevel(-1);
             }
-
-            $osmap->changeLevel(-1);
         }
 
         // Include Category's content
-        self::includeCategoryContent($osmap, $parent, $catid, $params, $itemid);
+        if (!isset($node)) {
+            self::includeCategoryContent($osmap, $parent, $catid, $params, $itemid);
+        } else {
+            self::includeCategoryContent($osmap, $parent, $catid, $params, $itemid, $node);
+        }
 
         return true;
     }
@@ -437,13 +455,13 @@ class osmap_com_content
      *
      * @since 2.0
      */
-    public static function includeCategoryContent($osmap, $parent, $catid, &$params,$Itemid)
+    public static function includeCategoryContent($osmap, $parent, $catid, &$params, $itemid, $prevnode = null)
     {
         $db = JFactory::getDBO();
 
         // We do not do ordering for XML sitemap.
         if ($osmap->view != 'xml') {
-            $orderby = self::buildContentOrderBy($parent->params,$parent->id,$Itemid);
+            $orderby = self::buildContentOrderBy($parent->params, $parent->id, $itemid);
             //$orderby = !empty($menuparams['orderby']) ? $menuparams['orderby'] : (!empty($menuparams['orderby_sec']) ? $menuparams['orderby_sec'] : 'rdate' );
             //$orderby = self::orderby_sec($orderby);
         }
@@ -458,15 +476,21 @@ class osmap_com_content
             $where[] = 'a.featured=1';
         } elseif ($catid=='archived') {
             $where = array('a.state=2');
-        } elseif(is_numeric($catid)) {
+        } elseif (is_numeric($catid)) {
             $where[] = 'a.catid='.(int) $catid;
         }
 
-        if ($params['language_filter'] ) {
+        if ($params['max_art_age'] || $osmap->isNews) {
+            $days = (($osmap->isNews && ($params['max_art_age'] > 3 || !$params['max_art_age'])) ? 3 : $params['max_art_age']);
+            $where[] = "( a.created >= '"
+                . date('Y-m-d H:i:s', time() - $days * 86400) . "' ) ";
+        }
+
+        if ($params['language_filter']) {
             $where[] = 'a.language in ('.$db->quote(JFactory::getLanguage()->getTag()).','.$db->quote('*').')';
         }
 
-        if (!$params['show_unauth'] ){
+        if (!$params['show_unauth']) {
             $where[] = 'a.access IN (' . $params['groups'] . ') ';
         }
 
@@ -476,7 +500,7 @@ class osmap_com_content
                . (($params['add_images'] || $params['add_pagebreaks']) ? ',a.introtext, a.fulltext ' : ' ')
                . 'FROM #__content AS a '
                . 'LEFT JOIN #__content_frontpage AS fp ON a.id = fp.content_id '
-               . 'WHERE ' . implode(' AND ',$where) . ' AND '
+               . 'WHERE ' . implode(' AND ', $where) . ' AND '
                . '      (a.publish_up = ' . $params['nullDate']
                . ' OR a.publish_up <= ' . $params['nowDate'] . ') AND '
                . '      (a.publish_down = ' . $params['nullDate']
@@ -519,6 +543,14 @@ class osmap_com_content
                 $node->catslug = $item->catid;
                 $node->link    = ContentHelperRoute::getArticleRoute($node->slug, $node->catslug);
 
+                if (strpos($node->link, 'Itemid=')===false) {
+                    $node->itemid = $itemid;
+                    $node->link .= '&Itemid='.$parent->id;
+                } else {
+                    $node->itemid = $itemid;
+                    $node->link = preg_replace('/Itemid=([0-9]+)/', 'Itemid='.$parent->id, $node->link);
+                }
+
                 // Add images to the article
                 $text = @$item->introtext . @$item->fulltext;
 
@@ -531,7 +563,7 @@ class osmap_com_content
                 }
 
                 if ($params['add_pagebreaks']) {
-                    $subnodes = OSMapHelper::getPagebreaks($text,$node->link);
+                    $subnodes = OSMapHelper::getPagebreaks($text, $node->link);
                     $node->expandible = (count($subnodes) > 0); // This article has children
                 }
 
@@ -546,7 +578,7 @@ class osmap_com_content
         return true;
     }
 
-    static private function printNodes($osmap, $parent, &$params, &$subnodes)
+    private static function printNodes($osmap, $parent, &$params, &$subnodes)
     {
         $osmap->changeLevel(1);
         $i=0;
@@ -573,7 +605,7 @@ class osmap_com_content
      * @param int $itemid
      * @return string
      */
-    static function buildContentOrderBy(&$params,$parentId,$itemid)
+    public static function buildContentOrderBy(&$params, $parentId, $itemid)
     {
         $app = JFactory::getApplication('site');
 
