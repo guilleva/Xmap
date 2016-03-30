@@ -27,7 +27,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $name = JRequest::getCmd('e_name');
 
-$doc =& JFactory::getDocument();
+$doc = JFactory::getDocument();
 $doc->addScriptDeclaration('
     var tree;
     var autotext = \'\';

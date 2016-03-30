@@ -144,7 +144,7 @@ class osmap_com_sobipro {
 
     /** SobiPro support */
     function getCategoryTree( $osmap, $parent, $sid, &$params ) {
-        $database =& JFactory::getDBO();
+        $database = JFactory::getDBO();
 
         $query  =
              "SELECT a.id,a.nid, a.name, b.pid as pid "
