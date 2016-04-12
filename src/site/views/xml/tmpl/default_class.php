@@ -102,7 +102,7 @@ class OSMapXmlDisplayer extends OSMapDisplayer
                 echo '<itemid>', $node->id, '</itemid>' . "\n";
             }
             $modified = (isset($node->modified) && $node->modified != FALSE && $node->modified != $this->nullDate && $node->modified != -1) ? $node->modified : NULL;
-            if ($modified && !is_numeric($modified)){
+            if ($modified && !is_numeric($modified)) {
                 $date =  new JDate($modified);
                 $modified = $date->toUnix();
             }
@@ -126,7 +126,7 @@ class OSMapXmlDisplayer extends OSMapDisplayer
                     echo '</image:image>', "\n";
                 }
             } else {
-                if ($modified){
+                if ($modified) {
                     echo '<lastmod>', $modified, '</lastmod>' . "\n";
                 }
                 echo '<changefreq>', $changefreq, '</changefreq>' . "\n";
