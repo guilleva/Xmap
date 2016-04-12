@@ -115,13 +115,13 @@ class OSMapXmlDisplayer extends OSMapDisplayer
                     echo '<image:image>', "\n";
                     echo '<image:loc>', $image->src, '</image:loc>', "\n";
                     if ($image->title) {
-                        $image->title = str_replace('&', '&amp;', html_entity_decode($image->title, ENT_NOQUOTES, 'UTF-8'));
-                        echo '<image:title>', $image->title, '</image:title>', "\n";
+                        $image->title = htmlentities($image->title, ENT_NOQUOTES, 'UTF-8');
+                        echo '<image:title><![CDATA[', $image->title, ']]></image:title>', "\n";
                     } else {
                         echo '<image:title />';
                     }
                     if (isset($image->license) && $image->license) {
-                        echo '<image:license>',str_replace('&', '&amp;',html_entity_decode($image->license, ENT_NOQUOTES, 'UTF-8')),'</image:license>',"\n";
+                        echo '<image:license><![CDATA[', htmlentities($image->license, ENT_NOQUOTES, 'UTF-8'), ']]></image:license>', "\n";
                     }
                     echo '</image:image>', "\n";
                 }
