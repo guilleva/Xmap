@@ -31,8 +31,9 @@ use Alledia\Framework\Factory;
 jimport('joomla.application.component.view');
 
 # For compatibility with older versions of Joola 2.5
-if (!class_exists('JViewLegacy')){
-    class JViewLegacy extends JView {
+if (!class_exists('JViewLegacy')) {
+    class JViewLegacy extends JView
+    {
 
     }
 }
@@ -64,7 +65,7 @@ class OSMapViewSitemaps extends JViewLegacy
         $version = new JVersion;
 
         $message = $this->get('ExtensionsMessage');
-        if ( $message ) {
+        if ($message) {
             JFactory::getApplication()->enqueueMessage($message);
         }
 
@@ -118,9 +119,9 @@ class OSMapViewSitemaps extends JViewLegacy
         }
 
         if ($state->get('filter.published') == -2) {
-            JToolBarHelper::deleteList('', 'sitemaps.delete','JTOOLBAR_DELETE');
+            JToolBarHelper::deleteList('', 'sitemaps.delete', 'JTOOLBAR_DELETE');
         } else {
-            JToolBarHelper::trash('sitemaps.trash','JTOOLBAR_TRASH');
+            JToolBarHelper::trash('sitemaps.trash', 'JTOOLBAR_TRASH');
         }
 
         JToolBarHelper::divider();
@@ -130,7 +131,7 @@ class OSMapViewSitemaps extends JViewLegacy
             JToolbarHelper::preferences('com_osmap');
         }
 
-        if (class_exists('JHtmlSidebar')){
+        if (class_exists('JHtmlSidebar')) {
             JHtmlSidebar::addFilter(
                 JText::_('JOPTION_SELECT_PUBLISHED'),
                 'filter_published',

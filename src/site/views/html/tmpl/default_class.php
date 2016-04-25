@@ -11,7 +11,8 @@ defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_COMPONENT.'/displayer.php');
 
-class OSMapHtmlDisplayer extends OSMapDisplayer {
+class OSMapHtmlDisplayer extends OSMapDisplayer
+{
 
     var $level = -1;
     var $_openList = '';
@@ -21,7 +22,8 @@ class OSMapHtmlDisplayer extends OSMapDisplayer {
     var $_width;
     var $live_site = 0;
 
-    function __construct ($config, $sitemap) {
+    function __construct($config, $sitemap)
+    {
         $this->view = 'html';
         parent::__construct($config, $sitemap);
         $this->_parent_children=array();
@@ -48,13 +50,13 @@ class OSMapHtmlDisplayer extends OSMapDisplayer {
 
         $out = '';
 
-        if ($this->isExcluded($node->id,$node->uid) && !$this->canEdit) {
-            return FALSE;
+        if ($this->isExcluded($node->id, $node->uid) && !$this->canEdit) {
+            return false;
         }
 
         // To avoid duplicate children in the same parent
-        if ( !empty($this->_parent_children[$this->level][$node->uid]) ) {
-            return FALSE;
+        if (!empty($this->_parent_children[$this->level][$node->uid])) {
+            return false;
         }
 
         //var_dump($this->_parent_children[$this->level]);
@@ -66,18 +68,19 @@ class OSMapHtmlDisplayer extends OSMapDisplayer {
 
         $out .= '<li>';
 
-        if( !isset($node->browserNav) )
+        if (!isset($node->browserNav)) {
             $node->browserNav = 0;
+        }
 
         if ($node->browserNav != 3) {
             $link = JRoute::_($node->link, true, @$node->secure);
         }
 
         $node->name = htmlspecialchars($node->name);
-        switch( $node->browserNav ) {
+        switch ($node->browserNav) {
             case 1:        // open url in new window
                 $ext_image = '';
-                if ( $this->sitemap->params->get('exlinks') ) {
+                if ($this->sitemap->params->get('exlinks')) {
                     $ext_image = '&nbsp;<img src="'. $this->live_site .'/components/com_osmap/assets/images/'. $this->sitemap->params->get('exlinks') .'" alt="' . JText::_('COM_OSMAP_SHOW_AS_EXTERN_ALT') . '" title="' . JText::_('COM_OSMAP_SHOW_AS_EXTERN_ALT') . '" border="0" />';
                 }
                 $out .= '<a href="'. $link .'" title="'. htmlspecialchars($node->name) .'" target="_blank">'. $node->name . $ext_image .'</a>';
@@ -85,7 +88,7 @@ class OSMapHtmlDisplayer extends OSMapDisplayer {
 
             case 2:        // open url in javascript popup window
                 $ext_image = '';
-                if( $this->sitemap->params->get('exlinks') ) {
+                if ($this->sitemap->params->get('exlinks')) {
                     $ext_image = '&nbsp;<img src="'. $this->live_site .'/components/com_osmap/assets/images/'. $this->sitemap->params->get('exlinks') .'" alt="' . JText::_('COM_OSMAP_SHOW_AS_EXTERN_ALT') . '" title="' . JText::_('COM_OSMAP_SHOW_AS_EXTERN_ALT') . '" border="0" />';
                 }
                 $out .= '<a href="'. $link .'" title="'. $node->name .'" target="_blank" '. "onClick=\"javascript: window.open('". $link ."', '', 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=780,height=550'); return false;\">". $node->name . $ext_image."</a>";
@@ -109,7 +112,7 @@ class OSMapHtmlDisplayer extends OSMapDisplayer {
         echo $out;
 
         if ($this->canEdit) {
-            if ( $this->isExcluded($node->id,$node->uid) ) {
+            if ($this->isExcluded($node->id, $node->uid)) {
                 $img = '<img src="'.$this->live_site.'/components/com_osmap/assets/images/unpublished.png" alt="v" title="'.JText::_('JUNPUBLISHED').'">';
                 $class= 'osmapexclon';
             } else {
@@ -122,14 +125,15 @@ class OSMapHtmlDisplayer extends OSMapDisplayer {
 
         $this->_last_child[$this->level] = $node->uid;
 
-        return TRUE;
+        return true;
     }
 
     /**
     * Moves sitemap level up or down
     */
-    function changeLevel( $level ) {
-        if ( $level > 0 ) {
+    function changeLevel($level)
+    {
+        if ($level > 0) {
             # We do not print start ul here to avoid empty list, it's printed at the first child
             $this->level += $level;
             $this->_childs[$this->level]=0;
@@ -138,12 +142,12 @@ class OSMapHtmlDisplayer extends OSMapDisplayer {
 
             // If we are moving up, then lets clean the children of this level
             // because for sure this is a new set of links
-            if ( empty ($this->_last_child[$this->level-1]) || empty ($this->_parent_children[$this->level]['parent']) || $this->_parent_children[$this->level]['parent'] != $this->_last_child[$this->level-1] ) {
+            if (empty($this->_last_child[$this->level-1]) || empty($this->_parent_children[$this->level]['parent']) || $this->_parent_children[$this->level]['parent'] != $this->_last_child[$this->level-1]) {
                 $this->_parent_children[$this->level]=array();
                 $this->_parent_children[$this->level]['parent'] = @$this->_last_child[$this->level-1];
             }
         } else {
-            if ($this->_childs[$this->level]){
+            if ($this->_childs[$this->level]) {
                 echo $this->_closeItem."</ul>\n";
             }
             $this->_closeItem ='</li>';
@@ -152,12 +156,15 @@ class OSMapHtmlDisplayer extends OSMapDisplayer {
         }
     }
 
-    function startMenu(&$menu) {
-        if( $this->sitemap->params->get('show_menutitle') )         // show menu titles
+    function startMenu(&$menu)
+    {
+        if ($this->sitemap->params->get('show_menutitle')) {         // show menu titles
             echo '<h2 class="menutitle">'.$menu->name.'</h2>';
+        }
     }
 
-    function endMenu(&$menu) {
+    function endMenu(&$menu)
+    {
         $sitemap=&$this->sitemap;
         $this->_closeItem='';
     }

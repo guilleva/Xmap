@@ -28,8 +28,9 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.view');
 
 # For compatibility with older versions of Joola 2.5
-if (!class_exists('JViewLegacy')){
-    class JViewLegacy extends JView {
+if (!class_exists('JViewLegacy')) {
+    class JViewLegacy extends JView
+    {
 
     }
 }
@@ -80,7 +81,7 @@ class OSMapViewHtml extends JViewLegacy
         // Create a shortcut to the paramemters.
         $params = &$this->state->params;
         $offset = $this->state->get('page.offset');
-        if ($params->get('include_css', 0)){
+        if ($params->get('include_css', 0)) {
             $doc->addStyleSheet(JURI::root().'components/com_osmap/assets/css/osmap.css');
         }
 
@@ -170,5 +171,4 @@ class OSMapViewHtml extends JViewLegacy
             $this->document->setMetaData('robots', 'noindex, nofollow');
         }
     }
-
 }

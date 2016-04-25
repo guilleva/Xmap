@@ -82,7 +82,7 @@ class osmap_com_kunena
         $layout     = JArrayHelper::getValue($link_vars, 'layout', '');
         $catid_link = JArrayHelper::getValue($link_vars, 'catid', 0);
 
-        if ($view == 'category' AND (!$layout OR 'list' == $layout)) {
+        if ($view == 'category' and (!$layout or 'list' == $layout)) {
             if (!empty($catid_link)) {
                 $link_query = parse_url($parent->link);
 
@@ -100,7 +100,7 @@ class osmap_com_kunena
             $menus = $app->getMenu('site', array());
             $items = $menus->getItems('component_id', $component->id);
 
-            foreach($items as $item) {
+            foreach ($items as $item) {
                 if (@$item->query['view'] == 'home') {
                     $parent->id = $item->id;
                     break;
@@ -216,7 +216,7 @@ class osmap_com_kunena
 
         /* get list of categories */
         $osmap->changeLevel(1);
-        foreach($categories as $cat) {
+        foreach ($categories as $cat) {
             $node = new stdclass;
             $node->id         = $parent->id;
             $node->browserNav = $parent->browserNav;
@@ -228,7 +228,7 @@ class osmap_com_kunena
             $node->expandible = true;
             $node->secure     = $parent->secure;
 
-            if ($osmap->printNode($node) !== FALSE) {
+            if ($osmap->printNode($node) !== false) {
                 static::getCategoryTree($osmap, $parent, $params, $cat->id);
             }
         }
@@ -260,7 +260,7 @@ class osmap_com_kunena
             }
 
             // Kubik-Rubik Solution - call the array item 1, because 0 only contains the number of topics in this category - START
-            foreach($topics[1] as $topic) {
+            foreach ($topics[1] as $topic) {
             // Kubik-Rubik Solution - END
                 $node = new stdclass;
                 $node->id         = $parent->id;
@@ -284,7 +284,7 @@ class osmap_com_kunena
                         $msgPerPage  = self::$config->messages_per_page;
                         $threadPages = ceil($topic->msgcount / $msgPerPage);
 
-                        for($i = 2; $i <= $threadPages; $i++) {
+                        for ($i = 2; $i <= $threadPages; $i++) {
                             $subnode = new stdclass;
                             $subnode->id         = $node->id;
                             $subnode->uid        = $node->uid.'p'.$i;
@@ -324,7 +324,7 @@ class osmap_com_kunena
             }
 
             // Load Kunena API
-            require_once ($kunena_api);
+            require_once($kunena_api);
         }
 
         return true;

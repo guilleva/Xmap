@@ -109,9 +109,9 @@ $version = new JVersion;
                 </td>
                 <td class="center">
                     <?php if ($item->is_default == 1) : ?>
-                        <?php if (version_compare($version->getShortVersion(), '3.0.0', '>=')): ?>
+                        <?php if (version_compare($version->getShortVersion(), '3.0.0', '>=')) : ?>
                             <span class="icon-featured"></span>
-                        <?php else: ?>
+                        <?php else : ?>
                             <img src="templates/bluestork/images/menu/icon-16-default.png" alt="<?php echo JText::_('DEFAULT'); ?>" />
                         <?php endif; ?>
                     <?php endif; ?>

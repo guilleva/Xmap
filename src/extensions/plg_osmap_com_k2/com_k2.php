@@ -34,74 +34,75 @@ class osmap_com_k2
     static $suppressSub = false;
 
     /** Get the content tree for this kind of content */
-    static function getTree( &$osmap, &$parent, &$params )
+    static function getTree(&$osmap, &$parent, &$params)
     {
         $tag=null;
         $limit=null;
         $id = null;
-        $link_query = parse_url( $parent->link );
-        parse_str( html_entity_decode($link_query['query']), $link_vars);
+        $link_query = parse_url($parent->link);
+        parse_str(html_entity_decode($link_query['query']), $link_vars);
         $parm_vars = $parent->params->toArray();
 
-        $option = osmap_com_k2::getParam($link_vars,'option',"");
-        if ($option != "com_k2")
+        $option = osmap_com_k2::getParam($link_vars, 'option', "");
+        if ($option != "com_k2") {
             return;
+        }
 
-        $view = osmap_com_k2::getParam($link_vars,'view',"");
+        $view = osmap_com_k2::getParam($link_vars, 'view', "");
         $showMode = osmap_com_k2::getParam($params, 'showk2items', "always");
 
-        if ($showMode == "never" || ($showMode == "xml" && $osmap->view == "html") || ($showMode == "html" && $osmap->view == "xml"))
+        if ($showMode == "never" || ($showMode == "xml" && $osmap->view == "html") || ($showMode == "html" && $osmap->view == "xml")) {
             return;
-        self::$suppressDups = (osmap_com_k2::getParam($params,'suppressdups', 'yes') == "yes");
-        self::$suppressSub = (osmap_com_k2::getParam($params,'subcategories',"yes") != "yes");
+        }
+        self::$suppressDups = (osmap_com_k2::getParam($params, 'suppressdups', 'yes') == "yes");
+        self::$suppressSub = (osmap_com_k2::getParam($params, 'subcategories', "yes") != "yes");
 
-        if ($view == "item")   // for Items the sitemap already contains the correct reference
-        {
-            if (!isset($osmap->IDS))
+        if ($view == "item") {   // for Items the sitemap already contains the correct reference
+            if (!isset($osmap->IDS)) {
                 $osmap->IDS = "";
+            }
             $osmap->IDS = $osmap->IDS."|".osmap_com_k2::getParam($link_vars, 'id', $id);
             return;
         }
 
-        if ($osmap->view == "xml")
+        if ($osmap->view == "xml") {
             self::$maxAccess = 1;   // XML sitemaps will only see content for guests
-        else
+        } else {
             self::$maxAccess = implode(",", JFactory::getUser()->getAuthorisedViewLevels());
+        }
 
-        switch(osmap_com_k2::getParam($link_vars,'task',""))
-        {
+        switch (osmap_com_k2::getParam($link_vars, 'task', "")) {
             case "user":
                 $tag = osmap_com_k2::getParam($link_vars, 'id', $id);
-                $ids = array_key_exists('userCategoriesFilter',$parm_vars) ? $parm_vars['userCategoriesFilter'] : array("");
+                $ids = array_key_exists('userCategoriesFilter', $parm_vars) ? $parm_vars['userCategoriesFilter'] : array("");
                 $mode = "single user";
                 break;
             case "tag":
-                $tag = osmap_com_k2::getParam($link_vars, 'tag',"");
-                $ids = array_key_exists('categoriesFilter',$parm_vars) ? $parm_vars['categoriesFilter'] : array("");
+                $tag = osmap_com_k2::getParam($link_vars, 'tag', "");
+                $ids = array_key_exists('categoriesFilter', $parm_vars) ? $parm_vars['categoriesFilter'] : array("");
                 $mode = "tag";
                 break;
             case "category":
-                $ids = explode("|", osmap_com_k2::getParam($link_vars, 'id',""));
+                $ids = explode("|", osmap_com_k2::getParam($link_vars, 'id', ""));
                 $mode = "category";
                 break;
             case "":
-                switch(osmap_com_k2::getParam($link_vars,'layout',""))
-                {
+                switch (osmap_com_k2::getParam($link_vars, 'layout', "")) {
                     case "category":
-                        if(array_key_exists('categories', $parm_vars)) $ids = $parm_vars["categories"];
-                        else $ids = '';
+                        if (array_key_exists('categories', $parm_vars)) {
+                            $ids = $parm_vars["categories"];
+                        } else {
+                            $ids = '';
+                        }
                         $mode = "categories";
                         break;
                     case "latest":
                         $limit = osmap_com_k2::getParam($parm_vars, 'latestItemsLimit', "");
-                        if (osmap_com_k2::getParam($parm_vars, 'source', "") == "0")
-                        {
-                            $ids = array_key_exists("userIDs",$parm_vars) ? $parm_vars["userIDs"] : '';
+                        if (osmap_com_k2::getParam($parm_vars, 'source', "") == "0") {
+                            $ids = array_key_exists("userIDs", $parm_vars) ? $parm_vars["userIDs"] : '';
                             $mode = "latest user";
-                        }
-                        else
-                        {
-                            $ids = array_key_exists("categoryIDs",$parm_vars) ? $parm_vars["categoryIDs"] : '';
+                        } else {
+                            $ids = array_key_exists("categoryIDs", $parm_vars) ? $parm_vars["categoryIDs"] : '';
                             $mode = "latest category";
                         }
                         break;
@@ -112,12 +113,14 @@ class osmap_com_k2
             default:
                 return;
         }
-        $priority = osmap_com_k2::getParam($params,'priority',$parent->priority);
-        $changefreq = osmap_com_k2::getParam($params,'changefreq',$parent->changefreq);
-        if ($priority == '-1')
+        $priority = osmap_com_k2::getParam($params, 'priority', $parent->priority);
+        $changefreq = osmap_com_k2::getParam($params, 'changefreq', $parent->changefreq);
+        if ($priority == '-1') {
             $priority = $parent->priority;
-        if ($changefreq == '-1')
+        }
+        if ($changefreq == '-1') {
             $changefreq = $parent->changefreq;
+        }
 
         $params['priority'] = $priority;
         $params['changefreq'] = $changefreq;
@@ -130,23 +133,25 @@ class osmap_com_k2
 
     static function collectByCat($db, $catid, &$allrows)
     {
-        if (trim($catid) == "") // in this case something strange went wrong
+        if (trim($catid) == "") { // in this case something strange went wrong
             return;
+        }
         $query = "select id,title,alias,UNIX_TIMESTAMP(created) as created, UNIX_TIMESTAMP(modified) as modified, metakey from #__k2_items where "
                 ."published = 1 and trash = 0 and (publish_down = \"0000-00-00\" OR publish_down > NOW()) "
                 ."and catid = ".$catid. " order by 1 desc";
         $db->setQuery($query);
         $rows = $db->loadObjectList();
-        if ($rows != null)
+        if ($rows != null) {
             $allrows = array_merge($allrows, $rows);
+        }
         $query = "select id, name, alias  from #__k2_categories where published = 1 and trash = 0 and parent = ".$catid." order by id";
         $db->setQuery($query);
         $rows = $db->loadObjectList();
-        if ($rows == null)
+        if ($rows == null) {
             $rows = array();
+        }
 
-        foreach ($rows as $row)
-        {
+        foreach ($rows as $row) {
             osmap_com_k2::collectByCat($db, $row->id, $allrows);
         }
     }
@@ -157,12 +162,12 @@ class osmap_com_k2
                     ."published = 1 and trash = 0 and (publish_down = \"0000-00-00\" OR publish_down > NOW()) and "
                     ."access in (".self::$maxAccess.") and ";
 
-        switch($mode)
-        {
+        switch ($mode) {
             case "single user":
                 $query = $baseQuery."created_by = ".$tag." ";
-                if ($ids[0] != "")
+                if ($ids[0] != "") {
                     $query .= " and catid in (".implode(",", $ids).")";
+                }
                 $query .= " order by 1 DESC ";
                 $db->setQuery($query);
                 $rows = $db->loadObjectList();
@@ -170,8 +175,9 @@ class osmap_com_k2
             case "tag":
                 $query = "SELECT c.id, title, alias, UNIX_TIMESTAMP(c.created) as created, UNIX_TIMESTAMP(c.modified) as modified FROM #__k2_tags a, #__k2_tags_xref b, #__k2_items c where "."c.published = 1 and c.trash = 0 and (c.publish_down = \"0000-00-00\" OR c.publish_down > NOW()) "
                          ."and a.Name = '".$tag."' and a.id =  b.tagId and c.id = b.itemID and c.access in (".self::$maxAccess.")";
-                if ($ids[0] != "")
+                if ($ids[0] != "") {
                     $query .= " and c.catid in (".implode(",", $ids).")";
+                }
                 $query .= " order by 1 DESC ";
                 $db->setQuery($query);
                 $rows = $db->loadObjectList();
@@ -182,20 +188,18 @@ class osmap_com_k2
                 $rows = $db->loadObjectList();
                 break;
             case "categories":
-                if (!self::$suppressSub)
-                {
-                    if($ids) $query = $baseQuery."catid in (".implode(",", $ids).") order by 1 DESC ";
-                    else $query = $baseQuery."1 order by 1 DESC ";
+                if (!self::$suppressSub) {
+                    if ($ids) {
+                        $query = $baseQuery."catid in (".implode(",", $ids).") order by 1 DESC ";
+                    } else {
+                        $query = $baseQuery."1 order by 1 DESC ";
+                    }
                     $db->setQuery($query);
-                    $rows = $db->loadObjectList ();
-                }
-                else
-                {
+                    $rows = $db->loadObjectList();
+                } else {
                     $rows = array();
-                    if (is_array($ids))
-                    {
-                        foreach($ids as $id)
-                        {
+                    if (is_array($ids)) {
+                        foreach ($ids as $id) {
                             $allrows = array();
                             osmap_com_k2::collectByCat($db, $id, $allrows);
                             $rows = array_merge($rows, $allrows);
@@ -205,29 +209,27 @@ class osmap_com_k2
                 break;
             case "latest user":
                 $rows = array();
-                if (is_array($ids))
-                {
-                    foreach ($ids as $id)
-                    {
+                if (is_array($ids)) {
+                    foreach ($ids as $id) {
                         $query = $baseQuery."created_by = ".$id." order by 1 DESC LIMIT ".$limit;
                         $db->setQuery($query);
                         $res = $db->loadObjectList();
-                        if ($res != null)
+                        if ($res != null) {
                             $rows = array_merge($rows, $res);
+                        }
                     }
                 }
                 break;
             case "latest category":
                 $rows = array();
-                if (is_array($ids))
-                {
-                    foreach ($ids as $id)
-                    {
+                if (is_array($ids)) {
+                    foreach ($ids as $id) {
                         $query = $baseQuery."catid = ".$id." order by 1 DESC LIMIT ".$limit;
                         $db->setQuery($query);
                         $res = $db->loadObjectList();
-                        if ($res != null)
+                        if ($res != null) {
                             $rows = array_merge($rows, $res);
+                        }
                     }
                 }
                 break;
@@ -236,36 +238,32 @@ class osmap_com_k2
         }
 
         $osmap->changeLevel(1);
-        $node = new stdclass ();
+        $node = new stdclass();
         $node->id = $parent->id;
 
-        if ($rows == null)
-        {
+        if ($rows == null) {
             $rows = array();
         }
-        foreach ($rows as $row )
-        {
-            if (!(self::$suppressDups && isset($osmap->IDS) && strstr($osmap->IDS, "|".$row->id)))
+        foreach ($rows as $row) {
+            if (!(self::$suppressDups && isset($osmap->IDS) && strstr($osmap->IDS, "|".$row->id))) {
                 osmap_com_k2::addNode($osmap, $node, $row, false, $parent, $params);
+            }
         }
 
-        if ($mode == "category" && !self::$suppressSub)
-        {
+        if ($mode == "category" && !self::$suppressSub) {
             $query = "select id, name, alias  from #__k2_categories where published = 1 and trash = 0 and parent = ".$ids[0]
                     ." and access in (".self::$maxAccess.") order by id";
             $db->setQuery($query);
             $rows = $db->loadObjectList();
-            if ($rows == null)
-            {
+            if ($rows == null) {
                 $rows = array();
             }
 
-            foreach ($rows as $row)
-            {
-                if (!isset($osmap->IDS))
+            foreach ($rows as $row) {
+                if (!isset($osmap->IDS)) {
                         $osmap->IDS = "";
-                if (!(self::$suppressDups && strstr($osmap->IDS, "|c".$row->id)))
-                {
+                }
+                if (!(self::$suppressDups && strstr($osmap->IDS, "|c".$row->id))) {
                     osmap_com_k2::addNode($osmap, $node, $row, true, $parent, $params);
                     $newID = array();
                     $newID[0] = $row->id;
@@ -273,38 +271,38 @@ class osmap_com_k2
                 }
             }
         }
-        $osmap->changeLevel (-1);
+        $osmap->changeLevel(-1);
     }
 
     static function addNode($osmap, $node, $row, $iscat, &$parent, &$params)
     {
         $sef = ($_REQUEST['option'] == "com_sefservicemap"); // verallgemeinern
 
-        if (!isset($osmap->IDS))
+        if (!isset($osmap->IDS)) {
             $osmap->IDS = "";
+        }
 
         $node->browserNav = $parent->browserNav;
         $node->pid = $row->id;
         $node->uid = $parent->uid . 'item' . $row->id;
-        if (isset($row->modified) || isset($row->created))
+        if (isset($row->modified) || isset($row->created)) {
             $node->modified = (isset($row->modified) ? $row->modified : $row->created);
+        }
 
-        if ($sef)
-            $node->modified = date('Y-m-d',$node->modified);
+        if ($sef) {
+            $node->modified = date('Y-m-d', $node->modified);
+        }
 
         $node->name = ($iscat ? $row->name : $row->title);
 
         $node->priority = $params['priority'];
         $node->changefreq = $params['changefreq'];
 
-        if ($iscat)
-        {
+        if ($iscat) {
             $osmap->IDS .= "|c".$row->id;
             $node->link = 'index.php?option=com_k2&view=itemlist&task=category&id='.$row->id.':'.$row->alias.'&Itemid='.$parent->id;
             $node->expandible = true;
-        }
-        else
-        {
+        } else {
             $osmap->IDS .= "|".$row->id;
             $node->link = 'index.php?option=com_k2&view=item&id='.$row->id.':'.$row->alias.'&Itemid='.$parent->id;
             $node->expandible = false;
@@ -316,8 +314,7 @@ class osmap_com_k2
 
     static function &getParam($arr, $name, $def)
     {
-        $var = JArrayHelper::getValue( $arr, $name, $def, '' );
+        $var = JArrayHelper::getValue($arr, $name, $def, '');
         return $var;
     }
-
 }

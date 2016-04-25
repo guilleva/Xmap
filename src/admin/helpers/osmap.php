@@ -54,7 +54,8 @@ class OSMapHelper
             JSubMenuHelper::addEntry(
                 JText::_('OSMAP_SUBMENU_EXTENSIONS'),
                 'index.php?option=com_plugins&view=plugins&filter_folder=osmap',
-                $vName == 'extensions');
+                $vName == 'extensions'
+            );
         } else {
             JHtmlSidebar::addEntry(
                 JText::_('OSMAP_SUBMENU_SITEMAPS'),
@@ -64,7 +65,8 @@ class OSMapHelper
             JHtmlSidebar::addEntry(
                 JText::_('OSMAP_SUBMENU_EXTENSIONS'),
                 'index.php?option=com_plugins&view=plugins&filter_folder=osmap',
-                $vName == 'extensions');
+                $vName == 'extensions'
+            );
         }
     }
 }

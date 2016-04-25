@@ -26,7 +26,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-class OSMapDisplayer {
+class OSMapDisplayer
+{
 
     /**
      *
@@ -55,7 +56,7 @@ class OSMapDisplayer {
 
     public $canEdit;
 
-    function __construct($config,$sitemap)
+    function __construct($config, $sitemap)
     {
         jimport('joomla.utilities.date');
         jimport('joomla.user.helper');
@@ -74,7 +75,8 @@ class OSMapDisplayer {
         $this->canEdit  = false;
     }
 
-    public function printNode($node) {
+    public function printNode($node)
+    {
         return false;
     }
 
@@ -113,7 +115,7 @@ class OSMapDisplayer {
     {
         $app = JFactory::getApplication();
         $db = JFactory::getDbo();
-        
+
         //checking to see if menu is in menu_types table if not in modules table
         $db->setQuery(
             "SELECT * FROM #__menu_types WHERE menutype='{$menutype}' "
@@ -134,13 +136,13 @@ class OSMapDisplayer {
     {
         return true;
     }
-    protected function printMenuTree($menu,&$items)
+    protected function printMenuTree($menu, &$items)
     {
         $this->changeLevel(1);
 
         $router = JSite::getRouter();
 
-        foreach ( $items as $i => $item ) {                   // Add each menu entry to the root tree.
+        foreach ($items as $i => $item) {                   // Add each menu entry to the root tree.
             $excludeExternal = false;
 
             $node = new stdclass;
@@ -168,8 +170,7 @@ class OSMapDisplayer {
                 // Correct the URL for the home page.
                 $node->link = JURI::base();
             }
-            switch ($item->type)
-            {
+            switch ($item->type) {
                 case 'separator':
                 case 'heading':
                     $node->browserNav=3;
@@ -179,7 +180,7 @@ class OSMapDisplayer {
                         // If this is an internal Joomla link, ensure the Itemid is set.
                         $node->link = $node->link.'&Itemid='.$node->id;
                         // @todo: refactor to use JURI::isInternal()
-                    } elseif(strpos($node->link, JURI::base()) === false) {
+                    } elseif (strpos($node->link, JURI::base()) === false) {
                         $excludeExternal = true;
                     }
                     break;
@@ -190,8 +191,7 @@ class OSMapDisplayer {
                 default:
                     if ($router->getMode() == JROUTER_MODE_SEF) {
                         $node->link = 'index.php?Itemid='.$node->id;
-                    }
-                    elseif (!$node->home) {
+                    } elseif (!$node->home) {
                         $node->link .= '&Itemid='.$node->id;
                     }
                     break;
@@ -200,7 +200,7 @@ class OSMapDisplayer {
 
                 // Restore the original link
                 $node->link = $item->link;
-                $this->printMenuTree($node,$item->items);
+                $this->printMenuTree($node, $item->items);
                 $matches = array();
 
                 if ($node->option && !empty($this->jview->extensions[$node->option])) {
@@ -229,7 +229,8 @@ class OSMapDisplayer {
         return $this->count;
     }
 
-    public function &getExcludedItems() {
+    public function &getExcludedItems()
+    {
         static $_excluded_items;
         if (!isset($_excluded_items)) {
             $_excluded_items = array();
@@ -240,9 +241,10 @@ class OSMapDisplayer {
         return $_excluded_items;
     }
 
-    public function isExcluded($itemid,$uid) {
+    public function isExcluded($itemid, $uid)
+    {
         $excludedItems = $this->getExcludedItems();
-        $items = NULL;
+        $items = null;
         if (!empty($excludedItems[$itemid])) {
             if (is_object($excludedItems[$itemid])) {
                 $excludedItems[$itemid] = (array) $excludedItems[$itemid];

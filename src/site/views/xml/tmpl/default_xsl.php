@@ -345,7 +345,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
         return 0;
     }
 
-<?php if ($this->canEdit): ?>
+<?php if ($this->canEdit) : ?>
 
     var divOptions=null;
     function showOptions (cell,options,uid,itemid,e) {
@@ -374,7 +374,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 
     function changeProperty(el,property) {
         new Request.JSON({
-            url: '<?php echo JRoute::_('index.php?option=com_osmap&format=json&task=ajax.editElement&action=changeProperty',false); ?>',
+            url: '<?php echo JRoute::_('index.php?option=com_osmap&format=json&task=ajax.editElement&action=changeProperty', false); ?>',
             onComplete: checkChangeResult.bind(divOptions),
             method: 'get'
         }).send('<?php echo JSession::getFormToken(); ?>=1&id='+sitemapid+'&uid='+divOptions.uid+'&itemid='+divOptions.itemid+'&property='+property+'&value='+el.innerHTML);
@@ -386,7 +386,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
     function toggleExcluded(el,itemid, uid){
         row = $(el).getParent('tr');
         new Request.JSON({
-            url: '<?php echo JRoute::_('index.php?option=com_osmap&format=json&task=ajax.editElement&action=toggleElement',false); ?>',
+            url: '<?php echo JRoute::_('index.php?option=com_osmap&format=json&task=ajax.editElement&action=toggleElement', false); ?>',
             onComplete: checkToggleExcluded.bind(row),
             method: 'get'
         }).send('<?php echo JSession::getFormToken(); ?>=1&id='+sitemapid+'&uid='+uid+'&itemid='+itemid);
@@ -431,14 +431,14 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
     <div id="instructions">
         <div>
             <?php $sitemapUrl = 'index.php?option=com_osmap&view=xml&id='.$this->item->id; ?>
-            <?php if (!$this->user->get('id')): ?>
+            <?php if (!$this->user->get('id')) : ?>
                 <?php
                     $base = '64';
                     $function = "base${base}_encode";
                 ?>
             <p><?php echo JText::sprintf('COM_OSMAP_LOGIN_AS_ADMIN_EDIT_SITEMAP', JRoute::_('index.php?option=com_users&view=login&return='.call_user_func($function, $sitemapUrl))); ?></p>
-            <?php else: ?>
-            <?php $sitemapUrl = JUri::base(true).'/'.str_replace('&','&amp;',$sitemapUrl); ?>
+            <?php else : ?>
+            <?php $sitemapUrl = JUri::base(true).'/'.str_replace('&', '&amp;', $sitemapUrl); ?>
             <p><?php echo JText::_('COM_OSMAP_XML_SITEMAP_HELP'); ?></p>
             <form action="../index.php" method="post" id="login-form" class="form-vertical">
 	            <div class="logout-button">
@@ -466,22 +466,24 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 <table id="table0" class="data">
     <tr class="header">
         <td><?php echo ($showTitle? JText::_('COM_OSMAP_TITLE').' / ' : ''); ?><?php echo JText::_('COM_OSMAP_URL'); ?></td>
-        <?php if (!$this->isImages): ?>
+        <?php if (!$this->isImages) : ?>
         <td><?php echo JText::_('COM_OSMAP_LASTMOD'); ?></td>
         <td><?php echo JText::_('COM_OSMAP_CHANGEFREQ'); ?></td>
         <td><?php echo JText::_('COM_OSMAP_PRIORITY'); ?></td>
         <?php endif ?>
     </tr>
     <xsl:for-each select="xna:urlset/xna:url">
-        <?php if ($this->canEdit): ?>
+        <?php if ($this->canEdit) : ?>
         <xsl:variable name="rowclass"><xsl:value-of select="xna:rowclass"/></xsl:variable>
         <xsl:variable name="UID"><xsl:value-of select="xna:uid"/></xsl:variable>
         <xsl:variable name="ItemID"><xsl:value-of select="xna:itemid"/></xsl:variable>
-        <?php else: ?>
+        <?php else : ?>
         <xsl:variable name="rowclass"></xsl:variable>
         <?php endif; ?>
         <tr class="{$rowclass}">
-            <td><?php if ($this->canEdit): ?><span class="toggle-excluded" onClick="toggleExcluded(this,'{$ItemID}','{$UID}')"></span><?php endif; ?>
+            <td><?php if ($this->canEdit) :
+?><span class="toggle-excluded" onClick="toggleExcluded(this,'{$ItemID}','{$UID}')"></span><?php
+endif; ?>
                 <xsl:if test="count(image:image/image:loc) &gt; 0">
                     <span class="images_count"><xsl:value-of select="count(image:image/image:loc)"></xsl:value-of> Images</span>
                 </xsl:if>
@@ -496,12 +498,12 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
                     </div>
                 </xsl:if>
             </td>
-            <?php if (!$this->isImages): ?>
+            <?php if (!$this->isImages) : ?>
             <td><xsl:value-of select="xna:lastmod"/></td>
-            <?php if ($this->canEdit): ?>
+            <?php if ($this->canEdit) : ?>
             <td class="editable" onClick="showOptions(this,'changefreq','{$UID}','{$ItemID}',event);" ><xsl:value-of select="xna:changefreq"/></td>
             <td class="editable" onClick="showOptions(this,'priority','{$UID}','{$ItemID}',event);"><xsl:value-of select="xna:priority"/></td>
-            <?php else: ?>
+            <?php else : ?>
             <td><xsl:value-of select="xna:changefreq"/></td>
             <td><xsl:value-of select="xna:priority"/></td>
             <?php endif; ?>

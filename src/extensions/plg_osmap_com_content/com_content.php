@@ -160,7 +160,7 @@ class osmap_com_content
                     }
 
                     if ($params['add_pagebreaks']) {
-                        $node->subnodes   = OSMapHelper::getPagebreaks($text,$node->link);
+                        $node->subnodes   = OSMapHelper::getPagebreaks($text, $node->link);
                         $node->expandible = (count($node->subnodes) > 0); // This article has children
                     }
                 } else {
@@ -253,7 +253,7 @@ class osmap_com_content
         $params['add_pagebreaks'] = $add_pagebreaks;
 
         if ($params['add_pagebreaks'] && !defined('_OSMAP_COM_CONTENT_LOADED')) {
-            define('_OSMAP_COM_CONTENT_LOADED',1);  // Load it just once
+            define('_OSMAP_COM_CONTENT_LOADED', 1);  // Load it just once
             $lang = JFactory::getLanguage();
             $lang->load('plg_content_pagebreak');
         }
@@ -261,10 +261,12 @@ class osmap_com_content
         //----- Set cat_priority and cat_changefreq params
         $priority = JArrayHelper::getValue($params, 'cat_priority', $parent->priority);
         $changefreq = JArrayHelper::getValue($params, 'cat_changefreq', $parent->changefreq);
-        if ($priority == '-1')
+        if ($priority == '-1') {
             $priority = $parent->priority;
-        if ($changefreq == '-1')
+        }
+        if ($changefreq == '-1') {
             $changefreq = $parent->changefreq;
+        }
 
         $params['cat_priority'] = $priority;
         $params['cat_changefreq'] = $changefreq;
@@ -272,10 +274,12 @@ class osmap_com_content
         //----- Set art_priority and art_changefreq params
         $priority = JArrayHelper::getValue($params, 'art_priority', $parent->priority);
         $changefreq = JArrayHelper::getValue($params, 'art_changefreq', $parent->changefreq);
-        if ($priority == '-1')
+        if ($priority == '-1') {
             $priority = $parent->priority;
-        if ($changefreq == '-1')
+        }
+        if ($changefreq == '-1') {
             $changefreq = $parent->changefreq;
+        }
 
         $params['art_priority'] = $priority;
         $params['art_changefreq'] = $changefreq;

@@ -60,7 +60,7 @@ class JFormFieldModal_Sitemaps extends JFormField
         // Get the title of the linked chart
         if ($this->value) {
             $db->setQuery(
-                    'SELECT title' .
+                'SELECT title' .
                     ' FROM #__osmap_sitemap' .
                     ' WHERE id = ' . (int) $this->value
             );
@@ -78,7 +78,7 @@ class JFormFieldModal_Sitemaps extends JFormField
         }
 
         $doc->addScriptDeclaration(
-                  "function jSelectSitemap_" . $this->id . "(id, title, object) {
+            "function jSelectSitemap_" . $this->id . "(id, title, object) {
                        $('" . $this->id . "_id').value = id;
                        $('" . $this->id . "_name').value = title;
                        SqueezeBox.close();
@@ -90,13 +90,13 @@ class JFormFieldModal_Sitemaps extends JFormField
         JHTML::_('behavior.modal', 'a.modal');
         $html = '<span class="input-append">';
         $html .= "\n" . '<input class="input-medium" type="text" id="' . $this->id . '_name" value="' . htmlspecialchars($title, ENT_QUOTES, 'UTF-8') . '" disabled="disabled" />';
-        if(version_compare(JVERSION,'3.0.0','ge'))
+        if (version_compare(JVERSION, '3.0.0', 'ge')) {
             $html .= '<a class="modal btn" title="' . JText::_('COM_OSMAP_CHANGE_SITEMAP') . '"  href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}}"><i class="icon-file"></i> ' . JText::_('COM_OSMAP_CHANGE_SITEMAP_BUTTON') . '</a>' . "\n";
-        else
+        } else {
             $html .= '<div class="button2-left"><div class="blank"><a class="modal btn" title="' . JText::_('COM_OSMAP_CHANGE_SITEMAP') . '"  href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}}"><i class="icon-file"></i> ' . JText::_('COM_OSMAP_CHANGE_SITEMAP_BUTTON') . '</a></div></div>' . "\n";
+        }
         $html .= '</span>';
         $html .= "\n" . '<input type="hidden" id="' . $this->id . '_id" name="' . $this->name . '" value="' . (int) $this->value . '" />';
         return $html;
     }
-
 }

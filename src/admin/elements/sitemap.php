@@ -53,5 +53,4 @@ class JElementSitemap extends JElement
 
         return $html;
     }
-
 }

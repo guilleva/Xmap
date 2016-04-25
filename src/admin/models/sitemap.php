@@ -69,7 +69,7 @@ class OSMapModelSitemap extends JModelAdmin
         $params = JComponentHelper::getParams('com_osmap');
         $this->setState('params', $params);
     }
-    
+
     /**
      * Toggles attirbs items on admin view
      *
@@ -110,7 +110,7 @@ class OSMapModelSitemap extends JModelAdmin
             $this->setError($db->getErrorMsg());
             return false;
         }
-        
+
         return true;
     }
 
@@ -153,9 +153,8 @@ class OSMapModelSitemap extends JModelAdmin
         }
 
         // Prime required properties.
-        if (empty($table->id))
-        {
-            // Prepare data for a new record.
+        if (empty($table->id)) {
+        // Prepare data for a new record.
         }
 
         // Convert to the JObject before adding other data.

@@ -98,7 +98,7 @@ $n = count($this->items);
                     <?php echo (int) $item->id; ?>
                 </td>
             </tr>
-        <?php endforeach; ?>
+        <?php                                                                                                                                                                                                                 endforeach; ?>
         </tbody>
     </table>
     <input type="hidden" name="tmpl" value="component" />

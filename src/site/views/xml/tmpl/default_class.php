@@ -37,7 +37,7 @@ class OSMapXmlDisplayer extends OSMapDisplayer
         $this->uids = array();
 
         $this->defaultLanguage = strtolower(JFactory::getLanguage()->getTag());
-        if (preg_match('/^([a-z]+)-.*/',$this->defaultLanguage,$matches) && !in_array($this->defaultLanguage, array(' zh-cn',' zh-tw')) ) {
+        if (preg_match('/^([a-z]+)-.*/', $this->defaultLanguage, $matches) && !in_array($this->defaultLanguage, array(' zh-cn',' zh-tw'))) {
             $this->defaultLanguage = $matches[1];
         }
 
@@ -56,7 +56,7 @@ class OSMapXmlDisplayer extends OSMapDisplayer
     function printNode($node)
     {
         $node->isExcluded = false;
-        if ($this->isExcluded($node->id,$node->uid)) {
+        if ($this->isExcluded($node->id, $node->uid)) {
             if (!$this->showExcluded || !$this->canEdit) {
                 return false;
             }
@@ -71,19 +71,22 @@ class OSMapXmlDisplayer extends OSMapDisplayer
         // Get the item's URL
         $link = JRoute::_($node->link, true, @$node->secure == 0 ? (JFactory::getURI()->isSSL() ? 1 : -1) : $node->secure);
 
-        if (!isset($node->browserNav))
+        if (!isset($node->browserNav)) {
             $node->browserNav = 0;
+        }
 
         if ($node->browserNav != 3   // ignore "no link"
                 && empty($this->_links[$link])) { // ignore links that have been added already
             $this->count++;
             $this->_links[$link] = 1;
 
-            if (!isset($node->priority))
+            if (!isset($node->priority)) {
                 $node->priority = "0.5";
+            }
 
-            if (!isset($node->changefreq))
+            if (!isset($node->changefreq)) {
                 $node->changefreq = 'daily';
+            }
 
             // Get the changefrequency and priority for this item
             $changefreq = $this->getProperty('changefreq', $node->changefreq, $node->id, 'xml', $node->uid);
@@ -101,7 +104,7 @@ class OSMapXmlDisplayer extends OSMapDisplayer
                 echo '<uid>', $node->uid, '</uid>' . "\n";
                 echo '<itemid>', $node->id, '</itemid>' . "\n";
             }
-            $modified = (isset($node->modified) && $node->modified != FALSE && $node->modified != $this->nullDate && $node->modified != -1) ? $node->modified : NULL;
+            $modified = (isset($node->modified) && $node->modified != false && $node->modified != $this->nullDate && $node->modified != -1) ? $node->modified : null;
             if ($modified && !is_numeric($modified)) {
                 $date =  new JDate($modified);
                 $modified = $date->toUnix();

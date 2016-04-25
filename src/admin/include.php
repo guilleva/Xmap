@@ -53,7 +53,7 @@ JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
 JLoader::register('OSMapHelper', dirname(__FILE__) . '/helpers/osmap.php');
 
 # For compatibility with older versions of Joola 2.5
-if (!class_exists('JControllerLegacy')){
+if (!class_exists('JControllerLegacy')) {
     class JControllerLegacy extends JController
     {
 

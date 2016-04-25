@@ -55,8 +55,8 @@ if ($this->displayer->canEdit) {
         }";
 
     $doc = JFactory::getDocument();
-    $doc->addStyleDeclaration ($css);
-    $doc->addScriptDeclaration ($js);
+    $doc->addStyleDeclaration($css);
+    $doc->addScriptDeclaration($js);
 }
 ?>
 <div id="osmap">
@@ -69,24 +69,24 @@ if ($this->displayer->canEdit) {
     <?php if (!$this->print) : ?>
         <?php if ($params->get('show_print_icon')) : ?>
         <li>
-            <?php echo JHtml::_('icon.print_popup',  $this->item, $params); ?>
+            <?php echo JHtml::_('icon.print_popup', $this->item, $params); ?>
         </li>
         <?php endif; ?>
 
         <?php if ($params->get('show_email_icon')) : ?>
         <li>
-            <?php echo JHtml::_('icon.email',  $this->item, $params); ?>
+            <?php echo JHtml::_('icon.email', $this->item, $params); ?>
         </li>
         <?php endif; ?>
     <?php else : ?>
         <li>
-            <?php echo JHtml::_('icon.print_screen',  $this->item, $params); ?>
+            <?php echo JHtml::_('icon.print_screen', $this->item, $params); ?>
         </li>
     <?php endif; ?>
     </ul>
 <?php endif; ?>
 
-<?php if ($params->get('showintro', 1) )  : ?>
+<?php if ($params->get('showintro', 1)) :   ?>
     <?php echo $this->item->introtext; ?>
 <?php endif; ?>
 

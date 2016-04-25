@@ -28,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');
 
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 JHtml::_('bootstrap.tooltip');
-if(version_compare(JVERSION,'3.0.0','ge')) {
+if (version_compare(JVERSION, '3.0.0', 'ge')) {
     JHtml::_('formbehavior.chosen', 'select');
 }
 
@@ -40,7 +40,7 @@ $version = new JVersion;
 
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_osmap&view=sitemaps');?>" method="post" name="adminForm" id="adminForm">
-<?php if (!empty( $this->sidebar)): ?>
+<?php if (!empty($this->sidebar)) : ?>
     <div id="j-sidebar-container" class="span2">
         <?php echo $this->sidebar; ?>
     </div>
@@ -104,9 +104,9 @@ $version = new JVersion;
                     </td>
                     <td class="center">
                         <?php if ($item->is_default == 1) : ?>
-                            <?php if (version_compare($version->getShortVersion(), '3.0.0', '>=')): ?>
+                            <?php if (version_compare($version->getShortVersion(), '3.0.0', '>=')) : ?>
                                 <span class="icon-featured"></span>
-                            <?php else: ?>
+                            <?php else : ?>
                                 <img src="templates/bluestork/images/menu/icon-16-default.png" alt="<?php echo JText::_('DEFAULT'); ?>" />
                             <?php endif; ?>
                         <?php endif; ?>

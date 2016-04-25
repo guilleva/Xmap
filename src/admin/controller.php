@@ -306,7 +306,7 @@ class OSMapController extends JControllerLegacy
             $db->commitTransaction();
 
             $result->success = true;
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             $db->rollbackTransaction();
         }
 

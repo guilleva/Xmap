@@ -49,10 +49,10 @@ class OSMapHelper
             // Get the menu items as a tree.
             $query = $db->getQuery(true);
             $query->select(
-                    'n.id, n.title, n.alias, n.path, n.level, n.link, '
+                'n.id, n.title, n.alias, n.path, n.level, n.link, '
                   . 'n.type, n.params, n.home, n.parent_id'
                   . ',n.'.$db->quoteName('browserNav')
-                  );
+            );
             $query->from('#__menu AS n');
             $query->join('INNER', ' #__menu AS p ON p.lft = 0');
             $query->where('n.lft > p.lft');
@@ -211,7 +211,7 @@ class OSMapHelper
     }
 
 
-    static function getImages($text,$max)
+    static function getImages($text, $max)
     {
         if (!isset($urlBase)) {
             $urlBase = JURI::base();
@@ -224,7 +224,7 @@ class OSMapHelper
         preg_match_all('/<img[^>]*?(?:(?:[^>]*src="(?P<src>[^"]+)")|(?:[^>]*alt="(?P<alt>[^"]+)")|(?:[^>]*title="(?P<title>[^"]+)"))+[^>]*>/i', $text, $matches1, PREG_SET_ORDER);
         // Look for <a> tags with href to images
         preg_match_all('/<a[^>]*?(?:(?:[^>]*href="(?P<src>[^"]+\.(gif|png|jpg|jpeg))")|(?:[^>]*alt="(?P<alt>[^"]+)")|(?:[^>]*title="(?P<title>[^"]+)"))+[^>]*>/i', $text, $matches2, PREG_SET_ORDER);
-        $matches = array_merge($matches1,$matches2);
+        $matches = array_merge($matches1, $matches2);
         if (count($matches)) {
             $images = array();
 
@@ -250,16 +250,19 @@ class OSMapHelper
         return $images;
     }
 
-    static function getPagebreaks($text,$baseLink)
+    static function getPagebreaks($text, $baseLink)
     {
         $matches = $subnodes = array();
         if (preg_match_all(
-                '/<hr\s*[^>]*?(?:(?:\s*alt="(?P<alt>[^"]+)")|(?:\s*title="(?P<title>[^"]+)"))+[^>]*>/i',
-                $text, $matches, PREG_SET_ORDER)
+            '/<hr\s*[^>]*?(?:(?:\s*alt="(?P<alt>[^"]+)")|(?:\s*title="(?P<title>[^"]+)"))+[^>]*>/i',
+            $text,
+            $matches,
+            PREG_SET_ORDER
+        )
         ) {
             $i = 2;
             foreach ($matches as $match) {
-                if (strpos($match[0], 'class="system-pagebreak"') !== FALSE) {
+                if (strpos($match[0], 'class="system-pagebreak"') !== false) {
                     $link = $baseLink . '&limitstart=' . ($i - 1);
 
                     if (@$match['alt']) {

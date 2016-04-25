@@ -182,7 +182,7 @@ class OSMapModelSitemaps extends JModelList
         $db->setQuery($query);
         $extensions = $db->loadObjectList();
 
-        if ( count($extensions) ) {
+        if (count($extensions)) {
             $sep = $extensionsNameList = '';
 
             foreach ($extensions as $extension) {
@@ -190,7 +190,7 @@ class OSMapModelSitemaps extends JModelList
                 $sep = ', ';
             }
 
-            return JText::sprintf('OSMAP_MESSAGE_EXTENSIONS_DISABLED',$extensionsNameList);
+            return JText::sprintf('OSMAP_MESSAGE_EXTENSIONS_DISABLED', $extensionsNameList);
         } else {
             return "";
         }

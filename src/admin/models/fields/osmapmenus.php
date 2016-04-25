@@ -181,7 +181,8 @@ class JFormFieldOSMapMenus extends JFormFieldList
         return $return;
     }
 
-    public function myCompare($a, $b) {
+    public function myCompare($a, $b)
+    {
         $indexA = array_search($a->value, $this->currentItems);
         $indexB = array_search($b->value, $this->currentItems);
 
@@ -203,5 +204,4 @@ class JFormFieldOSMapMenus extends JFormFieldList
 
         return ($indexA < $indexB) ? -1 : 1;
     }
-
 }

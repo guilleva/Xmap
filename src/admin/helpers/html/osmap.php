@@ -26,7 +26,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-JTable::addIncludePath( JPATH_COMPONENT . '/tables' );
+JTable::addIncludePath(JPATH_COMPONENT . '/tables');
 
 
 /**

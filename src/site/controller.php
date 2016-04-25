@@ -74,5 +74,4 @@ class OSMapController extends JControllerLegacy
 
         return $this;
     }
-
 }

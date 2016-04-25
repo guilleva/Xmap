@@ -28,8 +28,9 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.view');
 
 # For compatibility with older versions of Joola 2.5
-if (!class_exists('JViewLegacy')){
-    class JViewLegacy extends JView {
+if (!class_exists('JViewLegacy')) {
+    class JViewLegacy extends JView
+    {
 
     }
 }
@@ -54,7 +55,7 @@ class OSMapViewXml extends JViewLegacy
         // Initialise variables.
         $app = JFactory::getApplication();
         $this->user = JFactory::getUser();
-        $this->isImages = JRequest::getInt('images',0);
+        $this->isImages = JRequest::getInt('images', 0);
 
         $model = $this->getModel('Sitemap');
         $this->setModel($model);
@@ -157,7 +158,7 @@ class OSMapViewXml extends JViewLegacy
     private function endAllBuffering()
     {
         $this->_obLevel = ob_get_level();
-        $level = FALSE;
+        $level = false;
         while (ob_get_level() > 0 && $level !== ob_get_level()) {
             @ob_end_clean();
             $level = ob_get_level();
@@ -165,9 +166,8 @@ class OSMapViewXml extends JViewLegacy
     }
     private function recreateBuffering()
     {
-        while($this->_obLevel--) {
+        while ($this->_obLevel--) {
             ob_start();
         }
     }
-
 }

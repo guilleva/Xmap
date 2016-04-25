@@ -28,63 +28,69 @@ defined('_JEXEC') or die('Restricted access');
 /** Handles Mosets Tree component */
 class osmap_com_mtree
 {
-    static function getTree( $osmap, $parent, &$params )
+    static function getTree($osmap, $parent, &$params)
     {
         $db = JFactory::getDbo();
 
         $catid=0;
-        if ( strpos($parent->link, 'task=listcats') ) {
-            $link_query = parse_url( $parent->link );
-            parse_str( html_entity_decode($link_query['query']), $link_vars);
-            $catid = JArrayHelper::getValue($link_vars,'cat_id',0);
+        if (strpos($parent->link, 'task=listcats')) {
+            $link_query = parse_url($parent->link);
+            parse_str(html_entity_decode($link_query['query']), $link_vars);
+            $catid = JArrayHelper::getValue($link_vars, 'cat_id', 0);
         }
 
-        $include_links = JArrayHelper::getValue($params,'include_links',1);
+        $include_links = JArrayHelper::getValue($params, 'include_links', 1);
         $include_links = ( $include_links == 1
             || ( $include_links == 2 && $osmap->view == 'xml')
             || ( $include_links == 3 && $osmap->view == 'html')
             ||   $osmap->view == 'navigator');
         $params['include_links'] = $include_links;
 
-        $priority = JArrayHelper::getValue($params,'cat_priority',$parent->priority);
-        $changefreq = JArrayHelper::getValue($params,'cat_changefreq',$parent->changefreq);
-        if ($priority  == '-1')
+        $priority = JArrayHelper::getValue($params, 'cat_priority', $parent->priority);
+        $changefreq = JArrayHelper::getValue($params, 'cat_changefreq', $parent->changefreq);
+        if ($priority  == '-1') {
             $priority = $parent->priority;
-        if ($changefreq  == '-1')
+        }
+        if ($changefreq  == '-1') {
             $changefreq = $parent->changefreq;
+        }
 
         $params['cat_priority'] = $priority;
         $params['cat_changefreq'] = $changefreq;
 
-        $priority = JArrayHelper::getValue($params,'link_priority',$parent->priority);
-        $changefreq = JArrayHelper::getValue($params,'link_changefreq',$parent->changefreq);
-        if ($priority  == '-1')
+        $priority = JArrayHelper::getValue($params, 'link_priority', $parent->priority);
+        $changefreq = JArrayHelper::getValue($params, 'link_changefreq', $parent->changefreq);
+        if ($priority  == '-1') {
             $priority = $parent->priority;
+        }
 
-        if ($changefreq  == '-1')
+        if ($changefreq  == '-1') {
             $changefreq = $parent->changefreq;
+        }
 
         $params['link_priority'] = $priority;
         $params['link_changefreq'] = $changefreq;
 
-        $ordering = JArrayHelper::getValue($params,'cats_order','cat_name');
-        $orderdir = JArrayHelper::getValue($params,'cats_orderdir','ASC');
-        if ( !in_array($ordering,array('ordering','cat_name','cat_created')) )
+        $ordering = JArrayHelper::getValue($params, 'cats_order', 'cat_name');
+        $orderdir = JArrayHelper::getValue($params, 'cats_orderdir', 'ASC');
+        if (!in_array($ordering, array('ordering','cat_name','cat_created'))) {
             $ordering = 'cat_name';
+        }
 
-        if ( !in_array($orderdir,array('ASC','DESC')) ){
+        if (!in_array($orderdir, array('ASC','DESC'))) {
             $orderdir = 'ASC';
         }
 
         $params['cats_order'] = $db->quoteName($ordering)." $orderdir";
 
-        if ( $include_links ) {
-            $ordering = JArrayHelper::getValue($params,'links_order','ordering');
-            $orderdir = JArrayHelper::getValue($params,'links_orderdir','ASC');
-            if ( !in_array($ordering,array('ordering','link_name','link_modified','link_created','link_hits')) )
+        if ($include_links) {
+            $ordering = JArrayHelper::getValue($params, 'links_order', 'ordering');
+            $orderdir = JArrayHelper::getValue($params, 'links_orderdir', 'ASC');
+            if (!in_array($ordering, array('ordering','link_name','link_modified','link_created','link_hits'))) {
                 $ordering = 'ordering';
+            }
 
-            if ( !in_array($orderdir,array('ASC','DESC')) ){
+            if (!in_array($orderdir, array('ASC','DESC'))) {
                 $orderdir = 'ASC';
             }
 
@@ -92,20 +98,22 @@ class osmap_com_mtree
 
             $params['limit'] = '';
             $params['days'] = '';
-            $limit = JArrayHelper::getValue($params,'max_links',0);
-            if ( intval($limit) )
+            $limit = JArrayHelper::getValue($params, 'max_links', 0);
+            if (intval($limit)) {
                 $params['limit'] = ' LIMIT '.intval($limit);
+            }
 
-            $days = JArrayHelper::getValue($params,'max_age','');
-            if ( intval($days) )
-                $params['days'] = ' AND a.link_created >=\''.date('Y-m-d H:i:s',($osmap->now - ($days*86400))) ."' ";
+            $days = JArrayHelper::getValue($params, 'max_age', '');
+            if (intval($days)) {
+                $params['days'] = ' AND a.link_created >=\''.date('Y-m-d H:i:s', ($osmap->now - ($days*86400))) ."' ";
+            }
         }
 
-        osmap_com_mtree::getMtreeCategory($osmap,$parent,$params,$catid);
+        osmap_com_mtree::getMtreeCategory($osmap, $parent, $params, $catid);
     }
 
     /* Returns URLs of all Categories and links in of one category using recursion */
-    static function getMtreeCategory ($osmap, $parent, &$params, $catid )
+    static function getMtreeCategory($osmap, $parent, &$params, $catid)
     {
         $database = JFactory::getDbo();
 
@@ -117,21 +125,21 @@ class osmap_com_mtree
         $rows = $database->loadObjectList();
 
         $osmap->changeLevel(1);
-        foreach($rows as $row) {
+        foreach ($rows as $row) {
             $node = new stdclass;
             $node->name = $row->cat_name;
             $node->link = 'index.php?option=com_mtree&task=listcats&cat_id='.$row->cat_id.'&Itemid='.$parent->id;
             $node->id = $parent->id;
             $node->uid = $parent->uid .'c'.$row->cat_id;
             $node->browserNav = $parent->browserNav;
-            $node->modified = NULL;
+            $node->modified = null;
             $node->priority = $params['cat_priority'];
             $node->changefreq = $params['cat_changefreq'];
             $node->expandible = true;
             $node->secure = $parent->secure;
 
-            if ( $osmap->printNode($node) !== FALSE) {
-                osmap_com_mtree::getMtreeCategory($osmap,$parent,$params,$row->cat_id);
+            if ($osmap->printNode($node) !== false) {
+                osmap_com_mtree::getMtreeCategory($osmap, $parent, $params, $row->cat_id);
             }
         }
 
@@ -150,8 +158,8 @@ class osmap_com_mtree
 
             $rows = $database->loadObjectList();
 
-            foreach($rows as $row) {
-                if ( !$row->modified || ($row->modified == $database->getNullDate())) {
+            foreach ($rows as $row) {
+                if (!$row->modified || ($row->modified == $database->getNullDate())) {
                     $row->modified = $row->created;
                 }
 

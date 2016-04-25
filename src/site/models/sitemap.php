@@ -218,7 +218,7 @@ class OSMapModelSitemap extends JModelItem
         return true;
     }
 
-    public function getSitemapItems($view=null)
+    public function getSitemapItems($view = null)
     {
         if (!isset($view)) {
             $view = JRequest::getCmd('view');
@@ -226,7 +226,7 @@ class OSMapModelSitemap extends JModelItem
         $db = JFactory::getDBO();
         $pk = (int) $this->getState('sitemap.id');
 
-        if (self::$items !== NULL && isset(self::$items[$view])) {
+        if (self::$items !== null && isset(self::$items[$view])) {
             return;
         }
         $query = "select * from #__osmap_items where view='$view' and sitemap_id=" . $pk;
@@ -238,7 +238,7 @@ class OSMapModelSitemap extends JModelItem
             self::$items[$view][$row->itemid][$row->uid] = array();
             $pairs = explode(';', $row->properties);
             foreach ($pairs as $pair) {
-                if (strpos($pair, '=') !== FALSE) {
+                if (strpos($pair, '=') !== false) {
                     list($property, $value) = explode('=', $pair);
                     self::$items[$view][$row->itemid][$row->uid][$property] = $value;
                 }
@@ -311,5 +311,4 @@ class OSMapModelSitemap extends JModelItem
         $db->query();
         return $state;
     }
-
 }
