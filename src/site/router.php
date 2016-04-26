@@ -62,8 +62,8 @@ class OSMapRoute
         if (self::$lookup === null) {
             self::$lookup = array();
 
-            $component    = &JComponentHelper::getComponent('com_osmap');
-            $menus        = &JApplication::getMenu('site', array());
+            $component    = JComponentHelper::getComponent('com_osmap');
+            $menus        = JApplication::getMenu('site', array());
             $items        = $menus->getItems('component_id', $component->id);
 
             foreach ($items as &$item) {

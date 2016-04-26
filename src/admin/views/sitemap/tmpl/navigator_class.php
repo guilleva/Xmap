@@ -56,7 +56,7 @@ class OSMapNavigatorDisplayer extends OSMapDisplayer
 
     function &expandLink(&$parent)
     {
-        $items = &JSite::getMenu();
+        $items = JSite::getMenu();
         $extensions = &$this->_extensions;
         $rows = null;
         if (strpos($parent->link, '-menu-') === 0) {

@@ -180,8 +180,8 @@ class OSMapViewSitemap extends JViewLegacy
 
             if ($Itemid) {
                 // Expand a menu Item
-                $items = &JSite::getMenu();
-                $node = & $items->getItem($Itemid);
+                $items = JSite::getMenu();
+                $node = $items->getItem($Itemid);
                 if (isset($menuItems[$node->menutype])) {
                     $parent->name = $node->title;
                     $parent->id = $node->id;
