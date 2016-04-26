@@ -39,26 +39,30 @@ class OSMapNavigatorDisplayer extends OSMapDisplayer
         parent::__construct($config, $sitemap);
     }
 
-    function printNode(&$node)
+    public function printNode(&$node)
     {
         if (!isset($node->selectable)) {
             $node->selectable=true;
         }
+
         // For extentions that doesn't set this property as this is new in OSMap 1.2.3
         if (!isset($node->expandible)) {
             $node->expandible = true;
         }
+
         if (empty($this->_list[$node->uid])) { // Avoid duplicated items
             $this->_list[$node->uid] = $node;
         }
+
         return false;
     }
 
-    function &expandLink(&$parent)
+    public function &expandLink(&$parent)
     {
-        $items = JSite::getMenu();
-        $extensions = &$this->_extensions;
-        $rows = null;
+        $items      = JSite::getMenu();
+        $extensions =& $this->_extensions;
+        $rows       = null;
+
         if (strpos($parent->link, '-menu-') === 0) {
             $menutype = str_replace('-menu-', '', $parent->link);
             // Get Menu Items
@@ -71,12 +75,12 @@ class OSMapNavigatorDisplayer extends OSMapDisplayer
             foreach ($rows as $item) {
                 if ($item->parent_id == $parent->id) {
                     $node = new stdclass;
-                    $node->name = $item->title;
-                    $node->id   = $item->id;
-                    $node->uid  = 'itemid'.$item->id;
-                    $node->link = $item->link;
+                    $node->name       = $item->title;
+                    $node->id         = $item->id;
+                    $node->uid        = 'itemid'.$item->id;
+                    $node->link       = $item->link;
                     $node->expandible = true;
-                    $node->selectable=true;
+                    $node->selectable = true;
 
                     // Prepare the node link
                     if (false === OSMapHelper::prepareMenuItem($node)) {
@@ -95,10 +99,10 @@ class OSMapNavigatorDisplayer extends OSMapDisplayer
                     } elseif ($item->type == 'separator') {
                         $node->selectable=false;
                     }
+
                     $this->printNode($node);  // Add to the internal list
                 }
             }
-
         }
 
         if ($parent->id) {
@@ -111,7 +115,7 @@ class OSMapNavigatorDisplayer extends OSMapDisplayer
             $Itemid = JRequest::getInt('Itemid');
 
             if (!$option && $Itemid) {
-                $item = $items->getItem($Itemid);
+                $item       = $items->getItem($Itemid);
                 $link_query = parse_url($item->link);
                 parse_str(html_entity_decode($link_query['query']), $link_vars);
 
@@ -127,7 +131,7 @@ class OSMapNavigatorDisplayer extends OSMapDisplayer
 
                 $methodParams = array(&$this, &$node, &$plugin->params);
 
-                $result = Alledia\Framework\Helper::callMethod($plugin->className, 'getTree', $methodParams);
+                Alledia\Framework\Helper::callMethod($plugin->className, 'getTree', $methodParams);
 
                 $parent->uid = $option;
             }
@@ -136,7 +140,7 @@ class OSMapNavigatorDisplayer extends OSMapDisplayer
         return $this->_list;
     }
 
-    function &getParam($arr, $name, $def)
+    public function &getParam($arr, $name, $def)
     {
         $var = JArrayHelper::getValue($arr, $name, $def, '');
 

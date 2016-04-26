@@ -107,7 +107,6 @@ class OSMapViewSitemap extends JViewLegacy
     {
         require_once(JPATH_COMPONENT_SITE . '/helpers/osmap.php');
 
-        $app         = JFactory::getApplication();
         $this->state = $this->get('State');
         $this->item  = $this->get('Item');
 
@@ -124,7 +123,6 @@ class OSMapViewSitemap extends JViewLegacy
         JHTML::stylesheet('mootree.css', 'media/system/css/');
 
         $this->loadTemplate('class');
-        $displayer = new OSMapNavigatorDisplayer($state->params, $this->item);
 
         parent::display($tpl);
     }
@@ -135,7 +133,6 @@ class OSMapViewSitemap extends JViewLegacy
         require_once(JPATH_COMPONENT_SITE . '/helpers/osmap.php');
 
         $link   = urldecode(JRequest::getVar('link', ''));
-        $name   = JRequest::getCmd('e_name', '');
         $Itemid = JRequest::getInt('Itemid');
 
         $this->item  = $this->get('Item');
@@ -145,7 +142,7 @@ class OSMapViewSitemap extends JViewLegacy
         $extensions = OSMapHelper::getExtensions();
 
         $this->loadTemplate('class');
-        $nav = new OSMapNavigatorDisplayer($state->params, $item);
+        $nav = new OSMapNavigatorDisplayer($this->state->params, $item);
         $nav->setExtensions($extensions);
 
         $this->list = array();
@@ -158,17 +155,19 @@ class OSMapViewSitemap extends JViewLegacy
                 #$menu->menutype = $menutype;
 
                 $node = new stdClass;
-                $node->uid = "menu-" . $menutype;
-                $node->menutype = $menutype;
-                $node->ordering = $item->selections->$menutype->ordering;
-                $node->priority = $item->selections->$menutype->priority;
+                $node->uid        = "menu-" . $menutype;
+                $node->menutype   = $menutype;
+                $node->ordering   = $item->selections->$menutype->ordering;
+                $node->priority   = $item->selections->$menutype->priority;
                 $node->changefreq = $item->selections->$menutype->changefreq;
                 $node->browserNav = 3;
-                $node->type = 'separator';
+                $node->type       = 'separator';
+
                 if (!$node->name = $nav->getMenuTitle($menutype, @$menu->module)) {
                     $node->name = $menutype;
                 }
-                $node->link = '-menu-' . $menutype;
+
+                $node->link       = '-menu-' . $menutype;
                 $node->expandible = true;
                 $node->selectable = false;
                 //$node->name = $this->getMenuTitle($menutype,@$menu->module);    // get the mod_mainmenu title from modules table
@@ -181,17 +180,17 @@ class OSMapViewSitemap extends JViewLegacy
             if ($Itemid) {
                 // Expand a menu Item
                 $items = JSite::getMenu();
-                $node = $items->getItem($Itemid);
+                $node  = $items->getItem($Itemid);
                 if (isset($menuItems[$node->menutype])) {
-                    $parent->name = $node->title;
-                    $parent->id = $node->id;
-                    $parent->uid = 'itemid' . $node->id;
-                    $parent->link = $link;
-                    $parent->type = $node->type;
+                    $parent->name       = $node->title;
+                    $parent->id         = $node->id;
+                    $parent->uid        = 'itemid' . $node->id;
+                    $parent->link       = $link;
+                    $parent->type       = $node->type;
                     $parent->browserNav = $node->browserNav;
-                    $parent->priority = $item->selections->{$node->menutype}->priority;
+                    $parent->priority   = $item->selections->{$node->menutype}->priority;
                     $parent->changefreq = $item->selections->{$node->menutype}->changefreq;
-                    $parent->menutype = $node->menutype;
+                    $parent->menutype   = $node->menutype;
                     $parent->selectable = false;
                     $parent->expandible = true;
                 }

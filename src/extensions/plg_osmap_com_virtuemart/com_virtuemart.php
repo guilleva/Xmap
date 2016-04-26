@@ -29,7 +29,9 @@ defined('_JEXEC') or die('Restricted access');
 class osmap_com_virtuemart
 {
     protected static $categoryModel;
+
     protected static $productModel;
+
     protected static $initialized = false;
 
     public static $urlBase;
@@ -147,6 +149,7 @@ class osmap_com_virtuemart
 
         $cache = JFactory::getCache('com_virtuemart', 'callback');
         $cache->setCaching(true);
+
         $children = $cache->call(array($m, 'getChildCategoryList'), $vendorId, $catId);
 
         if (!empty($children)) {

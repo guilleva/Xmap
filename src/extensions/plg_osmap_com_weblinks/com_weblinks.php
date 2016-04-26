@@ -60,15 +60,11 @@ class osmap_com_weblinks
         }
 
         $params['groups']              = implode(',', JFactory::getUser()->getAuthorisedViewLevels());
-
         $params['language_filter']     = JFactory::getApplication()->getLanguageFilter();
-
         $params['include_links']       = JArrayHelper::getValue($params, 'include_links', 1);
         $params['include_links']       = ($params['include_links'] == 1 || ($params['include_links'] == 2 && $osmap->view == 'xml') || ($params['include_links'] == 3 && $osmap->view == 'html'));
-
         $params['show_unauth']         = JArrayHelper::getValue($params, 'show_unauth', 0);
         $params['show_unauth']         = ($params['show_unauth'] == 1 || ($params['show_unauth'] == 2 && $osmap->view == 'xml') || ($params['show_unauth'] == 3 && $osmap->view == 'html'));
-
         $params['category_priority']   = JArrayHelper::getValue($params, 'category_priority', $parent->priority);
         $params['category_changefreq'] = JArrayHelper::getValue($params, 'category_changefreq', $parent->changefreq);
 
@@ -221,7 +217,7 @@ class osmap_com_weblinks
     {
         if (null === static::$enabled) {
             $db = JFactory::getDbo();
-            $db->setQuery('Select enabled From #__extensions Where name=' . $db->quote('com_weblinks'));
+            $db->setQuery('SELECT enabled FROM `#__extensions` WHERE name=' . $db->quote('com_weblinks'));
             static::$enabled = (bool)$db->loadResult();
         }
 

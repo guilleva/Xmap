@@ -41,7 +41,7 @@ abstract class JHtmlOSMap
      * @param    string  $value
      * @param    int     $j
      */
-    public static function priorities($name, $value = '0.5', $j)
+    public static function priorities($name, $value = '0.5', $j = 0)
     {
         // Array of options
         for ($i = 0.1; $i <= 1; $i += 0.1) {
@@ -56,7 +56,7 @@ abstract class JHtmlOSMap
      * @param    string  $value
      * @param    int     $j
      */
-    public static function changefrequency($name, $value = 'weekly', $j)
+    public static function changefrequency($name, $value = 'weekly', $j = 0)
     {
         // Array of options
         $options[] = JHTML::_('select.option', 'hourly', 'hourly');

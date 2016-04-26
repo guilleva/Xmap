@@ -99,7 +99,7 @@ class OSMapControllerSitemaps extends JControllerAdmin
 
         return $model;
     }
-    
+
     /**
      * Enables or disables Attribs items, also redirects back to correct view
      */
@@ -110,10 +110,10 @@ class OSMapControllerSitemaps extends JControllerAdmin
 
         // Get items to publish from the request.
         $sitemapId = JFactory::getApplication()->input->get('cid', array(), 'array');
-        $data = array('enable' => 1, 'disable' => 0);
-        $task = $this->getTask();
-        $taskTemp = explode('_', $task);
-        $value = JArrayHelper::getValue($data, end($taskTemp), 0, 'int');
+        $data      = array('enable' => 1, 'disable' => 0);
+        $task      = $this->getTask();
+        $taskTemp  = explode('_', $task);
+        $value     = JArrayHelper::getValue($data, end($taskTemp), 0, 'int');
 
         if (empty($sitemapId)) {
             JLog::add(JText::_($this->text_prefix . '_NO_ITEM_SELECTED'), JLog::WARNING, 'jerror');

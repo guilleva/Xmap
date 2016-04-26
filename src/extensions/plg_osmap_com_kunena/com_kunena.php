@@ -120,6 +120,7 @@ class osmap_com_kunena
 
         $priority   = JArrayHelper::getValue($params, 'cat_priority', $parent->priority);
         $changefreq = JArrayHelper::getValue($params, 'cat_changefreq', $parent->changefreq);
+
         if ($priority == '-1') {
             $priority = $parent->priority;
         }
@@ -134,6 +135,7 @@ class osmap_com_kunena
 
         $priority   = JArrayHelper::getValue($params, 'topic_priority', $parent->priority);
         $changefreq = JArrayHelper::getValue($params, 'topic_changefreq', $parent->changefreq);
+
         if ($priority == '-1') {
             $priority = $parent->priority;
         }
@@ -265,7 +267,7 @@ class osmap_com_kunena
                 $node = new stdclass;
                 $node->id         = $parent->id;
                 $node->browserNav = $parent->browserNav;
-                $node->uid        = 'com_kunenat'.$topic->id;
+                $node->uid        = 'com_kunenat' . $topic->id;
                 $node->name       = $topic->subject;
                 $node->priority   = $params['topic_priority'];
                 $node->changefreq = $params['topic_changefreq'];
@@ -317,14 +319,14 @@ class osmap_com_kunena
             }
 
             // Check if Kunena API exists
-            $kunena_api = JPATH_ADMINISTRATOR . '/components/com_kunena/api.php';
+            $kunenaAPI = JPATH_ADMINISTRATOR . '/components/com_kunena/api.php';
 
-            if (!is_file($kunena_api)) {
+            if (!is_file($kunenaAPI)) {
                 return false;
             }
 
             // Load Kunena API
-            require_once($kunena_api);
+            require_once($kunenaAPI);
         }
 
         return true;

@@ -148,10 +148,10 @@ class OSMapController extends JControllerLegacy
     private function getDefaultSitemapId()
     {
         $db = JFactory::getDBO();
-        $query  = $db->getQuery(true);
-        $query->select('id');
-        $query->from($db->quoteName('#__osmap_sitemap'));
-        $query->where('is_default=1');
+        $query = $db->getQuery(true)
+            ->select('id')
+            ->from($db->quoteName('#__osmap_sitemap'))
+            ->where('is_default=1');
         $db->setQuery($query);
 
         return $db->loadResult();

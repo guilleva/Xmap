@@ -57,7 +57,7 @@ abstract class OSMapGrid extends JHtmlGrid
         if (is_object($value)) {
             $value = $value->$property;
         }
-                
+
         $task = $value ? $taskDisable : $taskEnable;
         $alt = $value ? JText::_('OSMAP_ENABLED') : JText::_('OSMAP_DISABLED');
         $action = $value ? JText::_('OSMAP_DISABLE_TOOLTIP') : JText::_('OSMAP_ENABLE_TOOLTIP');
