@@ -31,7 +31,7 @@ require_once(JPATH_COMPONENT_SITE.'/displayer.php');
 class OSMapNavigatorDisplayer extends OSMapDisplayer
 {
 
-    function __construct(&$config, &$sitemap)
+    public function __construct(&$config, &$sitemap)
     {
         $this->_list=array();
         $this->view='navigator';

@@ -27,14 +27,6 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
-# For compatibility with older versions of Joola 2.5
-if (!class_exists('JViewLegacy')) {
-    class JViewLegacy extends JView
-    {
-
-    }
-}
-
 /**
  * XML Sitemap View class for the OSMap component
  *
@@ -46,6 +38,7 @@ class OSMapViewXml extends JViewLegacy
 {
 
     protected $state;
+
     protected $print;
 
     protected $_obLevel;
@@ -54,7 +47,8 @@ class OSMapViewXml extends JViewLegacy
     {
         // Initialise variables.
         $app = JFactory::getApplication();
-        $this->user = JFactory::getUser();
+
+        $this->user     = JFactory::getUser();
         $this->isImages = JRequest::getInt('images', 0);
 
         $model = $this->getModel('Sitemap');
@@ -65,8 +59,8 @@ class OSMapViewXml extends JViewLegacy
 
         $layout = $this->getLayout();
 
-        $this->item = $this->get('Item');
-        $this->state = $this->get('State');
+        $this->item    = $this->get('Item');
+        $this->state   = $this->get('State');
         $this->canEdit = JFactory::getUser()->authorise('core.admin', 'com_osmap');
 
         if ($layout == 'xsl') {
@@ -74,13 +68,14 @@ class OSMapViewXml extends JViewLegacy
         }
 
         // Get model data.
-        $this->items = $this->get('Items');
+        $this->items        = $this->get('Items');
         $this->sitemapItems = $this->get('SitemapItems');
-        $this->extensions = $this->get('Extensions');
+        $this->extensions   = $this->get('Extensions');
 
         // Check for errors.
         if (count($errors = $this->get('Errors'))) {
             JError::raiseWarning(500, implode("\n", $errors));
+
             return false;
         }
 
@@ -90,22 +85,21 @@ class OSMapViewXml extends JViewLegacy
         $this->item->rlink = JRoute::_('index.php?option=com_osmap&view=xml&id=' . $this->item->slug);
 
         // Create a shortcut to the parameters.
-        $params = &$this->state->params;
-        $offset = $this->state->get('page.offset');
+        $params =& $this->state->params;
 
         if (!$this->item->params->get('access-view')) {
             if ($this->user->get('guest')) {
                 // Redirect to login
                 $uri = JFactory::getURI();
-                $base = '64';
-                $function = "base${base}_encode";
                 $app->redirect(
-                    'index.php?option=com_users&view=login&return=' . call_user_func($function, $uri),
+                    'index.php?option=com_users&view=login&return=' . call_user_func('base64_encode', $uri),
                     JText::_('OSMAP_ERROR_LOGIN_TO_VIEW_SITEMAP')
                 );
+
                 return;
             } else {
                 JError::raiseWarning(403, JText::_('OSMAP_ERROR_NOT_AUTH'));
+
                 return;
             }
         }
@@ -122,10 +116,12 @@ class OSMapViewXml extends JViewLegacy
         $this->displayer->setJView($this);
 
         $this->displayer->isImages = $this->isImages;
-        $this->displayer->canEdit = $this->canEdit;
+        $this->displayer->canEdit  = $this->canEdit;
 
         $doCompression = ($this->item->params->get('compress_xml') && !ini_get('zlib.output_compression') && ini_get('output_handler') != 'ob_gzhandler');
+
         $this->endAllBuffering();
+
         if ($doCompression) {
             ob_start();
         }
@@ -141,30 +137,36 @@ class OSMapViewXml extends JViewLegacy
             @ob_end_clean();
             echo JResponse::toString(true);
         }
+
         $this->recreateBuffering();
+
         exit;
     }
 
-    function displayXSL()
+    protected function displayXSL()
     {
         $this->setLayout('default');
 
         $this->endAllBuffering();
         parent::display('xsl');
         $this->recreateBuffering();
+
         exit;
     }
 
-    private function endAllBuffering()
+    protected function endAllBuffering()
     {
         $this->_obLevel = ob_get_level();
+
         $level = false;
+
         while (ob_get_level() > 0 && $level !== ob_get_level()) {
             @ob_end_clean();
             $level = ob_get_level();
         }
     }
-    private function recreateBuffering()
+
+    protected function recreateBuffering()
     {
         while ($this->_obLevel--) {
             ob_start();

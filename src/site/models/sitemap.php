@@ -28,6 +28,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.modelitem');
 jimport('joomla.database.query');
+
 require_once(JPATH_COMPONENT . '/helpers/osmap.php');
 
 /**
@@ -46,9 +47,11 @@ class OSMapModelSitemap extends JModelItem
      * @var        string
      */
     protected $_context = 'com_osmap.sitemap';
+
     protected $_extensions = null;
 
-    static $items = array();
+    public static $items = array();
+
     /**
      * Method to auto-populate the model state.
      *
@@ -63,10 +66,13 @@ class OSMapModelSitemap extends JModelItem
 
         // If not sitemap specified, select the default one
         if (!$pk) {
-            $db = $this->getDbo();
-            $query = $db->getQuery(true);
-            $query->select('id')->from('#__osmap_sitemap')->where('is_default=1');
+            $db    = $this->getDbo();
+            $query = $db->getQuery(true)
+                ->select('id')
+                ->from('#__osmap_sitemap')
+                ->where('is_default = 1');
             $db->setQuery($query);
+
             $pk = $db->loadResult();
         }
 
@@ -118,7 +124,7 @@ class OSMapModelSitemap extends JModelItem
 
                 // Filter by access level.
                 if ($access = $this->getState('filter.access')) {
-                    $user = JFactory::getUser();
+                    $user   = JFactory::getUser();
                     $groups = implode(',', $user->getAuthorisedViewLevels());
                     $query->where('a.access IN (' . $groups . ')');
                 }
@@ -179,10 +185,11 @@ class OSMapModelSitemap extends JModelItem
         if ($item = $this->getItem()) {
             return OSMapHelper::getMenuItems($item->selections);
         }
+
         return false;
     }
 
-    function getExtensions()
+    public function getExtensions()
     {
         return OSMapHelper::getExtensions();
     }
@@ -205,7 +212,7 @@ class OSMapModelSitemap extends JModelItem
         }
 
         $this->_db->setQuery(
-            'UPDATE #__osmap_sitemap' .
+            'UPDATE `#__osmap_sitemap' .
             ' SET views_' . $view . ' = views_' . $view . ' + 1, count_' . $view . ' = ' . $count . ', lastvisit_' . $view . ' = ' . JFactory::getDate()->toUnix() .
             ' WHERE id = ' . (int) $pk
         );
@@ -223,20 +230,26 @@ class OSMapModelSitemap extends JModelItem
         if (!isset($view)) {
             $view = JRequest::getCmd('view');
         }
+
         $db = JFactory::getDBO();
         $pk = (int) $this->getState('sitemap.id');
 
         if (self::$items !== null && isset(self::$items[$view])) {
             return;
         }
-        $query = "select * from #__osmap_items where view='$view' and sitemap_id=" . $pk;
+
+        $query = "SELECT * FROM `#__osmap_items` WHERE view = '$view' AND sitemap_id = " . $pk;
         $db->setQuery($query);
         $rows = $db->loadObjectList();
+
         self::$items[$view] = array();
+
         foreach ($rows as $row) {
             self::$items[$view][$row->itemid] = array();
             self::$items[$view][$row->itemid][$row->uid] = array();
+
             $pairs = explode(';', $row->properties);
+
             foreach ($pairs as $pair) {
                 if (strpos($pair, '=') !== false) {
                     list($property, $value) = explode('=', $pair);
@@ -244,33 +257,39 @@ class OSMapModelSitemap extends JModelItem
                 }
             }
         }
+
         return self::$items;
     }
 
-    function chageItemPropery($uid, $itemid, $view, $property, $value)
+    public function chageItemPropery($uid, $itemid, $view, $property, $value)
     {
         $items = $this->getSitemapItems($view);
-        $db = JFactory::getDBO();
-        $pk = (int) $this->getState('sitemap.id');
+        $db    = JFactory::getDBO();
+        $pk    = (int) $this->getState('sitemap.id');
 
         $isNew = false;
         if (empty($items[$view][$itemid][$uid])) {
             $items[$view][$itemid][$uid] = array();
             $isNew = true;
         }
+
         $items[$view][$itemid][$uid][$property] = $value;
         $sep = $properties = '';
+
         foreach ($items[$view][$itemid][$uid] as $k => $v) {
             $properties .= $sep . $k . '=' . $v;
             $sep = ';';
         }
+
         if (!$isNew) {
-            $query = 'UPDATE #__osmap_items SET properties=\'' . $db->escape($properties) . "' where uid='" . $db->escape($uid) . "' and itemid=$itemid and view='$view' and sitemap_id=" . $pk;
+            $query = 'UPDATE `#__osmap_items` SET properties=\'' . $db->escape($properties) . "' WHERE uid='" . $db->escape($uid) . "' AND itemid=$itemid AND view='$view' AND sitemap_id=" . $pk;
         } else {
-            $query = 'INSERT #__osmap_items (uid,itemid,view,sitemap_id,properties) values ( \'' . $db->escape($uid) . "',$itemid,'$view',$pk,'" . $db->escape($properties) . "')";
+            $query = 'INSERT `#__osmap_items` (uid,itemid,view,sitemap_id,properties) VALUES ( \'' . $db->escape($uid) . "', $itemid, '$view', $pk, '" . $db->escape($properties) . "')";
+
         }
+
         $db->setQuery($query);
-        //echo $db->getQuery();exit;
+
         if ($db->query()) {
             return true;
         } else {
@@ -278,9 +297,9 @@ class OSMapModelSitemap extends JModelItem
         }
     }
 
-    function toggleItem($uid, $itemid)
+    public function toggleItem($uid, $itemid)
     {
-        $app = JFactory::getApplication('site');
+        $app     = JFactory::getApplication('site');
         $sitemap = $this->getItem();
 
         $displayer = new OSMapDisplayer($app->getParams(), $sitemap);
@@ -289,6 +308,7 @@ class OSMapModelSitemap extends JModelItem
         if (isset($excludedItems[$itemid])) {
             $excludedItems[$itemid] = (array) $excludedItems[$itemid];
         }
+
         if (!$displayer->isExcluded($itemid, $uid)) {
             $excludedItems[$itemid][] = $uid;
             $state = 0;
@@ -302,13 +322,15 @@ class OSMapModelSitemap extends JModelItem
         }
 
         $registry = new JRegistry('_default');
+
         $registry->loadArray($excludedItems);
         $str = $registry->toString();
 
         $db = JFactory::getDBO();
-        $query = "UPDATE #__osmap_sitemap set excluded_items='" . $db->escape($str) . "' where id=" . $sitemap->id;
+        $query = "UPDATE `#__osmap_sitemap` SET excluded_items = '" . $db->escape($str) . "' WHERE id = " . $sitemap->id;
         $db->setQuery($query);
         $db->query();
+
         return $state;
     }
 }

@@ -14,26 +14,33 @@ require_once(JPATH_COMPONENT.'/displayer.php');
 class OSMapHtmlDisplayer extends OSMapDisplayer
 {
 
-    var $level = -1;
-    var $_openList = '';
-    var $_closeList = '';
-    var $_closeItem = '';
-    var $_childs;
-    var $_width;
-    var $live_site = 0;
+    public $level = -1;
 
-    function __construct($config, $sitemap)
+    protected $_openList = '';
+
+    protected $_closeList = '';
+
+    protected $_closeItem = '';
+
+    protected $_childs;
+
+    protected $_width;
+
+    public $liveSite = 0;
+
+    public function __construct($config, $sitemap)
     {
         $this->view = 'html';
+
         parent::__construct($config, $sitemap);
+
         $this->_parent_children=array();
         $this->_last_child=array();
-        $this->live_site = substr_replace(JURI::root(), "", -1, 1);
 
-        $user = JFactory::getUser();
+        $this->live_site = substr_replace(JURI::root(), "", -1, 1);
     }
 
-    function setJView($view)
+    public function setJView($view)
     {
         parent::setJView($view);
     }
@@ -45,7 +52,7 @@ class OSMapHtmlDisplayer extends OSMapDisplayer
     * @param object $node
     * @return boolean
     */
-    function printNode($node)
+    public function printNode($node)
     {
 
         $out = '';
@@ -64,6 +71,7 @@ class OSMapHtmlDisplayer extends OSMapDisplayer
 
         $out .= $this->_closeItem;
         $out .= $this->_openList;
+
         $this->_openList = "";
 
         $out .= '<li>';
@@ -108,7 +116,9 @@ class OSMapHtmlDisplayer extends OSMapDisplayer
         if (!isset($this->_childs[$this->level])) {
             $this->_childs[$this->level] = 0;
         }
+
         $this->_childs[$this->level]++;
+
         echo $out;
 
         if ($this->canEdit) {
@@ -119,8 +129,10 @@ class OSMapHtmlDisplayer extends OSMapDisplayer
                 $img = '<img src="'.$this->live_site.'/components/com_osmap/assets/images/tick.png" alt="x" title="'.JText::_('JPUBLISHED').'" />';
                 $class= 'osmapexcloff';
             }
+
             echo ' <a href= "#" class="osmapexcl '.$class.'" rel="{uid:\''.$node->uid.'\',itemid:'.$node->id.'}">'.$img.'</a>';
         }
+
         $this->count++;
 
         $this->_last_child[$this->level] = $node->uid;
@@ -131,7 +143,7 @@ class OSMapHtmlDisplayer extends OSMapDisplayer
     /**
     * Moves sitemap level up or down
     */
-    function changeLevel($level)
+    public function changeLevel($level)
     {
         if ($level > 0) {
             # We do not print start ul here to avoid empty list, it's printed at the first child
@@ -150,22 +162,23 @@ class OSMapHtmlDisplayer extends OSMapDisplayer
             if ($this->_childs[$this->level]) {
                 echo $this->_closeItem."</ul>\n";
             }
+
             $this->_closeItem ='</li>';
-            $this->_openList = '';
-            $this->level += $level;
+            $this->_openList  = '';
+            $this->level      += $level;
         }
     }
 
-    function startMenu(&$menu)
+    public function startMenu(&$menu)
     {
         if ($this->sitemap->params->get('show_menutitle')) {         // show menu titles
             echo '<h2 class="menutitle">'.$menu->name.'</h2>';
         }
     }
 
-    function endMenu(&$menu)
+    public function endMenu(&$menu)
     {
-        $sitemap=&$this->sitemap;
-        $this->_closeItem='';
+        $sitemap = &$this->sitemap;
+        $this->_closeItem = '';
     }
 }

@@ -62,24 +62,24 @@ class OSMapRoute
         if (self::$lookup === null) {
             self::$lookup = array();
 
-            $component    = JComponentHelper::getComponent('com_osmap');
-            $menus        = JApplication::getMenu('site', array());
-            $items        = $menus->getItems('component_id', $component->id);
+            $component = JComponentHelper::getComponent('com_osmap');
+            $menus     = JApplication::getMenu('site', array());
+            $items     = $menus->getItems('component_id', $component->id);
 
             foreach ($items as &$item) {
                 if (isset($item->query) && isset($item->query['view'])) {
                     $view = $item->query['view'];
+
                     if (!isset(self::$lookup[$view])) {
                         self::$lookup[$view] = array();
                     }
+
                     if (isset($item->query['id'])) {
                         self::$lookup[$view][$item->query['id']] = $item->id;
                     }
                 }
             }
         }
-
-        $match = null;
 
         foreach ($needles as $view => $id) {
             if (isset(self::$lookup[$view])) {
@@ -113,7 +113,7 @@ function OSMapBuildRoute(&$query)
     } else {
         $menuItem = $menu->getItem($query['Itemid']);
     }
-    $mView    = (empty($menuItem->query['view'])) ? null : $menuItem->query['view'];
+
     $mId      = (empty($menuItem->query['id'])) ? null : $menuItem->query['id'];
 
     if (!empty($query['Itemid'])) {
@@ -124,7 +124,6 @@ function OSMapBuildRoute(&$query)
             $segments[] = $query['view'];
         }
     }
-
 
     if (isset($query['id'])) {
         if (empty($query['Itemid'])) {
@@ -139,7 +138,7 @@ function OSMapBuildRoute(&$query)
             }
         }
         unset($query['id']);
-    };
+    }
 
     if (isset($query['layout'])) {
         if (!empty($query['Itemid']) && isset($menuItem->query['layout'])) {
@@ -151,7 +150,7 @@ function OSMapBuildRoute(&$query)
                 unset($query['layout']);
             }
         }
-    };
+    }
 
     return $segments;
 }
@@ -179,6 +178,7 @@ function OSMapParseRoute($segments)
     if (!isset($item)) {
         $vars['view'] = $segments[0];
         $vars['id']   = $segments[$count - 1];
+
         return $vars;
     }
 

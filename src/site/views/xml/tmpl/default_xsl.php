@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 header('Content-Type: text/xsl; charset="utf-8"');
 header('Content-Disposition: inline');
 
-$showTitle = $this->canEdit && JRequest::getBool('filter_showtitle', 0);
+$showTitle    = $this->canEdit && JRequest::getBool('filter_showtitle', 0);
 $showExcluded = $this->canEdit && JRequest::getBool('filter_showexcluded', 0);
 
 echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
@@ -41,8 +41,10 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 <html>
 <head>
 <title><?php echo JText::_('COM_OSMAP_XML_FILE'); ?></title>
+
 <script src="<?php echo JUri::base(); ?>media/system/js/mootools-core.js" type="text/javascript"></script>
 <script src="<?php echo JUri::base(); ?>media/system/js/mootools-more.js" type="text/javascript"></script>
+
 <style type="text/css">
     <![CDATA[
     <!--

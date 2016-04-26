@@ -8,20 +8,20 @@
 <style type="text/css">
     <![CDATA[
     <!--
-    h1 { 
+    h1 {
         font-weight:bold;
         font-size:1.5em;
         margin-bottom:0;
         margin-top:1px;
     }
-    h2 { 
+    h2 {
         font-weight:bold;
         font-size:1.2em;
-        margin-bottom:0; 
+        margin-bottom:0;
         color:#707070;
         margin-top:1px;
     }
-    p.sml { 
+    p.sml {
         font-size:0.8em;
         margin-top:0;
     }
@@ -128,7 +128,7 @@
         var theTab = document.getElementById(tabName);
         theTab.rows[0].sCol = colNum;
         theTab.rows[0].sDir = sortDir;
-        if (sortDir) 
+        if (sortDir)
             theTab.rows[0].cells[colNum].className='sortdown'
         else
             theTab.rows[0].cells[colNum].className='sortup';
@@ -137,7 +137,7 @@
     function setCursor(theCell, mode){
         rTitle = theCell.innerHTML.replace(/<[^>]+>|&nbsp;|\W/g,'');
         if(mode=="selected"){
-            if(theCell.style.color!=selectedColor) 
+            if(theCell.style.color!=selectedColor)
                 defaultColor = theCell.style.color;
             theCell.style.color = selectedColor;
             theCell.style.cursor = "pointer";
@@ -164,9 +164,9 @@
             tBody.rows[0].cells[tBody.rows[0].sCol].className='';
         tBody.rows[0].sCol = colNum;
         tBody.rows[0].sDir = sDir;
-        if (sDir) 
+        if (sDir)
             tBody.rows[0].cells[colNum].className='sortdown'
-        else 
+        else
             tBody.rows[0].cells[colNum].className='sortup';
         for(i=0,r=hdrRows;r<tBody.rows.length;i++,r++){
             colCont = tBody.rows[r].cells[colNum].innerHTML;
@@ -191,8 +191,8 @@
         tabOrd.sort(compRows);
         for(i=0,r=hdrRows;r<tBody.rows.length;i++,r++){
             tBody.insertBefore(tabOrd[i][1],tBody.rows[r]);
-        } 
-        window.status = ""; 
+        }
+        window.status = "";
     }
 
     function compRows(a, b){

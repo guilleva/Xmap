@@ -36,11 +36,10 @@ jimport('joomla.database.query');
  */
 class OSMapHelper
 {
-
     public static function &getMenuItems($selections)
     {
-        $db = JFactory::getDbo();
-        $app = JFactory::getApplication();
+        $db   = JFactory::getDbo();
+        $app  = JFactory::getApplication();
         $user = JFactory::getUser();
         $list = array();
 
@@ -79,11 +78,12 @@ class OSMapHelper
             // Check for a database error.
             if ($db->getErrorNum()) {
                 JError::raiseWarning(021, $db->getErrorMsg());
+
                 return array();
             }
 
             // Set some values to make nested HTML rendering easier.
-            foreach ($tmpList as $id => $item) {
+            foreach ($tmpList as $item) {
                 $item->items = array();
 
                 $params = new JRegistry($item->params);
@@ -130,6 +130,7 @@ class OSMapHelper
                 }
             }
         }
+
         return $list;
     }
 
@@ -142,6 +143,7 @@ class OSMapHelper
         if ($list != null) {
             return $list;
         }
+
         $db = JFactory::getDBO();
 
         $list = array();
@@ -172,7 +174,7 @@ class OSMapHelper
                     $className = $extension->className;
 
                     if (method_exists($className, 'getInstance')) {
-                        $instance = $className::getInstance();
+                        $className::getInstance();
                     }
 
                 }
@@ -211,55 +213,66 @@ class OSMapHelper
     }
 
 
-    static function getImages($text, $max)
+    public static function getImages($text, $max)
     {
         if (!isset($urlBase)) {
-            $urlBase = JURI::base();
+            $urlBase    = JURI::base();
             $urlBaseLen = strlen($urlBase);
         }
 
-        $images = null;
+        $images  = null;
         $matches = $matches1 = $matches2 = array();
+
         // Look <img> tags
         preg_match_all('/<img[^>]*?(?:(?:[^>]*src="(?P<src>[^"]+)")|(?:[^>]*alt="(?P<alt>[^"]+)")|(?:[^>]*title="(?P<title>[^"]+)"))+[^>]*>/i', $text, $matches1, PREG_SET_ORDER);
+
         // Look for <a> tags with href to images
         preg_match_all('/<a[^>]*?(?:(?:[^>]*href="(?P<src>[^"]+\.(gif|png|jpg|jpeg))")|(?:[^>]*alt="(?P<alt>[^"]+)")|(?:[^>]*title="(?P<title>[^"]+)"))+[^>]*>/i', $text, $matches2, PREG_SET_ORDER);
+
         $matches = array_merge($matches1, $matches2);
+
         if (count($matches)) {
             $images = array();
 
             $count = count($matches);
+
             $j = 0;
             for ($i = 0; $i < $count && $j < $max; $i++) {
                 if (trim($matches[$i]['src']) && (substr($matches[$i]['src'], 0, 1) == '/' || !preg_match('/^https?:\/\//i', $matches[$i]['src']) || substr($matches[$i]['src'], 0, $urlBaseLen) == $urlBase)) {
                     $src = $matches[$i]['src'];
+
                     if (substr($src, 0, 1) == '/') {
                         $src = substr($src, 1);
                     }
+
                     if (!preg_match('/^https?:\//i', $src)) {
                         $src = $urlBase . $src;
                     }
+
                     $image = new stdClass;
-                    $image->src = $src;
+                    $image->src   = $src;
                     $image->title = (isset($matches[$i]['title']) ? $matches[$i]['title'] : @$matches[$i]['alt']);
+
                     $images[] = $image;
+
                     $j++;
                 }
             }
         }
+
         return $images;
     }
 
-    static function getPagebreaks($text, $baseLink)
+    public static function getPagebreaks($text, $baseLink)
     {
         $matches = $subnodes = array();
+
         if (preg_match_all(
             '/<hr\s*[^>]*?(?:(?:\s*alt="(?P<alt>[^"]+)")|(?:\s*title="(?P<title>[^"]+)"))+[^>]*>/i',
             $text,
             $matches,
             PREG_SET_ORDER
-        )
-        ) {
+        )) {
             $i = 2;
             foreach ($matches as $match) {
                 if (strpos($match[0], 'class="system-pagebreak"') !== false) {
@@ -272,16 +285,20 @@ class OSMapHelper
                     } else {
                         $title = JText::sprintf('Page #', $i);
                     }
+
                     $subnode = new stdclass();
-                    $subnode->name = $title;
+                    $subnode->name       = $title;
                     $subnode->expandible = false;
-                    $subnode->link = $link;
+                    $subnode->link       = $link;
+
                     $subnodes[] = $subnode;
+
                     $i++;
                 }
             }
 
         }
+
         return $subnodes;
     }
 }

@@ -12,21 +12,26 @@
     margin : 0;
     padding : 0;
 }
+
 #osmap ul li {
     margin : 0;
     padding : 0;
     background : transparent;
 }
+
 #osmap a img {
     border : none;
 }
+
 #osmap ul.level_0 ul {
     list-style : inside square;
     padding : 0;
 }
+
 #osmap ul.level_1 li {
     padding : 0 1em 0 1em;
 }
+
 #osmap .active {
     font-style : italic;
 }

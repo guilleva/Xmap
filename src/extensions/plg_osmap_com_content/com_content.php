@@ -66,6 +66,7 @@ class osmap_com_content
     public static function prepareMenuItem($node, &$params)
     {
         $db = JFactory::getDbo();
+
         $link_query = parse_url($node->link);
 
         if (!isset($link_query['query'])) {
@@ -82,7 +83,7 @@ class osmap_com_content
         $params['add_images'] = JArrayHelper::getValue($params, 'add_images', 0);
 
         //----- Set add pagebreaks param
-        $add_pagebreaks = JArrayHelper::getValue($params, 'add_pagebreaks', 1);
+        $add_pagebreaks           = JArrayHelper::getValue($params, 'add_pagebreaks', 1);
         $params['add_pagebreaks'] = JArrayHelper::getValue($params, 'add_pagebreaks', 1);
 
         switch ($view) {
@@ -119,7 +120,7 @@ class osmap_com_content
                 break;
 
             case 'article':
-                $node->uid = 'com_contenta' . $id;
+                $node->uid        = 'com_contenta' . $id;
                 $node->expandible = false;
 
                 $query = $db->getQuery(true);
@@ -281,16 +282,16 @@ class osmap_com_content
             $changefreq = $parent->changefreq;
         }
 
-        $params['art_priority'] = $priority;
+        $params['art_priority']   = $priority;
         $params['art_changefreq'] = $changefreq;
 
-        $params['max_art'] = intval(JArrayHelper::getValue($params, 'max_art', 0));
+        $params['max_art']     = intval(JArrayHelper::getValue($params, 'max_art', 0));
         $params['max_art_age'] = intval(JArrayHelper::getValue($params, 'max_art_age', 0));
 
         $params['nullDate'] = $db->Quote($db->getNullDate());
 
         $params['nowDate'] = $db->Quote(JFactory::getDate()->toSql());
-        $params['groups'] = implode(',', $user->getAuthorisedViewLevels());
+        $params['groups']  = implode(',', $user->getAuthorisedViewLevels());
 
         // Define the language filter condition for the query
         $params['language_filter'] = $app->getLanguageFilter();
@@ -304,21 +305,25 @@ class osmap_com_content
                     $result = self::expandCategory($osmap, $parent, $id, $params, $parent->id);
                 }
                 break;
+
             case 'featured':
                 if ($params['expand_featured']) {
                     $result = self::includeCategoryContent($osmap, $parent, 'featured', $params, $parent->id);
                 }
                 break;
+
             case 'categories':
                 if ($params['expand_categories']) {
                     $result = self::expandCategory($osmap, $parent, ($id ? $id : 1), $params, $parent->id);
                 }
                 break;
+
             case 'archive':
                 if ($params['include_archived']) {
                     $result = self::includeCategoryContent($osmap, $parent, 'archived', $params, $parent->id);
                 }
                 break;
+
             case 'article':
                 // if it's an article menu item, we have to check if we have to expand the
                 // article's page breaks
@@ -350,7 +355,6 @@ class osmap_com_content
                     $subnodes = OSMapHelper::getPagebreaks($row->introtext.$row->fulltext, $parent->link);
                     self::printNodes($osmap, $parent, $params, $subnodes);
                 }
-
         }
 
         return $result;
@@ -383,7 +387,7 @@ class osmap_com_content
         $orderby = 'a.lft';
         $query = 'SELECT a.id, a.title, a.alias, a.access, a.path AS route, '
                . 'a.created_time created, a.modified_time modified, params, metadata '
-               . 'FROM #__categories AS a '
+               . 'FROM `#__categories` AS a '
                . 'WHERE '. implode(' AND ', $where)
                . ($osmap->view != 'xml' ? "\n ORDER BY " . $orderby . "" : '');
 
@@ -430,7 +434,7 @@ class osmap_com_content
                         $node->link .= '&Itemid='.$itemid;
                     } else {
                         $node->itemid = $itemid;
-                        $node->link = preg_replace('/Itemid=([0-9]+)/', 'Itemid='.$itemid, $node->link);
+                        $node->link   = preg_replace('/Itemid=([0-9]+)/', 'Itemid='.$itemid, $node->link);
                     }
 
                     if ($osmap->printNode($node)) {
@@ -589,12 +593,14 @@ class osmap_com_content
         $i=0;
         foreach ($subnodes as $subnode) {
             $i++;
-            $subnode->id = $parent->id;
-            $subnode->uid = $parent->uid.'p'.$i;
+
+            $subnode->id         = $parent->id;
+            $subnode->uid        = $parent->uid.'p'.$i;
             $subnode->browserNav = $parent->browserNav;
-            $subnode->priority = $params['art_priority'];
+            $subnode->priority   = $params['art_priority'];
             $subnode->changefreq = $params['art_changefreq'];
-            $subnode->secure = $parent->secure;
+            $subnode->secure     = $parent->secure;
+
             $osmap->printNode($subnode);
         }
         $osmap->changeLevel(-1);
@@ -616,10 +622,11 @@ class osmap_com_content
 
         // Case when the child gets a different menu itemid than it's parent
         if ($parentId != $itemid) {
-            $menu = $app->getMenu();
-            $item = $menu->getItem($itemid);
+            $menu       = $app->getMenu();
+            $item       = $menu->getItem($itemid);
             $menuParams = clone($params);
             $itemParams = new JRegistry($item->params);
+
             $menuParams->merge($itemParams);
         } else {
             $menuParams =& $params;

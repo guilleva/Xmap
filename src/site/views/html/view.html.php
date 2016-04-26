@@ -44,15 +44,16 @@ if (!class_exists('JViewLegacy')) {
  */
 class OSMapViewHtml extends JViewLegacy
 {
-
     protected $state;
+
     protected $print;
 
-    function display($tpl = null)
+    public function display($tpl = null)
     {
         // Initialise variables.
-        $this->app = JFactory::getApplication();
+        $this->app  = JFactory::getApplication();
         $this->user = JFactory::getUser();
+
         $doc = JFactory::getDocument();
 
         // Get view related request variables.
@@ -60,7 +61,7 @@ class OSMapViewHtml extends JViewLegacy
 
         // Get model data.
         $this->state = $this->get('State');
-        $this->item = $this->get('Item');
+        $this->item  = $this->get('Item');
         $this->items = $this->get('Items');
 
         $this->canEdit = JFactory::getUser()->authorise('core.admin', 'com_osmap');
@@ -74,13 +75,13 @@ class OSMapViewHtml extends JViewLegacy
         $this->extensions = $this->get('Extensions');
 
         // Add router helpers.
-        $this->item->slug = $this->item->alias ? ($this->item->id . ':' . $this->item->alias) : $this->item->id;
-
+        $this->item->slug  = $this->item->alias ? ($this->item->id . ':' . $this->item->alias) : $this->item->id;
         $this->item->rlink = JRoute::_('index.php?option=com_osmap&view=html&id=' . $this->item->slug);
 
         // Create a shortcut to the parameters.
         $params = &$this->state->params;
-        $offset = $this->state->get('page.offset');
+        $this->offset = $this->state->get('page.offset');
+
         if ($params->get('include_css', 0)) {
             $doc->addStyleSheet(JURI::root().'components/com_osmap/assets/css/osmap.css');
         }
@@ -88,18 +89,18 @@ class OSMapViewHtml extends JViewLegacy
         // If a guest user, they may be able to log in to view the full article
         // TODO: Does this satisfy the show not auth setting?
         if (!$this->item->params->get('access-view')) {
-            if ($user->get('guest')) {
+            if ($this->user->get('guest')) {
                 // Redirect to login
                 $uri = JFactory::getURI();
-                $base = '64';
-                $function = "base${base}_encode";
-                $app->redirect(
-                    'index.php?option=com_users&view=login&return=' . call_user_func($function, $uri),
+                $this->app->redirect(
+                    'index.php?option=com_users&view=login&return=' . call_user_func(base64_encode, $uri),
                     JText::_('OSMAP_ERROR_LOGIN_TO_VIEW_SITEMAP')
                 );
+
                 return;
             } else {
                 JError::raiseWarning(403, JText::_('OSMAP_ERROR_NOT_AUTH'));
+
                 return;
             }
         }
@@ -116,7 +117,7 @@ class OSMapViewHtml extends JViewLegacy
         $this->displayer->setJView($this);
         $this->displayer->canEdit = $this->canEdit;
 
-        $this->_prepareDocument();
+        $this->prepareDocument();
         parent::display($tpl);
 
         $model = $this->getModel();
@@ -126,18 +127,17 @@ class OSMapViewHtml extends JViewLegacy
     /**
      * Prepares the document
      */
-    protected function _prepareDocument()
+    protected function prepareDocument()
     {
         $app = JFactory::getApplication();
-        $pathway = $app->getPathway();
-        $menus = $app->getMenu();
+
+        $menus   = $app->getMenu();
 
         $title = $this->item->title;
 
         // Because the application sets a default page title, we need to get it from the menu item itself
         if ($menu = $menus->getActive()) {
             if (isset($menu->query['view']) && isset($menu->query['id'])) {
-
                 if ($menu->query['view'] == 'html' && $menu->query['id'] == $this->item->id) {
                     $title = $menu->params->get('page_title', '');
 
@@ -155,6 +155,7 @@ class OSMapViewHtml extends JViewLegacy
                     // set meta description and keywords from menu item's params
                     $params = new JRegistry();
                     $params->loadString($menu->params);
+
                     $this->document->setDescription($params->get('menu-meta_description'));
                     $this->document->setMetadata('keywords', $params->get('menu-meta_keywords'));
                 }

@@ -15,9 +15,10 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers');
 $params = $this->item->params;
 
 if ($this->displayer->canEdit) {
-    $live_site = JURI::root();
+    $liveSite = JURI::root();
+
     JHTML::_('behavior.framework', true);
-    $ajaxurl = "{$live_site}index.php?option=com_osmap&format=json&task=ajax.editElement&action=toggleElement&".JSession::getFormToken().'=1';
+    $ajaxurl = "{$liveSite}index.php?option=com_osmap&format=json&task=ajax.editElement&action=toggleElement&".JSession::getFormToken().'=1';
 
     $css = '.osmapexcl img{ border:0px; }'."\n";
     $css .= '.osmapexcloff { text-decoration:line-through; }';
@@ -45,9 +46,9 @@ if ($this->displayer->canEdit) {
             if (response.result == 'OK') {
                 var state = response.state;
                 if (state==0) {
-                    imgs[0].src='{$live_site}/components/com_osmap/assets/images/unpublished.png';
+                    imgs[0].src='{$liveSite}/components/com_osmap/assets/images/unpublished.png';
                 } else {
-                    imgs[0].src='{$live_site}/components/com_osmap/assets/images/tick.png';
+                    imgs[0].src='{$liveSite}/components/com_osmap/assets/images/tick.png';
                 }
             } else {
                 alert('The element couldn\\'t be published or upublished!');

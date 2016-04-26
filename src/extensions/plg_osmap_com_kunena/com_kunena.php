@@ -33,6 +33,7 @@ class osmap_com_kunena
      * proper uniqueid for the item
      */
     static $profile;
+
     static $config;
 
     public static function prepareMenuItem($node, &$params)
@@ -75,7 +76,6 @@ class osmap_com_kunena
         }
 
         parse_str(html_entity_decode($link_query['query']), $link_vars);
-
 
         // Kubik-Rubik Solution - get the correct view in Kunena >= 2.0.1 - START
         $view       = JArrayHelper::getValue($link_vars, 'view', '');

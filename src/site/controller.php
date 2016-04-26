@@ -61,14 +61,26 @@ class OSMapController extends JControllerLegacy
         }
 
         if ($viewName) {
-            $document = JFactory::getDocument();
-            $viewType = $document->getType();
-            $view = $this->getView($viewName, $viewType, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
+            $document     = JFactory::getDocument();
+            $viewType     = $document->getType();
+            $params       = array(
+                'base_path' => $this->basePath,
+                'layout'    => $viewLayout
+            );
+            $view         = $this->getView($viewName, $viewType, '', $params);
             $sitemapmodel = $this->getModel('Sitemap');
+
             $view->setModel($sitemapmodel, true);
         }
 
-        $safeurlparams = array('id' => 'INT', 'itemid' => 'INT', 'uid' => 'CMD', 'action' => 'CMD', 'property' => 'CMD', 'value' => 'CMD');
+        $safeurlparams = array(
+            'id'       => 'INT',
+            'itemid'   => 'INT',
+            'uid'      => 'CMD',
+            'action'   => 'CMD',
+            'property' => 'CMD',
+            'value'    => 'CMD'
+        );
 
         parent::display($cachable, $safeurlparams);
 
