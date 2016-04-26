@@ -212,7 +212,7 @@ class OSMapModelSitemap extends JModelItem
         }
 
         $this->_db->setQuery(
-            'UPDATE `#__osmap_sitemap' .
+            'UPDATE `#__osmap_sitemap`' .
             ' SET views_' . $view . ' = views_' . $view . ' + 1, count_' . $view . ' = ' . $count . ', lastvisit_' . $view . ' = ' . JFactory::getDate()->toUnix() .
             ' WHERE id = ' . (int) $pk
         );

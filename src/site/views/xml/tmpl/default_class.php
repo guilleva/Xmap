@@ -24,13 +24,13 @@ class OSMapXmlDisplayer extends OSMapDisplayer
      *
      * @var string
      */
-    protected $view = 'xml';
+    public $view = 'xml';
 
-    protected $showTitle = false;
+    public $showTitle = false;
 
-    protected $showExcluded = false;
+    public $showExcluded = false;
 
-    protected $isImages = 0;
+    public $isImages = 0;
 
     public function __construct($config, $sitemap)
     {
