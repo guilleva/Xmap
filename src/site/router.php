@@ -22,76 +22,8 @@
  * You should have received a copy of the GNU General Public License
  * along with OSMap. If not, see <http://www.gnu.org/licenses/>.
  */
+
 defined('_JEXEC') or die('Restricted access');
-/**
- * Content Component Route Helper
- *
- * @package        OSMap
- * @subpackage    com_osmap
- * @since 2.0
- */
-class OSMapRoute
-{
-
-    /**
-     * @param    int $id            The id of the article.
-     * @param    int    $categoryId    An optional category id.
-     *
-     * @return    string    The routed link.
-     */
-    public static function sitemap($id, $view = 'html')
-    {
-        $needles = array(
-            'html' => (int) $id
-        );
-
-        //Create the link
-        $link = 'index.php?option=com_osmap&view=' . $view . '&id=' . $id;
-
-        if ($itemId = self::_findItemId($needles)) {
-            $link .= '&Itemid=' . $itemId;
-        };
-
-        return $link;
-    }
-
-
-    protected static function _findItemId($needles)
-    {
-        // Prepare the reverse lookup array.
-        if (self::$lookup === null) {
-            self::$lookup = array();
-
-            $component = JComponentHelper::getComponent('com_osmap');
-            $menus     = JApplication::getMenu('site', array());
-            $items     = $menus->getItems('component_id', $component->id);
-
-            foreach ($items as &$item) {
-                if (isset($item->query) && isset($item->query['view'])) {
-                    $view = $item->query['view'];
-
-                    if (!isset(self::$lookup[$view])) {
-                        self::$lookup[$view] = array();
-                    }
-
-                    if (isset($item->query['id'])) {
-                        self::$lookup[$view][$item->query['id']] = $item->id;
-                    }
-                }
-            }
-        }
-
-        foreach ($needles as $view => $id) {
-            if (isset(self::$lookup[$view])) {
-                if (isset(self::$lookup[$view][$id])) {
-                    return self::$lookup[$view][$id];
-                }
-            }
-        }
-
-        return null;
-    }
-}
 
 /**
  * Build the route for the com_content component
