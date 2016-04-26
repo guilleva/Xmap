@@ -178,7 +178,7 @@ class OSMapHtmlDisplayer extends OSMapDisplayer
 
     public function endMenu(&$menu)
     {
-        $sitemap = &$this->sitemap;
+        $sitemap =& $this->sitemap;
         $this->_closeItem = '';
     }
 }
