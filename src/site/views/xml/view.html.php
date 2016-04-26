@@ -89,7 +89,7 @@ class OSMapViewXml extends JViewLegacy
 
         $this->item->rlink = JRoute::_('index.php?option=com_osmap&view=xml&id=' . $this->item->slug);
 
-        // Create a shortcut to the paramemters.
+        // Create a shortcut to the parameters.
         $params = &$this->state->params;
         $offset = $this->state->get('page.offset');
 

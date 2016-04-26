@@ -78,7 +78,7 @@ class OSMapViewHtml extends JViewLegacy
 
         $this->item->rlink = JRoute::_('index.php?option=com_osmap&view=html&id=' . $this->item->slug);
 
-        // Create a shortcut to the paramemters.
+        // Create a shortcut to the parameters.
         $params = &$this->state->params;
         $offset = $this->state->get('page.offset');
         if ($params->get('include_css', 0)) {
