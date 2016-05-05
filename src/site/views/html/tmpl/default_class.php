@@ -6,12 +6,13 @@
 * @author        Guillermo Vargas (guille@vargas.co.cr)
 */
 
+use Alledia\OSMap;
+
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_COMPONENT.'/displayer.php');
 
-class OSMapHtmlDisplayer extends OSMapDisplayer
+class OSMapHtmlDisplayer extends OSMap\Free\Displayer
 {
 
     public $level = -1;

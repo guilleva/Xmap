@@ -23,12 +23,21 @@
  * along with OSMap. If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace Alledia\OSMap\Free;
+
+use Alledia\Framework;
+use JFactory;
+use JDate;
+use stdClass;
+use JSite;
+use JURI;
+use JRegistry;
+
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-class OSMapDisplayer
+class Displayer
 {
-
     /**
      *
      * @var int  Counter for the number of links on the sitemap
@@ -42,7 +51,9 @@ class OSMapDisplayer
     protected $jview;
 
     public $config;
+
     public $sitemap;
+
     /**
      *
      * @var int   Current timestamp
@@ -83,7 +94,7 @@ class OSMapDisplayer
     {
         foreach ($this->jview->items as $menutype => &$items) {
 
-            $node = new stdclass();
+            $node = new stdClass();
 
             $node->uid        = "menu-" . $menutype;
             $node->menutype   = $menutype;
@@ -146,7 +157,7 @@ class OSMapDisplayer
         foreach ($items as $item) {
             $excludeExternal = false;
 
-            $node = new stdclass;
+            $node = new stdClass;
 
             $node->id         = $item->id;
             $node->uid        = $item->uid;
@@ -217,7 +228,7 @@ class OSMapDisplayer
                     // Check if the method is static or not
                     $methodParams = array(&$this, &$node, &$plugin->params);
 
-                    Alledia\Framework\Helper::callMethod($plugin->className, 'getTree', $methodParams);
+                    Framework\Helper::callMethod($plugin->className, 'getTree', $methodParams);
 
                     $node->uid = $node->option;
                 }

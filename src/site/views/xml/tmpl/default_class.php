@@ -5,12 +5,13 @@
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  * @author        Guillermo Vargas (guille@vargas.co.cr)
  */
+use Alledia\OSMap;
+
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_COMPONENT . '/displayer.php');
 
-class OSMapXmlDisplayer extends OSMapDisplayer
+class OSMapXmlDisplayer extends OSMap\Free\Displayer
 {
 
     /**

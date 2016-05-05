@@ -27,7 +27,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('legacy.controller.legacy');
 
-require_once __DIR__ . '/include.php';
+require_once JPATH_ADMINISTRATOR . '/components/com_osmap/include.php';
 
 $controller = JControllerLegacy::getInstance('OSMap');
 $controller->execute(JRequest::getCmd('task'));

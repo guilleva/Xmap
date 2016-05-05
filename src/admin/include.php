@@ -27,6 +27,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Alledia\Framework\Joomla\Extension\Helper as ExtensionHelper;
+use Alledia\Framework\Joomla\Extension\Licensed as Licensed;
 
 // Alledia Framework
 if (!defined('ALLEDIA_FRAMEWORK_LOADED')) {
@@ -40,7 +41,15 @@ if (!defined('ALLEDIA_FRAMEWORK_LOADED')) {
     }
 }
 
-ExtensionHelper::loadLibrary('com_osmap');
+$osmap = new Licensed('OSMap', 'component');
+
+if (!defined('OSMAP_LICENSE')) {
+    $license = $osmap->isPro() ? 'pro' : 'free';
+
+    define('OSMAP_LICENSE', $license);
+}
+
+$osmap->loadLibrary();
 
 jimport('joomla.application.component.controller');
 

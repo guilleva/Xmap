@@ -134,10 +134,8 @@
 
     <files folder="site">
         <filename>controller.php</filename>
-        <filename>displayer.php</filename>
         <filename>metadata.xml</filename>
         <filename>router.php</filename>
-        <filename>include.php</filename>
         <filename>osmap.php</filename>
         <folder>assets</folder>
         <folder>controllers</folder>

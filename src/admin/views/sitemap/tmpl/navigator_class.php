@@ -23,14 +23,14 @@
  * along with OSMap. If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Alledia\OSMap;
+
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_COMPONENT_SITE.'/displayer.php');
 
-class OSMapNavigatorDisplayer extends OSMapDisplayer
+class OSMapNavigatorDisplayer extends OSMap\Free\Displayer
 {
-
     public function __construct(&$config, &$sitemap)
     {
         $this->_list=array();
