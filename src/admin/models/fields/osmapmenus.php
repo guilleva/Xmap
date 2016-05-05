@@ -168,9 +168,9 @@ class JFormFieldOSMapMenus extends JFormFieldList
             $return .= '<input type="' . $type . '" id="' . $this->id . '_' . $i . '" name="' . $this->name . '" value="' . $option->value . '"' . $attributes . $selected . ' />';
             $return .= '<label for="' . $this->id . '_' . $i . '" class="menu_label">' . $option->text . '</label>';
             $return .= '<div class="osmap-menu-options" id="menu_options_' . $i . '">';
-            $return .= '<label class="control-label">' . JText::_('OSMAP_PRIORITY') . '</label>';
+            $return .= '<label class="control-label">' . JText::_('COM_OSMAP_PRIORITY') . '</label>';
             $return .= '<div class="controls">' . JHTML::_('osmap.priorities', $prioritiesName, ($selected ? $value[$option->value]['priority'] : '0.5'), $i) . '</div>';
-            $return .= '<label class="control-label">' . JText::_('OSMAP_CHANGE_FREQUENCY') . '</label>';
+            $return .= '<label class="control-label">' . JText::_('COM_OSMAP_CHANGE_FREQUENCY') . '</label>';
             $return .= '<div class="controls">' . JHTML::_('osmap.changefrequency', $changefreqName, ($selected ? $value[$option->value]['changefreq'] : 'weekly'), $i) . '</div>';
             $return .= '</div>';
             $return .= '</li>';

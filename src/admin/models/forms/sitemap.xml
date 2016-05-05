@@ -28,8 +28,8 @@
             type="editor"
             class="inputbox"
             labelclass="control-label"
-            label="OSMAP_INTROTEXT_LABEL"
-            description="OSMAP_INTROTEXT_DESC"
+            label="COM_OSMAP_INTROTEXT_LABEL"
+            description="COM_OSMAP_INTROTEXT_DESC"
             filter="safehtml"
             default=""/>
 
@@ -160,15 +160,15 @@
     </fields>
 
     <fields name="attribs">
-        <fieldset name="general" label="OSMAP_FIELDSET_OPTIONS">
+        <fieldset name="general" label="COM_OSMAP_FIELDSET_OPTIONS">
 
             <field
                 name="showintro"
                 type="radio"
                 class="btn-group"
                 labelclass="control-label"
-                label="OSMAP_ATTRIBS_SHOW_INTRO_LABEL"
-                description="OSMAP_ATTRIBS_SHOW_INTRO_DESC"
+                label="COM_OSMAP_ATTRIBS_SHOW_INTRO_LABEL"
+                description="COM_OSMAP_ATTRIBS_SHOW_INTRO_DESC"
                 default="1">
                 <option
                     value="0">No</option>
@@ -180,8 +180,8 @@
                 name="show_menutitle"
                 type="radio"
                 class="btn-group"
-                label="OSMAP_ATTRIBS_SHOW_MENU_TITLE_LABEL"
-                description="OSMAP_ATTRIBS_SHOW_MENU_TITLE_DESC"
+                label="COM_OSMAP_ATTRIBS_SHOW_MENU_TITLE_LABEL"
+                description="COM_OSMAP_ATTRIBS_SHOW_MENU_TITLE_DESC"
                 labelclass="control-label"
                 default="1">
                 <option
@@ -207,8 +207,8 @@
             <field
                 name="exlinks"
                 type="list"
-                label="OSMAP_ATTRIBS_EXTERNAL_LINKS_IMAGE_LABEL"
-                description="OSMAP_ATTRIBS_EXTERNAL_LINKS_IMAGE_DESC"
+                label="COM_OSMAP_ATTRIBS_EXTERNAL_LINKS_IMAGE_LABEL"
+                description="COM_OSMAP_ATTRIBS_EXTERNAL_LINKS_IMAGE_DESC"
                 labelclass="control-label"
                 default="1">
                 <option
@@ -237,8 +237,8 @@
                 name="compress_xml"
                 type="radio"
                 class="btn-group"
-                label="OSMAP_ATTRIBS_COMPRESS_XML_LABEL"
-                description="OSMAP_ATTRIBS_COMPRESS_XML_DESC"
+                label="COM_OSMAP_ATTRIBS_COMPRESS_XML_LABEL"
+                description="COM_OSMAP_ATTRIBS_COMPRESS_XML_DESC"
                 labelclass="control-label"
                 default="1">
                 <option
@@ -251,8 +251,8 @@
                 name="beautify_xml"
                 type="radio"
                 class="btn-group"
-                label="OSMAP_ATTRIBS_BEAUTIFY_XML_LABEL"
-                description="OSMAP_ATTRIBS_BEAUTIFY_XML_DESC"
+                label="COM_OSMAP_ATTRIBS_BEAUTIFY_XML_LABEL"
+                description="COM_OSMAP_ATTRIBS_BEAUTIFY_XML_DESC"
                 labelclass="control-label"
                 default="1">
                 <option
@@ -265,8 +265,8 @@
                 name="debug_osmap"
                 type="radio"
                 class="btn-group"
-                label="OSMAP_ATTRIBS_DEBUG_OSMAP_LABEL"
-                description="OSMAP_ATTRIBS_DUBUG_OSMAP_DESC"
+                label="COM_OSMAP_ATTRIBS_DEBUG_OSMAP_LABEL"
+                description="COM_OSMAP_ATTRIBS_DUBUG_OSMAP_DESC"
                 labelclass="control-label"
                 default="0">
                 <option

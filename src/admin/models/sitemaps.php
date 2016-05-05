@@ -190,7 +190,7 @@ class OSMapModelSitemaps extends JModelList
                 $sep = ', ';
             }
 
-            return JText::sprintf('OSMAP_MESSAGE_EXTENSIONS_DISABLED', $extensionsNameList);
+            return JText::sprintf('COM_OSMAP_MESSAGE_EXTENSIONS_DISABLED', $extensionsNameList);
         } else {
             return "";
         }

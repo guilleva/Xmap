@@ -38,7 +38,7 @@ $n = count($this->items);
             <label for="search">
                 <?php echo JText::_('JSEARCH_FILTER_LABEL'); ?>
             </label>
-            <input type="text" name="filter_search" id="filter_search" value="<?php echo $this->state->get('filter.search'); ?>" size="60" title="<?php echo JText::_('OSMAP_FILTER_SEARCH_DESC'); ?>" />
+            <input type="text" name="filter_search" id="filter_search" value="<?php echo $this->state->get('filter.search'); ?>" size="60" title="<?php echo JText::_('COM_OSMAP_FILTER_SEARCH_DESC'); ?>" />
 
             <button type="submit">
                 <?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
@@ -64,10 +64,10 @@ $n = count($this->items);
         <thead>
             <tr>
                 <th class="title">
-                    <?php echo JHtml::_('grid.sort', 'OSMAP_HEADING_TITLE', 'a.title', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
+                    <?php echo JHtml::_('grid.sort', 'COM_OSMAP_HEADING_TITLE', 'a.title', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
                 </th>
                 <th width="5%">
-                    <?php echo JHtml::_('grid.sort', 'OSMAP_HEADING_PUBLISHED', 'a.state', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
+                    <?php echo JHtml::_('grid.sort', 'COM_OSMAP_HEADING_PUBLISHED', 'a.state', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
                 </th>
                 <th width="1%" nowrap="nowrap">
                     <?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'a.id', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
