@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<extension type="plugin" group="osmap" version="2.5" method="upgrade">
+<extension type="plugin" group="osmap" version="3.4" method="upgrade">
     <name>OSMAP_PLUGIN_K2</name>
     <author>Mohammad Hasani Eghtedar</author>
     <creationDate>March 10 2016</creationDate>

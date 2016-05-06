@@ -27,7 +27,9 @@ OSMap - the easiest way to create a Joomla sitemap.
 
 ## Requirements
 
-Joomla 2.5.x or 3.x
+Joomla 3.x
+
+Last release compatible with J2.5: v3.3.0
 
 ## License
 
