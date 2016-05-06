@@ -23,7 +23,7 @@
  * along with OSMap. If not, see <http://www.gnu.org/licenses/>.
  */
 
-// no direct access
+// No direct access
 defined('_JEXEC') or die('Restricted access');
 
 use Alledia\Framework\Joomla\Extension\Helper as ExtensionHelper;
@@ -41,6 +41,7 @@ if (!defined('ALLEDIA_FRAMEWORK_LOADED')) {
     }
 }
 
+// OSMap library
 $osmap = new Licensed('OSMap', 'component');
 
 if (!defined('OSMAP_LICENSE')) {
@@ -51,15 +52,15 @@ if (!defined('OSMAP_LICENSE')) {
 
 $osmap->loadLibrary();
 
-jimport('joomla.application.component.controller');
-
-JTable::addIncludePath(JPATH_COMPONENT . '/tables');
-
-jimport('joomla.form.form');
-JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
-
 // Register helper class
 JLoader::register('OSMapHelper', dirname(__FILE__) . '/helpers/osmap.php');
+
+// Joomla dependencies
+jimport('joomla.application.component.controller');
+jimport('joomla.form.form');
+
+JTable::addIncludePath(JPATH_COMPONENT . '/tables');
+JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
 
 # For compatibility with older versions of Joola 2.5
 if (!class_exists('JControllerLegacy')) {
