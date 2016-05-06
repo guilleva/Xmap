@@ -61,11 +61,3 @@ jimport('joomla.form.form');
 
 JTable::addIncludePath(JPATH_COMPONENT . '/tables');
 JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
-
-# For compatibility with older versions of Joola 2.5
-if (!class_exists('JControllerLegacy')) {
-    class JControllerLegacy extends JController
-    {
-
-    }
-}
