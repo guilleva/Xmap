@@ -23,25 +23,26 @@
  * along with OSMap. If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace Alledia\OSMap\Free;
+
+use Alledia\Installer\AbstractScript;
+use JFactory;
+use ModMenuHelper;
+use JTable;
+
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-$includePath = __DIR__ . '/admin/library/Installer/include.php';
-if (! file_exists($includePath)) {
-    $includePath = __DIR__ . '/library/Installer/include.php';
-}
-
-require_once $includePath;
+require_once __DIR__ . '/../Installer/include.php';
 require_once JPATH_ADMINISTRATOR . '/modules/mod_menu/helper.php';
 
-use Alledia\Installer\AbstractScript;
 
 /**
  * OSMap Installer Script
  *
  * @since  2.4.0
  */
-class AbstractOSMapInstallerScript extends AbstractScript
+class InstallScript extends AbstractScript
 {
     protected $isXmapDataFound = false;
 

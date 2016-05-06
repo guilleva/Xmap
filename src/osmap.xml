@@ -162,7 +162,6 @@
             <filename>include.php</filename>
             <filename>controller.php</filename>
             <filename>config.xml</filename>
-            <filename>abstract.script.installer.php</filename>
             <filename>LICENSE.txt</filename>
             <folder>css</folder>
             <folder>elements</folder>

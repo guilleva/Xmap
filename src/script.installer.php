@@ -23,16 +23,18 @@
  * along with OSMap. If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Alledia\OSMap\Free;
+
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-if (file_exists(__DIR__ . '/admin/abstract.script.installer.php')) {
-    require_once __DIR__ . '/admin/abstract.script.installer.php';
+if (file_exists(__DIR__ . '/admin/library/Free/InstallScript.php')) {
+    require_once __DIR__ . '/admin/library/Free/InstallScript.php';
 } else {
-    require_once __DIR__ . '/abstract.script.installer.php';
+    require_once __DIR__ . '/library/Free/InstallScript.php';
 }
 
-class Com_OSMapInstallerScript extends AbstractOSMapInstallerScript
+class Com_OSMapInstallerScript extends Free\InstallScript
 {
 
 }
