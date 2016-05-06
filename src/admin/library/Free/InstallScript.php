@@ -56,7 +56,7 @@ class InstallScript extends AbstractScript
      */
     public function postFlight($type, $parent)
     {
-        $this->isXmapDataFound = $this->lookForXmapData();
+        $this->isXmapDataFound = $this->xmapDataExists();
         $this->createDefaultSitemap();
 
         // If Xmap plugins are still available and we don't have the OSMap plugins yet,
@@ -74,7 +74,7 @@ class InstallScript extends AbstractScript
      *
      * @return bool True if Xmap data was found
      */
-    protected function lookForXmapData()
+    protected function xmapDataExists()
     {
         if ($this->tableExists('#__xmap_sitemap')) {
             $db = JFactory::getDbo();
