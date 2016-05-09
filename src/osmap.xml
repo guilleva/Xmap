@@ -119,17 +119,15 @@
 
     <scriptfile>script.installer.php</scriptfile>
 
-    <install folder="admin">
+    <install folder="admin/sql">
         <sql>
-            <file driver="mysql" charset="utf8">install/install.utf8.sql</file>
-            <file driver="postgresql" charset="utf8">install/install.postgresql.sql</file>
+            <file driver="mysql" charset="utf8">mysql/install.utf8.sql</file>
         </sql>
     </install>
 
     <uninstall>
         <sql>
-            <file driver="mysql" charset="utf8">install/uninstall.utf8.sql</file>
-            <file driver="postgresql" charset="utf8">install/uninstall.postgresql.sql</file>
+            <file driver="mysql" charset="utf8">mysql/uninstall.utf8.sql</file>
         </sql>
     </uninstall>
 
