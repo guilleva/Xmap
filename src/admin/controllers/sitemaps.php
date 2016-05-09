@@ -32,7 +32,6 @@ jimport('joomla.application.component.controlleradmin');
 /**
  * @package     OSMap
  * @subpackage  com_osmap
- * @since       2.0
  */
 class OSMapControllerSitemaps extends JControllerAdmin
 {
@@ -58,19 +57,18 @@ class OSMapControllerSitemaps extends JControllerAdmin
      * Method to toggle the default sitemap.
      *
      * @return      void
-     * @since       2.0
      */
     public function setDefault()
     {
         // Check for request forgeries
-        JRequest::checkToken() or die('Invalid Token');
+        JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
 
         // Get items to publish from the request.
         $cid = JRequest::getVar('cid', 0, '', 'array');
         $id  = @$cid[0];
 
-        if (!$id) {
-            JError::raiseWarning(500, JText::_('Select an item to set as default'));
+        if (empty($id)) {
+            JError::raiseWarning(500, JText::_('COM_OSMAP_SELECT_ITEM_SET_DEFAULT'));
         } else {
             // Get the model.
             $model = $this->getModel();
@@ -91,17 +89,16 @@ class OSMapControllerSitemaps extends JControllerAdmin
      * @param    string    $prefix    The prefix for the PHP class name.
      *
      * @return    JModel
-     * @since    2.0
      */
     public function getModel($name = 'Sitemap', $prefix = 'OSMapModel', $config = array('ignore_request' => true))
     {
-        $model = parent::getModel($name, $prefix, $config);
-
-        return $model;
+        return parent::getModel($name, $prefix, $config);
     }
 
     /**
      * Enables or disables Attribs items, also redirects back to correct view
+     *
+     * @return void
      */
     public function enable()
     {
@@ -116,13 +113,17 @@ class OSMapControllerSitemaps extends JControllerAdmin
         $value     = JArrayHelper::getValue($data, end($taskTemp), 0, 'int');
 
         if (empty($sitemapId)) {
-            JLog::add(JText::_($this->text_prefix . '_NO_ITEM_SELECTED'), JLog::WARNING, 'jerror');
+            $this->setMessage(
+                JText::_($this->text_prefix . '_NO_ITEM_SELECTED'),
+                'warning'
+            );
         } else {
             $model = $this->getModel();
 
             $attrs = (end($taskTemp) == 'disable')
                     ? substr($task, 0, strpos($task, '_disable'))
                     : substr($task, 0, strpos($task, '_enable'));
+
             // Make sure the item ids are integers
             JArrayHelper::toInteger($sitemapId);
 
@@ -142,7 +143,8 @@ class OSMapControllerSitemaps extends JControllerAdmin
             }
         }
 
-        $this->setRedirect(JRoute::_('index.php?option=' . $this->option
-                                     . '&view=' . $this->view_list . '', false));
+        $this->setRedirect(
+            JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false)
+        );
     }
 }
