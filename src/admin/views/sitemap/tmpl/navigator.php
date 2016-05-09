@@ -81,21 +81,21 @@ $doc->addScriptDeclaration('
         <form name="adminForm" action="#" onSubmit="return false;">
         <table width="100%">
             <tr>
-                <td><?php echo JText::_('OSMAP_LINK_TEXT'); ?></td>
+                <td><?php echo JText::_('COM_OSMAP_LINK_TEXT'); ?></td>
                 <td colspan="3"><input type="text" name="text" id="f_text" value="" size="30" /></td>
             </tr>
             <tr>
-                <td><?php echo JText::_('OSMAP_LINK_TITLE'); ?></td>
+                <td><?php echo JText::_('COM_OSMAP_LINK_TITLE'); ?></td>
                 <td colspan="3"><input type="text" name="title" id="f_title"  value="" size="30" /></td>
             </tr>
             <tr>
-                <td><?php echo JText::_('OSMAP_LINK_LINK'); ?></td>
+                <td><?php echo JText::_('COM_OSMAP_LINK_LINK'); ?></td>
                 <td colspan="3"><input type="text" name="link" id="f_link"  value="" size="50" /></td>
             </tr>
             <tr>
-                <td><?php echo JText::_('OSMAP_LINK_STYLE'); ?></td>
+                <td><?php echo JText::_('COM_OSMAP_LINK_STYLE'); ?></td>
                 <td><input type="text" name="cssstyle" id="f_cssstyle"  value="" /></td>
-                <td><?php echo JText::_('OSMAP_LINK_CLASS'); ?></td>
+                <td><?php echo JText::_('COM_OSMAP_LINK_CLASS'); ?></td>
                 <td><input type="text" name="cssclass" id="f_cssclass"  value="" /></td>
             </tr>
             <tr>

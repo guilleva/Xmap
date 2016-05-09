@@ -212,9 +212,9 @@ class OSMapViewSitemap extends JViewLegacy
         $isNew = ($this->item->id == 0);
 
         if (version_compare(JVERSION, '3.0', '<')) {
-            JToolBarHelper::title(JText::_('OSMAP_PAGE_' . ($isNew ? 'ADD_SITEMAP' : 'EDIT_SITEMAP')), 'article-add.png');
+            JToolBarHelper::title(JText::_('COM_OSMAP_PAGE_' . ($isNew ? 'ADD_SITEMAP' : 'EDIT_SITEMAP')), 'article-add.png');
         } else {
-            JToolBarHelper::title(JText::_('OSMAP_PAGE_' . ($isNew ? 'ADD_SITEMAP' : 'EDIT_SITEMAP')), 'tree-2');
+            JToolBarHelper::title(JText::_('COM_OSMAP_PAGE_' . ($isNew ? 'ADD_SITEMAP' : 'EDIT_SITEMAP')), 'tree-2');
         }
 
         JToolBarHelper::apply('sitemap.apply', 'JTOOLBAR_APPLY');

@@ -93,12 +93,12 @@ class OSMapViewXml extends JViewLegacy
                 $uri = JFactory::getURI();
                 $app->redirect(
                     'index.php?option=com_users&view=login&return=' . call_user_func('base64_encode', $uri),
-                    JText::_('OSMAP_ERROR_LOGIN_TO_VIEW_SITEMAP')
+                    JText::_('COM_OSMAP_ERROR_LOGIN_TO_VIEW_SITEMAP')
                 );
 
                 return;
             } else {
-                JError::raiseWarning(403, JText::_('OSMAP_ERROR_NOT_AUTH'));
+                JError::raiseWarning(403, JText::_('COM_OSMAP_ERROR_NOT_AUTH'));
 
                 return;
             }
