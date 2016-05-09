@@ -83,7 +83,7 @@
     }
     .editable {
         cursor:pointer;
-        background: url(components/com_osmap/images/arrow.gif) top right no-repeat;
+        background: url(media/com_osmap/images/arrow.gif) top right no-repeat;
         padding-right:18px;
         padding-right:18px;
         border:1px solid #ffffff;

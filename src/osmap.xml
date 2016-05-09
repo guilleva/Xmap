@@ -155,16 +155,14 @@
     </languages>
 
     <administration>
-        <menu img="components/com_osmap/images/osmap-favicon.png">COM_OSMAP_TITLE</menu>
+        <menu>COM_OSMAP_TITLE</menu>
         <files folder="admin">
             <filename>osmap.php</filename>
             <filename>include.php</filename>
             <filename>controller.php</filename>
             <filename>config.xml</filename>
             <filename>LICENSE.txt</filename>
-            <folder>css</folder>
             <folder>elements</folder>
-            <folder>images</folder>
             <folder>sql</folder>
             <folder>helpers</folder>
             <folder>controllers</folder>
@@ -179,9 +177,6 @@
             <language tag="en-GB">en-GB/en-GB.com_osmap.ini</language>
             <language tag="en-GB">en-GB/en-GB.com_osmap.sys.ini</language>
         </languages>
-        <images folder="admin">
-            <folder>images</folder>
-        </images>
     </administration>
 
     <updateservers>
