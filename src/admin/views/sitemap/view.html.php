@@ -57,8 +57,6 @@ class OSMapViewSitemap extends JViewLegacy
         $this->item  = $this->get('Item');
         $this->form  = $this->get('Form');
 
-        $version = new JVersion;
-
         // Check for errors.
         if (count($errors = $this->get('Errors'))) {
             JError::raiseError(500, implode("\n", $errors));
@@ -75,10 +73,6 @@ class OSMapViewSitemap extends JViewLegacy
         }
 
         $this->_setToolbar();
-
-        if (version_compare($version->getShortVersion(), '3.0.0', '<')) {
-            $tpl = 'legacy';
-        }
 
         // Load the extension
         $extension = Factory::getExtension('OSMap', 'component');
@@ -211,11 +205,7 @@ class OSMapViewSitemap extends JViewLegacy
 
         $isNew = ($this->item->id == 0);
 
-        if (version_compare(JVERSION, '3.0', '<')) {
-            JToolBarHelper::title(JText::_('COM_OSMAP_PAGE_' . ($isNew ? 'ADD_SITEMAP' : 'EDIT_SITEMAP')), 'article-add.png');
-        } else {
-            JToolBarHelper::title(JText::_('COM_OSMAP_PAGE_' . ($isNew ? 'ADD_SITEMAP' : 'EDIT_SITEMAP')), 'tree-2');
-        }
+        JToolBarHelper::title(JText::_('COM_OSMAP_PAGE_' . ($isNew ? 'ADD_SITEMAP' : 'EDIT_SITEMAP')), 'tree-2');
 
         JToolBarHelper::apply('sitemap.apply', 'JTOOLBAR_APPLY');
         JToolBarHelper::save('sitemap.save', 'JTOOLBAR_SAVE');

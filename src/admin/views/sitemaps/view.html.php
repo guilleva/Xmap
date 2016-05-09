@@ -55,8 +55,6 @@ class OSMapViewSitemaps extends JViewLegacy
         $this->items      = $this->get('Items');
         $this->pagination = $this->get('Pagination');
 
-        $version = new JVersion;
-
         $message = $this->get('ExtensionsMessage');
         if ($message) {
             JFactory::getApplication()->enqueueMessage($message);
@@ -70,9 +68,6 @@ class OSMapViewSitemaps extends JViewLegacy
 
         // We don't need toolbar in the modal window.
         if ($this->getLayout() !== 'modal') {
-            if (version_compare($version->getShortVersion(), '3.0.0', '<')) {
-                $tpl = 'legacy';
-            }
             $this->addToolbar();
         }
 
@@ -94,7 +89,6 @@ class OSMapViewSitemaps extends JViewLegacy
     {
         $state = $this->get('State');
         $doc = JFactory::getDocument();
-        $version = new JVersion;
 
         JToolBarHelper::addNew('sitemap.add');
         JToolBarHelper::custom('sitemap.edit', 'edit.png', 'edit_f2.png', 'JTOOLBAR_EDIT', true);
@@ -103,13 +97,8 @@ class OSMapViewSitemaps extends JViewLegacy
         JToolBarHelper::custom('sitemaps.publish', 'publish.png', 'publish_f2.png', 'JTOOLBAR_Publish', true);
         JToolBarHelper::custom('sitemaps.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
 
-        if (version_compare($version->getShortVersion(), '3.0.0', '>=')) {
-            JToolBarHelper::title(JText::_('COM_OSMAP_SITEMAPS_TITLE'), 'tree-2');
-            JToolBarHelper::custom('sitemaps.setdefault', 'featured.png', 'featured_f2.png', 'COM_OSMAP_TOOLBAR_SET_DEFAULT', true);
-        } else {
-            JToolBarHelper::title(JText::_('COM_OSMAP_SITEMAPS_TITLE'), 'sitemap.png');
-            JToolBarHelper::custom('sitemaps.setdefault', 'default.png', 'default_f2.png', 'COM_OSMAP_TOOLBAR_SET_DEFAULT', true);
-        }
+        JToolBarHelper::title(JText::_('COM_OSMAP_SITEMAPS_TITLE'), 'tree-2');
+        JToolBarHelper::custom('sitemaps.setdefault', 'featured.png', 'featured_f2.png', 'COM_OSMAP_TOOLBAR_SET_DEFAULT', true);
 
         if ($state->get('filter.published') == -2) {
             JToolBarHelper::deleteList('', 'sitemaps.delete', 'JTOOLBAR_DELETE');

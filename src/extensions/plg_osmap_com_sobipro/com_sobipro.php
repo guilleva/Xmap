@@ -120,11 +120,7 @@ class osmap_com_sobipro
 
         $date = JFactory::getDate();
 
-        if (version_compare(JVERSION, '3.0', '<')) {
-            $params['now'] = $date->toMySql();
-        } else {
-            $params['now'] = $date->toSql();
-        }
+        $params['now'] = $date->toSql();
 
         if ($include_entries) {
             $ordering = JArrayHelper::getValue($params, 'entries_order', 'b.position');
