@@ -59,12 +59,12 @@ abstract class JHtmlOSMap
     public static function changefrequency($name, $value = 'weekly', $j = 0)
     {
         // Array of options
-        $options[] = JHTML::_('select.option', 'hourly', 'hourly');
-        $options[] = JHTML::_('select.option', 'daily', 'daily');
-        $options[] = JHTML::_('select.option', 'weekly', 'weekly');
-        $options[] = JHTML::_('select.option', 'monthly', 'monthly');
-        $options[] = JHTML::_('select.option', 'yearly', 'yearly');
-        $options[] = JHTML::_('select.option', 'never', 'never');
+        $options[] = JHTML::_('select.option', 'hourly', JText::_('COM_OSMAP_HOURLY'));
+        $options[] = JHTML::_('select.option', 'daily', JText::_('COM_OSMAP_DAILY'));
+        $options[] = JHTML::_('select.option', 'weekly', JText::_('COM_OSMAP_WEEKLY'));
+        $options[] = JHTML::_('select.option', 'monthly', JText::_('COM_OSMAP_MONTHLY'));
+        $options[] = JHTML::_('select.option', 'yearly', JText::_('COM_OSMAP_YEARLY'));
+        $options[] = JHTML::_('select.option', 'never', JText::_('COM_OSMAP_NEVER'));
 
         return JHtml::_('select.genericlist', $options, $name, null, 'value', 'text', $value, $name . $j);
     }
