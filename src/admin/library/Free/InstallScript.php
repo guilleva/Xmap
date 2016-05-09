@@ -68,6 +68,22 @@ class InstallScript extends AbstractScript
 
         // Check if we have params from Xmap plugins to apply to OSMap plugins
         $this->moveXmapPluginsParamsToOSMapPlugins();
+
+        // Update db fields
+        $columnsToRemove = array(
+            'views_xml',
+            'views_html',
+            'lastvisit_xml',
+            'lastvisit_html',
+            'count_xml',
+            'count_html'
+        );
+        $this->dropColumnsIfExists('#__osmap_sitemap', $columnsToRemove);
+
+        $columnsToAdd = array(
+            'links_count' => 'INT(11) NOT NULL DEFAULT 0'
+        );
+        $this->addColumnsIfNotExists('#__osmap_sitemap', $columnsToAdd);
     }
 
     /**

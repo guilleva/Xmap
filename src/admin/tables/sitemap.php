@@ -100,33 +100,7 @@ class OSMapTableSitemap extends JTable
     /**
      * @var int
      */
-    var $count_xml = 0;
-
-    /**
-     * @var int
-     */
-    var $count_html = 0;
-
-    /**
-     * @var int
-     */
-    var $views_xml = 0;
-
-    /**
-     * @var int
-     */
-    var $views_html = 0;
-
-    /**
-     * @var int
-     */
-    var $lastvisit_xml = 0;
-
-    /**
-     * @var int
-     */
-    var $lastvisit_html = 0;
-
+    var $links_count = 0;
 
     /**
      * @param    JDatabase    A database connector object

@@ -212,11 +212,11 @@ class OSMapModelSitemap extends JModelItem
             return false;
         }
 
-        $this->_db->setQuery(
-            'UPDATE `#__osmap_sitemap`' .
-            ' SET views_' . $view . ' = views_' . $view . ' + 1, count_' . $view . ' = ' . $count . ', lastvisit_' . $view . ' = ' . JFactory::getDate()->toUnix() .
-            ' WHERE id = ' . (int) $pk
-        );
+        $query = $this->_db->getQuery(true)
+            ->update('#__osmap_sitemap')
+            ->set('links_count = ' . (int) $count)
+            ->where('id = ' . $this->_db->quote((int) $pk));
+        $this->_db->setQuery($query);
 
         if (!$this->_db->query()) {
             $this->setError($this->_db->getErrorMsg());

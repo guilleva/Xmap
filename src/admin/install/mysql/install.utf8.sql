@@ -12,12 +12,7 @@ CREATE TABLE IF NOT EXISTS `#__osmap_sitemap` (
   `state` int(2) DEFAULT NULL,
   `access` int DEFAULT NULL,
   `created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  `count_xml` int(11) DEFAULT NULL,
-  `count_html` int(11) DEFAULT NULL,
-  `views_xml` int(11) DEFAULT NULL,
-  `views_html` int(11) DEFAULT NULL,
-  `lastvisit_xml` int(11) DEFAULT NULL,
-  `lastvisit_html` int(11) DEFAULT NULL,
+  `links_count` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

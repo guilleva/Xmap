@@ -127,7 +127,7 @@ $version = new JVersion;
                     <a href="<?php echo $baseUrl. 'index.php?option=com_osmap&amp;view=xml&tmpl=component&images=1&id='.$item->id; ?>" target="_blank" title="<?php echo JText::_('COM_OSMAP_IMAGES_LINK_TOOLTIP', true); ?>"><?php echo JText::_('COM_OSMAP_IMAGES_LINK'); ?><span class="icon-out-2"></span></a>
                 </td>
                 <td class="center">
-                    <?php echo $item->count_xml; ?>
+                    <?php echo $item->links_count; ?>
                 </td>
                 <td class="center">
                     <?php echo (int) $item->id; ?>

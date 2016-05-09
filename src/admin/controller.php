@@ -195,12 +195,7 @@ class OSMapController extends JControllerLegacy
                                 $db->quoteName('state') . '=' . $db->quote($sitemap->state),
                                 $db->quoteName('access') . '=' . $db->quote($sitemap->access),
                                 $db->quoteName('created') . '=' . $db->quote($sitemap->created),
-                                $db->quoteName('count_xml') . '=' . $db->quote($sitemap->count_xml),
-                                $db->quoteName('count_html') . '=' . $db->quote($sitemap->count_html),
-                                $db->quoteName('views_xml') . '=' . $db->quote($sitemap->views_xml),
-                                $db->quoteName('views_html') . '=' . $db->quote($sitemap->views_html),
-                                $db->quoteName('lastvisit_xml') . '=' . $db->quote($sitemap->lastvisit_xml),
-                                $db->quoteName('lastvisit_html') . '=' . $db->quote($sitemap->lastvisit_html)
+                                $db->quoteName('links_count') . '=' . $db->quote($sitemap->count_xml)
                             )
                         )
                         ->insert('#__osmap_sitemap');
