@@ -32,7 +32,6 @@ jimport('joomla.application.component.controller');
  *
  * @package        OSMap
  * @subpackage     com_osmap
- * @since          2.0
  */
 class OSMapController extends JControllerLegacy
 {
@@ -44,7 +43,6 @@ class OSMapController extends JControllerLegacy
      * @param   array           An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
      *
      * @return  JController     This object to support chaining.
-     * @since   1.5
      */
     public function display($cachable = false, $urlparams = false)
     {
@@ -56,21 +54,24 @@ class OSMapController extends JControllerLegacy
 
         $user = JFactory::getUser();
 
-        if ($user->get('id') || !in_array($viewName, array('html', 'xml')) || $viewLayout == 'xsl') {
+        if ($user->get('id')
+            || !in_array($viewName, array('html', 'xml'))
+            || $viewLayout == 'xsl'
+        ) {
+
             $cachable = false;
         }
 
-        if ($viewName) {
-            $document     = JFactory::getDocument();
-            $viewType     = $document->getType();
+        if (!empty($viewName)) {
+            $viewType     = JFactory::getDocument()->getType();
             $params       = array(
                 'base_path' => $this->basePath,
                 'layout'    => $viewLayout
             );
-            $view         = $this->getView($viewName, $viewType, '', $params);
-            $sitemapmodel = $this->getModel('Sitemap');
+            $view  = $this->getView($viewName, $viewType, '', $params);
+            $model = $this->getModel('Sitemap');
 
-            $view->setModel($sitemapmodel, true);
+            $view->setModel($model, true);
         }
 
         $safeurlparams = array(

@@ -58,21 +58,21 @@ class OSMapControllerAjax extends JControllerLegacy
             if ($model->getItem()) {
                 $action = JRequest::getCmd('action', '');
                 $uid    = JRequest::getCmd('uid', '');
-                $itemid = JRequest::getInt('itemid', '');
+                $itemId = JRequest::getInt('itemId', '');
 
                 switch ($action) {
                     case 'toggleElement':
-                        if ($uid && $itemid) {
-                            $state = $model->toggleItem($uid, $itemid);
+                        if ($uid && $itemId) {
+                            $state = $model->toggleItem($uid, $itemId);
                         }
                         break;
 
                     case 'changeProperty':
-                        $uid = JRequest::getCmd('uid', '');
                         $property = JRequest::getCmd('property', '');
-                        $value = JRequest::getCmd('value', '');
-                        if ($uid && $itemid && $uid && $property) {
-                            $state = $model->chageItemPropery($uid, $itemid, 'xml', $property, $value);
+                        $value    = JRequest::getCmd('value', '');
+
+                        if ($uid && $itemId && $uid && $property) {
+                            $state = $model->chageItemPropery($uid, $itemId, 'xml', $property, $value);
                         }
                         break;
                 }

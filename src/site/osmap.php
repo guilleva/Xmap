@@ -29,6 +29,6 @@ jimport('legacy.controller.legacy');
 
 require_once JPATH_ADMINISTRATOR . '/components/com_osmap/include.php';
 
-$controller = JControllerLegacy::getInstance('OSMap');
-$controller->execute(JRequest::getCmd('task'));
-$controller->redirect();
+JControllerLegacy::getInstance('OSMap')
+    ->execute(JRequest::getCmd('task'))
+    ->redirect();

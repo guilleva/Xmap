@@ -40,16 +40,18 @@ require_once(JPATH_COMPONENT . '/helpers/osmap.php');
  */
 class OSMapModelSitemap extends JModelItem
 {
-
     /**
      * Model context string.
      *
-     * @var        string
+     * @var  string
      */
     protected $_context = 'com_osmap.sitemap';
 
-    protected $_extensions = null;
-
+    /**
+     * List of sitemap items
+     *
+     * @var  array
+     */
     public static $items = array();
 
     /**
@@ -62,10 +64,10 @@ class OSMapModelSitemap extends JModelItem
         $app = JFactory::getApplication('site');
 
         // Load state from the request.
-        $pk = JRequest::getInt('id');
+        $id = JRequest::getInt('id');
 
         // If not sitemap specified, select the default one
-        if (!$pk) {
+        if (!$id) {
             $db    = $this->getDbo();
             $query = $db->getQuery(true)
                 ->select('id')
@@ -73,10 +75,10 @@ class OSMapModelSitemap extends JModelItem
                 ->where('is_default = 1');
             $db->setQuery($query);
 
-            $pk = $db->loadResult();
+            $id = $db->loadResult();
         }
 
-        $this->setState('sitemap.id', $pk);
+        $this->setState('sitemap.id', $id);
 
         $offset = JRequest::getInt('limitstart');
         $this->setState('list.offset', $offset);
@@ -109,10 +111,9 @@ class OSMapModelSitemap extends JModelItem
 
         if (!isset($this->_item[$pk])) {
             try {
-                $query = $db->getQuery(true);
-
-                $query->select($this->getState('item.select', 'a.*'));
-                $query->from('#__osmap_sitemap AS a');
+                $query = $db->getQuery(true)
+                    ->select($this->getState('item.select', 'a.*'))
+                    ->from('#__osmap_sitemap AS a');
 
                 $query->where('a.id = ' . (int) $pk);
 
