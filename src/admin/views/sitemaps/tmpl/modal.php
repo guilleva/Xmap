@@ -27,34 +27,59 @@
 defined('_JEXEC') or die('Restricted access');
 
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
+
 JHtml::_('behavior.tooltip');
 
 $function = JRequest::getString('function', 'jSelectSitemap');
-$n = count($this->items);
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_osmap&view=sitemaps');?>" method="post" name="adminForm">
+<form
+    action="<?php echo JRoute::_('index.php?option=com_osmap&view=sitemaps');?>"
+    method="post"
+    name="adminForm">
+
     <fieldset class="filter clearfix">
         <div class="left">
             <label for="search">
                 <?php echo JText::_('JSEARCH_FILTER_LABEL'); ?>
             </label>
-            <input type="text" name="filter_search" id="filter_search" value="<?php echo $this->state->get('filter.search'); ?>" size="60" title="<?php echo JText::_('COM_OSMAP_FILTER_SEARCH_DESC'); ?>" />
+            <input
+                type="text"
+                name="filter_search"
+                id="filter_search"
+                value="<?php echo $this->state->get('filter.search'); ?>"
+                size="60"
+                title="<?php echo JText::_('COM_OSMAP_FILTER_SEARCH_DESC'); ?>" />
 
             <button type="submit">
-                <?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
+                <?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?>
+            </button>
             <button type="button" onclick="$('filter_search').value='';this.form.submit();">
-                <?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
+                <?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>
+            </button>
         </div>
 
         <div class="right">
             <select name="filter_access" class="inputbox" onchange="this.form.submit()">
                 <option value=""><?php echo JText::_('JOPTION_SELECT_ACCESS');?></option>
-                <?php echo JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access'));?>
+                <?php echo JHtml::_(
+                    'select.options',
+                    JHtml::_('access.assetgroups'),
+                    'value',
+                    'text',
+                    $this->state->get('filter.access')
+                ); ?>
             </select>
 
             <select name="filter_published" class="inputbox" onchange="this.form.submit()">
                 <option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
-                <?php echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true);?>
+                <?php echo JHtml::_(
+                    'select.options',
+                    JHtml::_('jgrid.publishedOptions'),
+                    'value',
+                    'text',
+                    $this->state->get('filter.published'),
+                    true
+                ); ?>
             </select>
 
         </div>
@@ -64,16 +89,35 @@ $n = count($this->items);
         <thead>
             <tr>
                 <th class="title">
-                    <?php echo JHtml::_('grid.sort', 'COM_OSMAP_HEADING_TITLE', 'a.title', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
+                    <?php echo JHtml::_(
+                        'grid.sort',
+                        'COM_OSMAP_HEADING_TITLE',
+                        'a.title',
+                        $this->state->get('list.direction'),
+                        $this->state->get('list.ordering')
+                    ); ?>
                 </th>
                 <th width="5%">
-                    <?php echo JHtml::_('grid.sort', 'COM_OSMAP_HEADING_PUBLISHED', 'a.state', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
+                    <?php echo JHtml::_(
+                        'grid.sort',
+                        'COM_OSMAP_HEADING_PUBLISHED',
+                        'a.state',
+                        $this->state->get('list.direction'),
+                        $this->state->get('list.ordering')
+                    ); ?>
                 </th>
                 <th width="1%" nowrap="nowrap">
-                    <?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'a.id', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
+                    <?php echo JHtml::_(
+                        'grid.sort',
+                        'JGRID_HEADING_ID',
+                        'a.id',
+                        $this->state->get('list.direction'),
+                        $this->state->get('list.ordering')
+                    ); ?>
                 </th>
             </tr>
         </thead>
+
         <tfoot>
             <tr>
                 <td colspan="4">
@@ -81,15 +125,17 @@ $n = count($this->items);
                 </td>
             </tr>
         </tfoot>
-        <tbody>
-        <?php
-        foreach ($this->items as $i => $item) :
 
-            ?>
+        <tbody>
+        <?php foreach ($this->items as $i => $item) : ?>
             <tr class="row<?php echo $i % 2; ?>">
                 <td>
-                    <a style="cursor: pointer;" onclick="if (window.parent) window.parent.<?php echo $function;?>('<?php echo $item->id; ?>', '<?php echo $this->escape($item->title); ?>');">
-                        <?php echo $this->escape($item->title); ?></a>
+                    <a
+                        style="cursor: pointer;"
+                        onclick="if (window.parent) window.parent.<?php echo $function;?>('<?php echo $item->id; ?>', '<?php echo $this->escape($item->title); ?>');">
+
+                        <?php echo $this->escape($item->title); ?>
+                    </a>
                 </td>
                 <td align="center">
                     <?php echo JHtml::_('jgrid.published', $item->state, $i, 'sitemaps.'); ?>
@@ -98,9 +144,10 @@ $n = count($this->items);
                     <?php echo (int) $item->id; ?>
                 </td>
             </tr>
-        <?php                                                                                                                                                                                                                 endforeach; ?>
+        <?php endforeach; ?>
         </tbody>
     </table>
+
     <input type="hidden" name="tmpl" value="component" />
     <input type="hidden" name="task" value="" />
     <input type="hidden" name="boxchecked" value="0" />

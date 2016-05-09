@@ -38,19 +38,23 @@ jimport('joomla.application.component.view');
  */
 class OSMapViewSitemaps extends JViewLegacy
 {
+    /**
+     * @var JRegistry
+     */
     protected $state;
-    protected $items;
-    protected $pagination;
 
     /**
-     * Display the view
+     * @var array
      */
+    protected $items;
+
+    /**
+     * @var JPagination
+     */
+    protected $pagination;
+
     public function display($tpl = null)
     {
-        if ($this->getLayout() !== 'modal') {
-            OSMapHelper::addSubmenu('sitemaps');
-        }
-
         $this->state      = $this->get('State');
         $this->items      = $this->get('Items');
         $this->pagination = $this->get('Pagination');
@@ -63,19 +67,19 @@ class OSMapViewSitemaps extends JViewLegacy
         // Check for errors.
         if (count($errors = $this->get('Errors'))) {
             JError::raiseError(500, implode("\n", $errors));
+
             return false;
         }
 
-        // We don't need toolbar in the modal window.
+        // We don't need toolbar or submenus in the modal window
         if ($this->getLayout() !== 'modal') {
+            OSMapHelper::addSubmenu('sitemaps');
             $this->addToolbar();
         }
 
         // Load the extension
-        $extension = Factory::getExtension('OSMap', 'component');
-        $extension->loadLibrary();
-
-        $this->assignRef("extension", $extension);
+        $this->extension = Factory::getExtension('OSMap', 'component');
+        $this->extension->loadLibrary();
 
         parent::display($tpl);
     }
@@ -83,21 +87,20 @@ class OSMapViewSitemaps extends JViewLegacy
     /**
      * Display the toolbar
      *
-     * @access      private
+     * @access      protected
      */
     protected function addToolbar()
     {
         $state = $this->get('State');
-        $doc = JFactory::getDocument();
-
-        JToolBarHelper::addNew('sitemap.add');
-        JToolBarHelper::custom('sitemap.edit', 'edit.png', 'edit_f2.png', 'JTOOLBAR_EDIT', true);
+        $doc   = JFactory::getDocument();
 
         $doc->addStyleDeclaration('.icon-48-sitemap {background-image: url(media/com_osmap/images/osmap-icon.png);}');
-        JToolBarHelper::custom('sitemaps.publish', 'publish.png', 'publish_f2.png', 'JTOOLBAR_Publish', true);
-        JToolBarHelper::custom('sitemaps.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
 
         JToolBarHelper::title(JText::_('COM_OSMAP_SITEMAPS_TITLE'), 'tree-2');
+        JToolBarHelper::addNew('sitemap.add');
+        JToolBarHelper::custom('sitemap.edit', 'edit.png', 'edit_f2.png', 'JTOOLBAR_EDIT', true);
+        JToolBarHelper::custom('sitemaps.publish', 'publish.png', 'publish_f2.png', 'JTOOLBAR_Publish', true);
+        JToolBarHelper::custom('sitemaps.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
         JToolBarHelper::custom('sitemaps.setdefault', 'featured.png', 'featured_f2.png', 'COM_OSMAP_TOOLBAR_SET_DEFAULT', true);
 
         if ($state->get('filter.published') == -2) {
@@ -117,13 +120,25 @@ class OSMapViewSitemaps extends JViewLegacy
             JHtmlSidebar::addFilter(
                 JText::_('JOPTION_SELECT_PUBLISHED'),
                 'filter_published',
-                JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true)
+                JHtml::_(
+                    'select.options',
+                    JHtml::_('jgrid.publishedOptions'),
+                    'value',
+                    'text',
+                    $this->state->get('filter.published'),
+                    true
+                )
             );
 
             JHtmlSidebar::addFilter(
                 JText::_('JOPTION_SELECT_ACCESS'),
                 'filter_access',
-                JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access'))
+                JHtml::_('select.options',
+                    JHtml::_('access.assetgroups'),
+                    'value',
+                    'text',
+                    $this->state->get('filter.access')
+                )
             );
 
             $this->sidebar = JHtmlSidebar::render();
