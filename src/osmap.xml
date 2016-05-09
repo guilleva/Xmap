@@ -9,6 +9,7 @@
     <authorUrl>http://www.alledia.com</authorUrl>
     <version>4.0.0b1</version>
     <description>COM_OSMAP_DESCRIPTION</description>
+    <variant>FREE</variant>
 
     <alledia>
         <element>osmap</element>
