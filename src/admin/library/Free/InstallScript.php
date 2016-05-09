@@ -29,6 +29,7 @@ use Alledia\Installer\AbstractScript;
 use JFactory;
 use ModMenuHelper;
 use JTable;
+use stdClass;
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
