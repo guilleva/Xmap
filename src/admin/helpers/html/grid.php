@@ -58,20 +58,20 @@ abstract class OSMapGrid extends JHtmlGrid
             $value = $value->$property;
         }
 
-        $task = $value ? $taskDisable : $taskEnable;
-        $alt = $value ? JText::_('COM_OSMAP_ENABLED') : JText::_('COM_OSMAP_DISABLED');
+        $task   = $value ? $taskDisable : $taskEnable;
+        $alt    = $value ? JText::_('COM_OSMAP_ENABLED') : JText::_('COM_OSMAP_DISABLED');
         $action = $value ? JText::_('COM_OSMAP_DISABLE_TOOLTIP') : JText::_('COM_OSMAP_ENABLE_TOOLTIP');
 
         if ($jLegacy) {
             $classes = "";
-            $title = 'title="' . $action . '"';
-            $img = $value ? 'tick.png' : 'publish_x.png';
-            $img = JHtml::_('image', 'admin/' . $img, $alt, null, true);
+            $title   = 'title="' . $action . '"';
+            $img     = $value ? 'tick.png' : 'publish_x.png';
+            $img     = JHtml::_('image', 'admin/' . $img, $alt, null, true);
         } else {
             $classes = $value ? 'btn btn-micro active hasTooltip' : 'btn btn-micro hasTooltip';
-            $title = 'data-original-title="' . $action . '"';
-            $img = $value ? 'icon-publish' : 'icon-unpublish';
-            $img = '<span class="' . $img . '"></span>';
+            $title   = 'data-original-title="' . $action . '"';
+            $img     = $value ? 'icon-publish' : 'icon-unpublish';
+            $img     = '<span class="' . $img . '"></span>';
         }
 
         return '<a class="' . $classes . '" href="#" onclick="return listItemTask(\'cb' . $i . '\',\''

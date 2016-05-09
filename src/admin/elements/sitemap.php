@@ -38,7 +38,8 @@ class JElementSitemap extends JElement
 
     public function fetchElement($name, $value, &$node, $control_name)
     {
-        $db        = JFactory::getDBO();
+        $db = JFactory::getDBO();
+
         $fieldName = $control_name . '[' . $name . ']';
 
         $query = $db->getQuery(true)
