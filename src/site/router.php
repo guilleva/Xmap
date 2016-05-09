@@ -36,9 +36,8 @@ function OSMapBuildRoute(&$query)
 {
     $segments = array();
 
-    // get a menu item based on Itemid or currently active
-    $app  = JFactory::getApplication();
-    $menu = $app->getMenu();
+    // Get a menu item based on Itemid or currently active
+    $menu = JFactory::getApplication()->getMenu();
 
     if (empty($query['Itemid'])) {
         $menuItem = $menu->getActive();
@@ -46,7 +45,7 @@ function OSMapBuildRoute(&$query)
         $menuItem = $menu->getItem($query['Itemid']);
     }
 
-    $mId      = (empty($menuItem->query['id'])) ? null : $menuItem->query['id'];
+    $itemId = empty($menuItem->query['id']) ? null : $menuItem->query['id'];
 
     if (!empty($query['Itemid'])) {
         unset($query['view']);
@@ -62,13 +61,14 @@ function OSMapBuildRoute(&$query)
             $segments[] = $query['id'];
         } else {
             if (isset($menuItem->query['id'])) {
-                if ($query['id'] != $mId) {
+                if ($query['id'] != $itemId) {
                     $segments[] = $query['id'];
                 }
             } else {
                 $segments[] = $query['id'];
             }
         }
+
         unset($query['id']);
     }
 
@@ -98,10 +98,8 @@ function OSMapParseRoute($segments)
 {
     $vars = array();
 
-    //G et the active menu item.
-    $app  = JFactory::getApplication();
-    $menu = $app->getMenu();
-    $item = $menu->getActive();
+    //Get the active menu item.
+    $item = JFactory::getApplication()->getMenu()->getActive();
 
     // Count route segments
     $count = count($segments);
