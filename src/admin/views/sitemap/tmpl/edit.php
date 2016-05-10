@@ -31,32 +31,40 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
 JHtml::_('formbehavior.chosen', 'select');
+
+$fieldSets = $this->form->getFieldsets('attribs');
 ?>
 <script type="text/javascript">
-<!--
     function submitbutton(task)
     {
         if (task == 'sitemap.cancel' || document.formvalidator.isValid($('adminForm'))) {
             submitform(task);
         }
     }
-// -->
 </script>
-<form action="<?php echo JRoute::_('index.php?option=com_osmap&layout=edit&id='.$this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
+
+<form
+    action="<?php echo JRoute::_('index.php?option=com_osmap&layout=edit&id='.$this->item->id); ?>"
+    method="post"
+    name="adminForm"
+    id="adminForm"
+    class="form-validate">
+
     <div class="row-fluid">
         <!-- Begin Content -->
         <div class="span10 form-horizontal">
             <ul class="nav nav-tabs">
-                <li class="active"><a href="#general" data-toggle="tab"><?php echo JText::_('COM_OSMAP_SITEMAP_DETAILS_FIELDSET');?></a></li>
-                <li><a href="#attrib-menus" data-toggle="tab"><?php echo JText::_('COM_OSMAP_FIELDSET_MENUS');?></a></li>
-                <?php
-                $fieldSets = $this->form->getFieldsets('attribs');
-                foreach ($fieldSets as $name => $fieldSet) :
-                ?>
-                <li><a href="#attrib-<?php echo $name;?>" data-toggle="tab"><?php echo JText::_($fieldSet->label);?></a></li>
-                <?php
-                endforeach;
-                ?>
+                <li class="active">
+                    <a href="#general" data-toggle="tab"><?php echo JText::_('COM_OSMAP_SITEMAP_DETAILS_FIELDSET');?></a>
+                </li>
+                <li>
+                    <a href="#attrib-menus" data-toggle="tab"><?php echo JText::_('COM_OSMAP_FIELDSET_MENUS');?></a>
+                </li>
+                <?php foreach ($fieldSets as $name => $fieldSet) : ?>
+                    <li>
+                        <a href="#attrib-<?php echo $name;?>" data-toggle="tab"><?php echo JText::_($fieldSet->label);?></a>
+                    </li>
+                <?php endforeach; ?>
             </ul>
 
             <div class="tab-content">
@@ -67,12 +75,6 @@ JHtml::_('formbehavior.chosen', 'select');
                                 <?php echo $this->form->getLabel('title'); ?>
                                 <div class="controls">
                                     <?php echo $this->form->getInput('title'); ?>
-                                </div>
-                            </div>
-                            <div class="control-group">
-                                <?php echo $this->form->getLabel('alias'); ?>
-                                <div class="controls">
-                                    <?php echo $this->form->getInput('alias'); ?>
                                 </div>
                             </div>
                             <div class="control-group">
@@ -104,18 +106,13 @@ JHtml::_('formbehavior.chosen', 'select');
                         <?php echo $this->form->getInput('selections'); ?>
                     </div>
                 </div>
-                <?php
-                $fieldSets = $this->form->getFieldsets('attribs');
-                foreach ($fieldSets as $name => $fieldSet) :
-                ?>
+                <?php foreach ($fieldSets as $name => $fieldSet) : ?>
                 <div class="tab-pane" id="attrib-<?php echo $name;?>">
-                    <?php
-                    if (isset($fieldSet->description) && trim($fieldSet->description)) :
-                        echo '<p class="tip">' . $this->escape(JText::_($fieldSet->description)) . '</p>';
-                    endif;
+                    <?php if (isset($fieldSet->description) && trim($fieldSet->description)) : ?>
+                        <?php echo '<p class="tip">' . $this->escape(JText::_($fieldSet->description)) . '</p>'; ?>
+                    <?php endif; ?>
 
-                    foreach ($this->form->getFieldset($name) as $field) :
-                    ?>
+                    <?php foreach ($this->form->getFieldset($name) as $field) : ?>
                     <div class="control-group">
                         <?php echo $field->label; ?>
                         <div class="controls">

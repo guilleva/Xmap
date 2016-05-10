@@ -51,24 +51,9 @@
             labelclass="control-label"
             size="1"
             default="1">
-            <option
-                value="1">
-                JPUBLISHED</option>
-            <option
-                value="0">
-                JUNPUBLISHED</option>
+            <option value="1">JPUBLISHED</option>
+            <option value="0">JUNPUBLISHED</option>
         </field>
-
-        <field
-            id="created"
-            name="created"
-            type="calendar"
-            label="OSMAP_CREATED_LABEL"
-            description="OSMAP_CREATED_DESC"
-            class="inputbox"
-            labelclass="control-label"
-            size="16"
-            format="%Y-%m-%d %H-%M-%S" />
 
         <field
             id="access"
@@ -79,54 +64,6 @@
             class="inputbox"
             labelclass="control-label"
             size="1" />
-
-        <field
-            id="count_html"
-            name="hits"
-            type="text"
-            label="OSMAP_HITSHTML_LABEL"
-            description="OSMAP_HITS_DESC"
-            class="readonly"
-            labelclass="control-label"
-            size="6"
-            readonly="true"
-            filter="unset"/>
-
-        <field
-            id="count_xml"
-            name="hits"
-            type="text"
-            label="OSMAP_HITSXML_LABEL"
-            description="OSMAP_HITS_DESC"
-            class="readonly"
-            labelclass="control-label"
-            size="6"
-            readonly="true"
-            filter="unset"/>
-
-        <field
-            id="visits_html"
-            name="visits_html"
-            type="text"
-            label="OSMAP_VISITSHTML_LABEL"
-            description="OSMAP_HITS_DESC"
-            class="readonly"
-            labelclass="control-label"
-            size="6"
-            readonly="true"
-            filter="unset"/>
-
-        <field
-            id="visits_xml"
-            name="visits_xml"
-            type="text"
-            label="OSMAP_VISITSXML_LABEL"
-            description="OSMAP_HITS_DESC"
-            class="readonly"
-            labelclass="control-label"
-            size="6"
-            readonly="true"
-            filter="unset"/>
 
         <field
             id="selections"
@@ -170,10 +107,8 @@
                 label="COM_OSMAP_ATTRIBS_SHOW_INTRO_LABEL"
                 description="COM_OSMAP_ATTRIBS_SHOW_INTRO_DESC"
                 default="1">
-                <option
-                    value="0">No</option>
-                <option
-                    value="1">Yes</option>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
             </field>
 
             <field
@@ -184,10 +119,8 @@
                 description="COM_OSMAP_ATTRIBS_SHOW_MENU_TITLE_DESC"
                 labelclass="control-label"
                 default="1">
-                <option
-                    value="0">No</option>
-                <option
-                    value="1">Yes</option>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
             </field>
 
             <field
@@ -211,26 +144,16 @@
                 description="COM_OSMAP_ATTRIBS_EXTERNAL_LINKS_IMAGE_DESC"
                 labelclass="control-label"
                 default="1">
-                <option
-                    value="img_blue.gif">img_blue.gif</option>
-                <option
-                    value="img_green.gif">img_green.gif</option>
-                <option
-                    value="img_grey.gif">img_grey.gif</option>
-                <option
-                    value="img_orange.gif">img_orange.gif</option>
-                <option
-                    value="img_red.gif">img_red.gif</option>
-                <option
-                    value="txt_blue.gif">txt_blue.gif</option>
-                <option
-                    value="txt_green.gif">txt_green.gif</option>
-                <option
-                    value="txt_grey.gif">txt_grey.gif</option>
-                <option
-                    value="txt_orange.gif">txt_orange.gif</option>
-                <option
-                    value="txt_red.gif">txt_red.gif</option>
+                <option value="img_blue.gif">img_blue.gif</option>
+                <option value="img_green.gif">img_green.gif</option>
+                <option value="img_grey.gif">img_grey.gif</option>
+                <option value="img_orange.gif">img_orange.gif</option>
+                <option value="img_red.gif">img_red.gif</option>
+                <option value="txt_blue.gif">txt_blue.gif</option>
+                <option value="txt_green.gif">txt_green.gif</option>
+                <option value="txt_grey.gif">txt_grey.gif</option>
+                <option value="txt_orange.gif">txt_orange.gif</option>
+                <option value="txt_red.gif">txt_red.gif</option>
             </field>
 
             <field
@@ -241,10 +164,8 @@
                 description="COM_OSMAP_ATTRIBS_COMPRESS_XML_DESC"
                 labelclass="control-label"
                 default="1">
-                <option
-                    value="0">No</option>
-                <option
-                    value="1">Yes</option>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
             </field>
 
             <field
@@ -255,10 +176,8 @@
                 description="COM_OSMAP_ATTRIBS_BEAUTIFY_XML_DESC"
                 labelclass="control-label"
                 default="1">
-                <option
-                    value="0">No</option>
-                <option
-                    value="1">Yes</option>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
             </field>
 
             <field
@@ -269,10 +188,8 @@
                 description="COM_OSMAP_ATTRIBS_DUBUG_OSMAP_DESC"
                 labelclass="control-label"
                 default="0">
-                <option
-                    value="0">No</option>
-                <option
-                    value="1">Yes</option>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
             </field>
         </fieldset>
     </fields>
