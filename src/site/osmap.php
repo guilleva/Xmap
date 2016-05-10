@@ -30,5 +30,5 @@ jimport('legacy.controller.legacy');
 require_once JPATH_ADMINISTRATOR . '/components/com_osmap/include.php';
 
 JControllerLegacy::getInstance('OSMap')
-    ->execute(JRequest::getCmd('task'))
+    ->execute(JFactory::getApplication()->input->getCmd('task'))
     ->redirect();
