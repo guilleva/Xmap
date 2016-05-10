@@ -1,3 +1,4 @@
+P182
 <?php
 /**
 * @version       $Id$
@@ -179,7 +180,6 @@ class OSMapHtmlDisplayer extends OSMap\Free\Displayer
 
     public function endMenu(&$menu)
     {
-        $sitemap =& $this->sitemap;
         $this->_closeItem = '';
     }
 }

@@ -42,7 +42,6 @@ class OSMapController extends JControllerLegacy
     {
         parent::__construct();
 
-        $this->registerTask('navigator-links', 'navigatorLinks');
         $this->registerTask('migrate-xmap', 'migrateXmapData');
     }
 
@@ -75,86 +74,6 @@ class OSMapController extends JControllerLegacy
 
             $view->display();
         }
-    }
-
-    public function navigator()
-    {
-        $db       = JFactory::getDBO();
-        $document = JFactory::getDocument();
-        $app      = JFactory::getApplication('administrator');
-
-        $id   = JRequest::getInt('sitemap', 0);
-        $link = urldecode(JRequest::getVar('link', ''));
-        $name = JRequest::getCmd('e_name', '');
-
-        if (!$id) {
-            $id = $this->getDefaultSitemapId();
-        }
-
-        if (!$id) {
-            JError::raiseWarning(500, JText::_('COM_OSMAP_NOT_SITEMAP_SELECTED'));
-
-            return false;
-        }
-
-        $app->setUserState('com_osmap.edit.sitemap.id', $id);
-
-        $view  = $this->getView('sitemap', $document->getType());
-        $model = $this->getModel('Sitemap');
-
-        $view->setLayout('navigator');
-        $view->setModel($model, true);
-
-        // Push document object into the view.
-        $view->assignRef('document', $document);
-
-        $view->navigator();
-    }
-
-    public function navigatorLinks()
-    {
-        $db       = JFactory::getDBO();
-        $document = JFactory::getDocument();
-        $app      = JFactory::getApplication('administrator');
-
-        $id   = JRequest::getInt('sitemap', 0);
-        $link = urldecode(JRequest::getVar('link', ''));
-        $name = JRequest::getCmd('e_name', '');
-
-        if (!$id) {
-            $id = $this->getDefaultSitemapId();
-        }
-
-        if (!$id) {
-            JError::raiseWarning(500, JText::_('COM_OSMAP_NOT_SITEMAP_SELECTED'));
-
-            return false;
-        }
-
-        $app->setUserState('com_osmap.edit.sitemap.id', $id);
-
-        $view  = $this->getView('sitemap', $document->getType());
-        $model = $this->getModel('Sitemap');
-
-        $view->setLayout('navigator');
-        $view->setModel($model, true);
-
-        // Push document object into the view.
-        $view->assignRef('document', $document);
-
-        $view->navigatorLinks();
-    }
-
-    private function getDefaultSitemapId()
-    {
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true)
-            ->select('id')
-            ->from($db->quoteName('#__osmap_sitemap'))
-            ->where('is_default=1');
-        $db->setQuery($query);
-
-        return $db->loadResult();
     }
 
     public function migrateXmapData()

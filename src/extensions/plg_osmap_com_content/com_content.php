@@ -83,7 +83,6 @@ class osmap_com_content
         $params['add_images'] = JArrayHelper::getValue($params, 'add_images', 0);
 
         //----- Set add pagebreaks param
-        $add_pagebreaks           = JArrayHelper::getValue($params, 'add_pagebreaks', 1);
         $params['add_pagebreaks'] = JArrayHelper::getValue($params, 'add_pagebreaks', 1);
 
         switch ($view) {

@@ -115,7 +115,7 @@ class JFormFieldOSMapMenus extends JFormFieldList
             $attributes .= 'class="inputbox" ';
         }
 
-        if ($m = $this->element['multiple']) {
+        if ($this->element['multiple']) {
             $type = 'checkbox';
         }
 

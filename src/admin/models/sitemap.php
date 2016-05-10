@@ -217,15 +217,12 @@ class OSMapModelSitemap extends JModelAdmin
     public function save($data)
     {
         // Initialise variables;
-        $dispatcher = JDispatcher::getInstance();
-        $table      = $this->getTable();
-        $pk         = (!empty($data['id'])) ? $data['id'] : (int)$this->getState('sitemap.id');
-        $isNew      = true;
+        $table = $this->getTable();
+        $pk    = (!empty($data['id'])) ? $data['id'] : (int)$this->getState('sitemap.id');
 
         // Load the row if saving an existing record.
         if ($pk > 0) {
             $table->load($pk);
-            $isNew = false;
         }
 
         // Bind the data.
