@@ -77,7 +77,7 @@ class OSMapViewSitemap extends JViewLegacy
             return false;
         }
 
-        JHTML::stylesheet('media/com_osmap/css/osmap.css');
+        JHTML::stylesheet('media/com_osmap/css/admin.css');
 
         // Convert dates from UTC
         $offset = $app->getCfg('offset');

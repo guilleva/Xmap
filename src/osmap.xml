@@ -136,7 +136,6 @@
         <filename>metadata.xml</filename>
         <filename>router.php</filename>
         <filename>osmap.php</filename>
-        <folder>assets</folder>
         <folder>controllers</folder>
         <folder>helpers</folder>
         <folder>models</folder>

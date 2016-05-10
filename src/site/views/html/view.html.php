@@ -76,7 +76,7 @@ class OSMapViewHtml extends JViewLegacy
         $this->offset = $this->state->get('page.offset');
 
         if ($params->get('include_css', 0)) {
-            $doc->addStyleSheet(JURI::root().'media/com_osmap/css/osmap.css');
+            $doc->addStyleSheet(JURI::root().'media/com_osmap/css/frontend.css');
         }
 
         // If a guest user, they may be able to log in to view the full article
