@@ -21,6 +21,8 @@ class plgOSMapDemo extends JPlugin
     /**
      * Manipulate the submenus
      *
+     * @param array $submenus An array of submenus to manipulate
+     *
      * @return bool
      */
     public function onOSMapAddAdminSubmenu(&$submenus)
