@@ -14,7 +14,9 @@ JHtml::addIncludePath(OSMAP_ADMIN . '/helpers/html');
 JHtml::_('bootstrap.tooltip');
 JHtml::_('formbehavior.chosen', 'select');
 
-$baseUrl = JUri::root();
+$baseUrl   = JUri::root();
+$listOrder = $this->escape($this->state->get('list.ordering'));
+$listDir   = $this->escape($this->state->get('list.direction'));
 ?>
 <form
     action="<?php echo JRoute::_('index.php?option=com_osmap&view=sitemaps');?>"
@@ -27,21 +29,7 @@ $baseUrl = JUri::root();
         <?php echo JText::_('COM_OSMAP_NO_MATCHING_RESULTS'); ?>
     </div>
 <?php else : ?>
-    <?php if (!empty($this->sidebar)) : ?>
-        <div
-            id="j-sidebar-container"
-            class="span2">
-
-            <?php echo $this->sidebar; ?>
-        </div>
-
-        <div
-            id="j-main-container"
-            class="span10">
-    <?php else : ?>
-        <div id="j-main-container">
-    <?php endif;?>
-
+    <div id="j-main-container">
         <div
             id="filter-bar"
             class="btn-toolbar">
@@ -75,89 +63,101 @@ $baseUrl = JUri::root();
             </div>
         </div>
 
-        <table class="adminlist table table-striped">
+        <table class="adminlist table table-striped" id="sitemapList">
             <thead>
                 <tr>
-                    <th width="20">
-                        <input
-                            type="checkbox"
-                            name="checkall-toggle"
-                            value=""
-                            title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>"
-                            onclick="if (typeof Joomla != 'undefined'){Joomla.checkAll(this)} else {checkAll(this)}" />
+                    <th width="1%">
+                        <?php echo JHtml::_('grid.checkall'); ?>
                     </th>
-                    <th class="title">
-                        <?php echo JHtml::_(
-                            'grid.sort',
-                            'COM_OSMAP_HEADING_TITLE',
-                            'a.title',
-                            $this->state->get('list.direction'),
-                            $this->state->get('list.ordering')
-                        ); ?>
-                    </th>
-                    <th width="5%" class="center">
-                        <?php echo JHtml::_(
-                            'grid.sort',
-                            'COM_OSMAP_HEADING_DEFAULT',
-                            'a.is_default',
-                            $this->state->get('list.direction'),
-                            $this->state->get('list.ordering')
-                        ); ?>
-                    </th>
-                    <th width="5%" class="center">
-                        <?php echo JHtml::_(
+
+                    <th width="1%" style="min-width:55px" class="nowrap center">
+                        <?php
+                        echo JHtml::_(
                             'grid.sort',
                             'COM_OSMAP_HEADING_PUBLISHED',
-                            'a.state',
-                            $this->state->get('list.direction'),
-                            $this->state->get('list.ordering')
+                            'sitemap.published',
+                            $listDir,
+                            $listOrder
+                        );
+                        ?>
+                    </th>
+
+                    <th width="1%" style="min-width:55px" class="nowrap center">
+                        <?php
+                        echo JHtml::_(
+                            'grid.sort',
+                            'COM_OSMAP_HEADING_DEFAULT',
+                            'sitemap.is_default',
+                            $listDir,
+                            $listOrder
+                        );
+                        ?>
+                    </th>
+
+                    <th class="title">
+                        <?php
+                        echo JHtml::_(
+                            'grid.sort',
+                            'COM_OSMAP_HEADING_TITLE',
+                            'sitemap.title',
+                            $listDir,
+                            $listOrder
                         ); ?>
                     </th>
-                    <th width="200" class="center">
+
+                    <th width="200" class="center nowrap">
                         <?php echo JText::_('COM_OSMAP_HEADING_SITEMAP_LINKS'); ?>
                     </th>
+
                     <th width="8%" class="nowrap center">
                         <?php echo JText::_('COM_OSMAP_HEADING_NUM_LINKS'); ?>
                     </th>
+
                     <th width="1%" class="nowrap">
-                        <?php echo JHtml::_(
+                        <?php
+                        echo JHtml::_(
                             'grid.sort',
                             'COM_OSMAP_HEADING_ID',
-                            'a.id',
-                            $this->state->get('list.direction'),
-                            $this->state->get('list.ordering')
+                            'sitemap.id',
+                            $listDir,
+                            $listOrder
                         ); ?>
                     </th>
                 </tr>
             </thead>
 
-            <tfoot>
-                <tr>
-                    <td colspan="9">
-                        <?php echo $this->pagination->getListFooter(); ?>
-                    </td>
-                </tr>
-            </tfoot>
-
             <tbody>
             <?php foreach ($this->items as $i => $item) : ?>
-                <tr class="row<?php echo $i % 2; ?>">
+                <tr class="<?php echo 'row' . ($i % 2); ?>">
                     <td class="center">
                         <?php echo JHtml::_('grid.id', $i, $item->id); ?>
                     </td>
-                    <td>
-                        <a href="<?php echo JRoute::_('index.php?option=com_osmap&task=sitemap.edit&id='.$item->id);?>">
-                            <?php echo $this->escape($item->title); ?>
-                        </a>
+
+                    <td class="center">
+                        <div class="btn-group">
+                            <?php
+                            echo JHtml::_(
+                                'jgrid.published',
+                                $item->published,
+                                $i,
+                                'sitemap.'
+                            );
+                            ?>
+                        </div>
                     </td>
+
                     <td class="center">
                         <?php if ($item->is_default == 1) : ?>
                             <span class="icon-featured"></span>
                         <?php endif; ?>
                     </td>
-                    <td class="center">
-                        <?php echo JHtml::_('jgrid.published', $item->state, $i, 'sitemaps.'); ?>
+
+                    <td>
+                        <a href="<?php echo JRoute::_('index.php?option=com_osmap&task=sitemap.edit&id=' . $item->id);?>">
+                            <?php echo $this->escape($item->title); ?>
+                        </a>
                     </td>
+
                     <td class="center">
                         <a
                             href="<?php echo $baseUrl. 'index.php?option=com_osmap&amp;view=xml&tmpl=component&id='.$item->id; ?>"
