@@ -181,7 +181,7 @@
             <folder>views</folder>
             <folder>models</folder>
             <folder>library</folder>
-            <!-- <folder>form</folder> -->
+            <folder>form</folder>
             <folder>language</folder>
         </files>
         <!-- <languages folder="admin/language">
