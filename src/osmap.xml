@@ -27,6 +27,13 @@
                 publish="true"
                 ordering="first">OSSystem</extension>
 
+            <extension
+                type="plugin"
+                group="osmap"
+                element="demo"
+                publish="false"
+                ordering="first">plg_osmap_demo</extension>
+
             <!-- <extension
                 type="plugin"
                 group="osmap"
