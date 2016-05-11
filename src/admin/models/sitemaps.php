@@ -17,8 +17,8 @@ class OSMapModelSitemaps extends JModelList
     public function __construct($config = array())
     {
         $config['filter_fields'] = array(
-            'access', 'sitemap.code',
-            'published', 'sitemap.published'
+            'published', 'sitemap.published',
+            'default', 'sitemap.default'
         );
 
         parent::__construct($config);
@@ -32,14 +32,16 @@ class OSMapModelSitemaps extends JModelList
             ->select('sitemap.*')
             ->from('#__osmap_sitemap sitemap');
 
+        // Filter by publishing state
         $published = $this->getState('filter.published');
         if ($published != '') {
             $query->where('sitemap.published = ' . $db->quote($published));
         }
 
-        // Filter by access level.
-        if ($access = $this->getState('filter.access')) {
-            $query->where('a.access = ' . (int) $access);
+        // Filter by default state
+        $default = $this->getState('filter.default');
+        if ($default != '') {
+            $query->where('sitemap.is_default = ' . (int) $default);
         }
 
         $listOrder = $this->getState('list.ordering', 'sitemap.id');
@@ -54,8 +56,8 @@ class OSMapModelSitemaps extends JModelList
         $published = $this->getUserStateFromRequest($this->context . '.filter.published', 'filter_published');
         $this->setState('filter.published', $published);
 
-        $access = $this->getUserStateFromRequest($this->context . '.filter.access', 'filter_access');
-        $this->setState('filter.access', $access);
+        $default = $this->getUserStateFromRequest($this->context . '.filter.default', 'filter_default');
+        $this->setState('filter.default', $default);
 
         parent::populateState('sitemap.id', 'ASC');
     }

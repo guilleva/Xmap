@@ -24,45 +24,14 @@ $listDir   = $this->escape($this->state->get('list.direction'));
     name="adminForm"
     id="adminForm">
 
+<?php echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this)); ?>
+
 <?php if (empty($this->items)) : ?>
     <div class="alert alert-no-items">
         <?php echo JText::_('COM_OSMAP_NO_MATCHING_RESULTS'); ?>
     </div>
 <?php else : ?>
     <div id="j-main-container">
-        <div
-            id="filter-bar"
-            class="btn-toolbar">
-
-            <div class="filter-search btn-group pull-left">
-                <input
-                    type="text"
-                    name="filter_search"
-                    id="filter_search"
-                    value="<?php echo $this->state->get('filter.search'); ?>"
-                    size="60"
-                    title="<?php echo JText::_('COM_OSMAP_FILTER_SEARCH_DESC'); ?>" />
-            </div>
-
-            <div class="btn-group pull-left hidden-phone">
-                <button
-                    class="btn tip hasTooltip"
-                    type="submit"
-                    title="<?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?>">
-
-                    <i class="icon-search"></i>
-                </button>
-                <button
-                    class="btn tip hasTooltip"
-                    type="button"
-                    onclick="document.id('filter_search').value='';this.form.submit();"
-                    title="<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>">
-
-                    <i class="icon-remove"></i>
-                </button>
-            </div>
-        </div>
-
         <table class="adminlist table table-striped" id="sitemapList">
             <thead>
                 <tr>

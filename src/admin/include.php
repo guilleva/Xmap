@@ -36,6 +36,7 @@ if (!defined('OSMAP_LOADED')) {
     // Load OSMap Plugins
     JPluginHelper::importPlugin('osmap');
 
-    JTable::addIncludePath(OSMAP_SITE . '/tables');
-    JForm::addFieldPath(OSMAP_SITE . '/models/fields');
+    JTable::addIncludePath(OSMAP_ADMIN . '/tables');
+    JForm::addFieldPath(OSMAP_ADMIN . '/fields');
+    JForm::addFormPath(OSMAP_ADMIN . '/form');
 }
