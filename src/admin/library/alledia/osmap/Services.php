@@ -43,5 +43,10 @@ class Services implements ServiceProviderInterface
         $pimple['license'] = function (Container $c) {
             return file_exists(OSMAP_LIBRARY . '/alledia/osmap/Pro') ? 'pro' : 'free';
         };
+
+        // Events class
+        $pimple['events'] = function (Container $c) {
+            return \JEventDispatcher::getInstance();
+        };
     }
 }

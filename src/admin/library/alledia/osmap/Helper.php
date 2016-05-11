@@ -24,22 +24,38 @@ abstract class Helper
      *    "view" => unique view name
      * ]
      *
-     * @param $vName
+     * @param $viewName
      *
      * @return void
      */
-    public static function addSubmenu($vName)
+    public static function addSubmenu($viewName)
     {
-        \JHtmlSidebar::addEntry(
-            \JText::_('COM_OSMAP_SUBMENU_SITEMAPS'),
-            'index.php?option=com_osmap&view=sitemaps',
-            $vName == 'sitemaps'
+        $submenus = array(
+            array(
+                'text' => 'COM_OSMAP_SUBMENU_SITEMAPS',
+                'link' => 'index.php?option=com_osmap&view=sitemaps',
+                'view' => 'sitemaps'
+            ),
+            array(
+                'text' => 'COM_OSMAP_SUBMENU_EXTENSIONS',
+                'link' => 'index.php?option=com_plugins&view=plugins&filter_folder=osmap',
+                'view' => 'extensions'
+            )
         );
 
-        \JHtmlSidebar::addEntry(
-            \JText::_('COM_OSMAP_SUBMENU_EXTENSIONS'),
-            'index.php?option=com_plugins&view=plugins&filter_folder=osmap',
-            $vName == 'extensions'
-        );
+        $events = Factory::getContainer()->getEvents();
+        $events->trigger('onOSMapAddAdminSubmenu', array(&$submenus));
+
+        if (!empty($submenus)) {
+            foreach ($submenus as $submenu) {
+                if (is_array($submenu)) {
+                    \JHtmlSidebar::addEntry(
+                        \JText::_($submenu['text']),
+                        $submenu['link'],
+                        $viewName == $submenu['view']
+                    );
+                }
+            }
+        }
     }
 }

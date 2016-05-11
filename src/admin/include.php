@@ -33,6 +33,9 @@ if (!defined('OSMAP_LOADED')) {
     Framework\AutoLoader::register('Alledia\OSMap', OSMAP_LIBRARY . '/alledia/osmap');
     Framework\AutoLoader::register('Pimple', OSMAP_LIBRARY . '/pimple/pimple');
 
+    // Load OSMap Plugins
+    JPluginHelper::importPlugin('osmap');
+
     JTable::addIncludePath(OSMAP_SITE . '/tables');
     JForm::addFieldPath(OSMAP_SITE . '/models/fields');
 }
