@@ -133,7 +133,8 @@ class OSMapViewSitemaps extends JViewLegacy
             JHtmlSidebar::addFilter(
                 JText::_('JOPTION_SELECT_ACCESS'),
                 'filter_access',
-                JHtml::_('select.options',
+                JHtml::_(
+                    'select.options',
                     JHtml::_('access.assetgroups'),
                     'value',
                     'text',

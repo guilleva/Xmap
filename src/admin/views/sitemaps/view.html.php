@@ -21,29 +21,64 @@ class OSMapViewSitemaps extends OSMap\View\Admin
 
     public function display($tpl = null)
     {
-        $this->state         = $this->get('State');
-        $this->items         = $this->get('Items');
+        $this->items = $this->get('Items');
+        $this->state = $this->get('State');
 
         if (count($errors = $this->get('Errors'))) {
             throw new Exception(implode("\n", $errors));
         }
 
-        $this->setToolbar();
+        // We don't need toolbar or submenus in the modal window
+        if ($this->getLayout() !== 'modal') {
+            OSMap\Helper::addSubmenu('sitemaps');
+            $this->setToolbar();
+        }
 
         parent::display($tpl);
     }
 
     protected function setToolbar($addDivider = true)
     {
-        OSMap\Helper::addSubmenu('plans');
-
         $this->setTitle('COM_OSMAP_SUBMENU_SITEMAPS');
 
-        // SimplerenewToolbarHelper::addNew('plan.add');
-        // SimplerenewToolbarHelper::editList('plan.edit');
-        // SimplerenewToolbarHelper::publish('plans.publish', 'JTOOLBAR_PUBLISH', true);
-        // SimplerenewToolbarHelper::unpublish('plans.unpublish', 'JTOOLBAR_UNPUBLISH', true);
-        // SimplerenewToolbarHelper::deleteList('COM_SIMPLERENEW_PLAN_DELETE_CONFIRM', 'plans.delete');
+        JToolBarHelper::addNew('sitemap.add');
+        JToolBarHelper::custom('sitemap.edit', 'edit.png', 'edit_f2.png', 'JTOOLBAR_EDIT', true);
+        JToolBarHelper::custom('sitemaps.publish', 'publish.png', 'publish_f2.png', 'JTOOLBAR_Publish', true);
+        JToolBarHelper::custom('sitemaps.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
+        JToolBarHelper::custom('sitemaps.setdefault', 'featured.png', 'featured_f2.png', 'COM_OSMAP_TOOLBAR_SET_DEFAULT', true);
+
+        if ($this->state->get('filter.published') == -2) {
+            JToolBarHelper::deleteList('', 'sitemaps.delete', 'JTOOLBAR_DELETE');
+        } else {
+            JToolBarHelper::trash('sitemaps.trash', 'JTOOLBAR_TRASH');
+        }
+
+        JHtmlSidebar::addFilter(
+            JText::_('JOPTION_SELECT_PUBLISHED'),
+            'filter_published',
+            JHtml::_(
+                'select.options',
+                JHtml::_('jgrid.publishedOptions'),
+                'value',
+                'text',
+                $this->state->get('filter.published'),
+                true
+            )
+        );
+
+        JHtmlSidebar::addFilter(
+            JText::_('JOPTION_SELECT_ACCESS'),
+            'filter_access',
+            JHtml::_(
+                'select.options',
+                JHtml::_('access.assetgroups'),
+                'value',
+                'text',
+                $this->state->get('filter.access')
+            )
+        );
+
+        $this->sidebar = JHtmlSidebar::render();
 
         parent::setToolBar($addDivider);
     }

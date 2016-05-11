@@ -126,7 +126,7 @@
 
     <scriptfile>script.installer.php</scriptfile>
 
-    <!-- <install>
+    <install>
         <sql>
             <file driver="mysql" charset="utf8">sql/mysql/install.utf8.sql</file>
         </sql>
@@ -136,7 +136,13 @@
         <sql>
             <file driver="mysql" charset="utf8">sql/mysql/uninstall.utf8.sql</file>
         </sql>
-    </uninstall> -->
+    </uninstall>
+
+    <update>
+        <schemas>
+            <schemapath type="mysql">sql/mysql/updates</schemapath>
+        </schemas>
+    </update>
 
     <files folder="site">
         <!-- <filename>controller.php</filename> -->
@@ -168,12 +174,12 @@
             <filename>controller.php</filename>
             <filename>config.xml</filename>
             <!-- <folder>elements</folder> -->
-            <!-- <folder>sql</folder> -->
+            <folder>sql</folder>
             <!-- <folder>helpers</folder> -->
             <!-- <folder>controllers</folder> -->
-            <!-- <folder>tables</folder> -->
+            <folder>tables</folder>
             <folder>views</folder>
-            <!-- <folder>models</folder> -->
+            <folder>models</folder>
             <folder>library</folder>
             <!-- <folder>form</folder> -->
             <folder>language</folder>

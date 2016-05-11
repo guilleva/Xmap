@@ -24,8 +24,6 @@ class Admin extends Base
     public function __construct($config = array())
     {
         parent::__construct($config);
-
-        $this->state = $this->get('State');
     }
 
     /**
