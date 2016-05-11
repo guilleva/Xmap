@@ -3,14 +3,13 @@
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `#__osmap_sitemap` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `title` VARCHAR(255) NULL,
-  `introtext` TEXT NULL,
+  `name` VARCHAR(255) NULL,
+  `description` TEXT NULL,
   `metadesc` TEXT NULL,
   `metakey` TEXT NULL,
   `params` TEXT NULL,
   `is_default` TINYINT(1) NOT NULL DEFAULT 0,
   `published` TINYINT(1) NOT NULL DEFAULT 1,
-  `access` TINYINT(2) NULL,
   `created` TIMESTAMP NULL,
   `links_count` INT(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),

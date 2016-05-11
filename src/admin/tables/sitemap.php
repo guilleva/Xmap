@@ -25,12 +25,12 @@ class OSMapTableSitemap extends JTable
     /**
      * @var string
      */
-    var $title = null;
+    var $name = null;
 
     /**
      * @var string
      */
-    var $introtext = null;
+    var $description = null;
 
     /**
      * @var string
@@ -66,11 +66,6 @@ class OSMapTableSitemap extends JTable
      * @var int
      */
     var $state = 1; //JPUBLISHED's value is 1
-
-    /**
-     * @var int
-     */
-    var $access = 0;
 
     /**
      * @var int
@@ -136,8 +131,8 @@ class OSMapTableSitemap extends JTable
      */
     public function check()
     {
-        if (empty($this->title)) {
-            $this->setError(JText::_('COM_OSMAP_MSG_SITEMAP_MUST_HAVE_TITLE'));
+        if (empty($this->name)) {
+            $this->setError(JText::_('COM_OSMAP_MSG_SITEMAP_MUST_HAVE_NAME'));
 
             return false;
         }

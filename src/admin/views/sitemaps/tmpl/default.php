@@ -67,8 +67,8 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                         <?php
                         echo JHtml::_(
                             'grid.sort',
-                            'COM_OSMAP_HEADING_TITLE',
-                            'sitemap.title',
+                            'COM_OSMAP_HEADING_NAME',
+                            'sitemap.name',
                             $listDir,
                             $listOrder
                         ); ?>
@@ -112,18 +112,13 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                                 'sitemap.'
                             );
                             ?>
+                            <a href="#" onclick="return listItemTask('cb0','sitemap.is_default')" class="btn btn-micro hasTooltip" title="" data-original-title="Toggle default status."><span class="icon-unfeatured"></span></a>
                         </div>
-                    </td>
-
-                    <td class="center">
-                        <?php if ($item->is_default == 1) : ?>
-                            <span class="icon-featured"></span>
-                        <?php endif; ?>
                     </td>
 
                     <td>
                         <a href="<?php echo JRoute::_('index.php?option=com_osmap&task=sitemap.edit&id=' . $item->id);?>">
-                            <?php echo $this->escape($item->title); ?>
+                            <?php echo $this->escape($item->name); ?>
                         </a>
                     </td>
 

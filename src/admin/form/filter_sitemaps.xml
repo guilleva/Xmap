@@ -36,8 +36,8 @@
             <option value="sitemap.published DESC">COM_OSMAP_GRID_PUBLISHED_DESC</option>
             <option value="sitemap.default ASC">COM_OSMAP_GRID_DEFAULT_ASC</option>
             <option value="sitemap.default DESC">COM_OSMAP_GRID_DEFAULT_DESC</option>
-            <option value="sitemap.title ASC">COM_OSMAP_GRID_TITLE_ASC</option>
-            <option value="sitemap.title DESC">COM_OSMAP_GRID_TITLE_DESC</option>
+            <option value="sitemap.name ASC">COM_OSMAP_GRID_NAME_ASC</option>
+            <option value="sitemap.name DESC">COM_OSMAP_GRID_NAME_DESC</option>
         </field>
 
         <field
