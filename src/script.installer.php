@@ -1,40 +1,24 @@
 <?php
 /**
  * @package   OSMap
- * @copyright 2007-2014 XMap - Joomla! Vargas. All rights reserved.
- * @copyright 2016 Open Source Training, LLC. All rights reserved..
- * @author    Guillermo Vargas <guille@vargas.co.cr>
- * @author    Alledia <support@alledia.com>
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- *
- * This file is part of OSMap.
- *
- * OSMap is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * any later version.
- *
- * OSMap is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OSMap. If not, see <http://www.gnu.org/licenses/>.
+ * @copyright 2007-2014 XMap - Joomla! Vargas - Guillermo Vargas. All rights reserved.
+ * @copyright 2016 Open Source Training, LLC. All rights reserved.
+ * @contact   www.alledia.com, support@alledia.com
+ * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
-use Alledia\OSMap\Free;
+use Alledia\OSMap;
 
-// No direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die();
 
-if (file_exists(__DIR__ . '/admin/library/Free/InstallScript.php')) {
-    require_once __DIR__ . '/admin/library/Free/InstallScript.php';
+// Adapt for install and uninstall environments
+if (file_exists(__DIR__ . '/admin/library/alledia/osmap/Installer/Script.php')) {
+    require_once __DIR__ . '/admin/library/alledia/osmap/Installer/Script.php';
 } else {
-    require_once __DIR__ . '/library/Free/InstallScript.php';
+    require_once __DIR__ . '/library/alledia/osmap/Installer/Script.php';
 }
 
-class Com_OSMapInstallerScript extends Free\InstallScript
+class com_osmapInstallerScript extends OSMap\Installer\Script
 {
 
 }

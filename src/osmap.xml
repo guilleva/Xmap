@@ -119,7 +119,7 @@
 
     <scriptfile>script.installer.php</scriptfile>
 
-    <install>
+    <!-- <install>
         <sql>
             <file driver="mysql" charset="utf8">sql/mysql/install.utf8.sql</file>
         </sql>
@@ -129,17 +129,17 @@
         <sql>
             <file driver="mysql" charset="utf8">sql/mysql/uninstall.utf8.sql</file>
         </sql>
-    </uninstall>
+    </uninstall> -->
 
     <files folder="site">
-        <filename>controller.php</filename>
-        <filename>metadata.xml</filename>
-        <filename>router.php</filename>
-        <filename>osmap.php</filename>
-        <folder>controllers</folder>
-        <folder>helpers</folder>
-        <folder>models</folder>
-        <folder>views</folder>
+        <!-- <filename>controller.php</filename> -->
+        <!-- <filename>metadata.xml</filename> -->
+        <!-- <filename>router.php</filename> -->
+        <!-- <filename>osmap.php</filename> -->
+        <!-- <folder>controllers</folder> -->
+        <!-- <folder>helpers</folder> -->
+        <!-- <folder>models</folder> -->
+        <!-- <folder>views</folder> -->
     </files>
 
     <media destination="com_osmap" folder="media">
@@ -149,10 +149,10 @@
         <folder>fonts</folder>
     </media>
 
-    <languages folder="site/language">
+    <!-- <languages folder="site/language">
         <language tag="en-GB">en-GB.com_osmap.ini</language>
     </languages>
-
+ -->
     <administration>
         <menu>COM_OSMAP_TITLE</menu>
         <files folder="admin">
@@ -160,22 +160,21 @@
             <filename>include.php</filename>
             <filename>controller.php</filename>
             <filename>config.xml</filename>
-            <filename>LICENSE.txt</filename>
-            <folder>elements</folder>
-            <folder>sql</folder>
-            <folder>helpers</folder>
-            <folder>controllers</folder>
-            <folder>tables</folder>
+            <!-- <folder>elements</folder> -->
+            <!-- <folder>sql</folder> -->
+            <!-- <folder>helpers</folder> -->
+            <!-- <folder>controllers</folder> -->
+            <!-- <folder>tables</folder> -->
             <folder>views</folder>
-            <folder>models</folder>
+            <!-- <folder>models</folder> -->
             <folder>library</folder>
-            <folder>form</folder>
+            <!-- <folder>form</folder> -->
             <folder>language</folder>
         </files>
-        <languages folder="admin/language">
+        <!-- <languages folder="admin/language">
             <language tag="en-GB">en-GB/en-GB.com_osmap.ini</language>
             <language tag="en-GB">en-GB/en-GB.com_osmap.sys.ini</language>
-        </languages>
+        </languages> -->
     </administration>
 
     <updateservers>
