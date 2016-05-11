@@ -65,6 +65,9 @@ $fieldSets = $this->form->getFieldsets('attribs');
                         <a href="#attrib-<?php echo $name;?>" data-toggle="tab"><?php echo JText::_($fieldSet->label);?></a>
                     </li>
                 <?php endforeach; ?>
+                <li>
+                    <a href="#items" data-toggle="tab"><?php echo JText::_('COM_OSMAP_FIELDSET_ITEMS');?></a>
+                </li>
             </ul>
 
             <div class="tab-content">
@@ -122,6 +125,10 @@ $fieldSets = $this->form->getFieldsets('attribs');
                     <?php endforeach; ?>
                 </div>
                 <?php endforeach; ?>
+
+                <div class="tab-pane" id="items">
+                    <div id="items-container"></div>
+                </div>
             </div>
         </div>
     </div>

@@ -138,7 +138,7 @@ class OSMapModelSitemap extends JModelAdmin
     {
         // Initialise variables.
         $pk = (!empty($pk)) ? $pk : (int)$this->getState('sitemap.id');
-        $false = false;
+        $result = false;
 
         // Get a row instance.
         $table = $this->getTable();
@@ -149,7 +149,7 @@ class OSMapModelSitemap extends JModelAdmin
         // Check for a table object error.
         if ($return === false && $table->getError()) {
             $this->setError($table->getError());
-            return $false;
+            return $result;
         }
 
         // Prime required properties.
@@ -180,7 +180,15 @@ class OSMapModelSitemap extends JModelAdmin
     public function getForm($data = array(), $loadData = true)
     {
         // Get the form.
-        $form = $this->loadForm('com_osmap.sitemap', 'sitemap', array('control' => 'jform', 'load_data' => $loadData));
+        $form = $this->loadForm(
+            'com_osmap.sitemap',
+            'sitemap',
+            array(
+                'control' => 'jform',
+                'load_data' => $loadData
+            )
+        );
+
         if (empty($form)) {
             return false;
         }

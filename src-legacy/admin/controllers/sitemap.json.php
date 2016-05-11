@@ -23,41 +23,23 @@
  * along with OSMap. If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Alledia\OSMap\Free\Joomla\Controller;
+
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-use Alledia\Framework\Joomla\Extension\Helper as ExtensionHelper;
-use Alledia\Framework\Joomla\Extension\Licensed as Licensed;
 
-// Alledia Framework
-if (!defined('ALLEDIA_FRAMEWORK_LOADED')) {
-    $allediaFrameworkPath = JPATH_SITE . '/libraries/allediaframework/include.php';
+/**
+ * @package     OSMap
+ * @subpackage  com_osmap
+ * @since       2.0
+ */
+class OSMapControllerSitemap extends Controller\Json
+{
+    public function items()
+    {
+        $sitemapId = JFactory::getApplication()->input->get('sitemap', 0);
 
-    if (file_exists($allediaFrameworkPath)) {
-        require_once $allediaFrameworkPath;
-    } else {
-        JFactory::getApplication()
-            ->enqueueMessage('[OSMap] Alledia framework not found', 'error');
+        var_dump($sitemapId);
     }
 }
-
-// OSMap library
-$osmap = new Licensed('OSMap', 'component');
-
-if (!defined('OSMAP_LICENSE')) {
-    $license = $osmap->isPro() ? 'pro' : 'free';
-
-    define('OSMAP_LICENSE', $license);
-}
-
-$osmap->loadLibrary();
-
-// Register helper class
-JLoader::register('OSMapHelper', dirname(__FILE__) . '/helpers/osmap.php');
-
-// Joomla dependencies
-jimport('joomla.application.component.controller');
-jimport('joomla.form.form');
-
-JTable::addIncludePath(JPATH_COMPONENT . '/tables');
-JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');

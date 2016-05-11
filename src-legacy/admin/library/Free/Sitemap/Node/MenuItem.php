@@ -22,13 +22,54 @@
  * You should have received a copy of the GNU General Public License
  * along with OSMap. If not, see <http://www.gnu.org/licenses/>.
  */
-// no direct access
-defined('_JEXEC') or die('Restricted access');
 
-jimport('legacy.controller.legacy');
+namespace Alledia\OSMap\Free\Sitemap\Node;
 
-require_once JPATH_ADMINISTRATOR . '/components/com_osmap/include.php';
+class MenuItem extends Base
+{
+    /**
+     * The menu item Id
+     *
+     * @var int
+     */
+    public $itemId;
 
-JControllerLegacy::getInstance('OSMap')
-    ->execute(JFactory::getApplication()->input->getCmd('task'))
-    ->redirect();
+    /**
+     * The menu type of this menu item.
+     *
+     * @var string
+     */
+    public $menuType;
+
+    /**
+     * The click behavior of this menu item.
+     * Values:
+     *   0: parent
+     *   1: new window with navigation
+     *   2: new window without navigation
+     *
+     * @var int
+     */
+    public $browserNav;
+
+    /**
+     * Menu entry type
+     *
+     * @var string
+     */
+    public $type;
+
+    /**
+     * True if the menu item is the home
+     *
+     * @var bool
+     */
+    public $isHome = false;
+
+    /**
+     * Menu is SSL?
+     *
+     * @var bool
+     */
+    public $secure = false;
+}

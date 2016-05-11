@@ -23,16 +23,15 @@
  * along with OSMap. If not, see <http://www.gnu.org/licenses/>.
  */
 
-// no direct access
-defined('_JEXEC') or die('Restricted access');
+namespace Alledia\OSMap\Free\Sitemap\Displayer;
 
-// Access check
-if (!JFactory::getUser()->authorise('core.manage', 'com_osmap')) {
-    return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+
+interface Displayable
+{
+    /**
+     * Echo the sitemap content
+     *
+     * @return void
+     */
+    public function display();
 }
-
-require_once 'include.php';
-
-JControllerLegacy::getInstance('OSMap')
-    ->execute(JFactory::getApplication()->input->getCmd('task'))
-    ->redirect();
