@@ -27,7 +27,7 @@
                 publish="true"
                 ordering="first">OSSystem</extension>
 
-            <extension
+            <!-- <extension
                 type="plugin"
                 group="osmap"
                 publish="true"
@@ -67,7 +67,7 @@
                 type="plugin"
                 group="osmap"
                 publish="com_weblinks:*"
-                element="com_weblinks">plg_osmap_com_weblinks</extension>
+                element="com_weblinks">plg_osmap_com_weblinks</extension> -->
         </relatedExtensions>
 
         <include>AllediaFreeDefaultFiles</include>
