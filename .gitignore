@@ -52,3 +52,5 @@ _notes/
 error_log
 config.codekit
 tests/_output/*
+
+tests/_output/*

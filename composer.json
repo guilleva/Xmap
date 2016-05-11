@@ -13,12 +13,21 @@
     },
     "authors": [
         {
+            "name" : "Guillermo Vargas",
+            "email": "guille@vargas.co.cr"
+        },
+        {
             "name" : "Alledia.com",
             "email": "support@alledia.com"
+        },
+        {
+            "name" : "Anderson Grudtner Martins",
+            "email": "anderson@ostraining.com"
         }
     ],
     "require": {
-        "php": ">= 5.3"
+        "php": ">= 5.3",
+        "pimple/pimple": "v3.0.0"
     },
     "require-dev": {
         "codeception/codeception": "~2.0"
