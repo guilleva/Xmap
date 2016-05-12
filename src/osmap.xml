@@ -10,6 +10,8 @@
     <version>3.3.0</version>
     <description>OSMap - the easiest way to create a Joomla sitemap.</description>
 
+    <variant>FREE</variant>
+
     <alledia>
         <element>osmap</element>
         <namespace>OSMap</namespace>
