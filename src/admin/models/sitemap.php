@@ -49,11 +49,17 @@ class OSMapModelSitemap extends JModelAdmin
                 $query = $db->getQuery(true)
                     ->select('*')
                     ->from('#__osmap_sitemap_menus')
-                    ->where('sitemap_id = ' . $db->quote($id));
-                $menus = $db->setQuery($query)->loadAssoc();
+                    ->where('sitemap_id = ' . $db->quote($id))
+                    ->order('ordering');
+                $menus = $db->setQuery($query)->loadObjectList();
 
-                if (!empty($menus)) {
-                    $data->menus = @json_encode($menus);
+                $data->menus = array();
+
+                foreach ($menus as $menu) {
+                    $data->menus[$menu->menutype_id] = array(
+                        'priority'   => $menu->priority,
+                        'changefreq' => $menu->changefreq
+                    );
                 }
             }
         }
