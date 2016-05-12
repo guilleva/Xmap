@@ -18,12 +18,19 @@
             type="text"
             label="COM_OSMAP_SITEMAP_NAME_LABEL"
             description="COM_OSMAP_SITEMAP_NAME_DESC"
+            class="input-xxlarge input-large-text required"
             required="true"/>
+
+        <field
+            name="description"
+            type="editor"
+            label="COM_OSMAP_SITEMAP_DESCRIPTION_LABEL"
+            description="COM_OSMAP_SITEMAP_DESCRIPTION_DESC"
+            filter="safehtml"/>
 
         <field
             name="is_default"
             type="list"
-            class="chzn-color-state"
             label="COM_OSMAP_SITEMAP_IS_DEFAULT_LABEL"
             description="COM_OSMAP_SITEMAP_IS_DEFAULT_DESC">
             <option value="0">JNO</option>
@@ -41,12 +48,32 @@
         </field>
     </fieldset>
 
-    <fieldset name="description">
+    <fieldset
+        name="menus"
+        addfieldpath="/administrator/components/com_osmap/form/fields">
+
         <field
-            name="description"
-            type="editor"
-            label="COM_OSMAP_SITEMAP_DESCRIPTION_LABEL"
-            description="COM_OSMAP_SITEMAP_DESCRIPTION_DESC"
-            filter="safehtml"/>
+            id="menus"
+            name="menus"
+            type="osmapmenus"
+            label="COM_OSMAP_SITEMAP_MENUS_LABEL"
+            description="COM_OSMAP_SITEMAP_MENUS_DESC"
+            class="inputbox"
+            labelclass="control-label"
+            multiple="multiple"
+            array="true"
+            size="5" />
+
+        <field
+            name="menus_priority"
+            type="hidden"/>
+
+        <field
+            name="menus_changefreq"
+            type="hidden"/>
+
+        <field
+            name="menus_ordering"
+            type="hidden"/>
     </fieldset>
 </form>

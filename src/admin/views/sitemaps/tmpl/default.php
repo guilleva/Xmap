@@ -43,20 +43,8 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                         <?php
                         echo JHtml::_(
                             'grid.sort',
-                            'COM_OSMAP_HEADING_PUBLISHED',
+                            'COM_OSMAP_HEADING_STATUS',
                             'sitemap.published',
-                            $listDir,
-                            $listOrder
-                        );
-                        ?>
-                    </th>
-
-                    <th width="1%" style="min-width:55px" class="nowrap center">
-                        <?php
-                        echo JHtml::_(
-                            'grid.sort',
-                            'COM_OSMAP_HEADING_DEFAULT',
-                            'sitemap.is_default',
                             $listDir,
                             $listOrder
                         );

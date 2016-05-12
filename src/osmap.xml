@@ -162,10 +162,6 @@
         <folder>fonts</folder>
     </media>
 
-    <!-- <languages folder="site/language">
-        <language tag="en-GB">en-GB.com_osmap.ini</language>
-    </languages>
- -->
     <administration>
         <menu>COM_OSMAP_TITLE</menu>
         <files folder="admin">
@@ -173,21 +169,16 @@
             <filename>include.php</filename>
             <filename>controller.php</filename>
             <filename>config.xml</filename>
-            <!-- <folder>elements</folder> -->
             <folder>sql</folder>
-            <!-- <folder>helpers</folder> -->
-            <!-- <folder>controllers</folder> -->
+            <folder>controllers</folder>
             <folder>tables</folder>
             <folder>views</folder>
             <folder>models</folder>
             <folder>library</folder>
             <folder>form</folder>
             <folder>language</folder>
+            <folder>helpers</folder>
         </files>
-        <!-- <languages folder="admin/language">
-            <language tag="en-GB">en-GB/en-GB.com_osmap.ini</language>
-            <language tag="en-GB">en-GB/en-GB.com_osmap.sys.ini</language>
-        </languages> -->
     </administration>
 
     <updateservers>

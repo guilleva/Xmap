@@ -22,11 +22,13 @@ ENGINE = InnoDB DEFAULT CHARSET=utf8;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `#__osmap_sitemap_menus` (
   `sitemap_id` INT(11) NOT NULL,
-  `menutype` VARCHAR(100) NOT NULL,
+  `menutype_id` INT(11) NOT NULL,
   `priority` VARCHAR(3) NOT NULL DEFAULT '0.5',
-  `changefreq` VARCHAR(7) NOT NULL DEFAULT 'weekly',
+  `changefreq` ENUM('hourly','daily','weekly','monthly','yearly','never') NOT NULL DEFAULT 'weekly',
+  `ordering` INT NOT NULL DEFAULT 0,
   INDEX `fk_osmap_sitemap_menus_osmap_sitemap_idx` (`sitemap_id` ASC),
-  PRIMARY KEY (`sitemap_id`, `menutype`),
+  PRIMARY KEY (`sitemap_id`, `menutype_id`),
+  INDEX `ordering` (`sitemap_id` ASC, `ordering` ASC),
   CONSTRAINT `fk_osmap_sitemap_menus_osmap_sitemap`
     FOREIGN KEY (`sitemap_id`)
     REFERENCES `#__osmap_sitemap` (`id`)

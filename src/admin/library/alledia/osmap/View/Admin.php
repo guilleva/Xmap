@@ -10,6 +10,7 @@
 namespace Alledia\OSMap\View;
 
 use Alledia\OSMap;
+use Alledia\Framework\Joomla\Extension;
 
 defined('_JEXEC') or die();
 
@@ -180,6 +181,7 @@ class Admin extends Base
      */
     protected function displayFooter()
     {
-        // To be set in subclassess
+        $extension = new Extension\Licensed('OSMap', 'component');
+        echo $extension->getFooterMarkup();
     }
 }

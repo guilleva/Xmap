@@ -8,7 +8,6 @@
  */
 
 use Alledia\OSMap;
-use Alledia\Framework\Joomla\Extension;
 
 defined('_JEXEC') or die();
 
@@ -57,18 +56,5 @@ class OSMapViewSitemaps extends OSMap\View\Admin
         }
 
         parent::setToolBar($addDivider);
-    }
-
-    /**
-     * Display a standard footer on all admin pages
-     *
-     * @return void
-     */
-    protected function displayFooter()
-    {
-        parent::displayFooter();
-
-        $extension = new Extension\Licensed('OSMap', 'component');
-        echo $extension->getFooterMarkup();
     }
 }

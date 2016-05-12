@@ -40,12 +40,7 @@ class OSMapTableSitemap extends JTable
     /**
      * @var string
      */
-    var $attribs = null;
-
-    /**
-     * @var string
-     */
-    var $menus = null;
+    var $params = null;
 
     /**
      * @var string
@@ -65,12 +60,32 @@ class OSMapTableSitemap extends JTable
     /**
      * @var int
      */
-    var $state = 1; //JPUBLISHED's value is 1
+    var $published = 1; //JPUBLISHED's value is 1
 
     /**
      * @var int
      */
     var $links_count = 0;
+
+    /**
+     * @var array
+     */
+    var $menus = array();
+
+    /**
+     * @var array
+     */
+    var $menus_priority = array();
+
+    /**
+     * @var array
+     */
+    var $menus_changefreq = array();
+
+    /**
+     * @var string
+     */
+    var $menus_ordering = '';
 
     /**
      * @param    JDatabase    A database connector object
@@ -91,25 +106,10 @@ class OSMapTableSitemap extends JTable
      */
     public function bind($array, $ignore = '')
     {
-        if (isset($array['attribs']) && is_array($array['attribs'])) {
+        if (isset($array['params']) && is_array($array['params'])) {
             $registry = new JRegistry();
-            $registry->loadArray($array['attribs']);
-            $array['attribs'] = $registry->toString();
-        }
-
-        if (isset($array['selections']) && is_array($array['selections'])) {
-            $selections = array();
-            foreach ($array['selections'] as $i => $menu) {
-                $selections[$menu] = array(
-                    'priority'   => $array['selections_priority'][$i],
-                    'changefreq' => $array['selections_changefreq'][$i],
-                    'ordering'   => $i
-                );
-            }
-
-            $registry = new JRegistry();
-            $registry->loadArray($selections);
-            $array['selections'] = $registry->toString();
+            $registry->loadArray($array['params']);
+            $array['params'] = $registry->toString();
         }
 
         if (isset($array['metadata']) && is_array($array['metadata'])) {
@@ -137,11 +137,6 @@ class OSMapTableSitemap extends JTable
             return false;
         }
 
-        if (trim(str_replace('-', '', $this->alias)) == '') {
-            $datenow = OSMap\Factory::getDate();
-            $this->alias = $datenow->format("Y-m-d-H-i-s");
-        }
-
         return true;
     }
 
@@ -154,13 +149,75 @@ class OSMapTableSitemap extends JTable
      */
     public function store($updateNulls = false)
     {
+        $db   = OSMap\Factory::getDbo();
         $date = JFactory::getDate();
 
         if (!$this->id) {
             $this->created = $date->toSql();
         }
 
-        return parent::store($updateNulls);
+        // Make sure we have only one default sitemap
+        if ((bool)$this->is_default) {
+            // Set as not default any other sitemap
+            $query = $db->getQuery(true)
+                ->update('#__osmap_sitemap')
+                ->set('is_default = 0');
+            $db->setQuery($query)->execute();
+        } else {
+            // Check if we have another default sitemap. If not, force this as default
+            $query = $db->getQuery(true)
+                ->select('COUNT(*)')
+                ->from('#__osmap_sitemap')
+                ->where('is_default = 1')
+                ->where('id <> ' . $db->quote($this->id));
+            $count = (int)$db->setQuery($query)->loadResult();
+
+            if ($count === 0) {
+                // Force as default
+                $this->is_default = 1;
+
+                OSMap\Factory::getApplication()->enqueueMessage('COM_OSMAP_MSG_SITEMAP_FORCED_AS_DEFAULT', 'info');
+            }
+        }
+
+        // Get the menus
+        $menus           = $this->menus;
+        $menusPriority   = $this->menus_priority;
+        $menusChangeFreq = $this->menus_changefreq;
+        $menusOrdering   = explode(',', $this->menus_ordering);
+
+        unset($this->menus, $this->menus_priority, $this->menus_changefreq, $this->menus_ordering);
+
+        // Store the sitemap data
+        $result = parent::store($updateNulls);
+
+        if ($result) {
+            // Remove the current menus
+            $this->removeMenus();
+
+            if (!empty($menus)) {
+                $ordering = 0;
+
+                // Store the menus for this sitemap
+                foreach ($menus as $menuId) {
+                    // Get the index of the selected menu in the ordering array
+                    $index = array_search('menu_' . $menuId, $menusOrdering);
+
+                    $query = $db->getQuery(true)
+                        ->insert('#__osmap_sitemap_menus')
+                        ->set('sitemap_id = ' . $db->quote($this->id))
+                        ->set('menutype_id = ' . $db->quote($menuId))
+                        ->set('priority = ' . $db->quote($menusPriority[$index]))
+                        ->set('changefreq = ' . $db->quote($menusChangeFreq[$index]))
+                        ->set('ordering = ' . $ordering);
+                    $db->setQuery($query)->execute();
+
+                    $ordering++;
+                }
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -222,5 +279,23 @@ class OSMapTableSitemap extends JTable
         $this->setError('');
 
         return true;
+    }
+
+    /**
+     * Remove all the menus for the given sitemap
+     *
+     * @param int $sitemapId
+     *
+     * @return void
+     */
+    public function removeMenus()
+    {
+        if (!empty($this->id)) {
+            $db = OSMap\Factory::getDbo();
+            $query = $db->getQuery(true)
+                ->delete('#__osmap_sitemap_menus')
+                ->where('sitemap_id = ' . $db->quote($this->id));
+            $db->setQuery($query)->execute();
+        }
     }
 }
