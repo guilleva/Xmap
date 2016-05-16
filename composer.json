@@ -9,7 +9,8 @@
         "element-short"  : "osmap",
         "name"           : "OSMap",
         "client"         : "administrator",
-        "package-license": "free"
+        "package-license": "free",
+        "target-platform": "3.*"
     },
     "authors": [
         {
