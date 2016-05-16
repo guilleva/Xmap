@@ -10,6 +10,82 @@
     <version>3.4.0</version>
     <description>OSMap - the easiest way to create a Joomla sitemap.</description>
 
+    <scriptfile>script.installer.php</scriptfile>
+
+    <install folder="admin">
+        <sql>
+            <file driver="mysql" charset="utf8">install/install.utf8.sql</file>
+            <file driver="postgresql" charset="utf8">install/install.postgresql.sql</file>
+        </sql>
+    </install>
+
+    <uninstall>
+        <sql>
+            <file driver="mysql" charset="utf8">install/uninstall.utf8.sql</file>
+            <file driver="postgresql" charset="utf8">install/uninstall.postgresql.sql</file>
+        </sql>
+    </uninstall>
+
+    <files folder="site">
+        <filename>controller.php</filename>
+        <filename>displayer.php</filename>
+        <filename>metadata.xml</filename>
+        <filename>router.php</filename>
+        <filename>include.php</filename>
+        <filename>osmap.php</filename>
+        <folder>assets</folder>
+        <folder>controllers</folder>
+        <folder>helpers</folder>
+        <folder>models</folder>
+        <folder>views</folder>
+    </files>
+
+    <media destination="com_osmap" folder="media">
+        <folder>css</folder>
+        <folder>js</folder>
+        <folder>images</folder>
+        <folder>fonts</folder>
+    </media>
+
+    <languages folder="site/language">
+        <language tag="en-GB">en-GB.com_osmap.ini</language>
+    </languages>
+
+    <administration>
+        <menu img="components/com_osmap/images/osmap-favicon.png">COM_OSMAP_TITLE</menu>
+        <files folder="admin">
+            <filename>osmap.php</filename>
+            <filename>include.php</filename>
+            <filename>controller.php</filename>
+            <filename>config.xml</filename>
+            <filename>abstract.script.installer.php</filename>
+            <filename>LICENSE.txt</filename>
+            <folder>css</folder>
+            <folder>elements</folder>
+            <folder>images</folder>
+            <folder>install</folder>
+            <folder>helpers</folder>
+            <folder>controllers</folder>
+            <folder>tables</folder>
+            <folder>views</folder>
+            <folder>models</folder>
+            <folder>library</folder>
+            <folder>form</folder>
+            <folder>language</folder>
+        </files>
+        <languages folder="admin/language">
+            <language tag="en-GB">en-GB/en-GB.com_osmap.ini</language>
+            <language tag="en-GB">en-GB/en-GB.com_osmap.sys.ini</language>
+        </languages>
+        <images folder="admin">
+            <folder>images</folder>
+        </images>
+    </administration>
+
+    <updateservers>
+        <server type="extension" priority="1" name="OSMap"><![CDATA[http://deploy.ostraining.com/client/update/free/stable/com_osmap]]></server>
+    </updateservers>
+
     <variant>FREE</variant>
 
     <alledia>
@@ -117,80 +193,4 @@
                 element="com_weblinks">plg_xmap_com_weblinks</extension>
         </obsolete>
     </alledia>
-
-    <scriptfile>script.installer.php</scriptfile>
-
-    <install folder="admin">
-        <sql>
-            <file driver="mysql" charset="utf8">install/install.utf8.sql</file>
-            <file driver="postgresql" charset="utf8">install/install.postgresql.sql</file>
-        </sql>
-    </install>
-
-    <uninstall>
-        <sql>
-            <file driver="mysql" charset="utf8">install/uninstall.utf8.sql</file>
-            <file driver="postgresql" charset="utf8">install/uninstall.postgresql.sql</file>
-        </sql>
-    </uninstall>
-
-    <files folder="site">
-        <filename>controller.php</filename>
-        <filename>displayer.php</filename>
-        <filename>metadata.xml</filename>
-        <filename>router.php</filename>
-        <filename>include.php</filename>
-        <filename>osmap.php</filename>
-        <folder>assets</folder>
-        <folder>controllers</folder>
-        <folder>helpers</folder>
-        <folder>models</folder>
-        <folder>views</folder>
-    </files>
-
-    <media destination="com_osmap" folder="media">
-        <folder>css</folder>
-        <folder>js</folder>
-        <folder>images</folder>
-        <folder>fonts</folder>
-    </media>
-
-    <languages folder="site/language">
-        <language tag="en-GB">en-GB.com_osmap.ini</language>
-    </languages>
-
-    <administration>
-        <menu img="components/com_osmap/images/osmap-favicon.png">COM_OSMAP_TITLE</menu>
-        <files folder="admin">
-            <filename>osmap.php</filename>
-            <filename>include.php</filename>
-            <filename>controller.php</filename>
-            <filename>config.xml</filename>
-            <filename>abstract.script.installer.php</filename>
-            <filename>LICENSE.txt</filename>
-            <folder>css</folder>
-            <folder>elements</folder>
-            <folder>images</folder>
-            <folder>install</folder>
-            <folder>helpers</folder>
-            <folder>controllers</folder>
-            <folder>tables</folder>
-            <folder>views</folder>
-            <folder>models</folder>
-            <folder>library</folder>
-            <folder>form</folder>
-            <folder>language</folder>
-        </files>
-        <languages folder="admin/language">
-            <language tag="en-GB">en-GB/en-GB.com_osmap.ini</language>
-            <language tag="en-GB">en-GB/en-GB.com_osmap.sys.ini</language>
-        </languages>
-        <images folder="admin">
-            <folder>images</folder>
-        </images>
-    </administration>
-
-    <updateservers>
-        <server type="extension" priority="1" name="OSMap"><![CDATA[http://deploy.ostraining.com/client/update/free/stable/com_osmap]]></server>
-    </updateservers>
 </extension>
