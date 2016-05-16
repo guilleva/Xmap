@@ -9,6 +9,68 @@
     <authorUrl>http://www.alledia.com</authorUrl>
     <version>4.0.0b1</version>
     <description>COM_OSMAP_DESCRIPTION</description>
+
+    <scriptfile>script.installer.php</scriptfile>
+
+    <install>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/mysql/install.utf8.sql</file>
+        </sql>
+    </install>
+
+    <uninstall>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/mysql/uninstall.utf8.sql</file>
+        </sql>
+    </uninstall>
+
+    <update>
+        <schemas>
+            <schemapath type="mysql">sql/mysql/updates</schemapath>
+        </schemas>
+    </update>
+
+    <files folder="site">
+        <!-- <filename>controller.php</filename> -->
+        <!-- <filename>metadata.xml</filename> -->
+        <!-- <filename>router.php</filename> -->
+        <!-- <filename>osmap.php</filename> -->
+        <!-- <folder>controllers</folder> -->
+        <!-- <folder>helpers</folder> -->
+        <!-- <folder>models</folder> -->
+        <!-- <folder>views</folder> -->
+    </files>
+
+    <media destination="com_osmap" folder="media">
+        <folder>css</folder>
+        <folder>js</folder>
+        <folder>images</folder>
+        <folder>fonts</folder>
+    </media>
+
+    <administration>
+        <menu>COM_OSMAP_TITLE</menu>
+        <files folder="admin">
+            <filename>osmap.php</filename>
+            <filename>include.php</filename>
+            <filename>controller.php</filename>
+            <filename>config.xml</filename>
+            <folder>sql</folder>
+            <folder>controllers</folder>
+            <folder>tables</folder>
+            <folder>views</folder>
+            <folder>models</folder>
+            <folder>library</folder>
+            <folder>form</folder>
+            <folder>language</folder>
+            <folder>helpers</folder>
+        </files>
+    </administration>
+
+    <updateservers>
+        <server type="extension" priority="1" name="OSMap"><![CDATA[http://deploy.ostraining.com/client/update/free/stable/com_osmap]]></server>
+    </updateservers>
+
     <variant>FREE</variant>
 
     <alledia>
@@ -123,65 +185,4 @@
                 element="com_weblinks">plg_xmap_com_weblinks</extension>
         </obsolete>
     </alledia>
-
-    <scriptfile>script.installer.php</scriptfile>
-
-    <install>
-        <sql>
-            <file driver="mysql" charset="utf8">sql/mysql/install.utf8.sql</file>
-        </sql>
-    </install>
-
-    <uninstall>
-        <sql>
-            <file driver="mysql" charset="utf8">sql/mysql/uninstall.utf8.sql</file>
-        </sql>
-    </uninstall>
-
-    <update>
-        <schemas>
-            <schemapath type="mysql">sql/mysql/updates</schemapath>
-        </schemas>
-    </update>
-
-    <files folder="site">
-        <!-- <filename>controller.php</filename> -->
-        <!-- <filename>metadata.xml</filename> -->
-        <!-- <filename>router.php</filename> -->
-        <!-- <filename>osmap.php</filename> -->
-        <!-- <folder>controllers</folder> -->
-        <!-- <folder>helpers</folder> -->
-        <!-- <folder>models</folder> -->
-        <!-- <folder>views</folder> -->
-    </files>
-
-    <media destination="com_osmap" folder="media">
-        <folder>css</folder>
-        <folder>js</folder>
-        <folder>images</folder>
-        <folder>fonts</folder>
-    </media>
-
-    <administration>
-        <menu>COM_OSMAP_TITLE</menu>
-        <files folder="admin">
-            <filename>osmap.php</filename>
-            <filename>include.php</filename>
-            <filename>controller.php</filename>
-            <filename>config.xml</filename>
-            <folder>sql</folder>
-            <folder>controllers</folder>
-            <folder>tables</folder>
-            <folder>views</folder>
-            <folder>models</folder>
-            <folder>library</folder>
-            <folder>form</folder>
-            <folder>language</folder>
-            <folder>helpers</folder>
-        </files>
-    </administration>
-
-    <updateservers>
-        <server type="extension" priority="1" name="OSMap"><![CDATA[http://deploy.ostraining.com/client/update/free/stable/com_osmap]]></server>
-    </updateservers>
 </extension>
