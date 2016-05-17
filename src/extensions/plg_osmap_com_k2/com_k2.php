@@ -280,6 +280,17 @@ class osmap_com_k2
     {
         $sef = ($_REQUEST['option'] == "com_sefservicemap"); // verallgemeinern
 
+        if ($osmap->isNews && ($row->modified ? $row->modified : $row->created) > ($osmap->now - (2 * 86400)))
+        {
+            $node->newsItem = 1;
+            $node->keywords = $row->metakey;
+        }
+        else
+        {
+            $node->newsItem = 0;
+            $node->keywords = "";
+        }
+
         if (!isset($osmap->IDS))
             $osmap->IDS = "";
 

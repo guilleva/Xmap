@@ -55,6 +55,7 @@ class OSMapViewXml extends JViewLegacy
         $app = JFactory::getApplication();
         $this->user = JFactory::getUser();
         $this->isImages = JRequest::getInt('images',0);
+        $isNewsSitemap = JRequest::getInt('news',0);
 
         $model = $this->getModel('Sitemap');
         $this->setModel($model);
@@ -67,6 +68,9 @@ class OSMapViewXml extends JViewLegacy
         $this->item = $this->get('Item');
         $this->state = $this->get('State');
         $this->canEdit = JFactory::getUser()->authorise('core.admin', 'com_osmap');
+
+        // For now, news sitemaps are not editable
+        $this->canEdit = $this->canEdit && !$isNewsSitemap;
 
         if ($layout == 'xsl') {
             return $this->displayXSL($layout);
@@ -120,6 +124,7 @@ class OSMapViewXml extends JViewLegacy
 
         $this->displayer->setJView($this);
 
+        $this->displayer->isNews = $isNewsSitemap;
         $this->displayer->isImages = $this->isImages;
         $this->displayer->canEdit = $this->canEdit;
 

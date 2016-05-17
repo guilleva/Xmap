@@ -30,6 +30,11 @@ class osmap_com_mtree
 {
     static function getTree( $osmap, $parent, &$params )
     {
+        // This component does not provide news content. don't waste time/resources
+        if ($osmap->isNews) {
+            return false;
+        }
+
         $db = JFactory::getDbo();
 
         $catid=0;

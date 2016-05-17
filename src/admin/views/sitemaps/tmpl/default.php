@@ -74,7 +74,7 @@ $version = new JVersion;
                     <th width="5%" class="center">
                         <?php echo JHtml::_('grid.sort', 'OSMAP_HEADING_PUBLISHED', 'a.state', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
                     </th>
-                    <th width="190" class="center">
+                    <th width="250" class="center">
                         <?php echo JText::_('OSMAP_HEADING_SITEMAP_LINKS'); ?>
                     </th>
                     <th width="8%" class="nowrap center">
@@ -119,6 +119,7 @@ $version = new JVersion;
                         &nbsp;&nbsp;
                         <a href="<?php echo $baseUrl. 'index.php?option=com_osmap&amp;view=html&id='.$item->id; ?>" target="_blank" title="<?php echo JText::_('OSMAP_HTML_LINK_TOOLTIP', true); ?>"><?php echo JText::_('OSMAP_HTML_LINK'); ?><span class="icon-out-2"></span></a>
                         &nbsp;&nbsp;
+                        <a href="<?php echo $baseUrl. 'index.php?option=com_osmap&amp;view=xml&tmpl=component&news=1&id='.$item->id; ?>" target="_blank" title="<?php echo JText::_('OSMAP_NEWS_LINK_TOOLTIP', true); ?>"><?php echo JText::_('OSMAP_NEWS_LINK'); ?><span class="icon-out-2"></span></a>
                         <a href="<?php echo $baseUrl. 'index.php?option=com_osmap&amp;view=xml&tmpl=component&images=1&id='.$item->id; ?>" target="_blank" title="<?php echo JText::_('OSMAP_IMAGES_LINK_TOOLTIP', true); ?>"><?php echo JText::_('OSMAP_IMAGES_LINK'); ?><span class="icon-out-2"></span></a>
                     </td>
                     <td class="center">

@@ -159,6 +159,16 @@
             size="5"/>
     </fields>
 
+    <fieldset name="news" label="OSMAP_FIELDSET_NEWS_OPTIONS">
+        <field
+            name="news_publication_name"
+            type="text"
+            default=""
+            labelclass="control-label"
+            label="OSMAP_ATTRIBS_NEWS_PUBLICATION_NAME_LABEL"
+            description="OSMAP_ATTRIBS_NEWS_PUBLICATION_NAME_DESC" />
+    </fieldset>
+
     <fields name="attribs">
         <fieldset name="general" label="OSMAP_FIELDSET_OPTIONS">
 
