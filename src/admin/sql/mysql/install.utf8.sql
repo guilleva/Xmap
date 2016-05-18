@@ -4,9 +4,6 @@
 CREATE TABLE IF NOT EXISTS `#__osmap_sitemap` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NULL,
-  `description` TEXT NULL,
-  `metadesc` TEXT NULL,
-  `metakey` TEXT NULL,
   `params` TEXT NULL,
   `is_default` TINYINT(1) NOT NULL DEFAULT 0,
   `published` TINYINT(1) NOT NULL DEFAULT 1,

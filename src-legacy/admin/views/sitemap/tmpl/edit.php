@@ -54,11 +54,11 @@ $fieldSets = $this->form->getFieldsets('attribs');
         <!-- Begin Content -->
         <div class="span10 form-horizontal">
             <ul class="nav nav-tabs">
-                <li class="active">
-                    <a href="#general" data-toggle="tab"><?php echo JText::_('COM_OSMAP_SITEMAP_DETAILS_FIELDSET');?></a>
-                </li>
                 <li>
                     <a href="#attrib-menus" data-toggle="tab"><?php echo JText::_('COM_OSMAP_FIELDSET_MENUS');?></a>
+                </li>
+                <li class="active">
+                    <a href="#general" data-toggle="tab"><?php echo JText::_('COM_OSMAP_SITEMAP_DETAILS_FIELDSET');?></a>
                 </li>
                 <?php foreach ($fieldSets as $name => $fieldSet) : ?>
                     <li>

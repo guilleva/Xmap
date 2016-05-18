@@ -37,12 +37,9 @@ JHTML::stylesheet('media/com_osmap/css/admin.css');
     </div>
 
     <div class="form-horizontal">
-        <?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
-
-        <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'details', JText::_('COM_OSMAP_SITEMAP_DETAILS', true)); ?>
         <div class="row-fluid">
             <div class="span9">
-                <?php echo $this->form->getControlGroup('description'); ?>
+                <?php echo $this->form->getControlGroup('menus'); ?>
             </div>
 
             <div class="span3">
@@ -56,17 +53,6 @@ JHTML::stylesheet('media/com_osmap/css/admin.css');
                 <?php echo JLayoutHelper::render('joomla.edit.global', $this); ?>
             </div>
         </div>
-        <?php echo JHtml::_('bootstrap.endTab'); ?>
-
-        <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'menus', JText::_('COM_OSMAP_SITEMAP_MENUS', true)); ?>
-        <div class="row-fluid">
-            <div class="span12">
-                <?php echo $this->form->getControlGroup('menus'); ?>
-            </div>
-        </div>
-        <?php echo JHtml::_('bootstrap.endTab'); ?>
-
-        <?php echo JHtml::_('bootstrap.endTabSet'); ?>
     </div>
 
     <input type="hidden" id="menus_ordering" name="jform[menus_ordering]" value=""/>
