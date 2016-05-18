@@ -6,6 +6,8 @@
 * Removed J2.5 legacy code
 * Refined UI
 * Menu selector, click anywhere to select and better visual feedback
+* Sitemap description moved to HTML menu item
+* Removed metadata fields from sitemap. Use the menu's metadata if desired.
 
 
 ## 3.3.0 - Last release with J2.5 support
