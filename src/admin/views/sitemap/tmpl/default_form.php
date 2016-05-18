@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die();
 
-JHTML::stylesheet('media/com_osmap/css/admin.css');
+JHtml::stylesheet('media/com_osmap/css/admin.css');
 ?>
 <script type="text/javascript">
     ;(function(Joomla, document, $) {

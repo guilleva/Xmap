@@ -30,6 +30,8 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 
 JHtml::_('behavior.tooltip');
 
+JHtml::stylesheet('media/com_osmap/css/admin.css');
+
 $function = JRequest::getString('function', 'jSelectSitemap');
 ?>
 <form
@@ -123,7 +125,7 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                     </td>
 
                     <td class="center">
-                        <div class="btn-group" style="font-size: 13px;">
+                        <div class="btn-group osmap-modal-status">
                             <?php if ($item->published) : ?>
                                 <i class="icon-save"></i>
                             <?php else : ?>
@@ -132,7 +134,7 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                             &nbsp;
 
                             <?php if ($item->is_default) : ?>
-                                <i class="icon-star" style="color: #feb123;"></i>
+                                <i class="icon-star"></i>
                             <?php endif; ?>
                         </div>
                     </td>

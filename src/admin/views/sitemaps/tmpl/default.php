@@ -14,6 +14,8 @@ JHtml::addIncludePath(OSMAP_ADMIN . '/helpers/html');
 JHtml::_('bootstrap.tooltip');
 JHtml::_('formbehavior.chosen', 'select');
 
+JHtml::stylesheet('media/com_osmap/css/admin.css');
+
 $baseUrl   = JUri::root();
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDir   = $this->escape($this->state->get('list.direction'));
@@ -110,7 +112,7 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                         </a>
                     </td>
 
-                    <td class="center">
+                    <td class="center osmap-links">
                         <a
                             href="<?php echo $baseUrl. 'index.php?option=com_osmap&amp;view=xml&tmpl=component&id='.$item->id; ?>"
                             target="_blank"
