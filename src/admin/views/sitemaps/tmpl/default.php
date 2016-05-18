@@ -147,9 +147,11 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                             <span class="icon-out-2"></span>
                         </a>
                     </td>
+
                     <td class="center">
                         <?php echo (int) $item->links_count; ?>
                     </td>
+
                     <td class="center">
                         <?php echo (int) $item->id; ?>
                     </td>

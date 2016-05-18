@@ -32,7 +32,6 @@ class OSMapViewSitemaps extends OSMap\View\Admin
 
         // We don't need toolbar or submenus in the modal window
         if ($this->getLayout() !== 'modal') {
-            OSMap\Helper::addSubmenu('sitemaps');
             $this->setToolbar();
         }
 
@@ -42,6 +41,8 @@ class OSMapViewSitemaps extends OSMap\View\Admin
     protected function setToolbar($addDivider = true)
     {
         $this->setTitle('COM_OSMAP_SUBMENU_SITEMAPS');
+
+        OSMap\Helper::addSubmenu('sitemaps');
 
         JToolBarHelper::addNew('sitemap.add');
         JToolBarHelper::custom('sitemap.edit', 'edit.png', 'edit_f2.png', 'JTOOLBAR_EDIT', true);
