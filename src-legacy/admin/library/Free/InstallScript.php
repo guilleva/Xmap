@@ -138,12 +138,13 @@ class InstallScript extends AbstractScript
                 }
 
                 $attribs = new stdClass;
-                $attribs->showintro      = "1";
-                $attribs->show_menutitle = "1";
-                $attribs->exlinks        = "img_blue.gif";
-                $attribs->compress_xml   = "1";
-                $attribs->beautify_xml   = "1";
-                $attribs->debug_osmap    = "0";
+                $attribs->showintro             = "1";
+                $attribs->show_menutitle        = "1";
+                $attribs->exlinks               = "img_blue.gif";
+                $attribs->compress_xml          = "1";
+                $attribs->beautify_xml          = "1";
+                $attribs->debug_osmap           = "0";
+                $attribs->news_publication_name = "";
 
                 $config = JFactory::getConfig();
 

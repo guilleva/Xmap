@@ -80,6 +80,7 @@ class Displayer
         $this->now        = $date->toUnix();
         $this->config     = $config;
         $this->sitemap    = $sitemap;
+        $this->isNews     = false;
         $this->isImages   = false;
         $this->count      = 0;
         $this->canEdit    = false;
@@ -121,8 +122,9 @@ class Displayer
 
     public function getMenuTitle($menutype)
     {
+        $db  = JFactory::getDbo();
+
         //checking to see if menu is in menu_types table if not in modules table
-        $db = JFactory::getDbo();
         $db->setQuery(
             "SELECT * FROM `#__menu_types` WHERE menutype='{$menutype}' "
             . "LIMIT 1"

@@ -56,6 +56,11 @@ class osmap_com_kunena
 
     public static function getTree($osmap, $parent, &$params)
     {
+        // This component does not provide news content. don't waste time/resources
+        if ($osmap->isNews) {
+            return false;
+        }
+
         // Make sure that we can load the kunena api
         if (!static::loadKunenaApi()) {
             return false;

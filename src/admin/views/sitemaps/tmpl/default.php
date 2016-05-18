@@ -62,8 +62,8 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                         ); ?>
                     </th>
 
-                    <th width="200" class="center nowrap">
-                        <?php echo JText::_('COM_OSMAP_HEADING_SITEMAP_LINKS'); ?>
+                    <th width="250" class="center">
+                        <?php echo JText::_('OSMAP_HEADING_SITEMAP_LINKS'); ?>
                     </th>
 
                     <th width="8%" class="nowrap center">
@@ -126,6 +126,15 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                             title="<?php echo JText::_('COM_OSMAP_HTML_LINK_TOOLTIP', true); ?>">
 
                             <?php echo JText::_('COM_OSMAP_HTML_LINK'); ?>
+                            <span class="icon-out-2"></span>
+                        </a>
+                        &nbsp;&nbsp;
+                        <a
+                            href="<?php echo $baseUrl. 'index.php?option=com_osmap&amp;view=xml&tmpl=component&news=1&id='.$item->id; ?>"
+                            target="_blank"
+                            title="<?php echo JText::_('COM_OSMAP_NEWS_LINK_TOOLTIP', true); ?>">
+
+                            <?php echo JText::_('COM_OSMAP_NEWS_LINK'); ?>
                             <span class="icon-out-2"></span>
                         </a>
                         &nbsp;&nbsp;

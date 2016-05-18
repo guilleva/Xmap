@@ -395,6 +395,7 @@ class osmap_com_content
         $items = $db->loadObjectList();
         $curlevel++;
 
+        $node = null;
         if ($curlevel <= $parent->params->get('maxLevel') || $parent->params->get('maxLevel') == -1) {
             if (count($items) > 0) {
                 $osmap->changeLevel(1);
@@ -421,7 +422,7 @@ class osmap_com_content
 
                     // For the google news we should use te publication date instead
                     // the last modification date. See
-                    if (!$item->modified) {
+                    if ($osmap->isNews || !$item->modified) {
                         $item->modified = $item->created;
                     }
 
@@ -448,11 +449,7 @@ class osmap_com_content
         }
 
         // Include Category's content
-        if (!isset($node)) {
-            self::includeCategoryContent($osmap, $parent, $catid, $params, $itemid);
-        } else {
-            self::includeCategoryContent($osmap, $parent, $catid, $params, $itemid, $node);
-        }
+        self::includeCategoryContent($osmap, $parent, $catid, $params, $itemid, $node);
 
         return true;
     }
@@ -488,8 +485,8 @@ class osmap_com_content
             $where[] = 'a.catid='.(int) $catid;
         }
 
-        if (isset($params['max_art_age']) && !empty($params['max_art_age'])) {
-            $days = $params['max_art_age'];
+        if ((isset($params['max_art_age']) && !empty($params['max_art_age'])) || $osmap->isNews) {
+            $days = empty($params['max_art_age']) ? 2 : $params['max_art_age'];
             $where[] = "( a.created >= '"
                 . date('Y-m-d H:i:s', time() - $days * 86400) . "' ) ";
         }
@@ -544,7 +541,14 @@ class osmap_com_content
                 $node->secure      = $parent->secure;
                 // TODO: Should we include category name or metakey here?
                 // $node->keywords = $item->metakey;
+                $node->newsItem    = 1;
                 $node->language    = $item->language;
+
+                // For the google news we should use te publication date instead
+                // the last modification date. See
+                if ($osmap->isNews || !$node->modified) {
+                    $node->modified = $item->created;
+                }
 
                 $node->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
                 //$node->catslug = $item->category_route ? ($catid . ':' . $item->category_route) : $catid;
