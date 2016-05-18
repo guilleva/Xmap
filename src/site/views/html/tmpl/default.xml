@@ -26,12 +26,6 @@
         <fieldset name="basic"
             label="COM_OSMAP_ATTRIBS_SITEMAP_SETTINGS_LABEL">
             <field
-                name="sitemap_description"
-                type="editor"
-                label="COM_OSMAP_SITEMAP_DESCRIPTION_LABEL"
-                description="COM_OSMAP_SITEMAP_DESCRIPTION_DESC" />
-
-            <field
                 name="include_css"
                 type="list"
                 default="0"
@@ -41,6 +35,12 @@
                 <option value="1">JYES</option>
                 <option value="0">JNO</option>
             </field>
+
+            <field
+                name="sitemap_description"
+                type="editor"
+                label="COM_OSMAP_SITEMAP_DESCRIPTION_LABEL"
+                description="COM_OSMAP_SITEMAP_DESCRIPTION_DESC" />
         </fieldset>
     </fields>
 </metadata>
