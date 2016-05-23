@@ -31,6 +31,8 @@ class Script extends AbstractScript
 {
     /**
      * Post installation actions
+     *
+     * @return bool
      */
     public function postFlight($type, $parent)
     {
@@ -42,20 +44,31 @@ class Script extends AbstractScript
         require_once JPATH_ADMINISTRATOR . '/components/com_osmap/include.php';
 
         if ($type === 'update') {
-            // Check if we still descriptions for each sitemap
-            if (in_array('description', $this->getColumnsFromTable('#__osmap_sitemap'))) {
-                Update::moveSitemapDescriptionToHtmlMenus();
+            $this->checkDeprecatedSitemapColumns();
+        }
 
-                // Remove description and metadata from sitemap table
-                $this->dropColumnsIfExists(
-                    '#__osmap_sitemap',
-                    array(
-                        'description',
-                        'metadesc',
-                        'metakey'
-                    )
-                );
-            }
+        return true;
+    }
+
+    /**
+     * Check if we still have old columns in the sitemap table
+     *
+     @return void
+     */
+    protected function checkDeprecatedSitemapColumns()
+    {
+        $deprecatedColumns = array(
+            'description',
+            'metadesc',
+            'metakey'
+        );
+
+        $foundColumns = array_intersect($deprecatedColumns, $this->getColumnsFromTable('#__osmap_sitemap'));
+        if (!empty($foundColumns)) {
+            Update::moveSitemapDescriptionToHtmlMenus();
+
+            // Remove description and metadata from sitemap table
+            $this->dropColumnsIfExists('#__osmap_sitemap', $foundColumns);
         }
     }
 }
