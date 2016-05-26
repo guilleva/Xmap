@@ -30,7 +30,7 @@ class OSMapModelSitemaps extends JModelList
 
         $query = $db->getQuery(true)
             ->select('sitemap.*')
-            ->from('#__osmap_sitemap sitemap');
+            ->from('#__osmap_sitemaps sitemap');
 
         // Filter by publishing state
         $published = $this->getState('filter.published');

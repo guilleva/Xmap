@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die();
 
+use Alledia\OSMap;
+
 jimport('joomla.application.component.view');
 
 
@@ -16,6 +18,21 @@ class OSMapViewXml extends JViewLegacy
 {
     public function display($tpl = null)
     {
+        $container = OSMap\Factory::getContainer();
 
+        $container->input->set('tmpl', 'component');
+
+        try {
+            $id   = $container->input->getInt('id');
+            $type = OSMap\Helper::getSitemapTypeFromInput();
+
+            $this->sitemap = OSMap\Factory::getSitemap($id, $type);
+        } catch (Exception $e) {
+            $this->message = $e->getMessage();
+        }
+
+        parent::display($tpl);
+
+        jexit();
     }
 }

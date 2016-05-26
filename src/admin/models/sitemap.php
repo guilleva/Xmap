@@ -76,4 +76,14 @@ class OSMapModelSitemap extends JModelAdmin
     {
 
     }
+
+    /**
+     * Returns an array with a list of the selected menus
+     *
+     * @return array
+     */
+    public function getSelectedMenus($sitemapId)
+    {
+
+    }
 }

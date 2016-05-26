@@ -45,7 +45,7 @@ class JFormFieldSitemaps extends JFormField
         if ($this->value) {
             $query = $db->getQuery(true)
                 ->select('name')
-                ->from('#__osmap_sitemap')
+                ->from('#__osmap_sitemaps')
                 ->where('id = ' . (int)$this->value);
             $name = $db->setQuery($query)->loadResult();
 

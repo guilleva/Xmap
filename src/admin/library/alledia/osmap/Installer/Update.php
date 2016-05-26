@@ -34,7 +34,7 @@ class Update
                     'description'
                 )
             )
-            ->from('#__osmap_sitemap');
+            ->from('#__osmap_sitemaps');
 
         // The description column can not exist anymore, so let's ignore errors
         $sitemaps = @$db->setQuery($query)->loadObjectList();

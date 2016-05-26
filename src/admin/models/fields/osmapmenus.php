@@ -15,7 +15,7 @@ jimport('joomla.html.html');
 
 require_once JPATH_LIBRARIES . '/joomla/form/fields/list.php';
 
-JHtml::addIncludePath(OSMAP_ADMIN . '/helpers/html');
+JHtml::addIncludePath(OSMAP_ADMIN_PATH . '/helpers/html');
 
 /**
  * Menus Form Field class for the OSMap Component

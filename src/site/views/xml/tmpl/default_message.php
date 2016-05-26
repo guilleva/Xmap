@@ -8,15 +8,5 @@
  */
 
 defined('_JEXEC') or die();
-
-header('Content-type: text/xml; charset=utf-8');
-
-echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-
-if (!empty($this->message)) {
-    echo $this->loadTemplate('message');
-}
-
-if (empty($this->message)) {
-    echo $this->loadTemplate('sitemap');
-}
+?>
+<message><?php echo $this->message; ?></message>

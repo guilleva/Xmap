@@ -43,22 +43,32 @@ JHtml::stylesheet('media/com_osmap/css/admin.css');
     </div>
 
     <div class="form-horizontal">
-        <div class="row-fluid">
-            <div class="span9">
-                <?php echo $this->form->getControlGroup('menus'); ?>
-            </div>
+        <?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
 
-            <div class="span3">
-                <?php
-                // Set main fields.
-                $this->fields = array(
-                    'published',
-                    'is_default'
-                );
-                ?>
-                <?php echo JLayoutHelper::render('joomla.edit.global', $this); ?>
+        <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'details', JText::_('COM_OSMAP_SITEMAP_DETAILS', true)); ?>
+            <div class="row-fluid">
+                <div class="span9">
+                    <?php echo $this->form->getControlGroup('menus'); ?>
+                </div>
+
+                <div class="span3">
+                    <?php
+                    // Set main fields.
+                    $this->fields = array(
+                        'published',
+                        'is_default'
+                    );
+                    ?>
+                    <?php echo JLayoutHelper::render('joomla.edit.global', $this); ?>
+                </div>
             </div>
-        </div>
+        <?php echo JHtml::_('bootstrap.endTab'); ?>
+
+        <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'items', JText::_('COM_OSMAP_SITEMAP_ITEMS', true)); ?>
+        <?php echo $this->loadTemplate('items'); ?>
+        <?php echo JHtml::_('bootstrap.endTab'); ?>
+
+        <?php echo JHtml::_('bootstrap.endTabSet'); ?>
     </div>
 
     <input type="hidden" id="menus_ordering" name="jform[menus_ordering]" value=""/>

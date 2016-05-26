@@ -63,12 +63,12 @@ class Script extends AbstractScript
             'metakey'
         );
 
-        $foundColumns = array_intersect($deprecatedColumns, $this->getColumnsFromTable('#__osmap_sitemap'));
+        $foundColumns = array_intersect($deprecatedColumns, $this->getColumnsFromTable('#__osmap_sitemaps'));
         if (!empty($foundColumns)) {
             Update::moveSitemapDescriptionToHtmlMenus();
 
             // Remove description and metadata from sitemap table
-            $this->dropColumnsIfExists('#__osmap_sitemap', $foundColumns);
+            $this->dropColumnsIfExists('#__osmap_sitemaps', $foundColumns);
         }
     }
 }

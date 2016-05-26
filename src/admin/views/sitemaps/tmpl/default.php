@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die();
 
-JHtml::addIncludePath(OSMAP_ADMIN . '/helpers/html');
+JHtml::addIncludePath(OSMAP_ADMIN_PATH . '/helpers/html');
 
 JHtml::_('bootstrap.tooltip');
 JHtml::_('formbehavior.chosen', 'select');

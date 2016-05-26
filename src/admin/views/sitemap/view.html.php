@@ -33,8 +33,8 @@ class OSMapViewSitemap extends OSMap\View\Admin
 
         // Convert dates from UTC
         $offset = $app->getCfg('offset');
-        if (intval($this->item->created)) {
-            $this->item->created = JHtml::date($this->item->created, '%Y-%m-%d %H-%M-%S', $offset);
+        if (intval($this->item->created_on)) {
+            $this->item->created_on = JHtml::date($this->item->created_on, '%Y-%m-%d %H-%M-%S', $offset);
         }
 
         $this->setToolBar();

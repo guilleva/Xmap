@@ -9,13 +9,15 @@
 
 namespace Alledia\OSMap;
 
+use Alledia\Framework;
+
 defined('_JEXEC') or die();
 
 
 /**
  * OSMap Factory
  */
-class Factory extends \JFactory
+class Factory extends Framework\Factory
 {
     /**
      * @var Service
@@ -42,11 +44,41 @@ class Factory extends \JFactory
                     'configuration' => new Configuration($config)
                 )
             );
-            $container->register(new Services);
+
+            // Load the Service class according to the current license
+            $serviceClass = '\\Alledia\\OSMap\\Services\\' . ucfirst(OSMAP_LICENSE);
+
+            $container->register(new $serviceClass);
 
             static::$container = $container;
         }
 
         return static::$container;
+    }
+
+    /**
+     * Returns an instance of the Sitemap class according the given id and
+     * sitemap type.
+     *
+     * @param int    $id
+     * @param string $type
+     *
+     * @return mixed
+     */
+    public static function getSitemap($id, $type)
+    {
+        if ($type === 'standard') {
+            return new Sitemap\Standard($id);
+        }
+
+        if ($type === 'images') {
+            return new Sitemap\Images($id);
+        }
+
+        if ($type === 'news') {
+            return new Sitemap\News($id);
+        }
+
+        return false;
     }
 }

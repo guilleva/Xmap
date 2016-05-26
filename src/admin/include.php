@@ -25,18 +25,24 @@ if (!defined('ALLEDIA_FRAMEWORK_LOADED')) {
 
 if (!defined('OSMAP_LOADED')) {
     define('OSMAP_LOADED', 1);
-    define('OSMAP_ADMIN', JPATH_ADMINISTRATOR . '/components/com_osmap');
-    define('OSMAP_SITE', JPATH_SITE . '/components/com_osmap');
-    define('OSMAP_LIBRARY', OSMAP_ADMIN . '/library');
+    define('OSMAP_ADMIN_PATH', JPATH_ADMINISTRATOR . '/components/com_osmap');
+    define('OSMAP_SITE_PATH', JPATH_SITE . '/components/com_osmap');
+    define('OSMAP_LIBRARY_PATH', OSMAP_ADMIN_PATH . '/library');
+
+    // Define the constant for the license
+    define(
+        'OSMAP_LICENSE',
+        file_exists(OSMAP_LIBRARY_PATH . '/alledia/osmap/Services/Pro.php') ? 'pro' : 'free'
+    );
 
     // Setup autoload libraries
-    Framework\AutoLoader::register('Alledia\OSMap', OSMAP_LIBRARY . '/alledia/osmap');
-    Framework\AutoLoader::register('Pimple', OSMAP_LIBRARY . '/pimple/pimple');
+    Framework\AutoLoader::register('Alledia\OSMap', OSMAP_LIBRARY_PATH . '/alledia/osmap');
+    Framework\AutoLoader::register('Pimple', OSMAP_LIBRARY_PATH . '/pimple/pimple');
 
     // Load OSMap Plugins
     JPluginHelper::importPlugin('osmap');
 
-    JTable::addIncludePath(OSMAP_ADMIN . '/tables');
-    JForm::addFieldPath(OSMAP_ADMIN . '/fields');
-    JForm::addFormPath(OSMAP_ADMIN . '/form');
+    JTable::addIncludePath(OSMAP_ADMIN_PATH . '/tables');
+    JForm::addFieldPath(OSMAP_ADMIN_PATH . '/fields');
+    JForm::addFormPath(OSMAP_ADMIN_PATH . '/form');
 }

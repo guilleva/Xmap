@@ -58,4 +58,28 @@ abstract class Helper
             }
         }
     }
+
+    /**
+     * Returns the sitemap type checking the input.
+     * The expected types:
+     *   - standard
+     *   - images
+     *   - news
+     *
+     * @return string
+     */
+    public static function getSitemapTypeFromInput()
+    {
+        $container = Factory::getContainer();
+
+        if ((bool)$container->input->getStr('images', 0)) {
+            return 'images';
+        }
+
+        if ((bool)$container->input->getStr('news', 0)) {
+            return 'news';
+        }
+
+        return 'standard';
+    }
 }

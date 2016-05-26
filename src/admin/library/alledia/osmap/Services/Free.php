@@ -7,10 +7,11 @@
  * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
-namespace Alledia\OSMap;
+namespace Alledia\OSMap\Services;
 
 use Pimple\Container as Pimple;
 use Pimple\ServiceProviderInterface;
+use Alledia\OSMap;
 
 defined('_JEXEC') or die();
 
@@ -28,7 +29,7 @@ defined('_JEXEC') or die();
  *
  * @package OSMap
  */
-class Services implements ServiceProviderInterface
+class Free implements ServiceProviderInterface
 {
     /**
      * Registers services on the given container.
@@ -40,13 +41,21 @@ class Services implements ServiceProviderInterface
      */
     public function register(Pimple $pimple)
     {
-        $pimple['license'] = function (Container $c) {
-            return file_exists(OSMAP_LIBRARY . '/alledia/osmap/Pro') ? 'pro' : 'free';
+        // Events class
+        $pimple['events'] = function (OSMap\Container $c) {
+            return \JEventDispatcher::getInstance();
         };
 
-        // Events class
-        $pimple['events'] = function (Container $c) {
-            return \JEventDispatcher::getInstance();
+        $pimple['app'] = function (OSMap\Container $c) {
+            return OSMap\Factory::getApplication();
+        };
+
+        $pimple['db'] = function (OSMap\Container $c) {
+            return OSMap\Factory::getDbo();
+        };
+
+        $pimple['input'] = function (OSMap\Container $c) {
+            return OSMap\Factory::getApplication()->input;
         };
     }
 }

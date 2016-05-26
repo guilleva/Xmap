@@ -7,16 +7,16 @@
  * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
+namespace Alledia\OSMap\Sitemap;
+
+use Alledia\OSMap;
+
 defined('_JEXEC') or die();
 
-header('Content-type: text/xml; charset=utf-8');
-
-echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-
-if (!empty($this->message)) {
-    echo $this->loadTemplate('message');
-}
-
-if (empty($this->message)) {
-    echo $this->loadTemplate('sitemap');
+class Images extends Standard
+{
+    /**
+     * @var string
+     */
+    protected $type = 'images';
 }

@@ -20,79 +20,64 @@ class OSMapTableSitemap extends JTable
     /**
      * @var int Primary key
      */
-    var $id = null;
+    public $id = null;
 
     /**
      * @var string
      */
-    var $name = null;
+    public $name = null;
 
     /**
      * @var string
      */
-    var $description = null;
+    public $params = null;
 
     /**
      * @var string
      */
-    var $metakey = null;
-
-    /**
-     * @var string
-     */
-    var $params = null;
-
-    /**
-     * @var string
-     */
-    var $created = null;
-
-    /**
-     * @var string
-     */
-    var $metadesc = null;
+    public $created_on = null;
 
     /**
      * @var int
      */
-    var $is_default = 0;
+    public $is_default = 0;
 
     /**
      * @var int
      */
-    var $published = 1; //JPUBLISHED's value is 1
+    public $published = 1; //JPUBLISHED's value is 1
 
     /**
      * @var int
      */
-    var $links_count = 0;
+    public $links_count = 0;
 
     /**
      * @var array
      */
-    var $menus = array();
+    public $menus = array();
 
     /**
      * @var array
      */
-    var $menus_priority = array();
+    public $menus_priority = array();
 
     /**
      * @var array
      */
-    var $menus_changefreq = array();
+    public $menus_changefreq = array();
 
     /**
      * @var string
      */
-    var $menus_ordering = '';
+    public $menus_ordering = '';
 
     /**
      * @param    JDatabase    A database connector object
      */
     public function __construct(&$db)
     {
-        parent::__construct('#__osmap_sitemap', 'id', $db);
+        parent::__construct('#__osmap_sitemaps', 'id', $db);
     }
 
     /**
@@ -153,21 +138,21 @@ class OSMapTableSitemap extends JTable
         $date = JFactory::getDate();
 
         if (!$this->id) {
-            $this->created = $date->toSql();
+            $this->created_on = $date->toSql();
         }
 
         // Make sure we have only one default sitemap
         if ((bool)$this->is_default) {
             // Set as not default any other sitemap
             $query = $db->getQuery(true)
-                ->update('#__osmap_sitemap')
+                ->update('#__osmap_sitemaps')
                 ->set('is_default = 0');
             $db->setQuery($query)->execute();
         } else {
             // Check if we have another default sitemap. If not, force this as default
             $query = $db->getQuery(true)
                 ->select('COUNT(*)')
-                ->from('#__osmap_sitemap')
+                ->from('#__osmap_sitemaps')
                 ->where('is_default = 1')
                 ->where('id <> ' . $db->quote($this->id));
             $count = (int)$db->setQuery($query)->loadResult();
@@ -258,7 +243,7 @@ class OSMapTableSitemap extends JTable
 
         // Update the publishing state for rows with the given primary keys.
         $query =  $this->_db->getQuery(true)
-            ->update($this->_db->quoteName('#__osmap_sitemap'))
+            ->update($this->_db->quoteName('#__osmap_sitemaps'))
             ->set($this->_db->quoteName('state').' = '. (int) $state)
             ->where($where);
 
