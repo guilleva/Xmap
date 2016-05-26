@@ -7,11 +7,17 @@
  * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
+use Alledia\OSMap;
+
 defined('_JEXEC') or die();
 
 jimport('legacy.controller.legacy');
 
 require_once JPATH_ADMINISTRATOR . '/components/com_osmap/include.php';
+
+// Load the frontend language
+$lang = OSMap\Factory::getLanguage();
+$lang->load('com_osmap', OSMAP_SITE_PATH);
 
 $task = JFactory::getApplication()->input->getCmd('task');
 
