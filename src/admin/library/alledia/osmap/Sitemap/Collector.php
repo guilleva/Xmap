@@ -34,15 +34,17 @@ class Collector
     /**
      * Collects sitemap items based on the selected menus. This is the main
      * method of this class. For each found item, it will call the given
-     * callback, so it can manipulate the data in many ways.
+     * callback, so it can manipulate the data in many ways. It returns the
+     * total of found items.
      *
      * @param callable $callback
      *
-     * @return array
+     * @return int
      */
     public function fetch($callback)
     {
         $menus = $this->getSitemapMenus();
+        $count = 0;
 
         if (!empty($menus)) {
             foreach ($menus as $menu) {
@@ -50,18 +52,22 @@ class Collector
 
                 foreach ($items as $item) {
                     // Set additional attributes to the item
-                    $this->setAdditionalAttributesToItem($item);
+                    $this->prepareItemAttributes($item);
 
                     // Check if the item was set to be ignored
                     if ((bool)$item->ignore) {
                         continue;
                     }
 
+                    ++$count;
+
                     // Call the given callback function
                     $callback($item);
                 }
             }
         }
+
+        return $count;
     }
 
     /**
@@ -175,7 +181,7 @@ class Collector
      *
      * @param object
      */
-    protected function setAdditionalAttributesToItem(&$item)
+    protected function prepareItemAttributes(&$item)
     {
         $db = OSMap\Factory::getContainer()->db;
 

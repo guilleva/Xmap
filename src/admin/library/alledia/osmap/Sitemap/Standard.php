@@ -105,6 +105,22 @@ class Standard implements SitemapInterface
      */
     public function traverse($callback)
     {
-        $this->collector->fetch($callback);
+        $count = $this->collector->fetch($callback);
+
+        $this->updateLinksCount($count);
+    }
+
+    /**
+     * Updates the count of links in the database
+     */
+    protected function updateLinksCount($count)
+    {
+        $db = OSMap\Factory::getContainer()->db;
+
+        $query = $db->getQuery(true)
+            ->update('#__osmap_sitemaps')
+            ->set('links_count = ' . (int)$count)
+            ->where('id = ' . $db->quote($this->id));
+        $db->setQuery($query)->execute();
     }
 }
