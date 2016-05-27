@@ -9,5 +9,6 @@
 * Removed metadata fields from sitemap. Use the menu's metadata if needed
 * Sitemap edit form moved to the sitemap form in the admin
 * Added database cache for sitemap items
+* The free version only support the core content now. The 3rd party plugins were moved to the Pro.
 
 ## 3.3.0 - Last release with J2.5 support

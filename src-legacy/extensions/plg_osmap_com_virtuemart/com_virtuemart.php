@@ -29,9 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 class osmap_com_virtuemart
 {
     protected static $categoryModel;
-
     protected static $productModel;
-
     protected static $initialized = false;
 
     public static $urlBase;
@@ -102,6 +100,7 @@ class osmap_com_virtuemart
         $params['include_product_images']    = (JArrayHelper::getValue($params, 'include_product_images', 1)
             && $osmap->view == 'xml');
         $params['product_image_license_url'] = trim(JArrayHelper::getValue($params, 'product_image_license_url', ''));
+        $params['product_image_limit']       = (int)JArrayHelper::getValue($params, 'product_image_limit', 1);
 
         $priority   = JArrayHelper::getValue($params, 'cat_priority', $parent->priority);
         $changefreq = JArrayHelper::getValue($params, 'cat_changefreq', $parent->changefreq);
@@ -149,7 +148,6 @@ class osmap_com_virtuemart
 
         $cache = JFactory::getCache('com_virtuemart', 'callback');
         $cache->setCaching(true);
-
         $children = $cache->call(array($m, 'getChildCategoryList'), $vendorId, $catId);
 
         if (!empty($children)) {
@@ -180,7 +178,7 @@ class osmap_com_virtuemart
             $products = self::$productModel->getProductsInCategory($catId);
 
             if ($params['include_product_images']) {
-                self::$categoryModel->addImages($products, 1);
+                self::$categoryModel->addImages($products, $params['product_image_limit']);
             }
 
             $osmap->changeLevel(1);
