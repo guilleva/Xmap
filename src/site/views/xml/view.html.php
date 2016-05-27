@@ -20,19 +20,23 @@ class OSMapViewXml extends JViewLegacy
     {
         $container = OSMap\Factory::getContainer();
 
+        // Help to show a clean XML without other content
         $container->input->set('tmpl', 'component');
 
         try {
-            $id   = $container->input->getInt('id');
-            $type = OSMap\Helper::getSitemapTypeFromInput();
+            $id = $container->input->getInt('id');
 
-            $this->sitemap = OSMap\Factory::getSitemap($id, $type);
+            $this->type = OSMap\Helper::getSitemapTypeFromInput();
+
+            // Load the sitemap instance
+            $this->sitemap = OSMap\Factory::getSitemap($id, $this->type);
         } catch (Exception $e) {
             $this->message = $e->getMessage();
         }
 
         parent::display($tpl);
 
+        // Help to show a clean XML without other content
         jexit();
     }
 }

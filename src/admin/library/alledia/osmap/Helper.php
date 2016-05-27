@@ -9,9 +9,15 @@
 
 namespace Alledia\OSMap;
 
+use Alledia\Framework;
+
+defined('_JEXEC') or die();
+
 
 abstract class Helper
 {
+    protected static $plugins = array();
+
     /**
      * Build the submenu in admin if needed. Triggers the
      * onAdminSubmenu event for component addons to attach
@@ -70,16 +76,76 @@ abstract class Helper
      */
     public static function getSitemapTypeFromInput()
     {
-        $container = Factory::getContainer();
+        $input = Factory::getContainer()->input;
 
-        if ((bool)$container->input->getStr('images', 0)) {
+        if ((bool)$input->getStr('images', 0)) {
             return 'images';
         }
 
-        if ((bool)$container->input->getStr('news', 0)) {
+        if ((bool)$input->getStr('news', 0)) {
             return 'news';
         }
 
         return 'standard';
+    }
+
+    /**
+     * Gets the plugin according to the given option/component
+     *
+     * @param string $option
+     *
+     * @return object
+     */
+    public static function getPluginForComponent($option)
+    {
+        if (isset(static::$plugins[$option])) {
+            return static::$plugins[$option];
+        }
+
+        $db = Factory::getContainer()->db;
+
+        $query = $db->getQuery(true)
+            ->select(
+                array(
+                    'folder',
+                    'params'
+                )
+            )
+            ->from('#__extensions')
+            ->where('type = ' . $db->quote('plugin'))
+            ->where('folder IN (' . $db->quote('osmap') . ',' . $db->quote('xmap') . ')')
+            ->where('element = ' . $db->quote($option))
+            ->where('enabled = 1');
+
+        $plugin = $db->setQuery($query)->loadObject();
+
+        if (!empty($plugin)) {
+            jimport('joomla.filesystem.file');
+
+            // Check if the file exists
+            $path = JPATH_PLUGINS . '/' . $plugin->folder . '/' . $option . '/' . $option . '.php';
+
+            if (\JFile::exists($path)) {
+                $plugin->className = $plugin->folder . '_' . $option;
+
+                $plugin->params = new \JRegistry($plugin->params);
+
+                if (!class_exists($plugin->className)) {
+                    require($path);
+
+                    if (method_exists($plugin->className, 'getInstance')) {
+                        $className = $plugin->className;
+
+                        $className::getInstance();
+                    }
+                }
+
+                static::$plugins[$option] = $plugin;
+
+                return $plugin;
+            }
+        }
+
+        return false;
     }
 }

@@ -13,42 +13,42 @@ use Alledia\OSMap;
 
 defined('_JEXEC') or die();
 
-class Standard
+class Standard implements SitemapInterface
 {
     /**
      * @var int
      */
-    protected $id;
+    public $id;
 
     /**
      * @var string
      */
-    protected $name;
+    public $name;
 
     /**
      * @var \JRegistry
      */
-    protected $params;
+    public $params;
 
     /**
      * @var bool
      */
-    protected $isDefault = false;
+    public $isDefault = false;
 
     /**
      * @var bool
      */
-    protected $isPublished = true;
+    public $isPublished = true;
 
     /**
      * @var string
      */
-    protected $createdOn;
+    public $createdOn;
 
     /**
      * @var int
      */
-    protected $linkCount = 0;
+    public $linkCount = 0;
 
     /**
      * @var string
@@ -56,9 +56,16 @@ class Standard
     protected $type = 'standard';
 
     /**
+     * @var Collector
+     */
+    protected $collector;
+
+    /**
      * The constructor
      *
      * @param int $id
+     *
+     * @return void
      */
     public function __construct($id)
     {
@@ -83,5 +90,21 @@ class Standard
 
         $this->params = new \JRegistry;
         $this->params->loadString($row->params);
+
+        // Initiate the collector
+        $this->collector = new Collector($this);
+    }
+
+    /**
+     * Traverse the sitemap items recursively and call the given callback,
+     * passing each node as parameter.
+     *
+     * @param callable $callback
+     *
+     * @return void
+     */
+    public function traverse($callback)
+    {
+        $this->collector->fetch($callback);
     }
 }

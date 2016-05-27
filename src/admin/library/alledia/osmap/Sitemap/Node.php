@@ -7,8 +7,21 @@
  * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
-defined('_JEXEC') or die();
-?>
-<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+namespace Alledia\OSMap\Sitemap;
 
-</urlset>
+use Alledia\OSMap;
+
+defined('_JEXEC') or die();
+
+class Node
+{
+    /**
+     * @var string
+     */
+    public $title;
+
+    /**
+     * @var string
+     */
+    public $link;
+}

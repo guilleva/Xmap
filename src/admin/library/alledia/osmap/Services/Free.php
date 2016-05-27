@@ -57,5 +57,13 @@ class Free implements ServiceProviderInterface
         $pimple['input'] = function (OSMap\Container $c) {
             return OSMap\Factory::getApplication()->input;
         };
+
+        $pimple['user'] = function (OSMap\Container $c) {
+            return OSMap\Factory::getUser();
+        };
+
+        $pimple['language'] = function (OSMap\Container $c) {
+            return OSMap\Factory::getLanguage();
+        };
     }
 }

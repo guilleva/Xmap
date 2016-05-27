@@ -13,10 +13,12 @@ header('Content-type: text/xml; charset=utf-8');
 
 echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 
+// Only display the message in the XML
 if (!empty($this->message)) {
     echo $this->loadTemplate('message');
 }
 
+// Load the template of sitemap according to the requested type
 if (empty($this->message)) {
-    echo $this->loadTemplate('sitemap');
+    echo $this->loadTemplate($this->type);
 }
