@@ -36,7 +36,7 @@ class OSMapViewXml extends JViewLegacy
 
         parent::display($tpl);
 
-        // Help to show a clean XML without other content
+        // Force to show a clean XML without other content
         jexit();
     }
 }
