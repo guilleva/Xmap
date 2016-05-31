@@ -71,7 +71,7 @@ class Collector
                     $this->checkDuplicatedUIDToIgnore($item);
 
                     // Call the plugins to prepare the item
-                    $this->callPluginsPreparingThemItem($item);
+                    $this->callPluginsPreparingTheItem($item);
 
                     // @todo: callplugins: getTree
 
@@ -227,7 +227,7 @@ class Collector
      *
      * @return void
      */
-    protected function callPluginsPreparingThemItem($item)
+    protected function callPluginsPreparingTheItem($item)
     {
         // Call the OSMap and XMap legacy plugins, if exists
         $plugin = OSMap\Helper::getPluginForComponent($item->option);
