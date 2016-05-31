@@ -114,8 +114,8 @@ class Item extends \JObject
 
         if ($this->isInternal) {
             $this->routeLink();
-            $this->sanitizeLink();
             $this->convertToFullLink();
+            $this->sanitizeLink();
         }
 
         /*
@@ -266,10 +266,13 @@ class Item extends \JObject
      */
     protected function convertToFullLink()
     {
-        // Make sure the link has the base uri
-        $baseUri = \JUri::base();
-        if (!substr_count($this->link, $baseUri)) {
-            $this->link = $baseUri . $this->link;
+        if (!preg_match('#^[^:]+://#', $this->link)) {
+            // Make sure the link has the base uri
+            $baseUri = \JUri::base();
+            if (!substr_count($this->link, $baseUri)) {
+                $this->link = $baseUri . $this->link;
+            }
         }
+
     }
 }
