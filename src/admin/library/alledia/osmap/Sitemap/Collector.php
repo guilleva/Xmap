@@ -24,6 +24,11 @@ class Collector
     protected $sitemap;
 
     /**
+     * @var array
+     */
+    protected $uidList = array();
+
+    /**
      * The constructor
      */
     public function __construct($sitemap)
@@ -43,6 +48,9 @@ class Collector
      */
     public function fetch($callback)
     {
+        $baseMemory = memory_get_usage();
+        $baseTime   = microtime();
+
         $menus = $this->getSitemapMenus();
         $count = 0;
 
@@ -51,8 +59,21 @@ class Collector
                 $items = $this->getMenuItems($menu);
 
                 foreach ($items as $item) {
-                    // Set additional attributes to the item
-                    $this->prepareItemAttributes($item);
+                    if ($this->itemIsBlackListed($item)) {
+                        continue;
+                    }
+
+                    // Converts to an Item instance, setting internal attributes
+                    $item = new Item($item, $this->sitemap);
+                    // var_dump($item);
+
+                    // Verify if the item's link was already listed
+                    $this->checkDuplicatedUIDToIgnore($item);
+
+                    // Call the plugins to prepare the item
+                    $this->callPluginsPreparingThemItem($item);
+
+                    // @todo: callplugins: getTree
 
                     // Check if the item was set to be ignored
                     if ((bool)$item->ignore) {
@@ -63,9 +84,15 @@ class Collector
 
                     // Call the given callback function
                     $callback($item);
+
+                    // Make sure the memory is cleaned
+                    $item = null;
                 }
             }
         }
+
+        echo sprintf('<m>%s</m>', memory_get_usage() - $baseMemory);
+        echo sprintf('<t>%s</t>', microtime() - $baseTime);
 
         return $count;
     }
@@ -111,8 +138,11 @@ class Collector
     }
 
     /**
-     * Get the menu items as a tree. Each menu item has the following
-     * attributes:
+     * Get the menu items as a tree
+     *
+     * @param object $menu
+     *
+     * @return array
      */
     protected function getMenuItems($menu)
     {
@@ -130,12 +160,12 @@ class Collector
                     'm.alias',
                     'm.path',
                     'm.level',
-                    'm.link',
                     'm.type',
-                    'm.params',
                     'm.home',
+                    'm.params',
                     'm.parent_id',
                     'm.browserNav',
+                    'm.link',
                     // Flag that allows to children classes choose to ignore items
                     '0 AS ' . $db->quoteName('ignore')
                 )
@@ -154,7 +184,7 @@ class Collector
             $query->where('m.language IN (' . $db->quote($lang->getTag()) . ',' . $db->quote('*') . ')');
         }
 
-        $items = $db->setQuery($query)->loadObjectList();
+        $items = $db->setQuery($query)->loadAssocList();
 
         // Check for a database error
         if ($db->getErrorNum()) {
@@ -165,95 +195,74 @@ class Collector
     }
 
     /**
-     * Gets the UID for the given menu item.
+     * Checks if the item's uid was already registered. If positive, set the
+     * item to be ignored and return true. If negative, register the item and
+     * return false.
      *
-     * @param object
+     * @param object $item
      *
-     * @return string
+     * @return bool
      */
-    protected function getUIDForItem($item)
+    protected function checkDuplicatedUIDToIgnore($item)
     {
-        return $this->sitemap->id . '#itemid' . $item->id;
+        // If is already set, interrupt the flux and ignore the item
+        if (isset($this->uidList[$item->uid])) {
+            $item->set('ignore', true);
+
+            return true;
+        }
+
+        // Not set, so let's register
+        $this->uidList[$item->uid] = 1;
+
+        return false;
     }
 
     /**
-     * Sets additional attributes to the item
+     * Calls the respective OSMap and XMap plugin, according to the item's
+     * component/option. If the plugin's method returns false, it will set
+     * the item's ignore attribute to true.
      *
-     * @param object
-     */
-    protected function prepareItemAttributes(&$item)
-    {
-        $db = OSMap\Factory::getContainer()->db;
-
-        // Set the UID for the item, to avoid duplication
-        $item->uid        = $this->getUIDForItem($item);
-        $item->params     = new \JRegistry($item->params);
-        $item->priority   = null;
-        $item->changefreq = null;
-        $item->modifiedOn = null;
-
-        // Check if its link has an option/component
-        $item->option = null;
-        if (preg_match('#^/?index.php.*option=(com_[^&]+)#', $item->link, $matches)) {
-            $item->option = $matches[1];
-
-            // Merge the component options
-            $componentParams = clone(\JComponentHelper::getParams($item->option));
-            $componentParams->merge($item->params);
-            $item->params =& $componentParams;
-
-            // Call the OSMap and XMap legacy plugins, if exists
-            $plugin = OSMap\Helper::getPluginForComponent($item->option);
-            if (!empty($plugin)) {
-                $result = Framework\Helper::callMethod(
-                    $plugin->className,
-                    'prepareMenuItem',
-                    array(
-                        &$item,
-                        &$plugin->params
-                    )
-                );
-
-                if ($result === false) {
-                    $item->ignore = true;
-                }
-            }
-        }
-
-        // Set the last modification date
-        $item->modifiedOn = null;
-
-        if (isset($item->modified) && $item->modified != false && $item->modified != $db->getNullDate() && $item->modified != -1) {
-            $item->modifiedOn = $item->modified;
-            unset($item->modified);
-        }
-
-        // @todo: not for news?
-        if (empty($item->modifiedOn)) {
-            $item->modifiedOn = time();
-        }
-
-        if (!empty($item->modifiedOn) && !is_numeric($item->modifiedOn)) {
-            $date =  new \JDate($item->modifiedOn);
-            $item->modifiedOn = $date->toUnix();
-        }
-
-        if ($item->modifiedOn) {
-            $item->modifiedOn = gmdate('Y-m-d\TH:i:s\Z', $item->modifiedOn);
-        }
-
-        // @todo: Set the priority and changefreq values
-    }
-
-    /**
-     * Converts a menu item record in a sitemap node instance.
-     *
-     * @param object
+     * @param Item $item
      *
      * @return void
      */
-    protected function convertMenuItemToNode($menu)
+    protected function callPluginsPreparingThemItem($item)
     {
-        $node = new Node;
+        // Call the OSMap and XMap legacy plugins, if exists
+        $plugin = OSMap\Helper::getPluginForComponent($item->option);
+
+        if (!empty($plugin)) {
+            $result = Framework\Helper::callMethod(
+                $plugin->className,
+                'prepareMenuItem',
+                array(
+                    &$item,
+                    &$plugin->params
+                )
+            );
+
+            if ($result === false) {
+                $item->set('ignore', true);
+            }
+        }
+    }
+
+    /**
+     * Returns true if the link of the item is in the blacklist array.
+     *
+     * @param array $item
+     *
+     * @return bool
+     */
+    protected function itemIsBlackListed($item)
+    {
+        $blackList = array(
+            'administrator' => 1
+        );
+
+        $link = $item['link'];
+
+        return isset($blackList[$link]);
     }
 }
