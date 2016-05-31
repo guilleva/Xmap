@@ -104,11 +104,19 @@ class Item extends \JObject
 
         $this->set('sitemap', $sitemap);
 
+        // Check if the link is an internal link
+        $this->isInternal = \JUri::isInternal($this->link);
+
         $this->extractOptionFromLink();
         $this->prepareParams();
-        $this->mergeComponentParams();
         $this->setModificationDate();
-        $this->prepareLinkAndRelatedAttributes();
+        $this->getLink();
+
+        if ($this->isInternal) {
+            $this->routeLink();
+            $this->sanitizeLink();
+            $this->convertToFullLink();
+        }
 
         /*
          * Do not use a "prepare" method because we need to make sure it will
@@ -122,50 +130,30 @@ class Item extends \JObject
      *
      * @return void
      */
-    protected function prepareLinkAndRelatedAttributes()
+    protected function getLink()
     {
-        if ($this->home) {
+        if ((bool)$this->home) {
             // Correct the URL for the home page.
             $this->link = \JUri::base();
-            $this->sanitizeLink();
-
             return;
         }
 
-        // Check if the link is an internal link
-        $this->isInternal = \JUri::isInternal($this->link);
-
-        // Prepare the link according to the menu item type
-        switch ($this->type) {
-            case 'separator':
-            case 'heading':
-                // Disable browser nav since doesn't have a link
-                $this->browserNav = 3;
-                break;
-
-            case 'alias':
-                // If is an alias, use the Itemid stored in the parameters to get the correct url
-                $this->link = 'index.php?Itemid=' . $this->params->get('aliasoptions');
-                break;
-
-            default:
-                // If this is an internal Joomla link, ensure the Itemid is set
-                if ($this->isInternal) {
-                    $this->link = 'index.php?Itemid=' . $this->id;
-                }
-                break;
+        // Check if is not a url, and disable browser nav
+        if ($this->type === 'separator' || $this->type === 'heading') {
+            $this->browserNav = 3;
+            return;
         }
 
+        // If is an alias, use the Itemid stored in the parameters to get the correct url
+        if ($this->type === 'alias') {
+            $this->link = 'index.php?Itemid=' . $this->params->get('aliasoptions');
+            return;
+        }
+
+
+        // If this is an internal Joomla link, ensure the Itemid is set
         if ($this->isInternal) {
-            $this->link = \JRoute::_($this->link);
-
-            // Make sure the link has the base uri
-            $baseUri = \JUri::base();
-            if (!substr_count($this->link, $baseUri)) {
-                $this->link = $baseUri . $this->link;
-            }
-
-            $this->sanitizeLink();
+            $this->link = 'index.php?Itemid=' . $this->id;
         }
     }
 
@@ -209,22 +197,6 @@ class Item extends \JObject
     }
 
     /**
-     * Merge the options of the component into the item's options
-     *
-     * @return void
-     */
-    protected function mergeComponentParams()
-    {
-        if (!empty($this->option)) {
-            // Merge the component options
-            $componentParams = clone(\JComponentHelper::getParams($this->option));
-            $componentParams->merge($this->params);
-
-            $this->params =& $componentParams;
-        }
-    }
-
-    /**
      * Set the correct modification date.
      *
      * @return void
@@ -264,21 +236,6 @@ class Item extends \JObject
     }
 
     /**
-     * Add the Itemid param in the given url and return the url.
-     *
-     * @param string $url
-     *
-     * @return string
-     */
-    protected function addItemIdtoURL($url)
-    {
-        $url .= (parse_url($url, PHP_URL_QUERY) ? '&' : '?');
-        $url .= 'Itemid=' . $this->id;
-
-        return $url;
-    }
-
-    /**
      * Sanitize the link removing double slashes and trailing slash
      *
      * @return void
@@ -290,5 +247,29 @@ class Item extends \JObject
 
         // Remove trailing slash
         $this->link = preg_replace('#/$#', '', $this->link);
+    }
+
+    /**
+     * Make sure the link is routed
+     *
+     * @return void
+     */
+    protected function routeLink()
+    {
+        $this->link = \JRoute::_($this->link);
+    }
+
+    /**
+     * Converts the current link to a full url, including the base URI
+     *
+     * @return void
+     */
+    protected function convertToFullLink()
+    {
+        // Make sure the link has the base uri
+        $baseUri = \JUri::base();
+        if (!substr_count($this->link, $baseUri)) {
+            $this->link = $baseUri . $this->link;
+        }
     }
 }
