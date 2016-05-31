@@ -90,59 +90,29 @@
                 publish="true"
                 ordering="first">OSSystem</extension>
 
+            <extension
+                type="plugin"
+                group="osmap"
+                publish="true"
+                element="joomlacontent">JoomlaContent</extension>
+
             <!-- <extension
                 type="plugin"
                 group="osmap"
                 element="demo"
                 publish="false"
                 ordering="first">plg_osmap_demo</extension> -->
-
-            <!-- <extension
-                type="plugin"
-                group="osmap"
-                publish="true"
-                element="com_content">plg_osmap_com_content</extension>
-
-            <extension
-                type="plugin"
-                group="osmap"
-                publish="com_k2:*"
-                element="com_k2">plg_osmap_com_k2</extension>
-
-            <extension
-                type="plugin"
-                group="osmap"
-                publish="com_kunena:*"
-                element="com_kunena">plg_osmap_com_kunena</extension>
-
-            <extension
-                type="plugin"
-                group="osmap"
-                publish="com_mtree:*"
-                element="com_mtree">plg_osmap_com_mtree</extension>
-
-            <extension
-                type="plugin"
-                group="osmap"
-                publish="com_sobipro:*"
-                element="com_sobipro">plg_osmap_com_sobipro</extension>
-
-            <extension
-                type="plugin"
-                group="osmap"
-                publish="com_virtuemart:*"
-                element="com_virtuemart">plg_osmap_com_virtuemart</extension>
-
-            <extension
-                type="plugin"
-                group="osmap"
-                publish="com_weblinks:*"
-                element="com_weblinks">plg_osmap_com_weblinks</extension> -->
         </relatedExtensions>
 
         <include>AllediaFreeDefaultFiles</include>
 
         <obsolete>
+            <extension
+                type="plugin"
+                group="osmap"
+                publish="true"
+                element="com_content">plg_osmap_com_content</extension>
+
             <extension
                 type="plugin"
                 group="xmap"
