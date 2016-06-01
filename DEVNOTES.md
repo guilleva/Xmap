@@ -13,6 +13,8 @@
 * images (inside the plugins)
 * news
 * remove the uid tag from the sitemap (was added for debug only)
+* Double check SEF Urls (on/off)
+* db migration from older versions
 
 * menuitem->params? osmap.php:101
 * mergecomponent params?
