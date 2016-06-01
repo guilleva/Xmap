@@ -23,7 +23,7 @@ require_once JPATH_SITE . '/components/com_content/helpers/query.php';
  * for other component, I suggest you to take a look to another plugis as
  * they are usually most simple. ;)
  */
-class osmap_com_content
+class osmap_joomlacontent
 {
     private static $instance = null;
 
@@ -39,7 +39,7 @@ class osmap_com_content
     }
 
     /**
-     * This function is called before a menu item is printed. We use it to set the
+     * This function is called before a menu item is used. We use it to set the
      * proper uniqueid for the item
      *
      * @param object  Menu item to be "prepared"
@@ -73,8 +73,6 @@ class osmap_com_content
         switch ($view) {
             case 'category':
                 if ($id) {
-                    $node->uid = 'com_contentc' . $id;
-
                     $query = $db->getQuery(true);
 
                     if (OSMAP_LICENSE === 'pro') {
@@ -95,8 +93,6 @@ class osmap_com_content
                             return false;
                         }
                     }
-                } else {
-                    $node->uid = 'com_content' . $layout;
                 }
 
                 $node->expandible = true;
@@ -104,7 +100,6 @@ class osmap_com_content
                 break;
 
             case 'article':
-                $node->uid        = 'com_contenta' . $id;
                 $node->expandible = false;
 
                 $query = $db->getQuery(true);
@@ -128,12 +123,12 @@ class osmap_com_content
 
                     $row->params = $row->attribs;
 
-                    if (OSMAP_LICENSE === 'pro') {
-                        $content = new Alledia\OSMap\Pro\Joomla\Item($row);
-                        if (!$content->isVisibleForRobots()) {
-                            return false;
-                        }
-                    }
+                    // if (OSMAP_LICENSE === 'pro') {
+                    //     $content = new Alledia\OSMap\Pro\Joomla\Item($row);
+                    //     if (!$content->isVisibleForRobots()) {
+                    //         return false;
+                    //     }
+                    // }
 
                     $text = @$item->introtext . @$item->fulltext;
                     if ($params['add_images']) {
@@ -159,7 +154,6 @@ class osmap_com_content
                 break;
 
             case 'featured':
-                $node->uid        = 'com_contentfeatured';
                 $node->expandible = false;
         }
 
@@ -394,7 +388,6 @@ class osmap_com_content
 
                     $node = new stdclass();
                     $node->id          = $parent->id;
-                    $node->uid         = (isset($prevnode)?$prevnode->uid:$parent->uid) . 'c' . $item->id;
                     $node->browserNav  = $parent->browserNav;
                     $node->priority    = $params['cat_priority'];
                     $node->changefreq  = $params['cat_changefreq'];
@@ -516,7 +509,6 @@ class osmap_com_content
 
                 $node = new stdclass();
                 $node->id          = $parent->id;
-                $node->uid         = $parent->uid . 'a' . $item->id;
                 $node->browserNav  = $parent->browserNav;
                 $node->priority    = $params['art_priority'];
                 $node->changefreq  = $params['art_changefreq'];
@@ -583,7 +575,6 @@ class osmap_com_content
             $i++;
 
             $subnode->id         = $parent->id;
-            $subnode->uid        = $parent->uid.'p'.$i;
             $subnode->browserNav = $parent->browserNav;
             $subnode->priority   = $params['art_priority'];
             $subnode->changefreq = $params['art_changefreq'];

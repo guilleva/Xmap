@@ -94,7 +94,7 @@
                 type="plugin"
                 group="osmap"
                 publish="true"
-                element="joomlacontent">JoomlaContent</extension>
+                element="joomlacontent">plg_osmap_joomlacontent</extension>
 
             <!-- <extension
                 type="plugin"

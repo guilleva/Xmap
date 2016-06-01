@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<extension type="plugin" group="osmap" version="1.6" method="upgrade">
+<extension type="plugin" group="osmap" version="3.4" method="upgrade">
     <name>PLG_OSMAP_JOOMLACONTENT</name>
     <creationDate>May 31 2016</creationDate>
     <copyright>Copyright (C) 2016 Open Source Training, LLC. All rights reserved. / Forked from XMap - Guillermo Vargas - guille@vargas.co.cr</copyright>
@@ -85,8 +85,8 @@
                     <option value="1">PLG_OSMAP_JOOMLACONTENT_OPTION_ALWAYS</option>
                     <option value="2">PLG_OSMAP_JOOMLACONTENT_OPTION_XML_ONLY</option>
                     <option value="3">PLG_OSMAP_JOOMLACONTENT_OPTION_HTML_ONLY</option>
-                </fie
-                ld>
+                </field>
+
                 <field
                     name="max_art"
                     type="text"
