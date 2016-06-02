@@ -15,6 +15,9 @@
 * remove the uid tag from the sitemap (was added for debug only)
 * Double check SEF Urls (on/off)
 * db migration from older versions
+* node->secure
+* add new methods to plugins
+* add new plugin events
 
 * menuitem->params? osmap.php:101
 * mergecomponent params?
