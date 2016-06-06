@@ -7,21 +7,19 @@
  * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
-namespace Alledia\OSMap\Sitemap;
+defined('_JEXEC') or die();
 
 use Alledia\OSMap;
 
-defined('_JEXEC') or die();
+/**
+ * OSMap Component Controller
+ *
+ * @package        OSMap
+ * @subpackage     com_osmap
+ */
+if (!class_exists('OSMapHelper')) {
+    class OSMapHelper extends OSMap\Helper
+    {
 
-class Node
-{
-    /**
-     * @var string
-     */
-    public $title;
-
-    /**
-     * @var string
-     */
-    public $link;
+    }
 }

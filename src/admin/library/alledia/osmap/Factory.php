@@ -58,7 +58,8 @@ class Factory extends Framework\Factory
 
     /**
      * Returns an instance of the Sitemap class according the given id and
-     * sitemap type.
+     * sitemap type. The view type is passed as parameter because the plugins
+     * will look for that information, so we are keeping backward compatibility.
      *
      * @param int    $id
      * @param string $type

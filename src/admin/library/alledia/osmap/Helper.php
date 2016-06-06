@@ -90,62 +90,220 @@ abstract class Helper
     }
 
     /**
-     * Gets the plugin according to the given option/component
+     * Returns a list of plugins from the database. Legacy plugins from XMap
+     * will be returned first, than, OSMap plugins. Always respecting the
+     * ordering.
      *
      * @param string $option
      *
-     * @return object
+     * @return array
      */
-    public static function getPluginForComponent($option)
+    public static function getPluginsFromDatabase()
     {
-        if (isset(static::$plugins[$option])) {
-            return static::$plugins[$option];
-        }
-
         $db = Factory::getContainer()->db;
 
+        // Get all the OSMap and XMap plugins. Get first the XMap plugins and
+        // than OSMap. Always respecting the ordering.
         $query = $db->getQuery(true)
             ->select(
                 array(
                     'folder',
-                    'params'
+                    'params',
+                    'element'
                 )
             )
             ->from('#__extensions')
             ->where('type = ' . $db->quote('plugin'))
             ->where('folder IN (' . $db->quote('osmap') . ',' . $db->quote('xmap') . ')')
-            ->where('element = ' . $db->quote($option))
-            ->where('enabled = 1');
+            ->where('enabled = 1')
+            ->order('folder DESC, ordering');
 
-        $plugin = $db->setQuery($query)->loadObject();
+        return $db->setQuery($query)->loadObjectList();
+    }
 
-        if (!empty($plugin)) {
-            jimport('joomla.filesystem.file');
+    /**
+     * Returns true if the plugin is compatible with the given option
+     *
+     * @param object $plugin
+     * @param string $option
+     *
+     * @return bool
+     */
+    protected static function checkPluginCompatibilityWithOption($plugin, $option)
+    {
+        $path = JPATH_PLUGINS . '/' . $plugin->folder . '/' . $plugin->element . '/' . $plugin->element . '.php';
+        $compatible = false;
 
-            // Check if the file exists
-            $path = JPATH_PLUGINS . '/' . $plugin->folder . '/' . $option . '/' . $option . '.php';
+        // Check if the plugin file exists
+        if (\JFile::exists($path)) {
+            $isLegacy  = $plugin->element === $option;
 
-            if (\JFile::exists($path)) {
-                $plugin->className = $plugin->folder . '_' . $option;
+            $className = $isLegacy ? ($plugin->folder . '_' . $option) :
+                ('Plg' . ucfirst($plugin->folder) . ucfirst($plugin->element));
 
-                $plugin->params = new \JRegistry($plugin->params);
+            // If the class wasn't loaded yet, load it.
+            if (!class_exists($className)) {
+                require_once $path;
+            }
 
-                if (!class_exists($plugin->className)) {
-                    require($path);
+            // Instantiate the plugin
+            $instance = method_exists($className, 'getInstance') ?
+                $className::getInstance() : new $className;
 
-                    if (method_exists($plugin->className, 'getInstance')) {
-                        $className = $plugin->className;
+            // If is legacy, we know it is compatible since the element and option were already validated
+            $compatible = $isLegacy
+                || (
+                    method_exists($instance, 'getComponentElement')
+                        && $instance->getComponentElement() === $option
+                );
 
-                        $className::getInstance();
-                    }
-                }
-
-                static::$plugins[$option] = $plugin;
-
-                return $plugin;
+            if ($compatible) {
+                $plugin->instance  = $instance;
+                $plugin->className = $className;
+                $plugin->isLegacy  = $isLegacy;
+                $plugin->params    = new \JRegistry($plugin->params);
             }
         }
 
-        return false;
+        return $compatible;
+    }
+
+    /**
+     * Gets the plugins according to the given option/component
+     *
+     * @param string $option
+     *
+     * @return object
+     */
+    public static function getPluginsForComponent($option)
+    {
+        // Check if there is a cached list of plugins for this option
+        if (!empty(static::$plugins) && isset(static::$plugins[$option])) {
+            return static::$plugins[$option];
+        }
+
+        $compatiblePlugins = array();
+
+        $plugins = static::getPluginsFromDatabase($option);
+
+        if (!empty($plugins)) {
+            jimport('joomla.filesystem.file');
+
+            foreach ($plugins as $plugin) {
+                if (static::checkPluginCompatibilityWithOption($plugin, $option)) {
+                    $compatiblePlugins[] = $plugin;
+                }
+            }
+        }
+
+        static::$plugins[$option] = $compatiblePlugins;
+
+        return static::$plugins[$option];
+    }
+
+    /**
+     * Extracts images from the given text.
+     *
+     * @param string $text
+     * @param int    $max
+     *
+     * @return array
+     */
+    public static function getImages($text, $max)
+    {
+        if (!isset($urlBase)) {
+            $urlBase    = \JURI::base();
+            $urlBaseLen = strlen($urlBase);
+        }
+
+        $images  = null;
+        $matches = $matches1 = $matches2 = array();
+
+        // Look <img> tags
+        preg_match_all('/<img[^>]*?(?:(?:[^>]*src="(?P<src>[^"]+)")|(?:[^>]*alt="(?P<alt>[^"]+)")|(?:[^>]*title="(?P<title>[^"]+)"))+[^>]*>/i', $text, $matches1, PREG_SET_ORDER);
+
+        // Look for <a> tags with href to images
+        preg_match_all('/<a[^>]*?(?:(?:[^>]*href="(?P<src>[^"]+\.(gif|png|jpg|jpeg))")|(?:[^>]*alt="(?P<alt>[^"]+)")|(?:[^>]*title="(?P<title>[^"]+)"))+[^>]*>/i', $text, $matches2, PREG_SET_ORDER);
+
+        $matches = array_merge($matches1, $matches2);
+
+        if (count($matches)) {
+            $images = array();
+
+            $count = count($matches);
+
+            $j = 0;
+            for ($i = 0; $i < $count && $j < $max; $i++) {
+                if (trim($matches[$i]['src']) && (substr($matches[$i]['src'], 0, 1) == '/' || !preg_match('/^https?:\/\//i', $matches[$i]['src']) || substr($matches[$i]['src'], 0, $urlBaseLen) == $urlBase)) {
+                    $src = $matches[$i]['src'];
+
+                    if (substr($src, 0, 1) == '/') {
+                        $src = substr($src, 1);
+                    }
+
+                    if (!preg_match('/^https?:\//i', $src)) {
+                        $src = $urlBase . $src;
+                    }
+
+                    $image = new \stdClass;
+                    $image->src   = $src;
+                    $image->title = (isset($matches[$i]['title']) ? $matches[$i]['title'] : @$matches[$i]['alt']);
+
+                    $images[] = $image;
+
+                    $j++;
+                }
+            }
+        }
+
+        return $images;
+    }
+
+    /**
+     * Extracts pagebreaks from the given text. Returns a list of subnodes
+     * related to each pagebreak.
+     *
+     * @param string $text
+     * @param string $baseLink
+     *
+     * @return array
+     */
+    public static function getPagebreaks($text, $baseLink)
+    {
+        $matches = $subnodes = array();
+
+        if (preg_match_all(
+            '/<hr\s*[^>]*?(?:(?:\s*alt="(?P<alt>[^"]+)")|(?:\s*title="(?P<title>[^"]+)"))+[^>]*>/i',
+            $text,
+            $matches,
+            PREG_SET_ORDER
+        )) {
+            $i = 2;
+            foreach ($matches as $match) {
+                if (strpos($match[0], 'class="system-pagebreak"') !== false) {
+                    $link = $baseLink . '&limitstart=' . ($i - 1);
+
+                    if (@$match['alt']) {
+                        $title = stripslashes($match['alt']);
+                    } elseif (@$match['title']) {
+                        $title = stripslashes($match['title']);
+                    } else {
+                        $title = JText::sprintf('Page #', $i);
+                    }
+
+                    $subnode = new stdclass();
+                    $subnode->name       = $title;
+                    $subnode->expandible = false;
+                    $subnode->link       = $link;
+
+                    $subnodes[] = $subnode;
+
+                    $i++;
+                }
+            }
+
+        }
+
+        return $subnodes;
     }
 }

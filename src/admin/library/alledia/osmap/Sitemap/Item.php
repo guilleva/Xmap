@@ -34,6 +34,11 @@ class Item extends \JObject
     public $link;
 
     /**
+     * @var string
+     */
+    public $fullLink;
+
+    /**
      * @var \JRegistry
      */
     public $params;
@@ -91,6 +96,16 @@ class Item extends \JObject
     public $type;
 
     /**
+     * @var bool
+     */
+    public $expandible = false;
+
+    /**
+     * @var bool
+     */
+    public $secure = false;
+
+    /**
      * The constructor
      *
      * @param object  $item
@@ -110,11 +125,9 @@ class Item extends \JObject
         $this->extractOptionFromLink();
         $this->prepareParams();
         $this->setModificationDate();
-        $this->getLink();
+        $this->setFullLink();
 
         if ($this->isInternal) {
-            $this->routeLink();
-            $this->convertToFullLink();
             $this->sanitizeLink();
         }
 
@@ -123,38 +136,6 @@ class Item extends \JObject
          * be calculated after the link is set.
          */
         $this->calculateUID();
-    }
-
-    /**
-     * Prepares the link, browserNav and isInternal attributes.
-     *
-     * @return void
-     */
-    protected function getLink()
-    {
-        if ((bool)$this->home) {
-            // Correct the URL for the home page.
-            $this->link = \JUri::base();
-            return;
-        }
-
-        // Check if is not a url, and disable browser nav
-        if ($this->type === 'separator' || $this->type === 'heading') {
-            $this->browserNav = 3;
-            return;
-        }
-
-        // If is an alias, use the Itemid stored in the parameters to get the correct url
-        if ($this->type === 'alias') {
-            $this->link = 'index.php?Itemid=' . $this->params->get('aliasoptions');
-            return;
-        }
-
-
-        // If this is an internal Joomla link, ensure the Itemid is set
-        if ($this->isInternal) {
-            $this->link = 'index.php?Itemid=' . $this->id;
-        }
     }
 
     /**
@@ -178,7 +159,7 @@ class Item extends \JObject
      */
     public function calculateUID()
     {
-        $this->set('uid', md5($this->sitemap->id . ':' . $this->link));
+        $this->set('uid', md5($this->sitemap->id . ':' . $this->fullLink));
     }
 
     /**
@@ -243,20 +224,10 @@ class Item extends \JObject
     protected function sanitizeLink()
     {
         // Remove double slashes
-        $this->link = preg_replace('#([^:])(/{2,})#', '$1/', $this->link);
+        $this->fullLink = preg_replace('#([^:])(/{2,})#', '$1/', $this->fullLink);
 
         // Remove trailing slash
-        $this->link = preg_replace('#/$#', '', $this->link);
-    }
-
-    /**
-     * Make sure the link is routed
-     *
-     * @return void
-     */
-    protected function routeLink()
-    {
-        $this->link = \JRoute::_($this->link);
+        $this->fullLink = preg_replace('#/$#', '', $this->fullLink);
     }
 
     /**
@@ -264,15 +235,41 @@ class Item extends \JObject
      *
      * @return void
      */
-    protected function convertToFullLink()
+    protected function setFullLink()
     {
-        if (!preg_match('#^[^:]+://#', $this->link)) {
-            // Make sure the link has the base uri
-            $baseUri = \JUri::base();
-            if (!substr_count($this->link, $baseUri)) {
-                $this->link = $baseUri . $this->link;
-            }
+        $this->fullLink = $this->link;
+
+        if ((bool)$this->home) {
+            // Correct the URL for the home page.
+            $this->fullLink = \JUri::base();
+            return;
         }
 
+        // Check if is not a url, and disable browser nav
+        if ($this->type === 'separator' || $this->type === 'heading') {
+            $this->browserNav = 3;
+            return;
+        }
+
+        // If is an alias, use the Itemid stored in the parameters to get the correct url
+        if ($this->type === 'alias') {
+            $this->fullLink = 'index.php?Itemid=' . $this->params->get('aliasoptions');
+            return;
+        }
+
+        // If this is an internal Joomla link, ensure the Itemid is set
+        if ($this->isInternal) {
+            $this->fullLink = 'index.php?Itemid=' . $this->id;
+
+            $this->fullLink = \JRoute::_($this->link);
+
+            if (!preg_match('#^[^:]+://#', $this->fullLink)) {
+                // Make sure the link has the base uri
+                $baseUri = \JUri::base();
+                if (!substr_count($this->fullLink, $baseUri)) {
+                    $this->fullLink = $baseUri . $this->fullLink;
+                }
+            }
+        }
     }
 }

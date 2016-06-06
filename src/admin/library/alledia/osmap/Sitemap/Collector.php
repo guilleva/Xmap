@@ -10,6 +10,7 @@
 namespace Alledia\OSMap\Sitemap;
 
 use Alledia\OSMap;
+use Alledia\Framework;
 
 defined('_JEXEC') or die();
 
@@ -27,6 +28,32 @@ class Collector
      * @var array
      */
     protected $uidList = array();
+
+    /**
+     * Callback used to trigger the desired action while fetching items.
+     * This is only used in the legacy method printNode, which is called by
+     * the osmap plugins to process the additional items.
+     *
+     * @var callable
+     */
+    protected $printNodeCallback;
+
+    /**
+     * The current view: xml or html. Kept for backward compatibility with
+     * the legacy plugins. It is always HTML since the collector is generic now
+     * and needs to have the information about the item's level even for the
+     * XML view in the Pro version, to store that info in the cache.
+     *
+     * @var string
+     */
+    public $view = 'html';
+
+    /**
+     * The items counter.
+     *
+     * @var int
+     */
+    protected $counter = 0;
 
     /**
      * The constructor
@@ -52,7 +79,7 @@ class Collector
         $baseTime   = microtime();
 
         $menus = $this->getSitemapMenus();
-        $count = 0;
+        $this->counter = 0;
 
         if (!empty($menus)) {
             foreach ($menus as $menu) {
@@ -63,27 +90,14 @@ class Collector
                         continue;
                     }
 
-                    // Converts to an Item instance, setting internal attributes
-                    $item = new Item($item, $this->sitemap);
-                    // var_dump($item);
+                    // Submit the item and prepare it calling the plugins
+                    $this->submitItem($item, $callback, true);
 
-                    // Verify if the item's link was already listed
-                    $this->checkDuplicatedUIDToIgnore($item);
-
-                    // Call the plugins to prepare the item
-                    $this->callPluginsPreparingTheItem($item);
-
-                    // @todo: callplugins: getTree
-
-                    // Check if the item was set to be ignored
-                    if ((bool)$item->ignore) {
-                        continue;
+                    // Internal items can trigger plugins to grab more items
+                    if ($item->isInternal) {
+                        // Call the plugin to get additional items related to
+                        $this->callPluginsGetItemTree($item, $callback);
                     }
-
-                    ++$count;
-
-                    // Call the given callback function
-                    $callback($item);
 
                     // Make sure the memory is cleaned
                     $item = null;
@@ -94,7 +108,44 @@ class Collector
         echo sprintf('<m>%s</m>', memory_get_usage() - $baseMemory);
         echo sprintf('<t>%s</t>', microtime() - $baseTime);
 
-        return $count;
+        return $this->counter;
+    }
+
+    /**
+     * Submit the item to the callback, checking duplicity and incrementing
+     * the counter. It can receive an array or object and returns true or false
+     * according to the result of the callback.
+     *
+     * @param mixed    $item
+     * @param callable $callback
+     * @param bool     $prepareItem
+     *
+     * @return bool
+     */
+    public function submitItem(&$item, $callback, $prepareItem = false)
+    {
+        $result = true;
+
+        // Converts to an Item instance, setting internal attributes
+        $item = new Item($item, $this->sitemap);
+
+        // Verify if the item's link was already listed
+        $this->checkDuplicatedUIDToIgnore($item);
+
+        if ($prepareItem) {
+            // Call the plugins to prepare the item
+            $this->callPluginsPreparingTheItem($item);
+        }
+
+        // Check if the item was set to be ignored, if not, send to the callback
+        if (!(bool)$item->ignore) {
+            ++$this->counter;
+
+            // Call the given callback function
+            $result = (bool)$callback($item);
+        }
+
+        return $result;
     }
 
     /**
@@ -230,20 +281,54 @@ class Collector
     protected function callPluginsPreparingTheItem($item)
     {
         // Call the OSMap and XMap legacy plugins, if exists
-        $plugin = OSMap\Helper::getPluginForComponent($item->option);
+        $plugins = OSMap\Helper::getPluginsForComponent($item->option);
 
-        if (!empty($plugin)) {
-            $result = Framework\Helper::callMethod(
-                $plugin->className,
-                'prepareMenuItem',
-                array(
-                    &$item,
-                    &$plugin->params
-                )
-            );
 
-            if ($result === false) {
-                $item->set('ignore', true);
+        if (!empty($plugins)) {
+            foreach ($plugins as $plugin) {
+                $className = '\\' . $plugin->className;
+
+                $result = true;
+
+                if (method_exists($className, 'prepareMenuItem')) {
+                    // If a legacy plugin doesn't specify this method as static, fix the plugin.
+                    $result = $className::prepareMenuItem($item, $plugin->params);
+
+                    // If a plugin doesn't return true we ignore the item and break
+                    if ($result !== true) {
+                        $item->set('ignore', true);
+
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Calls the respective OSMap and XMap plugin, according to the item's
+     * component/option. Get additional items and send to the callback.
+     *
+     * @param Item     $item
+     * @param Callable $callback
+     *
+     * @return void
+     */
+    protected function callPluginsGetItemTree($item, $callback)
+    {
+        // Register the current callback
+        $this->printNodeCallback = $callback;
+
+        // Call the OSMap and XMap legacy plugins, if exists
+        $plugins = OSMap\Helper::getPluginsForComponent($item->option);
+
+        if (!empty($plugins)) {
+            foreach ($plugins as $plugin) {
+                $className = '\\' . $plugin->className;
+
+                if (method_exists($className, 'getTree')) {
+                    $className::getTree($this, $item, $plugin->params);
+                }
             }
         }
     }
@@ -264,5 +349,38 @@ class Collector
         $link = $item['link'];
 
         return isset($blackList[$link]);
+    }
+
+    /**
+     * This method is used for backward compatibility. The plugins will call
+     * it. In the legacy XMap its behavior depends on the sitemap view type,
+     * only changing the level in the HTML view. Now, it always consider the
+     * level of the item, even for XML view. That allows to store that info
+     * in a cache for both view types. XML will just ignore that.
+     *
+     * @param int $step
+     *
+     * @return void
+     */
+    public function changeLevel($step)
+    {
+        if ($step) {
+
+        }
+
+        return true;
+    }
+
+    /**
+     * Method called by legacy plugins, which will pass the new item to the
+     * callback. Returns the result of the callback converted to boolean.
+     *
+     * @param object $node
+     *
+     * @return bool
+     */
+    public function printNode($node)
+    {
+        return $this->submitItem($node, $this->printNodeCallback);
     }
 }

@@ -9,9 +9,9 @@
 
 defined('_JEXEC') or die();
 
-require_once JPATH_SITE . '/components/com_osmap/helpers/osmap.php';
 require_once JPATH_SITE . '/components/com_content/helpers/route.php';
 require_once JPATH_SITE . '/components/com_content/helpers/query.php';
+require_once JPATH_SITE . '/components/com_osmap/helpers/osmap.php';
 
 /**
  * Handles standard Joomla's Content articles/categories
@@ -23,10 +23,18 @@ require_once JPATH_SITE . '/components/com_content/helpers/query.php';
  * for other component, I suggest you to take a look to another plugis as
  * they are usually most simple. ;)
  */
-class osmap_joomlacontent
+
+use Alledia\OSMap;
+
+class PlgOSMapJoomla implements OSMap\PluginInterface
 {
     private static $instance = null;
 
+    /**
+     * Returns the unique instance of the plugin
+     *
+     * @return object
+     */
     public static function getInstance()
     {
         if (empty(static::$instance)) {
@@ -36,6 +44,16 @@ class osmap_joomlacontent
         }
 
         return static::$instance;
+    }
+
+    /**
+     * Returns the element of the component which this plugin supports.
+     *
+     * @return string
+     */
+    public function getComponentElement()
+    {
+        return 'com_content';
     }
 
     /**
@@ -123,12 +141,12 @@ class osmap_joomlacontent
 
                     $row->params = $row->attribs;
 
-                    // if (OSMAP_LICENSE === 'pro') {
-                    //     $content = new Alledia\OSMap\Pro\Joomla\Item($row);
-                    //     if (!$content->isVisibleForRobots()) {
-                    //         return false;
-                    //     }
-                    // }
+                    if (OSMAP_LICENSE === 'pro') {
+                        $content = new Alledia\OSMap\Pro\Joomla\Item($row);
+                        if (!$content->isVisibleForRobots()) {
+                            return false;
+                        }
+                    }
 
                     $text = @$item->introtext . @$item->fulltext;
                     if ($params['add_images']) {
@@ -320,12 +338,12 @@ class osmap_joomlacontent
 
                     $row = $db->loadObject();
 
-                    if (OSMAP_LICENSE === 'pro') {
-                        $content = new Alledia\OSMap\Pro\Joomla\Item($row);
-                        if (!$content->isVisibleForRobots()) {
-                            return false;
-                        }
-                    }
+                    // if (OSMAP_LICENSE === 'pro') {
+                    //     $content = new Alledia\OSMap\Pro\Joomla\Item($row);
+                    //     if (!$content->isVisibleForRobots()) {
+                    //         return false;
+                    //     }
+                    // }
 
                     $parent->slug = $row->alias ? ($id . ':' . $row->alias) : $id;
                     $parent->link = ContentHelperRoute::getArticleRoute($parent->slug, $row->catid);
@@ -570,7 +588,8 @@ class osmap_joomlacontent
     private static function printNodes($osmap, $parent, &$params, &$subnodes)
     {
         $osmap->changeLevel(1);
-        $i=0;
+
+        $i = 0;
         foreach ($subnodes as $subnode) {
             $i++;
 
@@ -582,6 +601,7 @@ class osmap_joomlacontent
 
             $osmap->printNode($subnode);
         }
+
         $osmap->changeLevel(-1);
     }
 
