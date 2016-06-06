@@ -13,7 +13,7 @@ $printNodeCallback = function ($node) {
     echo '<url>';
     echo '<loc><![CDATA[' . $node->fullLink . ']]></loc>';
     echo '<lastmod>' . $node->modifiedOn . '</lastmod>';
-    echo '<changefreq>' . $node->changeFreq . '</changefreq>';
+    echo '<changefreq>' . $node->changefreq . '</changefreq>';
     echo '<priority>' . $node->priority . '</priority>';
     echo '</url>';
 };

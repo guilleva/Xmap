@@ -51,7 +51,7 @@ class Item extends \JObject
     /**
      * @var string
      */
-    public $changeFreq;
+    public $changefreq;
 
     /**
      * @var string

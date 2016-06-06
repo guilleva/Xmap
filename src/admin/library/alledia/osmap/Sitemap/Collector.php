@@ -49,6 +49,15 @@ class Collector
     public $view = 'html';
 
     /**
+     * Legacy property used by some plugins. True if we are collecting news.
+     *
+     * @var string
+     *
+     * @deprecated
+     */
+    public $isNews = false;
+
+    /**
      * The items counter.
      *
      * @var int
