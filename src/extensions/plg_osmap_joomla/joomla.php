@@ -137,7 +137,19 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
                 $db->setQuery($query);
 
                 if (($row = $db->loadObject()) != null) {
-                    $node->modified = $row->modified;
+                    // Check if we have a modification date
+                    if (!OSMap\Helper::isEmptyDate($row->modified)) {
+                        $node->modified = $row->modified;
+                    }
+
+                    // Make sure we have a modification date. If null, use the creation date
+                    if (OSMap\Helper::isEmptyDate($node->modified)) {
+                        if (isset($row->createdOn)) {
+                            $node->modified = $row->createdOn;
+                        } else {
+                            $node->modified = $row->created;
+                        }
+                    }
 
                     $row->params = $row->attribs;
 
@@ -153,12 +165,12 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
                         if (OSMAP_LICENSE === 'pro') {
                             $node->images = Alledia\OSMap\Pro\Joomla\Helper::getImages($text, JArrayHelper::getValue($params, 'max_images', 1000));
                         } else {
-                            $node->images = OSMapHelper::getImages($text, JArrayHelper::getValue($params, 'max_images', 1000));
+                            $node->images = OSMap\Helper::getImages($text, JArrayHelper::getValue($params, 'max_images', 1000));
                         }
                     }
 
                     if ($params['add_pagebreaks']) {
-                        $node->subnodes   = OSMapHelper::getPagebreaks($text, $node->link);
+                        $node->subnodes   = OSMap\Helper::getPagebreaks($text, $node->link);
                         $node->expandible = (count($node->subnodes) > 0); // This article has children
                     }
                 } else {
@@ -201,7 +213,7 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
         $view = JArrayHelper::getValue($link_vars, 'view', '');
         $id   = intval(JArrayHelper::getValue($link_vars, 'id', ''));
 
-        /*         * *
+        /*         *`
          * Parameters Initialitation
          * */
         //----- Set expand_categories param
@@ -249,8 +261,8 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
             || $osmap->view == 'navigator');
         $params['add_pagebreaks'] = $add_pagebreaks;
 
-        if ($params['add_pagebreaks'] && !defined('_OSMAP_COM_CONTENT_LOADED')) {
-            define('_OSMAP_COM_CONTENT_LOADED', 1);  // Load it just once
+        if ($params['add_pagebreaks'] && !defined('OSMAP_PLUGIN_JOOMLA_LOADED')) {
+            define('OSMAP_PLUGIN_JOOMLA_LOADED', 1);  // Load it just once
             $lang = JFactory::getLanguage();
             $lang->load('plg_content_pagebreak');
         }
@@ -284,9 +296,9 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
         $params['max_art']     = intval(JArrayHelper::getValue($params, 'max_art', 0));
         $params['max_art_age'] = intval(JArrayHelper::getValue($params, 'max_art_age', 0));
 
-        $params['nullDate'] = $db->Quote($db->getNullDate());
+        $params['nullDate'] = $db->quote($db->getNullDate());
 
-        $params['nowDate'] = $db->Quote(JFactory::getDate()->toSql());
+        $params['nowDate'] = $db->quote(JFactory::getDate()->toSql());
         $params['groups']  = implode(',', $user->getAuthorisedViewLevels());
 
         // Define the language filter condition for the query
@@ -332,11 +344,18 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
                           ->select($db->quoteName('catid'))
                           ->select($db->quoteName('attribs') . ' AS params')
                           ->select($db->quoteName('metadata'))
+                          ->select($db->quoteName('modified'))
+                          ->select($db->quoteName('created'))
                           ->from($db->quoteName('#__content'))
                           ->where($db->quoteName('id') . '=' . (int) $id);
                     $db->setQuery($query);
 
                     $row = $db->loadObject();
+
+                    // Make sure we have a modification date. If null, use the creation date
+                    if (OSMap\Helper::isEmptyDate($row->modified)) {
+                        $row->modified = $row->created;
+                    }
 
                     // if (OSMAP_LICENSE === 'pro') {
                     //     $content = new Alledia\OSMap\Pro\Joomla\Item($row);
@@ -348,7 +367,7 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
                     $parent->slug = $row->alias ? ($id . ':' . $row->alias) : $id;
                     $parent->link = ContentHelperRoute::getArticleRoute($parent->slug, $row->catid);
 
-                    $subnodes = OSMapHelper::getPagebreaks($row->introtext.$row->fulltext, $parent->link);
+                    $subnodes = OSMap\Helper::getPagebreaks($row->introtext.$row->fulltext, $parent->link);
                     self::printNodes($osmap, $parent, $params, $subnodes);
                 }
         }
@@ -404,7 +423,7 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
                         }
                     }
 
-                    $node = new stdclass();
+                    $node = new stdClass();
                     $node->id          = $parent->id;
                     $node->browserNav  = $parent->browserNav;
                     $node->priority    = $params['cat_priority'];
@@ -418,9 +437,11 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
 
                     // For the google news we should use te publication date instead
                     // the last modification date. See
-                    if ($osmap->isNews || !$item->modified) {
+                    if (OSMap\Helper::isEmptyDate($item->modified)) {
                         $item->modified = $item->created;
                     }
+
+                    $node->modified = $item->modified;
 
                     $node->slug = $item->route ? ($item->id . ':' . $item->route) : $item->id;
                     $node->link = ContentHelperRoute::getCategoryRoute($node->slug);
@@ -525,25 +546,19 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
                     }
                 }
 
-                $node = new stdclass();
+                $node = new stdClass();
                 $node->id          = $parent->id;
                 $node->browserNav  = $parent->browserNav;
                 $node->priority    = $params['art_priority'];
                 $node->changefreq  = $params['art_changefreq'];
                 $node->name        = $item->title;
-                $node->modified    = $item->modified;
+                $node->modified    = OSMap\Helper::isEmptyDate($item->modified) ? $item->created : $item->modified;
                 $node->expandible  = false;
                 $node->secure      = $parent->secure;
                 // TODO: Should we include category name or metakey here?
                 // $node->keywords = $item->metakey;
                 $node->newsItem    = 1;
                 $node->language    = $item->language;
-
-                // For the google news we should use te publication date instead
-                // the last modification date. See
-                if ($osmap->isNews || !$node->modified) {
-                    $node->modified = $item->created;
-                }
 
                 $node->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
                 //$node->catslug = $item->category_route ? ($catid . ':' . $item->category_route) : $catid;
@@ -565,12 +580,12 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
                     if (OSMAP_LICENSE === 'pro') {
                         $node->images = Alledia\OSMap\Pro\Joomla\Helper::getImages($text, JArrayHelper::getValue($params, 'max_images', 1000));
                     } else {
-                        $node->images = OSMapHelper::getImages($text, JArrayHelper::getValue($params, 'max_images', 1000));
+                        $node->images = OSMap\Helper::getImages($text, JArrayHelper::getValue($params, 'max_images', 1000));
                     }
                 }
 
                 if ($params['add_pagebreaks']) {
-                    $subnodes = OSMapHelper::getPagebreaks($text, $node->link);
+                    $subnodes = OSMap\Helper::getPagebreaks($text, $node->link);
                     $node->expandible = (count($subnodes) > 0); // This article has children
                 }
 

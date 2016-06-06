@@ -12,7 +12,7 @@ defined('_JEXEC') or die();
 $printNodeCallback = function ($node) {
     echo '<url>';
     echo '<loc><![CDATA[' . $node->fullLink . ']]></loc>';
-    echo '<lastmod>' . $node->modifiedOn . '</lastmod>';
+    echo '<lastmod>' . $node->modified . '</lastmod>';
     echo '<changefreq>' . $node->changefreq . '</changefreq>';
     echo '<priority>' . $node->priority . '</priority>';
     echo '</url>';

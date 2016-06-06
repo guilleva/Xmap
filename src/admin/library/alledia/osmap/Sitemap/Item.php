@@ -56,7 +56,7 @@ class Item extends \JObject
     /**
      * @var string
      */
-    public $modifiedOn;
+    public $modified;
 
     /**
      * The component associated to the option URL param
@@ -189,35 +189,17 @@ class Item extends \JObject
      */
     protected function setModificationDate()
     {
-        $db = OSMap\Factory::getContainer()->db;
-
-        // @todo: extract from the specific item - use the plugin?
-        $this->modifiedOn = null;
-
-        $invalidDates = array(
-            false,
-            -1,
-            '-1',
-            $db->getNullDate()
-        );
-
-        if (isset($this->modified) && !in_array($this->modified, $invalidDates)) {
-            $this->modifiedOn = $this->modified;
-            unset($this->modified);
+        if (OSMap\Helper::isEmptyDate($this->modified)) {
+            $this->modified = time();
         }
 
-        // @todo: not for news?
-        if (empty($this->modifiedOn)) {
-            $this->modifiedOn = time();
-        }
+        if (!OSMap\Helper::isEmptyDate($this->modified)) {
+            if (!is_numeric($this->modified)) {
+                $date =  new \JDate($this->modified);
+                $this->modified = $date->toUnix();
+            }
 
-        if (!empty($this->modifiedOn) && !is_numeric($this->modifiedOn)) {
-            $date =  new \JDate($this->modifiedOn);
-            $this->modifiedOn = $date->toUnix();
-        }
-
-        if ($this->modifiedOn) {
-            $this->modifiedOn = gmdate('Y-m-d\TH:i:s\Z', $this->modifiedOn);
+            $this->modified = gmdate('Y-m-d\TH:i:s\Z', $this->modified);
         }
     }
 

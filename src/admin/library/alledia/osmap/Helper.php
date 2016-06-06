@@ -306,4 +306,29 @@ abstract class Helper
 
         return $subnodes;
     }
+
+    /**
+     * Returns true if the given date is empty, considering not only as string,
+     * but integer, boolean or date.
+     *
+     * @param string $date
+     *
+     * @return bool
+     */
+    public static function isEmptyDate($date)
+    {
+        $db = Factory::getContainer()->db;
+
+        $invalidDates = array(
+            '',
+            null,
+            false,
+            0
+            -1,
+            '-1',
+            $db->getNullDate()
+        );
+
+        return in_array($date, $invalidDates);
+    }
 }
