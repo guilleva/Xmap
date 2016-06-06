@@ -106,6 +106,11 @@ class Item extends \JObject
     public $secure = false;
 
     /**
+     * @var int
+     */
+    public $isMenuItem = 0;
+
+    /**
      * The constructor
      *
      * @param object  $item
@@ -231,40 +236,52 @@ class Item extends \JObject
     }
 
     /**
-     * Converts the current link to a full url, including the base URI
+     * Converts the current link to a full URL, including the base URI.
+     * If the item is the home menu, will return the base URI. If internal,
+     * will return a routed full URL (SEF, if enabled). If it is an external
+     * URL, won't change the link.
      *
      * @return void
      */
     protected function setFullLink()
     {
-        $this->fullLink = $this->link;
-
         if ((bool)$this->home) {
             // Correct the URL for the home page.
             $this->fullLink = \JUri::base();
+
             return;
         }
 
         // Check if is not a url, and disable browser nav
         if ($this->type === 'separator' || $this->type === 'heading') {
             $this->browserNav = 3;
+
             return;
         }
 
         // If is an alias, use the Itemid stored in the parameters to get the correct url
         if ($this->type === 'alias') {
             $this->fullLink = 'index.php?Itemid=' . $this->params->get('aliasoptions');
-            return;
         }
 
-        // If this is an internal Joomla link, ensure the Itemid is set
-        if ($this->isInternal) {
+        // If is a menu item but not an alias, force to use the current menu's item id
+        if ((bool)$this->isMenuItem && $this->type !== 'alias') {
             $this->fullLink = 'index.php?Itemid=' . $this->id;
+        }
 
-            $this->fullLink = \JRoute::_($this->link);
+        // If is not a menu item, use as base for the fulllink, the item link
+        if (!(bool)$this->isMenuItem) {
+            $this->fullLink = $this->link;
+        }
 
+        if ($this->isInternal) {
+            // If this is an internal Joomla link, ensure the Itemid is set
+
+            // Route the full link
+            $this->fullLink = \JRoute::_($this->fullLink);
+
+            // Make sure the link has the base uri
             if (!preg_match('#^[^:]+://#', $this->fullLink)) {
-                // Make sure the link has the base uri
                 $baseUri = \JUri::base();
                 if (!substr_count($this->fullLink, $baseUri)) {
                     $this->fullLink = $baseUri . $this->fullLink;

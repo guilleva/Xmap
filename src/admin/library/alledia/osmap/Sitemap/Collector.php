@@ -226,6 +226,8 @@ class Collector
                     'm.parent_id',
                     'm.browserNav',
                     'm.link',
+                    // Say that the menu came from a menu
+                    '1 AS ' . $db->quoteName('isMenuItem'),
                     // Flag that allows to children classes choose to ignore items
                     '0 AS ' . $db->quoteName('ignore')
                 )
@@ -300,7 +302,7 @@ class Collector
                 $result = true;
 
                 if (method_exists($className, 'prepareMenuItem')) {
-                    // If a legacy plugin doesn't specify this method as static, fix the plugin.
+                    // If a legacy plugin doesn't specify this method as static, fix the plugin to avoid warnings
                     $result = $className::prepareMenuItem($item, $plugin->params);
 
                     // If a plugin doesn't return true we ignore the item and break
