@@ -8,6 +8,8 @@
  */
 
 defined('_JEXEC') or die();
+
+JFactory::getDocument()->addStyleSheet($this->baseurl . '/../media/jui/css/icomoon.css');
 ?>
 <div class="row-fluid">
     <div class="span12">
@@ -55,13 +57,15 @@ defined('_JEXEC') or die();
                                 <td class="center">
                                     <!-- Checkbox -->
                                 </td>
-
                                 <td class="center">
                                     <div class="btn-group">
-                                    <!-- Status -->
+                                        <?php if ($item->published) : ?>
+                                            <span class="icon-publish"></span>
+                                        <?php else : ?>
+                                            <span class="icon-unpublish"></span>
+                                        <?php endif; ?>
                                     </div>
                                 </td>
-
                                 <td><?php echo $item->fullLink; ?></td>
                                 <td><?php echo isset($item->name) ? $item->name : ''; ?></td>
                                 <td class="center"><?php echo $item->priority; ?></td>
