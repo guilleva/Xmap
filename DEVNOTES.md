@@ -24,3 +24,4 @@
 * menuitem->params? osmap.php:101
 * mergecomponent params?
 * Double check why plugin's names are not being translated
+* Remove commented memory profile code from the fetch method

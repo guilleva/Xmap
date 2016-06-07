@@ -84,8 +84,8 @@ class Collector
      */
     public function fetch($callback)
     {
-        $baseMemory = memory_get_usage();
-        $baseTime   = microtime();
+        // $baseMemory = memory_get_usage();
+        // $baseTime   = microtime();
 
         $menus = $this->getSitemapMenus();
         $this->counter = 0;
@@ -114,8 +114,8 @@ class Collector
             }
         }
 
-        echo sprintf('<m>%s</m>', memory_get_usage() - $baseMemory);
-        echo sprintf('<t>%s</t>', microtime() - $baseTime);
+        // echo sprintf('<m>%s</m>', memory_get_usage() - $baseMemory);
+        // echo sprintf('<t>%s</t>', microtime() - $baseTime);
 
         return $this->counter;
     }
