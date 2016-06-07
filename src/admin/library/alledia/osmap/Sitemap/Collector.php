@@ -160,7 +160,7 @@ class Collector
     /**
      * Gets the list of selected menus for the sitemap.
      * It returns a list of objects with the attributes:
-     *  - title
+     *  - name
      *  - menutype
      *  - priority
      *  - changefrq
@@ -175,7 +175,7 @@ class Collector
         $query = $db->getQuery(true)
             ->select(
                 array(
-                    'mt.title',
+                    'mt.title AS ' . $db->quoteName('name'),
                     'mt.menutype',
                     'osm.priority',
                     'osm.changefreq',
@@ -216,7 +216,7 @@ class Collector
             ->select(
                 array(
                     'm.id',
-                    'm.title',
+                    'm.title AS ' . $db->quoteName('name'),
                     'm.alias',
                     'm.path',
                     'm.level',

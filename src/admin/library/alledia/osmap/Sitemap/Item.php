@@ -111,6 +111,11 @@ class Item extends \JObject
     public $isMenuItem = 0;
 
     /**
+    /**
+     * @var string
+     */
+    public $name = '';
+
      * The constructor
      *
      * @param object  $item

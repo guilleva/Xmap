@@ -63,7 +63,7 @@ defined('_JEXEC') or die();
                                 </td>
 
                                 <td><?php echo $item->fullLink; ?></td>
-                                <td><?php echo isset($item->title) ? $item->title : ''; ?></td>
+                                <td><?php echo isset($item->name) ? $item->name : ''; ?></td>
                                 <td class="center"><?php echo $item->priority; ?></td>
                                 <td class="center"><?php echo $item->changefreq; ?></td>
                             </tr>
