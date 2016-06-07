@@ -26,7 +26,7 @@ class Base extends \JControllerLegacy
             $home = OSMap\Factory::getApplication()->getMenu()->getDefault();
 
             OSMap\Factory::getApplication()->redirect(
-                JRoute::_('index.php?Itemid=' . $home->id),
+                OSMap\Router::routeURL('index.php?Itemid=' . $home->id),
                 JText::_('JINVALID_TOKEN'),
                 'error'
             );

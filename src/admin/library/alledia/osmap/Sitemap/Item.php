@@ -231,6 +231,11 @@ class Item extends \JObject
             // Correct the URL for the home page.
             $this->fullLink = \JUri::base();
 
+            // Removes the /administrator from the URI if in the administrator
+            if (OSMap\Factory::getApplication()->isAdmin()) {
+                $this->fullLink = preg_replace('#/administrator/$#', '', $this->fullLink);
+            }
+
             return;
         }
 
@@ -251,7 +256,7 @@ class Item extends \JObject
             $this->fullLink = 'index.php?Itemid=' . $this->id;
         }
 
-        // If is not a menu item, use as base for the fulllink, the item link
+        // If is not a menu item, use as base for the fullLink, the item link
         if (!(bool)$this->isMenuItem) {
             $this->fullLink = $this->link;
         }
@@ -260,11 +265,18 @@ class Item extends \JObject
             // If this is an internal Joomla link, ensure the Itemid is set
 
             // Route the full link
-            $this->fullLink = \JRoute::_($this->fullLink);
+            $this->fullLink = OSMap\Router::routeURL($this->fullLink);
 
             // Make sure the link has the base uri
             if (!preg_match('#^[^:]+://#', $this->fullLink)) {
                 $baseUri = \JUri::base();
+
+                // If in admin, removes the /administrator from the URI and fullLink
+                if (OSMap\Factory::getApplication()->isAdmin()) {
+                    $baseUri = preg_replace('#/administrator/$#', '/', $baseUri);
+                    $this->fullLink = preg_replace('#^/administrator/#', '/', $this->fullLink);
+                }
+
                 if (!substr_count($this->fullLink, $baseUri)) {
                     $this->fullLink = $baseUri . $this->fullLink;
                 }

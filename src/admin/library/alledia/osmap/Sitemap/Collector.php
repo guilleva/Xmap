@@ -242,7 +242,7 @@ class Collector
             ->order('m.lft');
 
         // Filter by language
-        if ($app->getLanguageFilter()) {
+        if ($app->isSite() && $app->getLanguageFilter()) {
             $query->where('m.language IN (' . $db->quote($lang->getTag()) . ',' . $db->quote('*') . ')');
         }
 
