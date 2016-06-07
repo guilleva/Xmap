@@ -18,6 +18,7 @@
 * node->secure
 * add new methods to plugins
 * add new plugin events
+* after install, migrate legacy plugin's settings to the new ones
 
 * menuitem->params? osmap.php:101
 * mergecomponent params?
