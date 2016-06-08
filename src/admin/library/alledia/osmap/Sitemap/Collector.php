@@ -65,6 +65,21 @@ class Collector
     protected $counter = 0;
 
     /**
+     * The items with custom settings
+     *
+     * @var array
+     */
+    protected $itemsSettings;
+
+    /**
+     *
+     */
+    protected $tmpItemDefaultSettings = array(
+        'changefreq' => 'weekly',
+        'priority'   => '0.5'
+    );
+
+    /**
      * The constructor
      */
     public function __construct($sitemap)
@@ -98,6 +113,11 @@ class Collector
                     if ($this->itemIsBlackListed($item)) {
                         continue;
                     }
+
+                    // Store the menu settings to use in the submitItem called
+                    // by callbacks
+                    $this->tmpItemDefaultSettings['changefreq'] = $menu->changefreq;
+                    $this->tmpItemDefaultSettings['priority']   = $menu->priority;
 
                     // Submit the item and prepare it calling the plugins
                     $this->submitItem($item, $callback, true);
@@ -146,6 +166,8 @@ class Collector
             $this->callPluginsPreparingTheItem($item);
         }
 
+        $this->setItemCustomSettings($item);
+
         // Check if the item was set to be ignored, if not, send to the callback
         if (!(bool)$item->ignore) {
             ++$this->counter;
@@ -177,8 +199,8 @@ class Collector
                 array(
                     'mt.title AS ' . $db->quoteName('name'),
                     'mt.menutype',
-                    'osm.priority',
                     'osm.changefreq',
+                    'osm.priority',
                     'osm.ordering'
                 )
             )
@@ -393,5 +415,64 @@ class Collector
     public function printNode($node)
     {
         return $this->submitItem($node, $this->printNodeCallback);
+    }
+
+    /**
+     * This method gets the settings for all items which have custom settings.
+     *
+     * @return array;
+     */
+    protected function getItemsSettings()
+    {
+        if (empty($this->itemsSettings)) {
+            $db = Factory::getContainer()->db;
+
+            $query = $db->getQuery(true)
+                ->select('*')
+                ->from('#__osmap_items_settings')
+                ->where('sitemap_id = ' . $db->quote($this->sitemap->id));
+
+            $this->itemsSettings = $db->setQuery($query)->loadAssocList('uid');
+        }
+
+        return $this->itemsSettings;
+    }
+
+    /**
+     * Gets the item custom settings if set. If not set, returns false.
+     *
+     * @param string $uid
+     *
+     * @return mix
+     */
+    public function getItemCustomSettings($uid)
+    {
+        if (isset($this->itemsSettings[$uid])) {
+            return $this->itemsSettings[$uid];
+        }
+
+        return false;
+    }
+
+    /**
+     * Sets the item's custom settings if exists. If no custom settings are
+     * found and is a menu item, use the menu's settings. If is s subitem
+     * (from plugins), we consider it already set the respective settings. But
+     * if there is a custom setting for the item, we use that overriding what
+     * was set in the plugin.
+     */
+    public function setItemCustomSettings($item)
+    {
+        // Check if the menu item has custom settings. If not, use the values from the menu
+        if ($settings = $this->getItemCustomSettings($item->uid)) {
+            $item->changefreq = $settings->changefreq;
+            $item->priority   = is_float($settings->priority) ? $settings->priority : $settings->priority / 10;
+            $item->published  = (bool)$settings->published;
+        } else {
+            if ($item->isMenuItem) {
+                $item->changefreq = $this->tmpItemDefaultSettings['changefreq'];
+                $item->priority   = $this->tmpItemDefaultSettings['priority'];
+            }
+        }
     }
 }

@@ -140,10 +140,11 @@ class Item extends \JObject
         $this->extractOptionFromLink();
         $this->prepareParams();
         $this->setModificationDate();
+        $this->setLink();
         $this->setFullLink();
 
         if ($this->isInternal) {
-            $this->sanitizeLink();
+            $this->sanitizeFullLink();
         }
 
         /*
@@ -214,11 +215,25 @@ class Item extends \JObject
     }
 
     /**
+     * Set the link in special cases, like alias, where the link doesn't have
+     * the correct related menu id.
+     *
+     * @return void
+     */
+    protected function setLink()
+    {
+        // If is an alias, use the Itemid stored in the parameters to get the correct url
+        if ($this->type === 'alias') {
+            $this->link = 'index.php?Itemid=' . $this->params->get('aliasoptions');
+        }
+    }
+
+    /**
      * Sanitize the link removing double slashes and trailing slash
      *
      * @return void
      */
-    protected function sanitizeLink()
+    protected function sanitizeFullLink()
     {
         // Remove double slashes
         $this->fullLink = preg_replace('#([^:])(/{2,})#', '$1/', $this->fullLink);
@@ -258,7 +273,8 @@ class Item extends \JObject
 
         // If is an alias, use the Itemid stored in the parameters to get the correct url
         if ($this->type === 'alias') {
-            $this->fullLink = 'index.php?Itemid=' . $this->params->get('aliasoptions');
+            // We cosider the link already have the item id, set by the setLink method
+            $this->fullLink = $this->link;
         }
 
         // If is a menu item but not an alias, force to use the current menu's item id

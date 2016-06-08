@@ -66,7 +66,19 @@ JFactory::getDocument()->addStyleSheet($this->baseurl . '/../media/jui/css/icomo
                                         <?php endif; ?>
                                     </div>
                                 </td>
-                                <td><?php echo $item->fullLink; ?></td>
+                                <td>
+                                    <a
+                                        href="<?php echo $item->fullLink; ?>"
+                                        target="_blank"
+                                        title="<?php echo $item->link; ?>">
+
+                                        <span class="icon-new-tab"></span>
+                                        <?php echo $item->fullLink; ?>
+                                    </a>
+                                    <div class="small silver">
+                                        UID: <?php echo $item->uid; ?>
+                                    </div>
+                                </td>
                                 <td><?php echo isset($item->name) ? $item->name : ''; ?></td>
                                 <td class="center"><?php echo $item->priority; ?></td>
                                 <td class="center"><?php echo $item->changefreq; ?></td>
@@ -79,3 +91,4 @@ JFactory::getDocument()->addStyleSheet($this->baseurl . '/../media/jui/css/icomo
         </div>
     </div>
 </div>
+
