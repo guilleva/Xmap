@@ -3,9 +3,10 @@
 ## Restore:
 
 * sitemap edit (in admin - acl)
-* robots param checking
 * custom settings per sitemap node
 * publish/unpublish nodes
+
+* robots param checking
 * exclude external links? add params to control that
 * modification date
 * levels in the HTML sitemap
