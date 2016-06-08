@@ -39,34 +39,13 @@ class OSMapViewSitemap extends OSMap\View\Admin
 
         $this->setToolBar();
 
-        // Get the sitemap items, if not a new sitemap
-        $this->sitemapItems = array();
-        if (!empty($this->item->id)) {
-            $sitemap = OSMap\Factory::getSitemap($this->item->id, 'standard');
-            $sitemap->traverse(array($this, 'appendSitemapItem'));
-        }
-
         parent::display($tpl);
-    }
-
-    /**
-     * This method is called while traversing the sitemap items tree, and is
-     * used to append the found item to the sitemapItems attribute, which will
-     * be used in the view.
-     *
-     * @param object $item
-     *
-     * @result void
-     */
-    public function appendSitemapItem($item)
-    {
-        $this->sitemapItems[] = $item;
     }
 
     protected function setToolBar($addDivider = true)
     {
         $isNew = ($this->item->id == 0);
-        OSMap\Factory::getApplication()->input->set('hidemainmenu', false);
+        OSMap\Factory::getApplication()->input->set('hidemainmenu', true);
 
         $title = 'COM_OSMAP_PAGE_VIEW_SITEMAP_' . ($isNew ? 'ADD' : 'EDIT');
         $this->setTitle($title);

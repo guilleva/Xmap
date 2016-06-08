@@ -64,10 +64,6 @@ JHtml::stylesheet('media/com_osmap/css/admin.css');
             </div>
         <?php echo JHtml::_('bootstrap.endTab'); ?>
 
-        <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'items', JText::_('COM_OSMAP_SITEMAP_ITEMS', true)); ?>
-        <?php echo $this->loadTemplate('items'); ?>
-        <?php echo JHtml::_('bootstrap.endTab'); ?>
-
         <?php echo JHtml::_('bootstrap.endTabSet'); ?>
     </div>
 

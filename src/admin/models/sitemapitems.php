@@ -12,14 +12,10 @@ use Alledia\OSMap;
 defined('_JEXEC') or die();
 
 
-class OSMapControllerSitemaps extends OSMap\Controller\Admin
+class OSMapModelSitemapItems extends JModelLegacy
 {
-    protected $text_prefix = 'COM_SIMPLERENEW_SITEMAP';
-
-    public function editItems()
+    public function getTable($name = '', $prefix = 'Table', $options = array())
     {
-        $id = OSMap\Factory::getApplication()->input->getInt('id');
 
-        $this->redirect('index.php?option=com_osmap&view=sitemapitems&id=' . $id);
     }
 }

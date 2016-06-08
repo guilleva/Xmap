@@ -110,6 +110,12 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                         <a href="<?php echo JRoute::_('index.php?option=com_osmap&task=sitemap.edit&id=' . $item->id);?>">
                             <?php echo $this->escape($item->name); ?>
                         </a>
+                        &nbsp;
+                        <em>
+                            (<a href="<?php echo JRoute::_('index.php?option=com_osmap&view=sitemapitems&id=' . $item->id);?>">
+                                <?php echo JText::_('COM_OSMAP_EDIT_ITEMS'); ?>
+                            </a>)
+                        </em>
                     </td>
 
                     <td class="center osmap-links">
