@@ -17,6 +17,7 @@
 
     <languages folder="language">
         <language tag="en-GB">en-GB/en-GB.plg_osmap_joomla.ini</language>
+        <language tag="en-GB">en-GB/en-GB.plg_osmap_joomla.sys.ini</language>
     </languages>
 
     <config>
