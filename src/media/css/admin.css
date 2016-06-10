@@ -33,6 +33,32 @@
     color: silver;
 }
 
+#itemList .sitemapitem.selected td {
+    background-color: #dbdbdb !important;
+}
+
+#itemList .sitemapitem-published,
+#itemList .sitemapitem-priority,
+#itemList .sitemapitem-changefreq {
+    cursor: pointer;
+}
+
+#itemList .sitemapitem select {
+    margin: 0;
+}
+
+#itemList .sitemapitem-priority select {
+    width: 60px;
+}
+
+#itemList .sitemapitem-changefreq select {
+    width: 80px;
+}
+
+#itemList .updated {
+    color: #f00;
+}
+
 ul.ul_sortable {
     list-style:none;
     margin:0;

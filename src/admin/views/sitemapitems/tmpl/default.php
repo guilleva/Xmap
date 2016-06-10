@@ -61,17 +61,17 @@ JHtml::stylesheet('media/jui/css/icomoon.css');
                         <tbody>
                             <?php $i = 0; ?>
                             <?php foreach ($this->sitemapItems as $item) : ?>
-                                <tr class="row<?php echo $i; ?>">
+                                <tr class="sitemapitem row<?php echo $i; ?>">
                                     <td class="center">
-                                        <div class="btn-group">
-                                            <?php if ($item->published) : ?>
-                                                <span class="icon-publish"></span>
-                                            <?php else : ?>
-                                                <span class="icon-unpublish"></span>
-                                            <?php endif; ?>
+                                        <div class="sitemapitem-published"
+                                            data-uid="<?php echo $item->uid; ?>"
+                                            data-original="<?php echo $item->published ? '1' : '0'; ?>"
+                                            data-value="<?php echo $item->published ? '1' : '0'; ?>">
+
+                                            <span class="icon-<?php echo $item->published ? 'publish' : 'unpublish'; ?>"></span>
                                         </div>
                                     </td>
-                                    <td>
+                                    <td class="sitemapitem-link">
                                         <a
                                             href="<?php echo $item->fullLink; ?>"
                                             target="_blank"
@@ -80,13 +80,28 @@ JHtml::stylesheet('media/jui/css/icomoon.css');
                                             <span class="icon-new-tab"></span>
                                             <?php echo $item->fullLink; ?>
                                         </a>
-                                        <div class="small silver">
-                                            UID: <?php echo $item->uid; ?>
+                                    </td>
+                                    <td class="sitemapitem-name">
+                                        <?php echo isset($item->name) ? $item->name : ''; ?>
+                                    </td>
+                                    <td class="center">
+                                        <div class="sitemapitem-priority"
+                                            data-uid="<?php echo $item->uid; ?>"
+                                            data-original="<?php echo $item->priority; ?>"
+                                            data-value="<?php echo $item->priority; ?>">
+
+                                            <?php echo $item->priority; ?>
                                         </div>
                                     </td>
-                                    <td><?php echo isset($item->name) ? $item->name : ''; ?></td>
-                                    <td class="center"><?php echo $item->priority; ?></td>
-                                    <td class="center"><?php echo $item->changefreq; ?></td>
+                                    <td class="center">
+                                        <div class="sitemapitem-changefreq"
+                                            data-uid="<?php echo $item->uid; ?>"
+                                            data-original="<?php echo $item->changefreq; ?>"
+                                            data-value="<?php echo $item->changefreq; ?>">
+
+                                            <?php echo JText::_('COM_OSMAP_' . strtoupper($item->changefreq)); ?>
+                                        </div>
+                                    </td>
                                 </tr>
                                 <?php $i++; ?>
                             <?php endforeach; ?>
@@ -99,6 +114,107 @@ JHtml::stylesheet('media/jui/css/icomoon.css');
 
     <input type="hidden" id="menus_ordering" name="jform[menus_ordering]" value=""/>
     <input type="hidden" name="task" value=""/>
+    <input type="hidden" name="update-data" value=""/>
     <?php echo JHtml::_('form.token'); ?>
 </form>
 
+<script>
+;(function($) {
+    $(function() {
+        $('#itemList .sitemapitem').hover(
+            function(event) {
+                $this = $(this);
+
+                // Remove the selected class from the last item
+                $('#itemList .selected').removeClass('selected');
+
+                // Add the selected class to highlight the row and fields
+                $this.addClass('selected');
+            }
+        );
+
+        // Add the event for the publish status elements
+        $('#itemList .sitemapitem-published').click(
+            function(event) {
+                var $this = $(this),
+                    newValue  = $this.data('value') == 1 ? 0 : 1,
+                    spanClass = newValue == 1 ? 'publish' : 'unpublish',
+                    span = $this.find('span');
+
+                $this.data('value', newValue);
+
+                $(this).parents('.sitemapitem').addClass('updated');
+
+                span.attr('class', '');
+                span.addClass('icon-' + spanClass);
+            }
+        );
+
+        // Add the event for the priority elements
+        $('#itemList .sitemapitem-priority').click(
+            function(event) {
+                $this = $(this);
+
+                if (event.toElement.tagName != 'SELECT') {
+                    $input = $('<select>');
+                    $opt01 = $('<option>').attr('value', '0.1').text('0.1').appendTo($input);
+                    $opt02 = $('<option>').attr('value', '0.2').text('0.2').appendTo($input);
+                    $opt03 = $('<option>').attr('value', '0.3').text('0.3').appendTo($input);
+                    $opt04 = $('<option>').attr('value', '0.4').text('0.4').appendTo($input);
+                    $opt05 = $('<option>').attr('value', '0.5').text('0.5').appendTo($input);
+                    $opt06 = $('<option>').attr('value', '0.6').text('0.6').appendTo($input);
+                    $opt07 = $('<option>').attr('value', '0.7').text('0.7').appendTo($input);
+                    $opt08 = $('<option>').attr('value', '0.8').text('0.8').appendTo($input);
+                    $opt09 = $('<option>').attr('value', '0.9').text('0.9').appendTo($input);
+                    $opt10 = $('<option>').attr('value', '1.0').text('1.0').appendTo($input);
+
+                    $input.val($this.data('value'));
+
+                    $this.html('');
+                    $this.append($input);
+
+                    $input.change(
+                        function(event) {
+                            $(this).parent().data('value', $(this).val());
+                            $(this).parents('.sitemapitem').addClass('updated');
+
+                            $(this).parent().html($(this).parent().data('value'));
+                        }
+                    );
+                }
+            }
+        );
+
+        // Add the event for the changefreq elements
+        $('#itemList .sitemapitem-changefreq').click(
+            function(event) {
+                $this = $(this);
+
+                if (event.toElement.tagName != 'SELECT') {
+                    $input = $('<select>');
+                    $opt01 = $('<option>').attr('value', 'hourly').text('<?php echo JText::_('COM_OSMAP_HOURLY'); ?>').appendTo($input);
+                    $opt02 = $('<option>').attr('value', 'daily').text('<?php echo JText::_('COM_OSMAP_DAILY'); ?>').appendTo($input);
+                    $opt03 = $('<option>').attr('value', 'weekly').text('<?php echo JText::_('COM_OSMAP_WEEKLY'); ?>').appendTo($input);
+                    $opt04 = $('<option>').attr('value', 'monthly').text('<?php echo JText::_('COM_OSMAP_MONTHLY'); ?>').appendTo($input);
+                    $opt05 = $('<option>').attr('value', 'yearly').text('<?php echo JText::_('COM_OSMAP_YEARLY'); ?>').appendTo($input);
+                    $opt06 = $('<option>').attr('value', 'never').text('<?php echo JText::_('COM_OSMAP_NEVER'); ?>').appendTo($input);
+
+                    $input.val($this.data('value'));
+
+                    $this.html('');
+                    $this.append($input);
+
+                    $input.change(
+                        function(event) {
+                            console.log(event);
+                            $(this).parent().data('value', $(this).val());
+                            $(this).parents('.sitemapitem').addClass('updated');
+                            $(this).parent().html($(this).find('option:selected').text());
+                        }
+                    );
+                }
+            }
+        );
+    });
+})(jQuery);
+</script>
