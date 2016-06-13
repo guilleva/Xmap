@@ -17,7 +17,7 @@ JHtml::_('formbehavior.chosen', 'select');
 
 JHtml::stylesheet('media/com_osmap/css/admin.css');
 ?>
-<script type="text/javascript">
+<script>
     ;(function(Joomla, document, $) {
         Joomla.submitbutton = function (task) {
             if (task == 'sitemap.cancel' || document.formvalidator.isValid(document.id('item-form'))) {
