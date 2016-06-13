@@ -265,10 +265,11 @@ abstract class Helper
      *
      * @param string $text
      * @param string $baseLink
+     * @param string $uid
      *
      * @return array
      */
-    public static function getPagebreaks($text, $baseLink)
+    public static function getPagebreaks($text, $baseLink, $uid = '')
     {
         $matches = $subnodes = array();
 
@@ -293,6 +294,7 @@ abstract class Helper
 
                     $subnode = new stdclass();
                     $subnode->name       = $title;
+                    $subnode->uid        = $uid . '.' . ($i - 1);
                     $subnode->expandible = false;
                     $subnode->link       = $link;
 

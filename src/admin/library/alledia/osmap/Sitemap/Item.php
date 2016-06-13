@@ -175,7 +175,9 @@ class Item extends \JObject
      */
     public function calculateUID()
     {
-        $this->set('uid', md5($this->sitemap->id . ':' . $this->fullLink));
+        if (empty($this->uid)) {
+            $this->set('uid', md5($this->sitemap->id . ':' . $this->fullLink));
+        }
     }
 
     /**

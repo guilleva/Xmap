@@ -111,6 +111,9 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
                             return false;
                         }
                     }
+
+                    // Set the node UID
+                    $node->uid = 'joomla.category.' . $id;
                 }
 
                 $node->expandible = true;
@@ -137,6 +140,9 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
                 $db->setQuery($query);
 
                 if (($row = $db->loadObject()) != null) {
+                    // Set the node UID
+                    $node->uid = 'joomla.article.' . $id;
+
                     // Check if we have a modification date
                     if (!OSMap\Helper::isEmptyDate($row->modified)) {
                         $node->modified = $row->modified;
@@ -357,6 +363,9 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
                         $row->modified = $row->created;
                     }
 
+                    // // Set the node UID
+                    $row->uid = 'joomla.article.' . $id;
+
                     // if (OSMAP_LICENSE === 'pro') {
                     //     $content = new Alledia\OSMap\Pro\Joomla\Item($row);
                     //     if (!$content->isVisibleForRobots()) {
@@ -367,7 +376,7 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
                     $parent->slug = $row->alias ? ($id . ':' . $row->alias) : $id;
                     $parent->link = ContentHelperRoute::getArticleRoute($parent->slug, $row->catid);
 
-                    $subnodes = OSMap\Helper::getPagebreaks($row->introtext.$row->fulltext, $parent->link);
+                    $subnodes = OSMap\Helper::getPagebreaks($row->introtext.$row->fulltext, $parent->link, $row->uid);
                     self::printNodes($osmap, $parent, $params, $subnodes);
                 }
         }
@@ -425,6 +434,7 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
 
                     $node = new stdClass();
                     $node->id          = $parent->id;
+                    $node->uid         = 'joomla.category.' . $item->id;
                     $node->browserNav  = $parent->browserNav;
                     $node->priority    = $params['cat_priority'];
                     $node->changefreq  = $params['cat_changefreq'];
@@ -548,6 +558,7 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
 
                 $node = new stdClass();
                 $node->id          = $parent->id;
+                $node->uid         = 'joomla.article.' . $item->id;
                 $node->browserNav  = $parent->browserNav;
                 $node->priority    = $params['art_priority'];
                 $node->changefreq  = $params['art_changefreq'];
@@ -608,7 +619,7 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
         foreach ($subnodes as $subnode) {
             $i++;
 
-            $subnode->id         = $parent->id;
+            // $subnode->id         = $parent->id;
             $subnode->browserNav = $parent->browserNav;
             $subnode->priority   = $params['art_priority'];
             $subnode->changefreq = $params['art_changefreq'];
