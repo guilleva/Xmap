@@ -47,7 +47,35 @@ class OSMapControllerSitemapItems extends OSMap\Controller\Form
 
     public function save($key = NULL, $urlVar = NULL)
     {
-        // parent::save();
+        // Check for request forgeries.
+        JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
+        $app = OSMap\Factory::getApplication();
+
+        $sitemapId  = $app->input->getInt('id');
+        $updateData = $app->input->getRaw('update-data');
+
+        $model = $this->getModel();
+
+        if (!empty($updateData)) {
+            $updateData = json_decode($updateData, true);
+
+            if (!empty($updateData) && is_array($updateData)) {
+                foreach ($updateData as $data) {
+                    $row = $model->getTable();
+                    $row->load(
+                        array(
+                            'sitemap_id' => $sitemapId,
+                            'uid'        => $data->uid
+                        )
+                    );
+
+                    $data['sitemap_id'] = $sitemapId;
+
+                    $row->save($data);
+                }
+            }
+        }
 
         $this->setRedirect(JRoute::_('index.php?option=com_osmap&view=sitemaps'));
     }

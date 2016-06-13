@@ -14,8 +14,8 @@ defined('_JEXEC') or die();
 
 class OSMapModelSitemapItems extends JModelLegacy
 {
-    public function getTable($name = '', $prefix = 'Table', $options = array())
+    public function getTable($name = 'SitemapItems', $prefix = 'OSMapTable', $options = array())
     {
-
+        return JTable::getInstance($name, $prefix, $options);
     }
 }

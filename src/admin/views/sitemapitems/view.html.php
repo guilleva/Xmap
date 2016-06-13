@@ -82,10 +82,10 @@ class OSMapViewSitemapItems extends OSMap\View\Admin
     {
         $app = OSMap\Factory::getApplication();
 
-        $sitemapId = $app->input->getInt('id', 0);
+        $this->id = $app->input->getInt('id', 0);
         $this->sitemap = null;
-        if (!empty($sitemapId)) {
-            $this->sitemap = OSMap\Factory::getSitemap($sitemapId, 'standard');
+        if (!empty($this->id)) {
+            $this->sitemap = OSMap\Factory::getSitemap($this->id, 'standard');
             $this->sitemap->traverse(array($this, 'appendSitemapItem'));
         }
     }

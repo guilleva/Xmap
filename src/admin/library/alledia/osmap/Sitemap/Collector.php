@@ -106,6 +106,10 @@ class Collector
         $this->counter = 0;
 
         if (!empty($menus)) {
+
+            // Get the custom settings from db for the items
+            $this->getItemsSettings();
+
             foreach ($menus as $menu) {
                 $items = $this->getMenuItems($menu);
 
@@ -211,7 +215,7 @@ class Collector
 
         // Check for a database error
         if ($db->getErrorNum()) {
-            throw new Exception($db->getErrorMsg(), 021);
+            throw new \Exception($db->getErrorMsg(), 021);
         }
 
         return $list;
@@ -424,7 +428,7 @@ class Collector
     protected function getItemsSettings()
     {
         if (empty($this->itemsSettings)) {
-            $db = Factory::getContainer()->db;
+            $db = OSMap\Factory::getContainer()->db;
 
             $query = $db->getQuery(true)
                 ->select('*')
@@ -464,9 +468,9 @@ class Collector
     {
         // Check if the menu item has custom settings. If not, use the values from the menu
         if ($settings = $this->getItemCustomSettings($item->uid)) {
-            $item->changefreq = $settings->changefreq;
-            $item->priority   = is_float($settings->priority) ? $settings->priority : $settings->priority / 10;
-            $item->published  = (bool)$settings->published;
+            $item->changefreq = $settings['changefreq'];
+            $item->priority   = is_float($settings['priority']) ? $settings['priority'] : $settings['priority'] / 10;
+            $item->published  = (bool)$settings['published'];
         } else {
             if ($item->isMenuItem) {
                 $item->changefreq = $this->tmpItemDefaultSettings['changefreq'];
