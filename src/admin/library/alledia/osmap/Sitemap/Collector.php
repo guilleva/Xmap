@@ -153,30 +153,28 @@ class Collector
      */
     public function submitItem(&$item, $callback, $prepareItem = false)
     {
-        $result = true;
-
         // Converts to an Item instance, setting internal attributes
         $item = new Item($item, $this->sitemap);
-
-        // Verify if the item's link was already listed
-        $this->checkDuplicatedUIDToIgnore($item);
 
         if ($prepareItem) {
             // Call the plugins to prepare the item
             $this->callPluginsPreparingTheItem($item);
         }
 
-        $this->setItemCustomSettings($item);
+        // Verify if the item's link was already listed
+        $this->checkDuplicatedUIDToIgnore($item);
 
-        // Check if the item was set to be ignored, if not, send to the callback
-        if (!(bool)$item->ignore) {
-            ++$this->counter;
-
-            // Call the given callback function
-            $result = (bool)$callback($item);
+        // Ignores the item if the flag is true
+        if ($item->ignore) {
+            return true;
         }
 
-        return $result;
+        $this->setItemCustomSettings($item);
+
+        ++$this->counter;
+
+        // Call the given callback function
+        return (bool)$callback($item);
     }
 
     /**

@@ -171,11 +171,13 @@ class Item extends \JObject
      * Calculate a hash based on the link, to avoid duplicated links. It will
      * set the new UID to the item.
      *
+     * @param bool $force
+     *
      * @return void
      */
-    public function calculateUID()
+    public function calculateUID($force = false)
     {
-        if (empty($this->uid)) {
+        if (empty($this->uid) || $force) {
             $this->set('uid', md5($this->sitemap->id . ':' . $this->fullLink));
         }
     }
