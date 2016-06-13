@@ -114,13 +114,13 @@ class Collector
                         continue;
                     }
 
-                    // Store the menu settings to use in the submitItem called
+                    // Store the menu settings to use in the submitItemToCallback called
                     // by callbacks
                     $this->tmpItemDefaultSettings['changefreq'] = $menu->changefreq;
                     $this->tmpItemDefaultSettings['priority']   = $menu->priority;
 
                     // Submit the item and prepare it calling the plugins
-                    $this->submitItem($item, $callback, true);
+                    $this->submitItemToCallback($item, $callback, true);
 
                     // Internal items can trigger plugins to grab more items
                     if ($item->isInternal) {
@@ -151,7 +151,7 @@ class Collector
      *
      * @return bool
      */
-    public function submitItem(&$item, $callback, $prepareItem = false)
+    public function submitItemToCallback(&$item, $callback, $prepareItem = false)
     {
         // Converts to an Item instance, setting internal attributes
         $item = new Item($item, $this->sitemap);
@@ -412,7 +412,7 @@ class Collector
      */
     public function printNode($node)
     {
-        return $this->submitItem($node, $this->printNodeCallback);
+        return $this->submitItemToCallback($node, $this->printNodeCallback);
     }
 
     /**
