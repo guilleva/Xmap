@@ -33,6 +33,10 @@
     color: silver;
 }
 
+#itemList .sitemapitem td {
+    vertical-align: middle;
+}
+
 #itemList .sitemapitem.selected td {
     background-color: #dbdbdb !important;
 }
