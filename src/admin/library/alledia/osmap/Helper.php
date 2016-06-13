@@ -333,4 +333,24 @@ abstract class Helper
 
         return in_array($date, $invalidDates);
     }
+
+    /**
+     * Returns an array or string with the authorised view levels for public or
+     * guest users. If the param $asString is true, it returns a string as CSV.
+     * If false, an array
+     *
+     * @param bool $asString
+     *
+     * @return mixed
+     */
+    public static function getAuthorisedViewLevels($asString = true)
+    {
+        $levels = (array)\JAccess::getAuthorisedViewLevels(null);
+
+        if ($asString) {
+            $levels = implode(',', $levels);
+        }
+
+        return $levels;
+    }
 }

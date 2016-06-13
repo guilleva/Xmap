@@ -206,7 +206,6 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
     {
         $db     = JFactory::getDBO();
         $app    = JFactory::getApplication();
-        $user   = JFactory::getUser();
         $result = null;
 
         $link_query = parse_url($parent->link);
@@ -305,7 +304,7 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
         $params['nullDate'] = $db->quote($db->getNullDate());
 
         $params['nowDate'] = $db->quote(JFactory::getDate()->toSql());
-        $params['groups']  = implode(',', $user->getAuthorisedViewLevels());
+        $params['groups']  = OSMap\Helper::getAuthorisedViewLevels();
 
         // Define the language filter condition for the query
         $params['language_filter'] = $app->isSite() ? $app->getLanguageFilter() : '';

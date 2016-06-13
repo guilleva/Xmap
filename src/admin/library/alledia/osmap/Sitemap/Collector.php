@@ -228,7 +228,6 @@ class Collector
     {
         $container = OSMap\Factory::getContainer();
         $db        = $container->db;
-        $user      = $container->user;
         $app       = $container->app;
         $lang      = $container->language;
 
@@ -255,8 +254,10 @@ class Collector
             ->from('#__menu AS m')
             ->join('INNER', '#__menu AS p ON (p.lft = 0)')
             ->where('m.menutype = ' . $db->quote($menu->menutype))
+            // Only published menu items
             ->where('m.published = 1')
-            ->where('m.access IN (' . implode(',', (array)$user->getAuthorisedViewLevels()) . ')')
+            // Only public/guest menu items
+            ->where('m.access IN (' . OSMap\Helper::getAuthorisedViewLevels() . ')')
             ->where('m.lft > p.lft')
             ->where('m.lft < p.rgt')
             ->order('m.lft');

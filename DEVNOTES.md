@@ -25,6 +25,7 @@
 * mergecomponent params?
 * Double check why plugin's names are not being translated
 * Remove commented memory profile code from the fetch method
+* Check all getAuthorisedViewLevels, to call OSMap\Helper::getAuthorisedViewLevels() (plugins)
 
 
 ## For Pro
