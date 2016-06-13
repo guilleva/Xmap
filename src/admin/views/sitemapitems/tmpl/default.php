@@ -61,10 +61,9 @@ JHtml::stylesheet('media/jui/css/icomoon.css');
                         <tbody>
                             <?php $i = 0; ?>
                             <?php foreach ($this->sitemapItems as $item) : ?>
-                                <tr class="sitemapitem row<?php echo $i; ?>">
+                                <tr class="sitemapitem row<?php echo $i; ?>" data-uid="<?php echo $item->uid; ?>">
                                     <td class="center">
                                         <div class="sitemapitem-published"
-                                            data-uid="<?php echo $item->uid; ?>"
                                             data-original="<?php echo $item->published ? '1' : '0'; ?>"
                                             data-value="<?php echo $item->published ? '1' : '0'; ?>">
 
@@ -86,7 +85,6 @@ JHtml::stylesheet('media/jui/css/icomoon.css');
                                     </td>
                                     <td class="center">
                                         <div class="sitemapitem-priority"
-                                            data-uid="<?php echo $item->uid; ?>"
                                             data-original="<?php echo $item->priority; ?>"
                                             data-value="<?php echo $item->priority; ?>">
 
@@ -95,7 +93,6 @@ JHtml::stylesheet('media/jui/css/icomoon.css');
                                     </td>
                                     <td class="center">
                                         <div class="sitemapitem-changefreq"
-                                            data-uid="<?php echo $item->uid; ?>"
                                             data-original="<?php echo $item->changefreq; ?>"
                                             data-value="<?php echo $item->changefreq; ?>">
 
@@ -114,22 +111,108 @@ JHtml::stylesheet('media/jui/css/icomoon.css');
 
     <input type="hidden" id="menus_ordering" name="jform[menus_ordering]" value=""/>
     <input type="hidden" name="task" value=""/>
-    <input type="hidden" name="update-data" value=""/>
+    <input type="hidden" name="id" value="<?php echo $this->id; ?>"/>
+    <input type="hidden" name="update-data" id="update-data" value=""/>
     <?php echo JHtml::_('form.token'); ?>
 </form>
 
 <script>
-;(function($) {
+;(function($, Joomla, document) {
     $(function() {
+        /**
+         * Add field to select priority of an item.
+         */
+        function createPriorityField($tr) {
+            $div = $tr.find('.sitemapitem-priority');
+
+            $input = $('<select>');
+            $opt01 = $('<option>').attr('value', '0.1').text('0.1').appendTo($input);
+            $opt02 = $('<option>').attr('value', '0.2').text('0.2').appendTo($input);
+            $opt03 = $('<option>').attr('value', '0.3').text('0.3').appendTo($input);
+            $opt04 = $('<option>').attr('value', '0.4').text('0.4').appendTo($input);
+            $opt05 = $('<option>').attr('value', '0.5').text('0.5').appendTo($input);
+            $opt06 = $('<option>').attr('value', '0.6').text('0.6').appendTo($input);
+            $opt07 = $('<option>').attr('value', '0.7').text('0.7').appendTo($input);
+            $opt08 = $('<option>').attr('value', '0.8').text('0.8').appendTo($input);
+            $opt09 = $('<option>').attr('value', '0.9').text('0.9').appendTo($input);
+            $opt10 = $('<option>').attr('value', '1.0').text('1.0').appendTo($input);
+
+            $input.val($div.data('value'));
+
+            $div.html('');
+            $div.append($input);
+
+            $input.on('change',
+                function() {
+                    $this = $(this);
+
+                    $this.parent().data('value', $this.val());
+                    $this.parents('tr').addClass('updated');
+                }
+            );
+        };
+
+        /**
+         * Remove the field for priority and add it's value as text of the
+         * parent element
+         */
+        function removePriorityField($tr) {
+            $div = $tr.find('.sitemapitem-priority');
+
+            $div.text($div.data('value'));
+        }
+
+        // Add the event for the changefreq elements
+        function createChangeFreqField($tr) {
+            $div = $tr.find('.sitemapitem-changefreq');
+
+            $input = $('<select>');
+            $opt01 = $('<option>').attr('value', 'hourly').text('<?php echo JText::_('COM_OSMAP_HOURLY'); ?>').appendTo($input);
+            $opt02 = $('<option>').attr('value', 'daily').text('<?php echo JText::_('COM_OSMAP_DAILY'); ?>').appendTo($input);
+            $opt03 = $('<option>').attr('value', 'weekly').text('<?php echo JText::_('COM_OSMAP_WEEKLY'); ?>').appendTo($input);
+            $opt04 = $('<option>').attr('value', 'monthly').text('<?php echo JText::_('COM_OSMAP_MONTHLY'); ?>').appendTo($input);
+            $opt05 = $('<option>').attr('value', 'yearly').text('<?php echo JText::_('COM_OSMAP_YEARLY'); ?>').appendTo($input);
+            $opt06 = $('<option>').attr('value', 'never').text('<?php echo JText::_('COM_OSMAP_NEVER'); ?>').appendTo($input);
+
+            $input.val($div.data('value'));
+
+            $div.html('');
+            $div.append($input);
+
+            $input.change(
+                function(event) {
+                    $this = $(this);
+
+                    $this.parent().data('value', $this.val());
+                    $this.parents('tr').addClass('updated');
+                }
+            );
+        };
+
+        function removeChangeFreqField($tr) {
+            $div = $tr.find('.sitemapitem-changefreq');
+
+            $div.text($div.find('option:selected').text());
+        };
+
+        // Adds the event for a hovered line
         $('#itemList .sitemapitem').hover(
             function(event) {
-                $this = $(this);
+                $tr = $(event.currentTarget);
+                $currentSelection = $('#itemList .selected');
 
-                // Remove the selected class from the last item
-                $('#itemList .selected').removeClass('selected');
+                if ($tr != $currentSelection) {
+                    // Remove the selected class from the last item
+                    $currentSelection.removeClass('selected');
+                    removePriorityField($currentSelection);
+                    removeChangeFreqField($currentSelection);
 
-                // Add the selected class to highlight the row and fields
-                $this.addClass('selected');
+                    // Add the selected class to highlight the row and fields
+                    $tr.addClass('selected');
+
+                    createPriorityField($tr);
+                    createChangeFreqField($tr);
+                }
             }
         );
 
@@ -143,78 +226,38 @@ JHtml::stylesheet('media/jui/css/icomoon.css');
 
                 $this.data('value', newValue);
 
-                $(this).parents('.sitemapitem').addClass('updated');
+                $this.parents('.sitemapitem').addClass('updated');
 
                 span.attr('class', '');
                 span.addClass('icon-' + spanClass);
             }
         );
 
-        // Add the event for the priority elements
-        $('#itemList .sitemapitem-priority').click(
-            function(event) {
-                $this = $(this);
+        Joomla.submitbutton = function (task) {
+            if (task === 'sitemapitems.save' || task === 'sitemapitems.apply') {
+                var $updateDataField = $('#update-data'),
+                    $updatedLines = $('.sitemapitem.updated'),
+                    data = [];
 
-                if (event.toElement.tagName != 'SELECT') {
-                    $input = $('<select>');
-                    $opt01 = $('<option>').attr('value', '0.1').text('0.1').appendTo($input);
-                    $opt02 = $('<option>').attr('value', '0.2').text('0.2').appendTo($input);
-                    $opt03 = $('<option>').attr('value', '0.3').text('0.3').appendTo($input);
-                    $opt04 = $('<option>').attr('value', '0.4').text('0.4').appendTo($input);
-                    $opt05 = $('<option>').attr('value', '0.5').text('0.5').appendTo($input);
-                    $opt06 = $('<option>').attr('value', '0.6').text('0.6').appendTo($input);
-                    $opt07 = $('<option>').attr('value', '0.7').text('0.7').appendTo($input);
-                    $opt08 = $('<option>').attr('value', '0.8').text('0.8').appendTo($input);
-                    $opt09 = $('<option>').attr('value', '0.9').text('0.9').appendTo($input);
-                    $opt10 = $('<option>').attr('value', '1.0').text('1.0').appendTo($input);
+                $updateDataField.val('');
 
-                    $input.val($this.data('value'));
+                // Grab updated values and build the post data
+                $updatedLines.each(function() {
+                    $tr = $(this);
 
-                    $this.html('');
-                    $this.append($input);
+                    data.push({
+                        'uid': $tr.data('uid'),
+                        'published': $tr.find('.sitemapitem-published').data('value'),
+                        'priority': $tr.find('.sitemapitem-priority').data('value'),
+                        'changefreq': $tr.find('.sitemapitem-changefreq').data('value')
+                    });
+                });
 
-                    $input.change(
-                        function(event) {
-                            $(this).parent().data('value', $(this).val());
-                            $(this).parents('.sitemapitem').addClass('updated');
-
-                            $(this).parent().html($(this).parent().data('value'));
-                        }
-                    );
-                }
+                $updateDataField.val(JSON.stringify(data));
             }
-        );
 
-        // Add the event for the changefreq elements
-        $('#itemList .sitemapitem-changefreq').click(
-            function(event) {
-                $this = $(this);
-
-                if (event.toElement.tagName != 'SELECT') {
-                    $input = $('<select>');
-                    $opt01 = $('<option>').attr('value', 'hourly').text('<?php echo JText::_('COM_OSMAP_HOURLY'); ?>').appendTo($input);
-                    $opt02 = $('<option>').attr('value', 'daily').text('<?php echo JText::_('COM_OSMAP_DAILY'); ?>').appendTo($input);
-                    $opt03 = $('<option>').attr('value', 'weekly').text('<?php echo JText::_('COM_OSMAP_WEEKLY'); ?>').appendTo($input);
-                    $opt04 = $('<option>').attr('value', 'monthly').text('<?php echo JText::_('COM_OSMAP_MONTHLY'); ?>').appendTo($input);
-                    $opt05 = $('<option>').attr('value', 'yearly').text('<?php echo JText::_('COM_OSMAP_YEARLY'); ?>').appendTo($input);
-                    $opt06 = $('<option>').attr('value', 'never').text('<?php echo JText::_('COM_OSMAP_NEVER'); ?>').appendTo($input);
-
-                    $input.val($this.data('value'));
-
-                    $this.html('');
-                    $this.append($input);
-
-                    $input.change(
-                        function(event) {
-                            console.log(event);
-                            $(this).parent().data('value', $(this).val());
-                            $(this).parents('.sitemapitem').addClass('updated');
-                            $(this).parent().html($(this).find('option:selected').text());
-                        }
-                    );
-                }
-            }
-        );
+            Joomla.submitform(task, document.getElementById('adminForm'));
+        };
     });
-})(jQuery);
+})(jQuery, Joomla, document);
 </script>
