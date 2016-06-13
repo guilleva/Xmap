@@ -82,6 +82,13 @@ JHtml::script('com_osmap/sitemapitems.js', false, true);
                                             <span class="icon-new-tab"></span>
                                             <?php echo $item->fullLink; ?>
                                         </a>
+
+                                        <?php if ($this->osmapParams->get('show_item_uid', 0)) : ?>
+                                            <br>
+                                            <div class="small">
+                                                <?php echo JText::_('COM_OSMAP_UID'); ?>: <?php echo $item->uid; ?>
+                                            </div>
+                                        <?php endif; ?>
                                     </td>
                                     <td class="sitemapitem-name">
                                         <?php echo isset($item->name) ? $item->name : ''; ?>

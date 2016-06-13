@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
     <fieldset
+        name="basic"
+        label="COM_OSMAP_BASIC_LABEL"
+        description="COM_OSMAP_BASIC_DESC"
+        addfieldpath="/administrator/components/com_osmap/form/fields">
+
+        <field
+            name="show_item_uid"
+            label="COM_OSMAP_OPTION_SHOW_ITEM_UID_LABEL"
+            description="COM_OSMAP_OPTION_SHOW_ITEM_UID_DESC"
+            type="list"
+            default="0">
+
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+    </fieldset>
+
+    <fieldset
         name="permissions"
         label="JCONFIG_PERMISSIONS_LABEL"
         description="JCONFIG_PERMISSIONS_DESC"

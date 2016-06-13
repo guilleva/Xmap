@@ -34,6 +34,8 @@ class OSMapViewSitemapItems extends OSMap\View\Admin
         $this->loadSitemap();
         $this->setToolBar();
 
+        $this->osmapParams = JComponentHelper::getParams('com_osmap');
+
         parent::display($tpl);
     }
 
