@@ -1,19 +1,19 @@
 ## 4.0.0 Free
 
-* Code refactored and cleaned up
-* New event onOSMapAddAdminSubmenu - allow to modify or add submenus
-* Removed J2.5 legacy code
+* Code refactored and cleaned up, keeping backward compatibility with 3rd party plugins (OSMap and XMap)
+* Removed J2.5 legacy code. J3 Only.
 * Refined UI
-* Menu selector, click anywhere to select and improved visual feedback
-* Sitemap description moved to HTML menu item
+* Menu selector, click anywhere to select. Improved a little bit the visual feedback
+* Sitemap params moved to the respectives menu items
 * Removed metadata fields from sitemap. Use the menu's metadata if needed
-* Sitemap edit form moved to the sitemap form in the admin
-* Plugins doesn't set UID anymore (will be ignored). UID is now a md5 hash of the url
-* Renamed osmap plugin: com_content -> joomlacontent
-* Removed other plugins from the package. Only support the Joomla's native content - moved to the pro package
-* In the admin, is able to see the Item UID and raw link (hovering the item)
-* In the sitemap list, the links now detect a menu and its SEF url
-* Removed option to beautify XML
-* Removed option to compact XML. It is now compacted by default
+* Sitemap edit form moved to the sitemap list in the admin
+* New sitemap items collector
+* Renamed osmap plugin: com_content -> joomla
+* Removed other plugins from the package, moving to the Pro. Only support the Joomla's native content out of the box. Still accepts the legacy plugins.
+* Added param to display the UID of items in the admin
+* Allow to see raw link hovering the item in the admin
+* In the sitemap list, the links now detect a menu and uses the SEF url, if enabled
+* Removed option to beautify and compact XML. It is now compacted by default and displayed as raw XML.
+* New event onOSMapAddAdminSubmenu - allow to modify or add submenus
 
 ## 3.3.0 Free - Last release with J2.5 support
