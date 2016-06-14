@@ -108,7 +108,9 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                                 'sitemap.'
                             );
                             ?>
-                            <a href="#" onclick="return listItemTask('cb0','sitemap.is_default')" class="btn btn-micro hasTooltip" title="" data-original-title="Toggle default status."><span class="icon-unfeatured"></span></a>
+                            <a href="#" onclick="return listItemTask('cb<?php echo $i; ?>','sitemap.setAsDefault')" class="btn btn-micro hasTooltip" title="" data-original-title="Toggle default status.">
+                                <span class="icon-<?php echo $item->is_default ? 'featured' : 'unfeatured'; ?>"></span>
+                            </a>
                         </div>
                     </td>
 

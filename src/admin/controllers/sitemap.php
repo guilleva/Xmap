@@ -30,4 +30,35 @@ class OSMapControllerSitemap extends OSMap\Controller\Form
         // Assets are being tracked, so no need to look into the category.
         return JFactory::getUser()->authorise('core.edit', 'com_osmap.sitemap.' . $recordId);
     }
+
+    /**
+     * Mark the sitemap as default
+     */
+    public function setAsDefault()
+    {
+        $cid = OSMap\Factory::getApplication()->input->get('cid', array(), 'array');
+
+        if (isset($cid[0])) {
+            // Cleanup the is_default field
+            $db = OSMap\Factory::getDbo();
+
+            $query = $db->getQuery(true)
+                ->set('is_default = 0')
+                ->update('#__osmap_sitemaps');
+            $db->setQuery($query)->execute();
+
+            // Set the sitemap as default
+            $model = $this->getModel();
+            $row   = $model->getTable();
+
+            $row->load($cid[0]);
+            $row->save(
+                array(
+                    'is_default' => true
+                )
+            );
+        }
+
+        $this->setRedirect('index.php?option=com_osmap&view=sitemaps');
+    }
 }
