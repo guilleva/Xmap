@@ -70,17 +70,16 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
     {
         $db = JFactory::getDbo();
 
-        $link_query = parse_url($node->link);
+        $linkQuery = parse_url($node->link);
 
-        if (!isset($link_query['query'])) {
+        if (!isset($linkQuery['query'])) {
             return;
         }
 
-        parse_str(html_entity_decode($link_query['query']), $link_vars);
+        parse_str(html_entity_decode($linkQuery['query']), $linkVars);
 
-        $view   = JArrayHelper::getValue($link_vars, 'view', '');
-        $layout = JArrayHelper::getValue($link_vars, 'layout', '');
-        $id     = JArrayHelper::getValue($link_vars, 'id', 0);
+        $view   = JArrayHelper::getValue($linkVars, 'view', '');
+        $id     = JArrayHelper::getValue($linkVars, 'id', 0);
 
         switch ($view) {
             case 'category':
@@ -184,10 +183,13 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
 
             case 'archive':
                 $node->expandible = true;
+
                 break;
 
             case 'featured':
                 $node->expandible = false;
+
+                break;
         }
 
         return true;
@@ -202,18 +204,17 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
     public static function getTree($osmap, $parent, &$params)
     {
         $db     = JFactory::getDBO();
-        $app    = JFactory::getApplication();
         $result = null;
 
-        $link_query = parse_url($parent->link);
+        $linkQuery = parse_url($parent->link);
 
-        if (!isset($link_query['query'])) {
+        if (!isset($linkQuery['query'])) {
             return false;
         }
 
-        parse_str(html_entity_decode($link_query['query']), $link_vars);
-        $view = JArrayHelper::getValue($link_vars, 'view', '');
-        $id   = intval(JArrayHelper::getValue($link_vars, 'id', ''));
+        parse_str(html_entity_decode($linkQuery['query']), $linkVars);
+        $view = JArrayHelper::getValue($linkVars, 'view', '');
+        $id   = intval(JArrayHelper::getValue($linkVars, 'id', ''));
 
         /*
          * Parameters Initialitation
@@ -295,18 +296,17 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
                 // if it's an article menu item, we have to check if we have to expand the
                 // article's page breaks
                 if ($paramAddPageBreaks) {
-                    $query = $db->getQuery(true);
-
-                    $query->select($db->quoteName('introtext'))
-                          ->select($db->quoteName('fulltext'))
-                          ->select($db->quoteName('alias'))
-                          ->select($db->quoteName('catid'))
-                          ->select($db->quoteName('attribs') . ' AS params')
-                          ->select($db->quoteName('metadata'))
-                          ->select($db->quoteName('modified'))
-                          ->select($db->quoteName('created'))
-                          ->from($db->quoteName('#__content'))
-                          ->where($db->quoteName('id') . '=' . (int) $id);
+                    $query = $db->getQuery(true)
+                        ->select($db->quoteName('introtext'))
+                        ->select($db->quoteName('fulltext'))
+                        ->select($db->quoteName('alias'))
+                        ->select($db->quoteName('catid'))
+                        ->select($db->quoteName('attribs') . ' AS params')
+                        ->select($db->quoteName('metadata'))
+                        ->select($db->quoteName('modified'))
+                        ->select($db->quoteName('created'))
+                        ->from($db->quoteName('#__content'))
+                        ->where($db->quoteName('id') . '=' . (int) $id);
                     $db->setQuery($query);
 
                     $row = $db->loadObject();
@@ -354,12 +354,26 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
             $where[] = 'a.access IN (' . OSMap\Helper::getAuthorisedViewLevels() . ') ';
         }
 
-        $orderby = 'a.lft';
-        $query = 'SELECT a.id, a.title, a.alias, a.access, a.path AS route, '
-               . 'a.created_time created, a.modified_time modified, params, metadata '
-               . 'FROM `#__categories` AS a '
-               . 'WHERE '. implode(' AND ', $where)
-               . ($osmap->view != 'xml' ? "\n ORDER BY " . $orderby . "" : '');
+        $query = $db->getQuery(true)
+            ->select(
+                array(
+                    'a.id',
+                    'a.title',
+                    'a.alias',
+                    'a.access',
+                    'a.path AS route',
+                    'a.created_time created',
+                    'a.modified_time modified',
+                    'params',
+                    'metadata'
+                )
+            )
+            ->from('#__categories AS a')
+            ->where($where);
+
+        if ($osmap->view != 'xml') {
+            $query->order('a.lft');
+        }
 
         $db->setQuery($query);
 
@@ -406,7 +420,7 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
 
                     if (strpos($node->link, 'Itemid=')===false) {
                         $node->itemid = $itemid;
-                        $node->link .= '&Itemid='.$itemid;
+                        $node->link   .= '&Itemid='.$itemid;
                     } else {
                         $node->itemid = $itemid;
                         $node->link   = preg_replace('/Itemid=([0-9]+)/', 'Itemid='.$itemid, $node->link);
@@ -441,9 +455,9 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
 
         // We do not do ordering for XML sitemap.
         if ($osmap->view != 'xml') {
-            $orderby = self::buildContentOrderBy($parent->params, $parent->id, $itemid);
-            //$orderby = !empty($menuparams['orderby']) ? $menuparams['orderby'] : (!empty($menuparams['orderby_sec']) ? $menuparams['orderby_sec'] : 'rdate' );
-            //$orderby = self::orderby_sec($orderby);
+            $orderBy = self::buildContentOrderBy($parent->params, $parent->id, $itemid);
+            //$orderBy = !empty($menuparams['orderby']) ? $menuparams['orderby'] : (!empty($menuparams['orderby_sec']) ? $menuparams['orderby_sec'] : 'rdate' );
+            //$orderBy = self::orderby_sec($orderBy);
         }
 
         if ($params->get('include_archived', 2)) {
@@ -460,7 +474,6 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
             $where[] = 'a.catid='.(int) $catid;
         }
 
-
         $maxArtAge = $params->get('max_art_age');
         if (!empty($maxArtAge) || $osmap->isNews) {
             $days = empty($maxArtAge) ? 2 : $maxArtAge;
@@ -475,19 +488,44 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
         $nullDate = $db->quote($db->getNullDate());
         $nowDate  = $db->quote(JFactory::getDate()->toSql());
 
-        $query = 'SELECT a.id, a.title, a.alias, a.catid, '
-               . 'a.created created, a.modified modified, attribs as params, metadata'
-               . ',a.language'
-               . (($params->get('add_images', 1) || $params->get('add_pagebreaks', 1)) ? ',a.introtext, a.fulltext ' : ' ')
-               . 'FROM #__content AS a '
-               . 'LEFT JOIN #__content_frontpage AS fp ON a.id = fp.content_id '
-               . 'WHERE ' . implode(' AND ', $where) . ' AND '
-               . '      (a.publish_up = ' . $nullDate
-               . ' OR a.publish_up <= ' . $nowDate . ') AND '
-               . '      (a.publish_down = ' . $nullDate
-               . ' OR a.publish_down >= ' . $nowDate . ') '
-               . ($osmap->view != 'xml' ? "\n ORDER BY $orderby  " : '')
-               . (!empty($params->get('max_art')) ? "\n LIMIT {$params->get('max_art')}" : '');
+        $query = $db->getQuery(true)
+            ->select(
+                array(
+                    'a.id',
+                    'a.title',
+                    'a.alias',
+                    'a.catid',
+                    'a.created created',
+                    'a.modified modified',
+                    'attribs as params',
+                    'metadata',
+                    'a.language'
+                )
+            );
+
+        if ($params->get('add_images', 1) || $params->get('add_pagebreaks', 1)) {
+            $query->select(
+                array(
+                    'a.introtext',
+                    'a.fulltext'
+                )
+            );
+        }
+
+        $query
+            ->from('#__content AS a')
+            ->join('LEFT', '#__content_frontpage AS fp ON (a.id = fp.content_id)')
+            ->where($where)
+            ->where('(a.publish_up = ' . $nullDate . ' OR a.publish_up <= ' . $nowDate . ')')
+            ->where('(a.publish_down = ' . $nullDate . ' OR a.publish_down >= ' . $nowDate . ')');
+
+        if ($osmap->view != 'xml') {
+            $query->order($orderBy);
+        }
+
+        if (!empty($params->get('max_art'))) {
+            $query->setLimit($params->get('max_art'));
+        }
 
         $db->setQuery($query);
 
@@ -495,6 +533,7 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
 
         if (count($items) > 0) {
             $osmap->changeLevel(1);
+
             foreach ($items as $item) {
 
                 if (OSMAP_LICENSE === 'pro') {
@@ -525,32 +564,34 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
                 $node->catslug = $item->catid;
                 $node->link    = ContentHelperRoute::getArticleRoute($node->slug, $node->catslug);
 
-                if (strpos($node->link, 'Itemid=')===false) {
+                if (strpos($node->link, 'Itemid=') === false) {
                     $node->itemid = $itemid;
-                    $node->link .= '&Itemid='.$parent->id;
+                    $node->link   .= '&Itemid='.$parent->id;
                 } else {
                     $node->itemid = $itemid;
-                    $node->link = preg_replace('/Itemid=([0-9]+)/', 'Itemid='.$parent->id, $node->link);
+                    $node->link   = preg_replace('/Itemid=([0-9]+)/', 'Itemid='.$parent->id, $node->link);
                 }
 
                 // Add images to the article
                 $text = @$item->introtext . @$item->fulltext;
 
                 if ($params->get('add_images', 1)) {
+                    $maxImages = $params->get('max_images', 1000);
+
                     if (OSMAP_LICENSE === 'pro') {
-                        $node->images = Alledia\OSMap\Pro\Joomla\Helper::getImages($text, $params->get('max_images', 1000));
+                        $node->images = Alledia\OSMap\Pro\Joomla\Helper::getImages($text, $maxImages);
                     } else {
-                        $node->images = OSMap\Helper::getImages($text, $params->get('max_images', 1000));
+                        $node->images = OSMap\Helper::getImages($text, $maxImages);
                     }
                 }
 
                 if ($params->get('add_pagebreaks', 1)) {
-                    $subnodes = OSMap\Helper::getPagebreaks($text, $node->link, $node->uid);
-                    $node->expandible = (count($subnodes) > 0); // This article has children
+                    $node->subnodes = OSMap\Helper::getPagebreaks($text, $node->link, $node->uid);
+                    $node->expandible = (count($node->subnodes) > 0); // This article has children
                 }
 
                 if ($osmap->printNode($node) && $node->expandible) {
-                    self::printNodes($osmap, $parent, $params, $subnodes);
+                    self::printNodes($osmap, $parent, $params, $node->subnodes);
                 }
             }
 
@@ -606,12 +647,22 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
             $menuParams =& $params;
         }
 
-        $filter_order     = $app->getUserStateFromRequest('com_content.category.list.' . $itemid . '.filter_order', 'filter_order', '', 'string');
-        $filter_order_Dir = $app->getUserStateFromRequest('com_content.category.list.' . $itemid . '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
-        $orderby = ' ';
+        $filterOrder = $app->getUserStateFromRequest(
+            'com_content.category.list.' . $itemid . '.filter_order',
+            'filter_order',
+            '',
+            'string'
+        );
+        $filterOrderDir = $app->getUserStateFromRequest(
+            'com_content.category.list.' . $itemid . '.filter_order_Dir',
+            'filter_order_Dir',
+            '',
+            'cmd'
+        );
+        $orderBy = ' ';
 
-        if ($filter_order && $filter_order_Dir) {
-            $orderby .= $filter_order . ' ' . $filter_order_Dir . ', ';
+        if ($filterOrder && $filterOrderDir) {
+            $orderBy .= $filterOrder . ' ' . $filterOrderDir . ', ';
         }
 
         $articleOrderby     = $menuParams->get('orderby_sec', 'rdate');
@@ -620,9 +671,9 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
         $secondary      = ContentHelperQuery::orderbySecondary($articleOrderby, $articleOrderDate) . ', ';
         //$primary      = ContentHelperQuery::orderbyPrimary($categoryOrderby);
 
-        //$orderby .= $primary . ' ' . $secondary . ' a.created ';
-        $orderby .=  $secondary . ' a.created ';
+        //$orderBy .= $primary . ' ' . $secondary . ' a.created ';
+        $orderBy .=  $secondary . ' a.created ';
 
-        return str_replace('m.', 'a.', $orderby);
+        return str_replace('m.', 'a.', $orderBy);
     }
 }
