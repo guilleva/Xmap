@@ -82,12 +82,6 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
         $layout = JArrayHelper::getValue($link_vars, 'layout', '');
         $id     = JArrayHelper::getValue($link_vars, 'id', 0);
 
-        //----- Set add_images param
-        $params['add_images'] = JArrayHelper::getValue($params, 'add_images', 0);
-
-        //----- Set add pagebreaks param
-        $params['add_pagebreaks'] = JArrayHelper::getValue($params, 'add_pagebreaks', 1);
-
         switch ($view) {
             case 'category':
                 if ($id) {
@@ -123,16 +117,19 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
             case 'article':
                 $node->expandible = false;
 
-                $query = $db->getQuery(true);
+                $paramAddPageBreaks = $params->get('add_pagebreaks', 1);
+                $paramAddImages     = $params->get('add_images', 1);
+                $paramMaxImages     = $params->get('max_images', 1000);
 
-                $query->select($db->quoteName('created'))
+                $query = $db->getQuery(true)
+                    ->select($db->quoteName('created'))
                     ->select($db->quoteName('modified'))
                     ->select($db->quoteName('metadata'))
                     ->select($db->quoteName('attribs'))
                     ->from($db->quoteName('#__content'))
                     ->where($db->quoteName('id') . '=' . (int) $id);
 
-                if ($params['add_pagebreaks'] || $params['add_images']) {
+                if ($paramAddPageBreaks || $paramAddImages) {
                     $query->select($db->quoteName('introtext'))
                         ->select($db->quoteName('fulltext'));
                 }
@@ -167,15 +164,15 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
                     }
 
                     $text = @$item->introtext . @$item->fulltext;
-                    if ($params['add_images']) {
+                    if ($paramAddImages) {
                         if (OSMAP_LICENSE === 'pro') {
-                            $node->images = Alledia\OSMap\Pro\Joomla\Helper::getImages($text, JArrayHelper::getValue($params, 'max_images', 1000));
+                            $node->images = Alledia\OSMap\Pro\Joomla\Helper::getImages($text, $paramMaxImages);
                         } else {
-                            $node->images = OSMap\Helper::getImages($text, JArrayHelper::getValue($params, 'max_images', 1000));
+                            $node->images = OSMap\Helper::getImages($text, $paramMaxImages);
                         }
                     }
 
-                    if ($params['add_pagebreaks']) {
+                    if ($paramAddPageBreaks) {
                         $node->subnodes   = OSMap\Helper::getPagebreaks($text, $node->link);
                         $node->expandible = (count($node->subnodes) > 0); // This article has children
                     }
@@ -218,129 +215,86 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
         $view = JArrayHelper::getValue($link_vars, 'view', '');
         $id   = intval(JArrayHelper::getValue($link_vars, 'id', ''));
 
-        /*         *`
+        /*
          * Parameters Initialitation
-         * */
-        //----- Set expand_categories param
-        $expand_categories = JArrayHelper::getValue($params, 'expand_categories', 1);
-        $expand_categories = ( $expand_categories == 1
-            || ( $expand_categories == 2 && $osmap->view == 'xml')
-            || ( $expand_categories == 3 && $osmap->view == 'html')
-            || $osmap->view == 'navigator');
-        $params['expand_categories'] = $expand_categories;
+         */
+        $paramExpandCategories = $params->get('expand_categories', 1);
+        $paramExpandFeatured   = $params->get('expand_featured', 1);
+        $paramIncludeArchived  = $params->get('include_archived', 2);
 
-        //----- Set expand_featured param
-        $expand_featured = JArrayHelper::getValue($params, 'expand_featured', 1);
-        $expand_featured = ( $expand_featured == 1
-            || ( $expand_featured == 2 && $osmap->view == 'xml')
-            || ( $expand_featured == 3 && $osmap->view == 'html')
-            || $osmap->view == 'navigator');
-        $params['expand_featured'] = $expand_featured;
+        $paramAddPageBreaks    = $params->get('add_pagebreaks', 1);
 
-        //----- Set include_archived param
-        $include_archived = JArrayHelper::getValue($params, 'include_archived', 2);
-        $include_archived = ( $include_archived == 1
-            || ( $include_archived == 2 && $osmap->view == 'xml')
-            || ( $include_archived == 3 && $osmap->view == 'html')
-            || $osmap->view == 'navigator');
-        $params['include_archived'] = $include_archived;
+        $paramCatPriority      = $params->get('cat_priority', $parent->priority);
+        $paramCatChangefreq    = $params->get('cat_changefreq', $parent->changefreq);
 
-        //----- Set show_unauth param
-        $show_unauth = JArrayHelper::getValue($params, 'show_unauth', 1);
-        $show_unauth = ( $show_unauth == 1
-            || ( $show_unauth == 2 && $osmap->view == 'xml')
-            || ( $show_unauth == 3 && $osmap->view == 'html'));
-        $params['show_unauth'] = $show_unauth;
+        if ($paramCatPriority == '-1') {
+            $paramCatPriority = $parent->priority;
+        }
+        if ($paramCatChangefreq == '-1') {
+            $paramCatChangefreq = $parent->changefreq;
+        }
+        $params->set('cat_priority', $paramCatPriority);
+        $params->set('cat_changefreq', $paramCatChangefreq);
 
-        //----- Set add_images param
-        $add_images = JArrayHelper::getValue($params, 'add_images', 0) && $osmap->isImages;
-        $add_images = ( $add_images && $osmap->view == 'xml');
-        $params['add_images'] = $add_images;
-        $params['max_images'] = JArrayHelper::getValue($params, 'max_images', 1000);
+        $paramArtPriority = $params->get('art_priority', $parent->priority);
+        $paramArtChangefreq = $params->get('art_changefreq', $parent->changefreq);
 
-        //----- Set add pagebreaks param
-        $add_pagebreaks = JArrayHelper::getValue($params, 'add_pagebreaks', 1);
-        $add_pagebreaks = ( $add_pagebreaks == 1
-            || ( $add_pagebreaks == 2 && $osmap->view == 'xml')
-            || ( $add_pagebreaks == 3 && $osmap->view == 'html')
-            || $osmap->view == 'navigator');
-        $params['add_pagebreaks'] = $add_pagebreaks;
-
-        if ($params['add_pagebreaks'] && !defined('OSMAP_PLUGIN_JOOMLA_LOADED')) {
-            define('OSMAP_PLUGIN_JOOMLA_LOADED', 1);  // Load it just once
-            $lang = JFactory::getLanguage();
-            $lang->load('plg_content_pagebreak');
+        if ($paramArtPriority == '-1') {
+            $paramArtPriority = $parent->priority;
         }
 
-        //----- Set cat_priority and cat_changefreq params
-        $priority = JArrayHelper::getValue($params, 'cat_priority', $parent->priority);
-        $changefreq = JArrayHelper::getValue($params, 'cat_changefreq', $parent->changefreq);
-        if ($priority == '-1') {
-            $priority = $parent->priority;
-        }
-        if ($changefreq == '-1') {
-            $changefreq = $parent->changefreq;
+        if ($paramArtChangefreq == '-1') {
+            $paramArtChangefreq = $parent->changefreq;
         }
 
-        $params['cat_priority'] = $priority;
-        $params['cat_changefreq'] = $changefreq;
+        $params->set('art_priority', $paramArtPriority);
+        $params->set('art_changefreq', $paramArtChangefreq);
 
-        //----- Set art_priority and art_changefreq params
-        $priority = JArrayHelper::getValue($params, 'art_priority', $parent->priority);
-        $changefreq = JArrayHelper::getValue($params, 'art_changefreq', $parent->changefreq);
-        if ($priority == '-1') {
-            $priority = $parent->priority;
+        // If enabled, loads the page break language
+        if ($paramAddPageBreaks && !defined('OSMAP_PLUGIN_JOOMLA_LOADED')) {
+            // Load it just once
+            define('OSMAP_PLUGIN_JOOMLA_LOADED', 1);
+
+            JFactory::getLanguage()->load('plg_content_pagebreak');
         }
-        if ($changefreq == '-1') {
-            $changefreq = $parent->changefreq;
-        }
-
-        $params['art_priority']   = $priority;
-        $params['art_changefreq'] = $changefreq;
-
-        $params['max_art']     = intval(JArrayHelper::getValue($params, 'max_art', 0));
-        $params['max_art_age'] = intval(JArrayHelper::getValue($params, 'max_art_age', 0));
-
-        $params['nullDate'] = $db->quote($db->getNullDate());
-
-        $params['nowDate'] = $db->quote(JFactory::getDate()->toSql());
-        $params['groups']  = OSMap\Helper::getAuthorisedViewLevels();
-
-        // Define the language filter condition for the query
-        $params['language_filter'] = $app->isSite() ? $app->getLanguageFilter() : '';
 
         switch ($view) {
             case 'category':
                 if (!$id) {
-                    $id = intval(JArrayHelper::getValue($params, 'id', 0));
+                    $id = intval($params->get('id', 0));
                 }
-                if ($params['expand_categories'] && $id) {
+
+                if ($paramExpandCategories && $id) {
                     $result = self::expandCategory($osmap, $parent, $id, $params, $parent->id);
                 }
+
                 break;
 
             case 'featured':
-                if ($params['expand_featured']) {
+                if ($paramExpandFeatured) {
                     $result = self::includeCategoryContent($osmap, $parent, 'featured', $params, $parent->id);
                 }
+
                 break;
 
             case 'categories':
-                if ($params['expand_categories']) {
+                if ($paramExpandCategories) {
                     $result = self::expandCategory($osmap, $parent, ($id ? $id : 1), $params, $parent->id);
                 }
+
                 break;
 
             case 'archive':
-                if ($params['include_archived']) {
+                if ($paramIncludeArchived) {
                     $result = self::includeCategoryContent($osmap, $parent, 'archived', $params, $parent->id);
                 }
+
                 break;
 
             case 'article':
                 // if it's an article menu item, we have to check if we have to expand the
                 // article's page breaks
-                if ($params['add_pagebreaks']) {
+                if ($paramAddPageBreaks) {
                     $query = $db->getQuery(true);
 
                     $query->select($db->quoteName('introtext'))
@@ -390,14 +344,14 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
     {
         $db = JFactory::getDBO();
 
-        $where = array('a.parent_id = ' . $catid . ' AND a.published = 1 AND a.extension=\'com_content\'');
+        $where = array(
+            'a.parent_id = ' . $catid,
+            'a.published = 1',
+            'a.extension=' . $db->quote('com_content')
+        );
 
-        if ($params['language_filter']) {
-            $where[] = 'a.language in ('.$db->quote(JFactory::getLanguage()->getTag()).','.$db->quote('*').')';
-        }
-
-        if (!$params['show_unauth']) {
-            $where[] = 'a.access IN (' . $params['groups'] . ') ';
+        if (!$params->get('show_unauth', 0)) {
+            $where[] = 'a.access IN (' . OSMap\Helper::getAuthorisedViewLevels() . ') ';
         }
 
         $orderby = 'a.lft';
@@ -412,8 +366,10 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
         $items = $db->loadObjectList();
         $curlevel++;
 
-        $node = null;
-        if ($curlevel <= $parent->params->get('maxLevel') || $parent->params->get('maxLevel') == -1) {
+        $node     = null;
+        $maxLevel = $parent->params->get('maxLevel', -1);
+
+        if ($curlevel <= $maxLevel || $maxLevel == -1) {
             if (count($items) > 0) {
                 $osmap->changeLevel(1);
                 foreach ($items as $item) {
@@ -428,8 +384,8 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
                     $node->id          = $parent->id;
                     $node->uid         = 'joomla.category.' . $item->id;
                     $node->browserNav  = $parent->browserNav;
-                    $node->priority    = $params['cat_priority'];
-                    $node->changefreq  = $params['cat_changefreq'];
+                    $node->priority    = $params->get('cat_priority');
+                    $node->changefreq  = $params->get('cat_changefreq');
                     $node->name        = $item->title;
                     $node->expandible  = true;
                     $node->secure      = $parent->secure;
@@ -457,7 +413,7 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
                     }
 
                     if ($osmap->printNode($node)) {
-                        if ($curlevel <= $parent->params->get('maxLevel') || $parent->params->get('maxLevel') == -1) {
+                        if ($curlevel <= $maxLevel || $maxLevel == -1) {
                             self::expandCategory($osmap, $parent, $item->id, $params, $node->itemid, $node, $curlevel);
                         }
                     }
@@ -490,7 +446,7 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
             //$orderby = self::orderby_sec($orderby);
         }
 
-        if ($params['include_archived']) {
+        if ($params->get('include_archived', 2)) {
             $where = array('(a.state = 1 or a.state = 2)');
         } else {
             $where = array('a.state = 1');
@@ -504,33 +460,34 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
             $where[] = 'a.catid='.(int) $catid;
         }
 
-        if ((isset($params['max_art_age']) && !empty($params['max_art_age'])) || $osmap->isNews) {
-            $days = empty($params['max_art_age']) ? 2 : $params['max_art_age'];
+
+        $maxArtAge = $params->get('max_art_age');
+        if (!empty($maxArtAge) || $osmap->isNews) {
+            $days = empty($maxArtAge) ? 2 : $maxArtAge;
             $where[] = "( a.created >= '"
                 . date('Y-m-d H:i:s', time() - $days * 86400) . "' ) ";
         }
 
-        if ($params['language_filter']) {
-            $where[] = 'a.language in ('.$db->quote(JFactory::getLanguage()->getTag()).','.$db->quote('*').')';
+        if (!$params->get('show_unauth', 0)) {
+            $where[] = 'a.access IN (' . OSMap\Helper::getAuthorisedViewLevels() . ') ';
         }
 
-        if (!$params['show_unauth']) {
-            $where[] = 'a.access IN (' . $params['groups'] . ') ';
-        }
+        $nullDate = $db->quote($db->getNullDate());
+        $nowDate  = $db->quote(JFactory::getDate()->toSql());
 
         $query = 'SELECT a.id, a.title, a.alias, a.catid, '
                . 'a.created created, a.modified modified, attribs as params, metadata'
                . ',a.language'
-               . (($params['add_images'] || $params['add_pagebreaks']) ? ',a.introtext, a.fulltext ' : ' ')
+               . (($params->get('add_images', 1) || $params->get('add_pagebreaks', 1)) ? ',a.introtext, a.fulltext ' : ' ')
                . 'FROM #__content AS a '
                . 'LEFT JOIN #__content_frontpage AS fp ON a.id = fp.content_id '
                . 'WHERE ' . implode(' AND ', $where) . ' AND '
-               . '      (a.publish_up = ' . $params['nullDate']
-               . ' OR a.publish_up <= ' . $params['nowDate'] . ') AND '
-               . '      (a.publish_down = ' . $params['nullDate']
-               . ' OR a.publish_down >= ' . $params['nowDate'] . ') '
-               . ( $osmap->view != 'xml' ? "\n ORDER BY $orderby  " : '' )
-               . ( $params['max_art'] ? "\n LIMIT {$params['max_art']}" : '');
+               . '      (a.publish_up = ' . $nullDate
+               . ' OR a.publish_up <= ' . $nowDate . ') AND '
+               . '      (a.publish_down = ' . $nullDate
+               . ' OR a.publish_down >= ' . $nowDate . ') '
+               . ($osmap->view != 'xml' ? "\n ORDER BY $orderby  " : '')
+               . (!empty($params->get('max_art')) ? "\n LIMIT {$params->get('max_art')}" : '');
 
         $db->setQuery($query);
 
@@ -552,8 +509,8 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
                 $node->id          = $parent->id;
                 $node->uid         = 'joomla.article.' . $item->id;
                 $node->browserNav  = $parent->browserNav;
-                $node->priority    = $params['art_priority'];
-                $node->changefreq  = $params['art_changefreq'];
+                $node->priority    = $params->get('art_priority');
+                $node->changefreq  = $params->get('art_changefreq');
                 $node->name        = $item->title;
                 $node->modified    = OSMap\Helper::isEmptyDate($item->modified) ? $item->created : $item->modified;
                 $node->expandible  = false;
@@ -579,15 +536,15 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
                 // Add images to the article
                 $text = @$item->introtext . @$item->fulltext;
 
-                if ($params['add_images']) {
+                if ($params->get('add_images', 1)) {
                     if (OSMAP_LICENSE === 'pro') {
-                        $node->images = Alledia\OSMap\Pro\Joomla\Helper::getImages($text, JArrayHelper::getValue($params, 'max_images', 1000));
+                        $node->images = Alledia\OSMap\Pro\Joomla\Helper::getImages($text, $params->get('max_images', 1000));
                     } else {
-                        $node->images = OSMap\Helper::getImages($text, JArrayHelper::getValue($params, 'max_images', 1000));
+                        $node->images = OSMap\Helper::getImages($text, $params->get('max_images', 1000));
                     }
                 }
 
-                if ($params['add_pagebreaks']) {
+                if ($params->get('add_pagebreaks', 1)) {
                     $subnodes = OSMap\Helper::getPagebreaks($text, $node->link);
                     $node->expandible = (count($subnodes) > 0); // This article has children
                 }
@@ -613,8 +570,8 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
 
             // $subnode->id         = $parent->id;
             $subnode->browserNav = $parent->browserNav;
-            $subnode->priority   = $params['art_priority'];
-            $subnode->changefreq = $params['art_changefreq'];
+            $subnode->priority   = $params->get('art_priority');
+            $subnode->changefreq = $params->get('art_changefreq');
             $subnode->secure     = $parent->secure;
 
             $osmap->printNode($subnode);
