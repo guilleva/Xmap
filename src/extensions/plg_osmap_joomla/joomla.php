@@ -365,13 +365,6 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
                     // // Set the node UID
                     $row->uid = 'joomla.article.' . $id;
 
-                    // if (OSMAP_LICENSE === 'pro') {
-                    //     $content = new Alledia\OSMap\Pro\Joomla\Item($row);
-                    //     if (!$content->isVisibleForRobots()) {
-                    //         return false;
-                    //     }
-                    // }
-
                     $parent->slug = $row->alias ? ($id . ':' . $row->alias) : $id;
                     $parent->link = ContentHelperRoute::getArticleRoute($parent->slug, $row->catid);
 
