@@ -131,6 +131,10 @@ abstract class Helper
      */
     protected static function checkPluginCompatibilityWithOption($plugin, $option)
     {
+        if (empty($option)) {
+            return false;
+        }
+
         $path = JPATH_PLUGINS . '/' . $plugin->folder . '/' . $plugin->element . '/' . $plugin->element . '.php';
         $compatible = false;
 
