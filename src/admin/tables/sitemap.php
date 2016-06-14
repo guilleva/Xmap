@@ -161,7 +161,10 @@ class OSMapTableSitemap extends JTable
                 // Force as default
                 $this->is_default = 1;
 
-                OSMap\Factory::getApplication()->enqueueMessage('COM_OSMAP_MSG_SITEMAP_FORCED_AS_DEFAULT', 'info');
+                OSMap\Factory::getApplication()->enqueueMessage(
+                    JText::_('COM_OSMAP_MSG_SITEMAP_FORCED_AS_DEFAULT'),
+                    'info'
+                );
             }
         }
 
