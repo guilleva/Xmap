@@ -173,7 +173,7 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
                     }
 
                     if ($paramAddPageBreaks) {
-                        $node->subnodes   = OSMap\Helper::getPagebreaks($text, $node->link);
+                        $node->subnodes   = OSMap\Helper::getPagebreaks($text, $node->link, $node->uid);
                         $node->expandible = (count($node->subnodes) > 0); // This article has children
                     }
                 } else {
@@ -545,7 +545,7 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
                 }
 
                 if ($params->get('add_pagebreaks', 1)) {
-                    $subnodes = OSMap\Helper::getPagebreaks($text, $node->link);
+                    $subnodes = OSMap\Helper::getPagebreaks($text, $node->link, $node->uid);
                     $node->expandible = (count($subnodes) > 0); // This article has children
                 }
 
