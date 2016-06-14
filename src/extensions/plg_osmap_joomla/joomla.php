@@ -93,9 +93,9 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
                             ->where($db->quoteName('id') . '=' . (int) $id);
                         $db->setQuery($query);
 
-                        if (($row = $db->loadObject()) != null) {
+                        if (($item = $db->loadObject()) != null) {
 
-                            $category = new Alledia\OSMap\Pro\Joomla\Item($row);
+                            $category = new Alledia\OSMap\Pro\Joomla\Item($item);
 
                             if (!$category->isVisibleForRobots()) {
                                 return false;
@@ -129,40 +129,44 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
                     ->where($db->quoteName('id') . '=' . (int) $id);
 
                 if ($paramAddPageBreaks || $paramAddImages) {
-                    $query->select($db->quoteName('introtext'))
-                        ->select($db->quoteName('fulltext'));
+                    $query->select($db->quoteName('introtext'));
+                    $query->select($db->quoteName('fulltext'));
                 }
 
                 $db->setQuery($query);
 
-                if (($row = $db->loadObject()) != null) {
+                if (($item = $db->loadObject()) != null) {
                     // Set the node UID
                     $node->uid = 'joomla.article.' . $id;
 
                     // Check if we have a modification date
-                    if (!OSMap\Helper::isEmptyDate($row->modified)) {
-                        $node->modified = $row->modified;
+                    if (!OSMap\Helper::isEmptyDate($item->modified)) {
+                        $node->modified = $item->modified;
                     }
 
                     // Make sure we have a modification date. If null, use the creation date
                     if (OSMap\Helper::isEmptyDate($node->modified)) {
-                        if (isset($row->createdOn)) {
-                            $node->modified = $row->createdOn;
+                        if (isset($item->createdOn)) {
+                            $node->modified = $item->createdOn;
                         } else {
-                            $node->modified = $row->created;
+                            $node->modified = $item->created;
                         }
                     }
 
-                    $row->params = $row->attribs;
+                    $item->params = $item->attribs;
 
                     if (OSMAP_LICENSE === 'pro') {
-                        $content = new Alledia\OSMap\Pro\Joomla\Item($row);
+                        $content = new Alledia\OSMap\Pro\Joomla\Item($item);
                         if (!$content->isVisibleForRobots()) {
                             return false;
                         }
                     }
 
-                    $text = @$item->introtext . @$item->fulltext;
+                    $text = '';
+                    if (isset($item->introtext) && isset($item->fulltext)) {
+                        $text = $item->introtext . $item->fulltext;
+                    }
+
                     if ($paramAddImages) {
                         if (OSMAP_LICENSE === 'pro') {
                             $node->images = Alledia\OSMap\Pro\Joomla\Helper::getImages($text, $paramMaxImages);
@@ -309,20 +313,20 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
                         ->where($db->quoteName('id') . '=' . (int) $id);
                     $db->setQuery($query);
 
-                    $row = $db->loadObject();
+                    $item = $db->loadObject();
 
                     // Make sure we have a modification date. If null, use the creation date
-                    if (OSMap\Helper::isEmptyDate($row->modified)) {
-                        $row->modified = $row->created;
+                    if (OSMap\Helper::isEmptyDate($item->modified)) {
+                        $item->modified = $item->created;
                     }
 
                     // // Set the node UID
-                    $row->uid = 'joomla.article.' . $id;
+                    $item->uid = 'joomla.article.' . $id;
 
-                    $parent->slug = $row->alias ? ($id . ':' . $row->alias) : $id;
-                    $parent->link = ContentHelperRoute::getArticleRoute($parent->slug, $row->catid);
+                    $parent->slug = $item->alias ? ($id . ':' . $item->alias) : $id;
+                    $parent->link = ContentHelperRoute::getArticleRoute($parent->slug, $item->catid);
 
-                    $subnodes = OSMap\Helper::getPagebreaks($row->introtext.$row->fulltext, $parent->link, $row->uid);
+                    $subnodes = OSMap\Helper::getPagebreaks($item->introtext.$item->fulltext, $parent->link, $item->uid);
                     self::printNodes($osmap, $parent, $params, $subnodes);
                 }
         }
@@ -573,7 +577,10 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
                 }
 
                 // Add images to the article
-                $text = @$item->introtext . @$item->fulltext;
+                $text = '';
+                if (isset($item->introtext) && isset($item->fulltext)) {
+                    $text = $item->introtext . $item->fulltext;
+                }
 
                 if ($params->get('add_images', 1)) {
                     $maxImages = $params->get('max_images', 1000);

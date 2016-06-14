@@ -121,6 +121,11 @@ class Item extends \JObject
     public $name = '';
 
     /**
+     * @var array
+     */
+    public $images = array();
+
+    /**
      * The constructor
      *
      * @param object  $item

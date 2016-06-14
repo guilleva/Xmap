@@ -11,18 +11,16 @@ defined('_JEXEC') or die();
 
 $printNodeCallback = function ($node) {
     if (!$node->ignore) {
-        $imageList = $node->getImages();
-
-        if ($imageList) {
-            return;
+        if (!isset($node->images) || empty($node->images)) {
+            return false;
         }
 
         echo '<url>';
-        echo '<loc><![CDATA[' . $node->changefreq . ']]></loc>';
+        echo '<loc><![CDATA[' . $node->fullLink . ']]></loc>';
 
-        foreach ($imageList as $image) {
+        foreach ($node->images as $image) {
             echo '<image:image>';
-            echo '<image:loc>' . $image->url . '</image:loc>';
+            echo '<image:loc>' . $image->src . '</image:loc>';
             echo '<image:title>' . $image->title . '</image:title>';
             echo '</image:image>';
         }
