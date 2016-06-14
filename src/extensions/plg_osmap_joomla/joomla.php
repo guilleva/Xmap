@@ -11,7 +11,6 @@ defined('_JEXEC') or die();
 
 require_once JPATH_SITE . '/components/com_content/helpers/route.php';
 require_once JPATH_SITE . '/components/com_content/helpers/query.php';
-require_once JPATH_SITE . '/components/com_osmap/helpers/osmap.php';
 
 /**
  * Handles standard Joomla's Content articles/categories
