@@ -154,7 +154,8 @@ class Update
                     if (!empty($menuItems)) {
                         foreach ($menuItems as $item) {
                             // Check if the menu didn't received any description
-                            if (empty($item->params->get('sitemap_description'))) {
+                            $sitemapDescription = trim($item->params->get('sitemap_description'));
+                            if (empty($sitemapDescription)) {
                                 $item->params->set('sitemap_description', $sitemap->description);
 
                                 static::updateMenuItemParams($item);
