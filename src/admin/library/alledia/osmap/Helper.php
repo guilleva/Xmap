@@ -289,10 +289,10 @@ abstract class Helper
                     } elseif (@$match['title']) {
                         $title = stripslashes($match['title']);
                     } else {
-                        $title = JText::sprintf('Page #', $i);
+                        $title = \JText::sprintf('Page #', $i);
                     }
 
-                    $subnode = new stdclass();
+                    $subnode = new \stdClass();
                     $subnode->name       = $title;
                     $subnode->uid        = $uid . '.' . ($i - 1);
                     $subnode->expandible = false;

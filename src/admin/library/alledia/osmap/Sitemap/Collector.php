@@ -80,6 +80,13 @@ class Collector
     );
 
     /**
+     * The current items level
+     *
+     * @var int
+     */
+    protected $currentLevel = 0;
+
+    /**
      * The constructor
      */
     public function __construct($sitemap)
@@ -177,6 +184,9 @@ class Collector
         if (!$item->ignore) {
             ++$this->counter;
         }
+
+        // Set the current level to the item
+        $item->level = $this->currentLevel;
 
         // Call the given callback function
         return (bool)$callback($item);
@@ -401,8 +411,8 @@ class Collector
      */
     public function changeLevel($step)
     {
-        if ($step) {
-
+        if (is_numeric($step)) {
+            $this->currentLevel += $step;
         }
 
         return true;
