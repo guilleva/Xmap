@@ -13,5 +13,7 @@
 * Removed other plugins from the package. Only support the Joomla's native content - moved to the pro package
 * In the admin, is able to see the Item UID and raw link (hovering the item)
 * In the sitemap list, the links now detect a menu and its SEF url
+* Removed option to beautify XML
+* Removed option to compact XML. It is now compacted by default
 
 ## 3.3.0 Free - Last release with J2.5 support
