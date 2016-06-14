@@ -2,13 +2,14 @@
 
 ## Restore:
 
-* plugins (backward compatibility)
-
-* exclude external links? add params to control that
-* modification date
 * levels in the HTML sitemap
 * images (inside the plugins)
 * news
+
+* exclude external links? add params to control that
+
+* modification date
+* plugins (backward compatibility)
 * db migration from older versions
 * node->secure
 * after install, migrate legacy plugin's settings to the new ones
