@@ -369,7 +369,8 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
                     'a.created_time created',
                     'a.modified_time modified',
                     'params',
-                    'metadata'
+                    'metadata',
+                    'metakey'
                 )
             )
             ->from('#__categories AS a')
@@ -399,17 +400,16 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
                     }
 
                     $node = new stdClass();
-                    $node->id          = $parent->id;
-                    $node->uid         = 'joomla.category.' . $item->id;
-                    $node->browserNav  = $parent->browserNav;
-                    $node->priority    = $params->get('cat_priority');
-                    $node->changefreq  = $params->get('cat_changefreq');
-                    $node->name        = $item->title;
-                    $node->expandible  = true;
-                    $node->secure      = $parent->secure;
-                    // TODO: Should we include category name or metakey here?
-                    // $node->keywords = $item->metakey;
-                    $node->newsItem    = 0;
+                    $node->id         = $parent->id;
+                    $node->uid        = 'joomla.category.' . $item->id;
+                    $node->browserNav = $parent->browserNav;
+                    $node->priority   = $params->get('cat_priority');
+                    $node->changefreq = $params->get('cat_changefreq');
+                    $node->name       = $item->title;
+                    $node->expandible = true;
+                    $node->secure     = $parent->secure;
+                    $node->keywords   = $item->metakey;
+                    $node->newsItem   = 0;
 
                     // For the google news we should use te publication date instead
                     // the last modification date. See
@@ -503,7 +503,8 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
                     'a.modified modified',
                     'attribs as params',
                     'metadata',
-                    'a.language'
+                    'a.language',
+                    'metakey'
                 )
             );
 
@@ -549,19 +550,18 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
                 }
 
                 $node = new stdClass();
-                $node->id          = $parent->id;
-                $node->uid         = 'joomla.article.' . $item->id;
-                $node->browserNav  = $parent->browserNav;
-                $node->priority    = $params->get('art_priority');
-                $node->changefreq  = $params->get('art_changefreq');
-                $node->name        = $item->title;
-                $node->modified    = OSMap\Helper::isEmptyDate($item->modified) ? $item->created : $item->modified;
-                $node->expandible  = false;
-                $node->secure      = $parent->secure;
-                // TODO: Should we include category name or metakey here?
-                // $node->keywords = $item->metakey;
-                $node->newsItem    = 1;
-                $node->language    = $item->language;
+                $node->id         = $parent->id;
+                $node->uid        = 'joomla.article.' . $item->id;
+                $node->browserNav = $parent->browserNav;
+                $node->priority   = $params->get('art_priority');
+                $node->changefreq = $params->get('art_changefreq');
+                $node->name       = $item->title;
+                $node->modified   = OSMap\Helper::isEmptyDate($item->modified) ? $item->created : $item->modified;
+                $node->expandible = false;
+                $node->secure     = $parent->secure;
+                $node->keywords   = $item->metakey;
+                $node->newsItem   = 1;
+                $node->language   = $item->language;
 
                 $node->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
                 //$node->catslug = $item->category_route ? ($catid . ':' . $item->category_route) : $catid;

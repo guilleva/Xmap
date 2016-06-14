@@ -19,4 +19,17 @@
                 description="COM_OSMAP_SELECT_A_SITEMAP" />
         </fieldset>
     </fields>
+
+    <!-- Add fields to the parameters object for the layout. -->
+    <fields name="params">
+        <!-- Basic options. -->
+        <fieldset name="basic"
+            label="COM_OSMAP_ATTRIBS_SITEMAP_SETTINGS_LABEL">
+            <field
+                name="news_publication_name"
+                type="text"
+                label="COM_OSMAP_NEWS_PUBLICATION_NAME_LABEL"
+                description="COM_OSMAP_NEWS_PUBLICATION_NAME_DESC" />
+        </fieldset>
+    </fields>
 </metadata>
