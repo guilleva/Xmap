@@ -29,6 +29,12 @@ JHtml::script('com_osmap/sitemapitems.js', false, true);
     <div class="row-fluid">
         <div class="span12">
             <div id="osmap-items-container">
+                <div class="osmap-loading">
+                    <span class="icon-loop spin"></span>
+                    &nbsp;
+                    <?php echo JText::_('COM_OSMAP_LOADING'); ?>
+                </div>
+
                 <?php if (empty($this->sitemapItems)) : ?>
                     <div class="alert alert-warning">
                         <?php echo JText::_('COM_OSMAP_NO_ITEMS'); ?>

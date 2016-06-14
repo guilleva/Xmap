@@ -24,6 +24,10 @@
     color: #feb123;
 }
 
+#osmap-items-container {
+    position: relative;
+}
+
 #osmap-items-container .btn-group [class^="icon-"],
 #osmap-items-container .btn-group [class*=" icon-"] {
     font-size: 14px;
@@ -101,4 +105,42 @@ ul.ul_sortable li.ui-sortable-placeholder {
     border: 4px dashed #f6f6f6 !important;
     visibility: visible !important;
     background-color: transparent !important;
+}
+
+/* Spin Animation */
+@-moz-keyframes spin {
+    from { -moz-transform: rotate(0deg); }
+    to { -moz-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+    from {transform:rotate(0deg);}
+    to {transform:rotate(360deg);}
+}
+
+.osmap-loading {
+    font-size: 20px;
+    color: #fff;
+    display: block;
+    box-sizing: border-box;
+    text-align: center;
+    padding-top: 21px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    height: 200px;
+    background: -moz-linear-gradient(top, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0) 100%);
+    background: -webkit-linear-gradient(top, rgba(0,0,0,0.35) 0%,rgba(0,0,0,0) 100%);
+    background: linear-gradient(to bottom, rgba(0,0,0,0.35) 0%,rgba(0,0,0,0) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6000000', endColorstr='#00000000',GradientType=0 );
+}
+
+.osmap-loading .spin {
+    -webkit-animation: spin 0.9s infinite linear;
+    -moz-animation: spin 0.9s infinite linear;
+    animation: spin 0.9s infinite linear;
 }

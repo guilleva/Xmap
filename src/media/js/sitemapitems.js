@@ -149,5 +149,10 @@
 
             Joomla.submitform(task, document.getElementById('adminForm'));
         };
+
+        // Removes the loading element
+        setTimeout(function() {
+            $('.osmap-loading').remove();
+        }, 1000);
     };
 })(jQuery, Joomla, document, JSON);
