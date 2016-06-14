@@ -44,6 +44,11 @@ class OSMapModelSitemaps extends JModelList
             $query->where('sitemap.is_default = ' . (int) $default);
         }
 
+        $search = $this->getState('filter.search');
+        if (!is_null($search)) {
+            $query->where('sitemap.name LIKE ' . $db->quote('%' . $search . '%'));
+        }
+
         $listOrder = $this->getState('list.ordering', 'sitemap.id');
         $listDir   = $this->getState('list.direction', 'ASC');
         $query->order($listOrder . ' ' . $listDir);
