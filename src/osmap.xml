@@ -95,13 +95,6 @@
                 group="osmap"
                 publish="true"
                 element="joomla">plg_osmap_joomla</extension>
-
-            <!-- <extension
-                type="plugin"
-                group="osmap"
-                element="demo"
-                publish="false"
-                ordering="first">plg_osmap_demo</extension> -->
         </relatedExtensions>
 
         <include>AllediaFreeDefaultFiles</include>
@@ -116,36 +109,6 @@
                 type="plugin"
                 group="xmap"
                 element="com_content">plg_xmap_com_content</extension>
-
-            <extension
-                type="plugin"
-                group="xmap"
-                element="com_k2">plg_xmap_com_k2</extension>
-
-            <extension
-                type="plugin"
-                group="xmap"
-                element="com_kunena">plg_xmap_com_kunena</extension>
-
-            <extension
-                type="plugin"
-                group="xmap"
-                element="com_mtree">plg_xmap_com_mtree</extension>
-
-            <extension
-                type="plugin"
-                group="xmap"
-                element="com_sobipro">plg_xmap_com_sobipro</extension>
-
-            <extension
-                type="plugin"
-                group="xmap"
-                element="com_virtuemart">plg_xmap_com_virtuemart</extension>
-
-            <extension
-                type="plugin"
-                group="xmap"
-                element="com_weblinks">plg_xmap_com_weblinks</extension>
         </obsolete>
     </alledia>
 </extension>
