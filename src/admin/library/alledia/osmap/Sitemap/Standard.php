@@ -100,6 +100,7 @@ class Standard implements SitemapInterface
      * passing each node as parameter.
      *
      * @param callable $callback
+     * @param bool     $updateCount
      *
      * @return void
      */

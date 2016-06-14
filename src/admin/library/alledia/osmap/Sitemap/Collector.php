@@ -127,7 +127,8 @@ class Collector
                     $this->submitItemToCallback($item, $callback, true);
 
                     // Internal items can trigger plugins to grab more items
-                    if ($item->isInternal) {
+                    // The child items are not displayed if the parent item is ignored
+                    if ($item->isInternal && !$item->ignore) {
                         // Call the plugin to get additional items related to
                         $this->callPluginsGetItemTree($item, $callback);
                     }
@@ -165,17 +166,17 @@ class Collector
             $this->callPluginsPreparingTheItem($item);
         }
 
-        // Verify if the item's link was already listed
-        $this->checkDuplicatedUIDToIgnore($item);
-
-        // Ignores the item if the flag is true
-        if ($item->ignore) {
-            return true;
+        // Verify if the item's link was already listed, if not ignored
+        if (!$item->ignore) {
+            $this->checkDuplicatedUIDToIgnore($item);
         }
 
         $this->setItemCustomSettings($item);
 
-        ++$this->counter;
+        // Ignores the item in the count if the flag is true
+        if (!$item->ignore) {
+            ++$this->counter;
+        }
 
         // Call the given callback function
         return (bool)$callback($item);
@@ -471,6 +472,10 @@ class Collector
             $item->changefreq = $settings['changefreq'];
             $item->priority   = is_float($settings['priority']) ? $settings['priority'] : $settings['priority'] / 10;
             $item->published  = (bool)$settings['published'];
+
+            if (!$item->ignore && !$item->published) {
+                $item->ignore = true;
+            }
         } else {
             if ($item->isMenuItem) {
                 $item->changefreq = $this->tmpItemDefaultSettings['changefreq'];

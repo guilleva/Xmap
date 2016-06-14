@@ -147,6 +147,10 @@ class Item extends \JObject
             $this->sanitizeFullLink();
         }
 
+        // Prepare the boolean attributes
+        $this->published = (bool)$this->published;
+        $this->ignore    = !$this->published;
+
         /*
          * Do not use a "prepare" method because we need to make sure it will
          * be calculated after the link is set.

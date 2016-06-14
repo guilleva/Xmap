@@ -10,12 +10,14 @@
 defined('_JEXEC') or die();
 
 $printNodeCallback = function ($node) {
-    echo '<url>';
-    echo '<loc><![CDATA[' . $node->fullLink . ']]></loc>';
-    echo '<lastmod>' . $node->modified . '</lastmod>';
-    echo '<changefreq>' . $node->changefreq . '</changefreq>';
-    echo '<priority>' . $node->priority . '</priority>';
-    echo '</url>';
+    if (!$node->ignore) {
+        echo '<url>';
+        echo '<loc><![CDATA[' . $node->fullLink . ']]></loc>';
+        echo '<lastmod>' . $node->modified . '</lastmod>';
+        echo '<changefreq>' . $node->changefreq . '</changefreq>';
+        echo '<priority>' . $node->priority . '</priority>';
+        echo '</url>';
+    }
 };
 
 echo '<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
