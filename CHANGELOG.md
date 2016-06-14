@@ -15,5 +15,6 @@
 * In the sitemap list, the links now detect a menu and uses the SEF url, if enabled
 * Removed option to beautify and compact XML. It is now compacted by default and displayed as raw XML.
 * New event onOSMapAddAdminSubmenu - allow to modify or add submenus
+* Table #__osmap_sitemap renamed to #__osmap_sitemaps
 
 ## 3.3.0 Free - Last release with J2.5 support
