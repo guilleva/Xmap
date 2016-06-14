@@ -330,7 +330,6 @@ class Collector
         // Call the OSMap and XMap legacy plugins, if exists
         $plugins = OSMap\Helper::getPluginsForComponent($item->option);
 
-
         if (!empty($plugins)) {
             foreach ($plugins as $plugin) {
                 $className = '\\' . $plugin->className;
