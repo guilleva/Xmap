@@ -341,7 +341,7 @@ class Collector
                     $result = $className::prepareMenuItem($item, $plugin->params);
 
                     // If a plugin doesn't return true we ignore the item and break
-                    if ($result !== true) {
+                    if ($result === false) {
                         $item->set('ignore', true);
 
                         break;
