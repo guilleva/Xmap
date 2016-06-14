@@ -10,7 +10,7 @@
 defined('_JEXEC') or die();
 
 // If debug is enabled, use text content type
-if (isset($this->params) && $this->params->get('debug', 1)) {
+if (isset($this->params) && $this->params->get('debug', 0)) {
     header('Content-type: text/plain; charset=utf-8');
 } else {
     header('Content-type: text/xml; charset=utf-8');
