@@ -14,7 +14,7 @@ defined('_JEXEC') or die();
 
 class OSMapControllerSitemaps extends OSMap\Controller\Admin
 {
-    protected $text_prefix = 'COM_SIMPLERENEW_SITEMAP';
+    protected $text_prefix = 'COM_OSMAP_SITEMAP';
 
     public function editItems()
     {

@@ -14,7 +14,7 @@ defined('_JEXEC') or die();
 require_once JPATH_COMPONENT_ADMINISTRATOR . '/include.php';
 
 // Access check
-if (!OSMap\Factory::getUser()->authorise('core.manage', 'com_simplerenew')) {
+if (!OSMap\Factory::getUser()->authorise('core.manage', 'com_osmap')) {
     throw new Exception(JText::_('JERROR_ALERTNOAUTHOR'), 404);
 }
 
