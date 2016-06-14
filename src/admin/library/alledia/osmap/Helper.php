@@ -357,4 +357,30 @@ abstract class Helper
 
         return $levels;
     }
+
+    /**
+     * Make sure the appropriate component language files are loaded
+     *
+     * @param string $option
+     * @param string $adminPath
+     * @param string $sitePath
+     *
+     * @return void
+     * @throws Exception
+     */
+    public static function loadOptionLanguage($option, $adminPath, $sitePath)
+    {
+        $app = Factory::getApplication();
+        if ($app->input->getCmd('option') != $option) {
+            switch ($app->getName()) {
+                case 'administrator':
+                    Factory::getLanguage()->load($option, $adminPath);
+                    break;
+
+                case 'site':
+                    Factory::getLanguage()->load($option, $sitePath);
+                    break;
+            }
+        }
+    }
 }

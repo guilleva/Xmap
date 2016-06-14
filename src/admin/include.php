@@ -10,6 +10,7 @@
 defined('_JEXEC') or die();
 
 use Alledia\Framework;
+use Alledia\OSMap;
 
 // Alledia Framework
 if (!defined('ALLEDIA_FRAMEWORK_LOADED')) {
@@ -41,6 +42,9 @@ if (!defined('OSMAP_LOADED')) {
 
     // Load OSMap Plugins
     JPluginHelper::importPlugin('osmap');
+
+    // Load the language files
+    OSMap\Helper::loadOptionLanguage('com_osmap', OSMAP_ADMIN_PATH, OSMAP_SITE_PATH);
 
     JTable::addIncludePath(OSMAP_ADMIN_PATH . '/tables');
     JForm::addFieldPath(OSMAP_ADMIN_PATH . '/fields');
