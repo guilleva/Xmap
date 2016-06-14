@@ -87,20 +87,22 @@
         // Adds the event for a hovered line
         $('#itemList .sitemapitem').hover(
             function(event) {
-                $tr = $(event.currentTarget);
-                $currentSelection = $('#itemList .selected');
+                if (event.target.tagName === 'TD') {
+                    $tr = $(event.currentTarget);
+                    $currentSelection = $('#itemList .selected');
 
-                if ($tr != $currentSelection) {
-                    // Remove the selected class from the last item
-                    $currentSelection.removeClass('selected');
-                    removePriorityField($currentSelection);
-                    removeChangeFreqField($currentSelection);
+                    if ($tr != $currentSelection) {
+                        // Remove the selected class from the last item
+                        $currentSelection.removeClass('selected');
+                        removePriorityField($currentSelection);
+                        removeChangeFreqField($currentSelection);
 
-                    // Add the selected class to highlight the row and fields
-                    $tr.addClass('selected');
+                        // Add the selected class to highlight the row and fields
+                        $tr.addClass('selected');
 
-                    createPriorityField($tr);
-                    createChangeFreqField($tr);
+                        createPriorityField($tr);
+                        createChangeFreqField($tr);
+                    }
                 }
             }
         );
