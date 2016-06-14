@@ -9,7 +9,12 @@
 
 defined('_JEXEC') or die();
 
-header('Content-type: text/xml; charset=utf-8');
+// If debug is enabled, use text content type
+if (isset($this->params) && $this->params->get('debug', 1)) {
+    header('Content-type: text/plain; charset=utf-8');
+} else {
+    header('Content-type: text/xml; charset=utf-8');
+}
 
 echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 

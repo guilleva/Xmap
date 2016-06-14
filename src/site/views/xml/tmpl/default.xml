@@ -24,7 +24,23 @@
     <fields name="params">
         <!-- Basic options. -->
         <fieldset name="basic"
-            label="COM_OSMAP_ATTRIBS_SITEMAP_SETTINGS_LABEL">
+            label="COM_OSMAP_FIELDSET_BASIC_LABEL">
+
+            <field
+                name="debug"
+                label="COM_OSMAP_OPTION_DEBUG_LABEL"
+                description="COM_OSMAP_OPTION_DEBUG_DESC"
+                type="list"
+                default="0">
+
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+        </fieldset>
+
+        <fieldset name="news"
+            label="COM_OSMAP_ATTRIBS_NEWS_LABEL">
+
             <field
                 name="news_publication_name"
                 type="text"
