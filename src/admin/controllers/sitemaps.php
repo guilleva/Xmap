@@ -22,4 +22,9 @@ class OSMapControllerSitemaps extends OSMap\Controller\Admin
 
         $this->redirect('index.php?option=com_osmap&view=sitemapitems&id=' . $id);
     }
+
+    public function getModel($name = 'Sitemaps', $prefix = 'OSMapModel', $config = array())
+    {
+        return parent::getModel($name, $prefix, $config);
+    }
 }

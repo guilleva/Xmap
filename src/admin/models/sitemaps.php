@@ -96,4 +96,26 @@ class OSMapModelSitemaps extends JModelList
 
         return $items;
     }
+
+    /**
+     * Method to change the published state of one or more records.
+     *
+     * @param   array    &$pks   A list of the primary keys to change.
+     * @param   integer  $value  The value of the published state.
+     *
+     * @return  boolean  True on success.
+     *
+     * @since   12.2
+     */
+    public function publish(&$pks, $value = 1)
+    {
+        $db = $this->getDbo();
+
+        $query = $db->getQuery(true)
+            ->set('published = ' . $db->quote($value))
+            ->update('#__osmap_sitemaps')
+            ->where('id IN (' . implode(',', $pks) . ')');
+
+        return $db->setQuery($query)->execute();
+    }
 }

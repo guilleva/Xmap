@@ -105,7 +105,7 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                                 'jgrid.published',
                                 $item->published,
                                 $i,
-                                'sitemap.'
+                                'sitemaps.'
                             );
                             ?>
                             <a href="#" onclick="return listItemTask('cb<?php echo $i; ?>','sitemap.setAsDefault')" class="btn btn-micro hasTooltip" title="" data-original-title="Toggle default status.">
