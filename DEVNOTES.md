@@ -2,7 +2,6 @@
 
 ## Restore:
 
-* levels in the HTML sitemap
 * images (inside the plugins)
 * news
 
