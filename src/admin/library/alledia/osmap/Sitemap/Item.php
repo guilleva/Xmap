@@ -310,12 +310,6 @@ class Item extends \JObject
             if (!preg_match('#^[^:]+://#', $this->fullLink)) {
                 $baseUri = \JUri::base();
 
-                // If in admin, removes the /administrator from the URI and fullLink
-                if (OSMap\Factory::getApplication()->isAdmin()) {
-                    $baseUri = preg_replace('#/administrator/$#', '/', $baseUri);
-                    $this->fullLink = preg_replace('#^/administrator/#', '/', $this->fullLink);
-                }
-
                 if (!substr_count($this->fullLink, $baseUri)) {
                     $this->fullLink = $baseUri . $this->fullLink;
                 }

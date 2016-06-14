@@ -61,4 +61,39 @@ class OSMapModelSitemaps extends JModelList
 
         parent::populateState('sitemap.id', 'ASC');
     }
+
+    public function getItems()
+    {
+        $items = parent::getItems();
+
+        // For each item, check if there is a menu setup to change the url
+        $db = $this->getDbo();
+
+        foreach ($items as &$item) {
+            $query = $db->getQuery(true)
+                ->select('id')
+                ->select('link')
+                ->from('#__menu')
+                ->where($db->quoteName('type') . ' = ' . $db->quote('component'))
+                ->where('published = 1')
+                ->where('link REGEXP ' . $db->quote('index\\.php\\?option=com_osmap&view=(xml|html)&id=' . $item->id));
+            $menus = $db->setQuery($query)->loadObjectList();
+
+            if (!empty($menus)) {
+                $item->menuIdList= array();
+
+                foreach ($menus as $menu) {
+                    preg_match('#view=(xml|html)#', $menu->link, $matches);
+
+                    // Check if we already found a menu for the view type
+                    if (isset($matches[1]) && !isset($item->menuIdList[$matches[1]])) {
+                        // Stores the menu id for the link
+                        $item->menuIdList[$matches[1]] = $menu->id;
+                    }
+                }
+            }
+        }
+
+        return $items;
+    }
 }
