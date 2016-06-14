@@ -39,7 +39,8 @@
         </fieldset>
 
         <fieldset name="news"
-            label="COM_OSMAP_ATTRIBS_NEWS_LABEL">
+            label="COM_OSMAP_FIELDSET_NEWS_LABEL"
+            description="COM_OSMAP_FIELDSET_NEWS_DESC">
 
             <field
                 name="news_publication_name"
