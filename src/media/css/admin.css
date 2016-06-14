@@ -39,6 +39,11 @@
 
 #itemList .sitemapitem td {
     vertical-align: middle;
+    line-height: 38px;
+}
+
+#itemList .sitemapitem.with-uid td {
+    line-height: 16px;
 }
 
 #itemList .sitemapitem.selected td {

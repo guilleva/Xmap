@@ -17,6 +17,8 @@ JHtml::stylesheet('media/com_osmap/css/admin.css');
 JHtml::stylesheet('media/jui/css/icomoon.css');
 
 JHtml::script('com_osmap/sitemapitems.js', false, true);
+
+$showItemUID = $this->osmapParams->get('show_item_uid', 0);
 ?>
 
 <form
@@ -70,7 +72,7 @@ JHtml::script('com_osmap/sitemapitems.js', false, true);
                         <tbody>
                             <?php $i = 0; ?>
                             <?php foreach ($this->sitemapItems as $item) : ?>
-                                <tr class="sitemapitem row<?php echo $i; ?>" data-uid="<?php echo $item->uid; ?>">
+                                <tr class="sitemapitem row<?php echo $i; ?> <?php echo ($showItemUID) ? 'with-uid' : ''; ?>" data-uid="<?php echo $item->uid; ?>">
                                     <td class="center">
                                         <div class="sitemapitem-published"
                                             data-original="<?php echo $item->published ? '1' : '0'; ?>"
@@ -89,7 +91,7 @@ JHtml::script('com_osmap/sitemapitems.js', false, true);
                                             <?php echo $item->fullLink; ?>
                                         </a>
 
-                                        <?php if ($this->osmapParams->get('show_item_uid', 0)) : ?>
+                                        <?php if ($showItemUID) : ?>
                                             <br>
                                             <div class="small">
                                                 <?php echo JText::_('COM_OSMAP_UID'); ?>: <?php echo $item->uid; ?>
