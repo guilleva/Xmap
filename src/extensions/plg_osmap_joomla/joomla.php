@@ -459,8 +459,6 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
         // We do not do ordering for XML sitemap.
         if ($osmap->view != 'xml') {
             $orderBy = self::buildContentOrderBy($parent->params, $parent->id, $itemid);
-            //$orderBy = !empty($menuparams['orderby']) ? $menuparams['orderby'] : (!empty($menuparams['orderby_sec']) ? $menuparams['orderby_sec'] : 'rdate' );
-            //$orderBy = self::orderby_sec($orderBy);
         }
 
         if ($params->get('include_archived', 2)) {
