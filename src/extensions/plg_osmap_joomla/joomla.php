@@ -527,8 +527,9 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
             $query->order($orderBy);
         }
 
-        if (!empty($params->get('max_art'))) {
-            $query->setLimit($params->get('max_art'));
+        $maxArt = $params->get('max_art');
+        if (!empty($maxArt)) {
+            $query->setLimit($maxArt);
         }
 
         $db->setQuery($query);
