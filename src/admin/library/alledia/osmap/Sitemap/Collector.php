@@ -189,7 +189,7 @@ class Collector
         $item->level = $this->currentLevel;
 
         // Call the given callback function
-        return (bool)$callback($item);
+        return (bool)call_user_func($callback, $item);
     }
 
     /**
