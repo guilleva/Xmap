@@ -49,23 +49,4 @@ class OSMapTableSitemapItems extends JTable
     {
         parent::__construct('#__osmap_items_settings', array('sitemap_id', 'uid'), $db);
     }
-
-    /**
-     * Overloaded bind function
-     *
-     * @access      public
-     * @param       array $hash named array
-     * @return      null|string  null is operation was satisfactory, otherwise returns an error
-     * @see         JTable:bind
-     * @since       2.0
-     */
-    public function bind($array, $ignore = '')
-    {
-        // The priority is stored as integer in the database to save memory
-        if (isset($array['priority'])) {
-            $array['priority'] = ((float)$array['priority']) * 10;
-        }
-
-        return parent::bind($array, $ignore);
-    }
 }

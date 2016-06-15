@@ -21,8 +21,8 @@ DEFAULT CHARACTER SET = utf8;
 CREATE TABLE IF NOT EXISTS `#__osmap_sitemap_menus` (
   `sitemap_id` INT(11) UNSIGNED NOT NULL,
   `menutype_id` INT(11) NOT NULL,
-  `priority` VARCHAR(3) NOT NULL DEFAULT '0.5',
-  `changefreq` ENUM('hourly','daily','weekly','monthly','yearly','never') NOT NULL DEFAULT 'weekly',
+  `changefreq` ENUM('always','hourly','daily','weekly','monthly','yearly','never') NOT NULL DEFAULT 'weekly',
+  `priority` FLOAT NOT NULL DEFAULT '0.5',
   `ordering` INT(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`sitemap_id`, `menutype_id`),
   INDEX `fk_osmap_sitemap_menus_osmap_sitemaps_idx` (`sitemap_id` ASC),
@@ -42,8 +42,8 @@ CREATE TABLE IF NOT EXISTS `#__osmap_items_settings` (
   `sitemap_id` int(11) unsigned NOT NULL,
   `uid` varchar(32) NOT NULL DEFAULT '',
   `published` tinyint(1) unsigned NOT NULL DEFAULT '1',
-  `changefreq` varchar(7) NOT NULL DEFAULT 'weekly',
-  `priority` tinyint(1) NOT NULL DEFAULT '5',
+  `changefreq` ENUM('always','hourly','daily','weekly','monthly','yearly','never') NOT NULL DEFAULT 'weekly',
+  `priority` FLOAT NOT NULL DEFAULT '0.5',
   PRIMARY KEY (`sitemap_id`,`uid`))
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8;

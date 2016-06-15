@@ -482,7 +482,7 @@ class Collector
         // Check if the menu item has custom settings. If not, use the values from the menu
         if ($settings = $this->getItemCustomSettings($item->uid)) {
             $item->changefreq = $settings['changefreq'];
-            $item->priority   = is_float($settings['priority']) ? $settings['priority'] : $settings['priority'] / 10;
+            $item->priority   = is_float($settings['priority']) ? $settings['priority'] : $settings['priority'];
             $item->published  = (bool)$settings['published'];
 
             if (!$item->ignore && !$item->published) {

@@ -15,19 +15,19 @@
 
     <install>
         <sql>
-            <file driver="mysql" charset="utf8">sql/mysql/install.utf8.sql</file>
+            <file driver="mysql" charset="utf8">sql/install/mysql/install.utf8.sql</file>
         </sql>
     </install>
 
     <uninstall>
         <sql>
-            <file driver="mysql" charset="utf8">sql/mysql/uninstall.utf8.sql</file>
+            <file driver="mysql" charset="utf8">sql/uninstall/mysql/uninstall.utf8.sql</file>
         </sql>
     </uninstall>
 
     <update>
         <schemas>
-            <schemapath type="mysql">sql/mysql/updates</schemapath>
+            <schemapath type="mysql">sql/updates/mysql</schemapath>
         </schemas>
     </update>
 
