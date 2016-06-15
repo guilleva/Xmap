@@ -190,6 +190,7 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
                 break;
 
             case 'featured':
+                $node->uid = 'joomla.featured.' . $id;
                 $node->expandible = false;
 
                 break;

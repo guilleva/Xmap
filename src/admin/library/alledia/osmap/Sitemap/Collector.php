@@ -125,6 +125,9 @@ class Collector
                         continue;
                     }
 
+                    // Set the legacy UID
+                    $item['uid'] = 'menuitem.' . $item['id'];
+
                     // Store the menu settings to use in the submitItemToCallback called
                     // by callbacks
                     $this->tmpItemDefaultSettings['changefreq'] = $menu->changefreq;
