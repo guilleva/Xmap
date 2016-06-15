@@ -54,8 +54,11 @@ abstract class Router
         // Replace spaces.
         $url = preg_replace('/\s/u', '%20', $url);
 
-        // If in admin, removes the /administrator from the URI and fullLink
-        if (Factory::getApplication()->isAdmin()) {
+        // Extract the subfolders to replace and return a relative frontend link, without any subfolder
+        preg_match('#(.*)?index\.php#i', $uri->toString(array('path')), $matches);
+        if (isset($matches[1])) {
+            $url = preg_replace('#^' . $matches[1] . '#', '', $url);
+        } else {
             $url = preg_replace('#^/administrator/#', '', $url);
         }
 
