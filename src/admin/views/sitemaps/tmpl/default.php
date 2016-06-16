@@ -66,7 +66,7 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                         ); ?>
                     </th>
 
-                    <th width="8%" class="center">
+                    <th width="8%" style="min-width: 63px" class="center">
                         <?php echo JText::_('COM_OSMAP_HEADING_SITEMAP_EDIT_LINKS'); ?>
                     </th>
 
