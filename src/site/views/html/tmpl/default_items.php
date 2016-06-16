@@ -23,7 +23,13 @@ $printNodeCallback = function ($node) {
             }
 
             if ($node->level < $lastLevel) {
-                echo '</ul>';
+                // Make sure we close the stack of prior levels
+                $offset = $lastLevel - $node->level;
+                if ($offset > 0) {
+                    for ($i = 0; $i < $offset; $i++) {
+                        echo '</ul>';
+                    }
+                }
             }
         }
 
