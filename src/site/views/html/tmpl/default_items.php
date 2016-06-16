@@ -40,8 +40,9 @@ $printNodeCallback = function ($node) {
             }
         }
 
-        $liClass = $debug ? 'class="osmap-debug"' : '';
-        echo "<li {$liClass}>";
+        $liClass = $debug ? 'osmap-debug-item' : '';
+        $liClass .= $count % 2 == 0 ? ' even' : '';
+        echo "<li class=\"{$liClass}\">";
         echo '<a href="' . $node->fullLink . '" target="_blank">';
         echo htmlspecialchars($node->name);
         echo '</a>';
@@ -67,6 +68,8 @@ $printNodeCallback = function ($node) {
 
 <?php if ($this->debug) : ?>
     <div class="osmap-debug-sitemap">
+        <h3><?php echo JText::_('COM_OSMAP_DEBUG_ALERT_TITLE'); ?></h3>
+        <p><?php echo JText::_('COM_OSMAP_DEBUG_ALERT'); ?></p>
         <?php echo JText::_('COM_OSMAP_SITEMAP_ID'); ?>: <?php echo $this->sitemap->id; ?>
     </div>
 <?php endif; ?>

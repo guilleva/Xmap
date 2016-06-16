@@ -1,10 +1,19 @@
-.osmap-debug {
-    margin-bottom: 8px;
-    padding: 5px;
+ul {
+    border-left: 1px solid #eaeaea;
+    border-bottom: 1px solid #eaeaea;
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
 }
 
-.osmap-debug:nth-child(odd) {
-    background: #efefef;
+.osmap-debug-item {
+    padding: 10px 8px;
+    margin-left: 0;
+    list-style-position: inside;
+    border-top: 1px solid #eaeaea;
+}
+
+.osmap-debug-item.even {
+    background: #f3f3f3;
 }
 
 .osmap-debug-box {
@@ -15,5 +24,6 @@
 .osmap-debug-sitemap,
 .osmap-debug-sitemap-count {
     padding: 10px;
+    background: #f1ffa4;
+    border-top: 1px solid #eaeaea;
 }
-
