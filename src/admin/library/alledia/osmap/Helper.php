@@ -140,6 +140,8 @@ abstract class Helper
 
         // Check if the plugin file exists
         if (\JFile::exists($path)) {
+            // Legacy plugins have plugins element equals the option. But it still doesn't mean is compatible with
+            // the current content/option
             $isLegacy  = $plugin->element === $option;
 
             $className = $isLegacy ? ($plugin->folder . '_' . $option) :
@@ -150,22 +152,24 @@ abstract class Helper
                 require_once $path;
             }
 
-            // Instantiate the plugin
-            $instance = method_exists($className, 'getInstance') ?
-                $className::getInstance() : new $className;
+            // Instantiate the plugin if the class exists
+            if (class_exists($className)) {
+                $instance = method_exists($className, 'getInstance') ?
+                    $className::getInstance() : new $className;
 
-            // If is legacy, we know it is compatible since the element and option were already validated
-            $compatible = $isLegacy
-                || (
-                    method_exists($instance, 'getComponentElement')
-                        && $instance->getComponentElement() === $option
-                );
+                // If is legacy, we know it is compatible since the element and option were already validated
+                $compatible = $isLegacy
+                    || (
+                        method_exists($instance, 'getComponentElement')
+                            && $instance->getComponentElement() === $option
+                    );
 
-            if ($compatible) {
-                $plugin->instance  = $instance;
-                $plugin->className = $className;
-                $plugin->isLegacy  = $isLegacy;
-                $plugin->params    = new \JRegistry($plugin->params);
+                if ($compatible) {
+                    $plugin->instance  = $instance;
+                    $plugin->className = $className;
+                    $plugin->isLegacy  = $isLegacy;
+                    $plugin->params    = new \JRegistry($plugin->params);
+                }
             }
         }
 
