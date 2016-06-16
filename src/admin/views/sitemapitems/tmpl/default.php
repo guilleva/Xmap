@@ -92,6 +92,10 @@ $showItemUID = $this->osmapParams->get('show_item_uid', 0);
                                         </div>
                                     </td>
                                     <td class="sitemapitem-link">
+                                        <?php if ($item->level > 0) : ?>
+                                            <?php echo str_repeat('—', $item->level); ?>
+                                        <?php endif; ?>
+
                                         <a
                                             href="<?php echo $item->fullLink; ?>"
                                             target="_blank"
