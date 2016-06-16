@@ -371,16 +371,15 @@ abstract class Helper
     public static function loadOptionLanguage($option, $adminPath, $sitePath)
     {
         $app = Factory::getApplication();
-        if ($app->input->getCmd('option') != $option) {
-            switch ($app->getName()) {
-                case 'administrator':
-                    Factory::getLanguage()->load($option, $adminPath);
-                    break;
 
-                case 'site':
-                    Factory::getLanguage()->load($option, $sitePath);
-                    break;
-            }
+        switch ($app->getName()) {
+            case 'administrator':
+                Factory::getLanguage()->load($option, $adminPath);
+                break;
+
+            case 'site':
+                Factory::getLanguage()->load($option, $sitePath);
+                break;
         }
     }
 }
