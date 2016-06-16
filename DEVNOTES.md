@@ -2,6 +2,7 @@
 
 ## Restore:
 
+* Languages in the manifest to fix comp params
 * db migration from older versions
 * after install, migrate legacy plugin's settings to the new ones
 * restore free/pro

@@ -83,7 +83,8 @@ $showItemUID = $this->osmapParams->get('show_item_uid', 0);
                                             data-value="<?php echo $item->published ? '1' : '0'; ?>">
 
                                                 <?php if ($item->ignore) : ?>
-                                                    <span class="icon-warning" title="<?php echo JText::_('COM_OSMAP_IGNORED_TOOLTIP'); ?>"></span>
+                                                    <?php $title = $item->isInternal ? 'COM_OSMAP_IGNORED_TOOLTIP' : 'COM_OSMAP_IGNORED_EXTERNAL_TOOLTIP'; ?>
+                                                    <span class="icon-warning" title="<?php echo JText::_($title); ?>"></span>
                                                 <?php endif; ?>
 
                                                 <span class="icon-<?php echo $item->published ? 'publish' : 'unpublish'; ?>"></span>

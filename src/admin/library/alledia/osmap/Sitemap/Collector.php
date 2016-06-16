@@ -87,11 +87,19 @@ class Collector
     protected $currentLevel = 0;
 
     /**
+     * The component's params
+     *
+     * @var \JRegistry
+     */
+    protected $params;
+
+    /**
      * The constructor
      */
     public function __construct($sitemap)
     {
         $this->sitemap = $sitemap;
+        $this->params = \JComponentHelper::getParams('com_osmap');
     }
 
     /**
@@ -178,13 +186,17 @@ class Collector
 
         $this->setItemCustomSettings($item);
 
+        // Check if is external URL and if should be ignored
+        if (!$item->isInternal) {
+            if (!(bool)$this->params->get('show_external_links', 0)) {
+                $item->ignore = true;
+            }
+        }
+
         // Verify if the item's link was already listed, if not ignored
         if (!$item->ignore) {
             $this->checkDuplicatedUIDToIgnore($item);
-        }
 
-        // Ignores the item in the count if the flag is true
-        if (!$item->ignore) {
             ++$this->counter;
         }
 

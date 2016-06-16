@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
     <fieldset
+        name="basic"
+        label="COM_OSMAP_FIELDSET_BASIC_LABEL">
+
+        <field
+            name="show_external_links"
+            label="COM_OSMAP_OPTION_SHOW_EXTERNAL_LINKS_LABEL"
+            description="COM_OSMAP_OPTION_SHOW_EXTERNAL_LINKS_DESC"
+            type="list"
+            default="0">
+
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+    </fieldset>
+
+    <fieldset
         name="admin"
         label="COM_OSMAP_FIELDSET_ADMIN_LABEL">
 
