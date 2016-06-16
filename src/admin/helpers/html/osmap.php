@@ -42,6 +42,7 @@ abstract class JHtmlOSMap
     public static function changefrequency($name, $value = 'weekly', $j = 0)
     {
         // Array of options
+        $options[] = JHTML::_('select.option', 'always', JText::_('COM_OSMAP_ALWAYS'));
         $options[] = JHTML::_('select.option', 'hourly', JText::_('COM_OSMAP_HOURLY'));
         $options[] = JHTML::_('select.option', 'daily', JText::_('COM_OSMAP_DAILY'));
         $options[] = JHTML::_('select.option', 'weekly', JText::_('COM_OSMAP_WEEKLY'));
