@@ -138,6 +138,7 @@
 
                     data.push({
                         'uid': $tr.data('uid'),
+                        'url_hash': $tr.data('url-hash'),
                         'published': $tr.find('.sitemapitem-published').data('value'),
                         'priority': $tr.find('.sitemapitem-priority').data('value'),
                         'changefreq': $tr.find('.sitemapitem-changefreq').data('value')

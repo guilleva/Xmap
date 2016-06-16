@@ -40,10 +40,11 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `#__osmap_items_settings` (
   `sitemap_id` int(11) unsigned NOT NULL,
-  `uid` varchar(32) NOT NULL DEFAULT '',
+  `uid` varchar(100) NOT NULL DEFAULT '',
+  `url_hash` char(32),
   `published` tinyint(1) unsigned NOT NULL DEFAULT '1',
   `changefreq` ENUM('always','hourly','daily','weekly','monthly','yearly','never') NOT NULL DEFAULT 'weekly',
   `priority` FLOAT NOT NULL DEFAULT '0.5',
-  PRIMARY KEY (`sitemap_id`,`uid`))
+  PRIMARY KEY (`sitemap_id`,`uid`,`url_hash`))
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8;

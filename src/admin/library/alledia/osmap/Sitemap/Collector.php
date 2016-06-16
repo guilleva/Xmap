@@ -176,12 +176,12 @@ class Collector
             $this->callPluginsPreparingTheItem($item);
         }
 
+        $this->setItemCustomSettings($item);
+
         // Verify if the item's link was already listed, if not ignored
         if (!$item->ignore) {
             $this->checkDuplicatedUIDToIgnore($item);
         }
-
-        $this->setItemCustomSettings($item);
 
         // Ignores the item in the count if the flag is true
         if (!$item->ignore) {
@@ -313,8 +313,10 @@ class Collector
             return true;
         }
 
-        // Not set, so let's register
-        $this->uidList[$item->uid] = 1;
+        // Not set and published, so let's register
+        if ($item->published) {
+            $this->uidList[$item->uid] = 1;
+        }
 
         return false;
     }
@@ -444,11 +446,16 @@ class Collector
             $db = OSMap\Factory::getContainer()->db;
 
             $query = $db->getQuery(true)
-                ->select('*')
+                ->select(
+                    array(
+                        '*',
+                        'IF (url_hash IS NULL OR url_hash = "", uid, CONCAT(uid, ":", url_hash)) AS ' . $db->quoteName('key')
+                    )
+                )
                 ->from('#__osmap_items_settings')
                 ->where('sitemap_id = ' . $db->quote($this->sitemap->id));
 
-            $this->itemsSettings = $db->setQuery($query)->loadAssocList('uid');
+            $this->itemsSettings = $db->setQuery($query)->loadAssocList('key');
         }
 
         return $this->itemsSettings;
@@ -457,14 +464,14 @@ class Collector
     /**
      * Gets the item custom settings if set. If not set, returns false.
      *
-     * @param string $uid
+     * @param string $key
      *
      * @return mix
      */
-    public function getItemCustomSettings($uid)
+    public function getItemCustomSettings($key)
     {
-        if (isset($this->itemsSettings[$uid])) {
-            return $this->itemsSettings[$uid];
+        if (isset($this->itemsSettings[$key])) {
+            return $this->itemsSettings[$key];
         }
 
         return false;
@@ -480,15 +487,28 @@ class Collector
     public function setItemCustomSettings($item)
     {
         // Check if the menu item has custom settings. If not, use the values from the menu
-        if ($settings = $this->getItemCustomSettings($item->uid)) {
-            $item->changefreq = $settings['changefreq'];
-            $item->priority   = is_float($settings['priority']) ? $settings['priority'] : $settings['priority'];
-            $item->published  = (bool)$settings['published'];
-        } else {
+        // Check if there is a custom settings specific for this URL. Sometimes the same page has different URLs.
+        // We can have different settings for items with the same UID, but different URLs
+        $key = $item->uid . ':' . $item->fullLinkHash;
+        $settings = $this->getItemCustomSettings($key);
+
+        // Check if there is a custom settings for all links with that UID (happens right after a migration from
+        // versions before 4.0.0)
+        if ($settings === false) {
+            $settings = $this->getItemCustomSettings($item->uid);
+        }
+
+        if ($settings === false) {
+            // No custom settings, so let's use the menu's settings
             if ($item->isMenuItem) {
                 $item->changefreq = $this->tmpItemDefaultSettings['changefreq'];
                 $item->priority   = $this->tmpItemDefaultSettings['priority'];
             }
+        } else {
+            // Apply the custom settings
+            $item->changefreq = $settings['changefreq'];
+            $item->priority   = is_float($settings['priority']) ? $settings['priority'] : $settings['priority'];
+            $item->published  = (bool)$settings['published'];
         }
     }
 }

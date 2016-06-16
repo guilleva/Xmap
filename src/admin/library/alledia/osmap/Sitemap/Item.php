@@ -126,6 +126,11 @@ class Item extends \JObject
     public $images = array();
 
     /**
+     * @var string
+     */
+    public $fullLinkHash;
+
+    /**
      * The constructor
      *
      * @param object  $item
@@ -153,6 +158,8 @@ class Item extends \JObject
         if ($this->isInternal) {
             $this->sanitizeFullLink();
         }
+
+        $this->fullLinkHash = md5($this->fullLink);
 
         // Prepare the boolean attributes
         $this->published = (bool)$this->published;

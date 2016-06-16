@@ -149,3 +149,7 @@ ul.ul_sortable li.ui-sortable-placeholder {
     -moz-animation: spin 0.9s infinite linear;
     animation: spin 0.9s infinite linear;
 }
+
+.sitemapitem .icon-warning {
+    color: #ff911f;
+}

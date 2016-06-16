@@ -51,6 +51,10 @@ $showItemUID = $this->osmapParams->get('show_item_uid', 0);
                                     <?php echo JText::_('COM_OSMAP_HEADING_STATUS'); ?>
                                 </th>
 
+                                <th width="1%" style="min-width:55px" class="nowrap center">
+                                    <?php echo JText::_('COM_OSMAP_HEADING_IGNORED'); ?>
+                                </th>
+
                                 <th class="title">
                                     <?php echo JText::_('COM_OSMAP_HEADING_URL'); ?>
                                 </th>
@@ -72,14 +76,23 @@ $showItemUID = $this->osmapParams->get('show_item_uid', 0);
                         <tbody>
                             <?php $i = 0; ?>
                             <?php foreach ($this->sitemapItems as $item) : ?>
-                                <tr class="sitemapitem row<?php echo $i; ?> <?php echo ($showItemUID) ? 'with-uid' : ''; ?>" data-uid="<?php echo $item->uid; ?>">
+                                <tr
+                                    class="sitemapitem row<?php echo $i; ?> <?php echo ($showItemUID) ? 'with-uid' : ''; ?>"
+                                    data-uid="<?php echo $item->uid; ?>"
+                                    data-url-hash="<?php echo $item->fullLinkHash; ?>">
+
                                     <td class="center">
                                         <div class="sitemapitem-published"
                                             data-original="<?php echo $item->published ? '1' : '0'; ?>"
                                             data-value="<?php echo $item->published ? '1' : '0'; ?>">
 
-                                            <span class="icon-<?php echo $item->published ? 'publish' : 'unpublish'; ?>"></span>
+                                                <span class="icon-<?php echo $item->published ? 'publish' : 'unpublish'; ?>"></span>
                                         </div>
+                                    </td>
+                                    <td>
+                                        <?php if ($item->ignore) : ?>
+                                            <span class="icon-warning" title="<?php echo JText::_('COM_OSMAP_IGNORED_TOOLTIP'); ?>"></span>
+                                        <?php endif; ?>
                                     </td>
                                     <td class="sitemapitem-link">
                                         <a
