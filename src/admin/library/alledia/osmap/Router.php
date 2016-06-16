@@ -44,11 +44,9 @@ abstract class Router
             return $url;
         }
 
-        // Build route.
-        $uri = static::$router->build($url);
-
+        // Build route
         $scheme = array('path', 'query', 'fragment');
-
+        $uri = static::$router->build($url);
         $url = $uri->toString($scheme);
 
         // Replace spaces.
@@ -60,6 +58,30 @@ abstract class Router
             $url = preg_replace('#^' . $matches[1] . '#', '', $url);
         } else {
             $url = preg_replace('#^/administrator/#', '', $url);
+        }
+
+        return $url;
+    }
+
+    /**
+     * This method returns a full URL related to frontend router. Specially
+     * needed if the router is called by the admin
+     *
+     * @param string $url
+     *
+     * @return string
+     */
+    public static function forceFrontendURL($url)
+    {
+        if (!preg_match('#^[^:]+://#', $url)) {
+            $baseUri = \JUri::base();
+
+            // Removes /administrator from the url
+            $baseUri = preg_replace('#/administrator/?$#', '/', $baseUri);
+
+            if (!substr_count($url, $baseUri)) {
+                $url = $baseUri . $url;
+            }
         }
 
         return $url;

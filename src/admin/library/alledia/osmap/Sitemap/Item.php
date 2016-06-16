@@ -307,13 +307,7 @@ class Item extends \JObject
             $this->fullLink = OSMap\Router::routeURL($this->fullLink);
 
             // Make sure the link has the base uri
-            if (!preg_match('#^[^:]+://#', $this->fullLink)) {
-                $baseUri = \JUri::base();
-
-                if (!substr_count($this->fullLink, $baseUri)) {
-                    $this->fullLink = $baseUri . $this->fullLink;
-                }
-            }
+            $this->fullLink = OSMap\Router::forceFrontendURL($this->fullLink);
         }
     }
 }
