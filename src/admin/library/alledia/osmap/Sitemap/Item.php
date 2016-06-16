@@ -142,10 +142,12 @@ class Item extends \JObject
         // Check if the link is an internal link
         $this->isInternal = \JUri::isInternal($this->link);
 
-        $this->extractOptionFromLink();
+        $this->isMenuItem = (bool)$this->isMenuItem;
+
         $this->prepareParams();
         $this->setModificationDate();
         $this->setLink();
+        $this->extractOptionFromLink();
         $this->setFullLink();
 
         if ($this->isInternal) {
@@ -180,14 +182,15 @@ class Item extends \JObject
      * Calculate a hash based on the link, to avoid duplicated links. It will
      * set the new UID to the item.
      *
-     * @param bool $force
+     * @param bool   $force
+     * @param string $prefix
      *
      * @return void
      */
-    public function calculateUID($force = false)
+    public function calculateUID($force = false, $prefix = '')
     {
         if (empty($this->uid) || $force) {
-            $this->set('uid', md5($this->sitemap->id . ':' . $this->fullLink));
+            $this->set('uid', $prefix . md5($this->fullLink));
         }
     }
 
@@ -237,7 +240,15 @@ class Item extends \JObject
     {
         // If is an alias, use the Itemid stored in the parameters to get the correct url
         if ($this->type === 'alias') {
-            $this->link = 'index.php?Itemid=' . $this->params->get('aliasoptions');
+            // Get the related menu item's link
+            $db = OSMap\Factory::getDbo();
+
+            $query = $db->getQuery(true)
+                ->select('link')
+                ->from('#__menu')
+                ->where('id = ' . $db->quote($this->params->get('aliasoptions')));
+
+            $this->link = $db->setQuery($query)->loadResult();
         }
     }
 
@@ -270,9 +281,7 @@ class Item extends \JObject
             $this->fullLink = \JUri::base();
 
             // Removes the /administrator from the URI if in the administrator
-            if (OSMap\Factory::getApplication()->isAdmin()) {
-                $this->fullLink = preg_replace('#/administrator/$#', '', $this->fullLink);
-            }
+            $this->fullLink = OSMap\Router::forceFrontendURL($this->fullLink);
 
             return;
         }
@@ -284,19 +293,32 @@ class Item extends \JObject
             return;
         }
 
-        // If is an alias, use the Itemid stored in the parameters to get the correct url
-        if ($this->type === 'alias') {
-            // We cosider the link already have the item id, set by the setLink method
+        // If is an URL, but external, return the external URL. If internal,
+        // follow with the routing
+        if ($this->type === 'url') {
             $this->fullLink = $this->link;
+
+            if (!$this->isInternal) {
+                // External URLS have UID as a hash of its url
+                $this->calculateUID(true, 'external.');
+
+                return;
+            }
+        }
+
+        if ($this->type === 'alias') {
+            // Use the destination itemid, instead of the alias' item id.
+            // This will make sure we have the correct routed url.
+            $this->fullLink = 'index.php?Itemid=' . $this->params->get('aliasoptions');
         }
 
         // If is a menu item but not an alias, force to use the current menu's item id
-        if ((bool)$this->isMenuItem && $this->type !== 'alias') {
+        if ($this->isMenuItem && $this->type !== 'alias') {
             $this->fullLink = 'index.php?Itemid=' . $this->id;
         }
 
         // If is not a menu item, use as base for the fullLink, the item link
-        if (!(bool)$this->isMenuItem) {
+        if (!$this->isMenuItem) {
             $this->fullLink = $this->link;
         }
 
