@@ -14,7 +14,7 @@ defined('_JEXEC') or die();
 $params = $this->params;
 
 $printNodeCallback = function ($node) use ($params) {
-    if (!$node->ignore) {
+    if (!$node->ignore && $node->published) {
         if (!isset($node->newsItem) || empty($node->newsItem)) {
             return false;
         }

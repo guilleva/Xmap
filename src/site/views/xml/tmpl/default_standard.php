@@ -10,7 +10,7 @@
 defined('_JEXEC') or die();
 
 $printNodeCallback = function ($node) {
-    if (!$node->ignore) {
+    if (!$node->ignore && $node->published) {
         echo '<url>';
         echo '<loc><![CDATA[' . $node->fullLink . ']]></loc>';
         echo '<lastmod>' . $node->modified . '</lastmod>';

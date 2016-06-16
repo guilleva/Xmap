@@ -14,7 +14,7 @@ $lastLevel = 0;
 $printNodeCallback = function ($node) {
     global $lastLevel;
 
-    if (!$node->ignore) {
+    if (!$node->ignore && $node->published) {
 
         // Check if we have a different level to start or close tags
         if ($lastLevel !== $node->level) {

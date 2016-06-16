@@ -156,7 +156,6 @@ class Item extends \JObject
 
         // Prepare the boolean attributes
         $this->published = (bool)$this->published;
-        $this->ignore    = !$this->published;
 
         /*
          * Do not use a "prepare" method because we need to make sure it will

@@ -10,7 +10,7 @@
 defined('_JEXEC') or die();
 
 $printNodeCallback = function ($node) {
-    if (!$node->ignore) {
+    if (!$node->ignore && $node->published) {
         if (!isset($node->images) || empty($node->images)) {
             return false;
         }

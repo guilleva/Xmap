@@ -484,10 +484,6 @@ class Collector
             $item->changefreq = $settings['changefreq'];
             $item->priority   = is_float($settings['priority']) ? $settings['priority'] : $settings['priority'];
             $item->published  = (bool)$settings['published'];
-
-            if (!$item->ignore && !$item->published) {
-                $item->ignore = true;
-            }
         } else {
             if ($item->isMenuItem) {
                 $item->changefreq = $this->tmpItemDefaultSettings['changefreq'];
