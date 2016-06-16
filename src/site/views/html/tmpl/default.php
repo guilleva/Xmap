@@ -7,7 +7,16 @@
  * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
+use Alledia\OSMap;
+
 defined('_JEXEC') or die();
+
+// If debug is enabled, use text content type
+if ($this->debug) {
+    OSMap\Factory::getApplication()->input->set('tmpl', 'component');
+}
+
+JHtml::stylesheet('media/com_osmap/css/sitemap-html.css');
 ?>
 
 <div id="osmap">

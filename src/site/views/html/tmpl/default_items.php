@@ -9,12 +9,19 @@
 
 defined('_JEXEC') or die();
 
+// Declares global variables to be used into the callback
+global $lastLevel, $debug, $count;
+
 $lastLevel = 0;
+$count     = 0;
+$debug     = $this->debug;
 
 $printNodeCallback = function ($node) {
-    global $lastLevel;
+    global $lastLevel, $debug, $count;
 
     if (!$node->ignore && $node->published) {
+
+        $count++;
 
         // Check if we have a different level to start or close tags
         if ($lastLevel !== $node->level) {
@@ -33,10 +40,22 @@ $printNodeCallback = function ($node) {
             }
         }
 
-        echo '<li>';
+        $liClass = $debug ? 'class="osmap-debug"' : '';
+        echo "<li {$liClass}>";
         echo '<a href="' . $node->fullLink . '" target="_blank">';
         echo htmlspecialchars($node->name);
         echo '</a>';
+
+        // Debug box
+        if ($debug) {
+            echo '<div class="osmap-debug-box">';
+            echo '<div><span>#:</span> ' . $count . '</div>';
+            echo '<div><span>' . JText::_('COM_OSMAP_UID') . ':</span> ' . $node->uid . '</div>';
+            echo '<div><span>' . JText::_('COM_OSMAP_FULL_LINK') . ':</span> ' . htmlspecialchars($node->fullLink) . '</div>';
+            echo '<div><span>' . JText::_('COM_OSMAP_LINK') . ':</span> ' . htmlspecialchars($node->link) . '</div>';
+            echo '<div><span>' . JText::_('COM_OSMAP_LEVEL') . ':</span> ' . $node->level . '</div>';
+            echo '</div>';
+        }
         echo '</li>';
 
         $lastLevel = $node->level;
@@ -45,6 +64,13 @@ $printNodeCallback = function ($node) {
     return !$node->ignore;
 };
 ?>
+
+<?php if ($this->debug) : ?>
+    <div class="osmap-debug-sitemap">
+        <?php echo JText::_('COM_OSMAP_SITEMAP_ID'); ?>: <?php echo $this->sitemap->id; ?>
+    </div>
+<?php endif; ?>
+
 <ul>
     <?php $this->sitemap->traverse($printNodeCallback); ?>
 
@@ -57,3 +83,9 @@ $printNodeCallback = function ($node) {
     }
     ?>
 </ul>
+
+<?php if ($this->debug) : ?>
+    <div class="osmap-debug-sitemap-count">
+        <?php echo JText::_('COM_OSMAP_SITEMAP_ITEMS_COUNT'); ?>: <?php echo $count; ?>
+    </div>
+<?php endif; ?>

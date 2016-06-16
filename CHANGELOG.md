@@ -22,5 +22,6 @@
 * Added visual feedback in the admin to see what items will be ignored due to duplication or external link
 * Improved item settings to allow custom settings even for duplicated items (in case one is unpublished)
 * Level mark in the items list in the admin
+* Added debug option to the HTML sitemap
 
 ## 3.3.0 Free - Last release with J2.5 support

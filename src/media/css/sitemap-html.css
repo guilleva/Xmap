@@ -1,0 +1,19 @@
+.osmap-debug {
+    margin-bottom: 8px;
+    padding: 5px;
+}
+
+.osmap-debug:nth-child(odd) {
+    background: #efefef;
+}
+
+.osmap-debug-box {
+    font-size: 12px;
+    padding-left: 20px;
+}
+
+.osmap-debug-sitemap,
+.osmap-debug-sitemap-count {
+    padding: 10px;
+}
+
