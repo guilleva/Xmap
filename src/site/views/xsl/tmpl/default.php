@@ -88,7 +88,7 @@ header('Content-Disposition: inline');
                 <th><?php echo JText::_('COM_OSMAP_URL'); ?></th>
                 <th><?php echo JText::_('COM_OSMAP_MODIFICATION_DATE'); ?></th>
                 <th><?php echo JText::_('COM_OSMAP_CHANGE_FREQ'); ?></th>
-                <th><?php echo JText::_('COM_OSMAP_PRIORITY'); ?></th>
+                <th><?php echo JText::_('COM_OSMAP_PRIORITY_LABEL'); ?></th>
             </tr>
         </thead>
         <tbody>

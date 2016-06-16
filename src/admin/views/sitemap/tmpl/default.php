@@ -36,7 +36,7 @@ JHtml::stylesheet('media/com_osmap/css/admin.css');
     method="post"
     name="adminForm"
     id="item-form"
-    class="form-validate">
+    class="form-validate sitemap">
 
     <div class="form-inline form-inline-header">
         <?php echo $this->form->renderField('name'); ?>
@@ -45,10 +45,10 @@ JHtml::stylesheet('media/com_osmap/css/admin.css');
     <div class="form-horizontal">
         <?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
 
-        <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'details', JText::_('COM_OSMAP_SITEMAP_DETAILS', true)); ?>
+        <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'details', JText::_('COM_OSMAP_SITEMAP_MENUS_LABEL', true)); ?>
             <div class="row-fluid">
                 <div class="span9">
-                    <?php echo $this->form->getControlGroup('menus'); ?>
+                    <?php echo $this->form->getField('menus')->renderField(array('hiddenLabel' => true)); ?>
                 </div>
 
                 <div class="span3">

@@ -80,6 +80,7 @@ ul.ul_sortable {
     list-style:none;
     margin:0;
     padding:0;
+    width: 100%;
 }
 
 ul.ul_sortable li:hover {
@@ -88,12 +89,12 @@ ul.ul_sortable li:hover {
 
 ul.ul_sortable li {
     cursor: move;
-    background-color: #f6f6f6;
     margin-bottom: 5px;
     padding: 5px;
-    max-width: 335px;
     -webkit-transition: background-color 0.2s;
     transition: background-color 0.2s;
+    max-width: auto !important;
+    width: 99%;
 }
 
 ul.ul_sortable li label.menu_label {
@@ -103,7 +104,7 @@ ul.ul_sortable li label.menu_label {
 }
 
 ul.ul_sortable input[type="checkbox"] {
-    margin: -2px 7px 0 8px;
+    margin-top: -2px;
 }
 
 ul.ul_sortable li.ui-sortable-helper {
@@ -156,4 +157,61 @@ ul.ul_sortable li.ui-sortable-placeholder {
 
 .sitemapitem .icon-warning {
     color: #ff911f;
+}
+
+#item-form.sitemap .controls {
+    margin-left: 0;
+}
+
+.osmap-table {
+    max-width: 100%;
+    background-color: transparent;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.osmap-list-header,
+.osmap-list-header .osmap-menu-item {
+    width: 100%;
+}
+
+.osmap-menu-item:nth-child(odd) {
+    background: #f6f6f6;
+}
+
+.osmap-table .osmap-cell {
+    line-height: 18px;
+    display: table-cell;
+    text-align: left;
+    font-weight: bold;
+    padding: 8px;
+}
+
+.osmap-cell label {
+    font-weight: normal !important;
+}
+
+.osmap-cell.osmap-col-selected {
+    min-width: 55px;
+    text-align: center;
+    width: 10%;
+}
+
+.osmap-cell.osmap-col-title {
+    width: 70%;
+}
+
+.osmap-cell.osmap-col-priority {
+    min-width: 120px;
+    width: 120px;
+}
+
+.osmap-cell.osmap-col-changefreq {
+    min-width: 120px;
+    width: 120px;
+}
+
+.osmap-cell.osmap-col-priority .chzn-container,
+.osmap-cell.osmap-col-changefreq .chzn-container {
+    width: 100% !important;
 }

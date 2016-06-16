@@ -135,7 +135,7 @@ class JFormFieldOSMapMenus extends JFormFieldList
 
                     // Toggle checkbox clicking on the line
                     $('#ul_" . $this->inputId . " li').on('click', function(event) {
-                        if ($(event.srcElement).hasClass('menu_item')
+                        if ($(event.srcElement).hasClass('osmap-menu-item')
                             || $(event.srcElement).hasClass('control-label')
                             || $(event.srcElement).hasClass('osmap-menu-options')) {
 
@@ -150,7 +150,23 @@ class JFormFieldOSMapMenus extends JFormFieldList
             $attributes .= 'disabled="disabled"';
         }
         $options = (array) $this->_getOptions();
-        $return = '<ul id="ul_' . $this->inputId . '" class="ul_sortable">';
+
+        $textSelected         = JText::_('COM_OSMAP_SELECTED_LABEL');
+        $textTitle            = JText::_('COM_OSMAP_TITLE_LABEL');
+        $textChangePriority   = JText::_('COM_OSMAP_PRIORITY_LABEL');
+        $textChangeChangeFreq = JText::_('COM_OSMAP_CHANGE_FREQUENCY_LABEL');
+
+        $return = <<<HTML
+            <div class="osmap-table">
+                <div class="osmap-list-header">
+                    <div class="osmap-cell osmap-col-selected">{$textSelected}</div>
+                    <div class="osmap-cell osmap-col-title">{$textTitle}</div>
+                    <div class="osmap-cell osmap-col-priority">{$textChangePriority}</div>
+                    <div class="osmap-cell osmap-col-changefreq">{$textChangeChangeFreq}</div>
+                </div>
+HTML;
+
+        $return .= '<ul id="ul_' . $this->inputId . '" class="ul_sortable">';
 
         // Create a regular list.
         $i = 0;
@@ -164,22 +180,32 @@ class JFormFieldOSMapMenus extends JFormFieldList
             $prioritiesName = preg_replace('/(jform\[[^\]]+)(\].*)/', '$1_priority$2', $this->name);
             $changefreqName = preg_replace('/(jform\[[^\]]+)(\].*)/', '$1_changefreq$2', $this->name);
             $selected = (isset($value[$option->value]) ? ' checked="checked"' : '');
+            $changePriorityField = JHTML::_('osmap.priorities', $prioritiesName, ($selected ? $value[$option->value]['priority'] : '0.5'), $i);
+            $changeChangeFreqField = JHTML::_('osmap.changefrequency', $changefreqName, ($selected ? $value[$option->value]['changefreq'] : 'weekly'), $i);
 
             $i++;
 
-            $return .= '<li id="menu_' . $option->value . '" class="menu_item">';
-            $return .= '<input type="' . $type . '" id="' . $this->id . '_' . $i . '" name="' . $this->name . '" value="' . $option->value . '"' . $attributes . $selected . ' />';
-            $return .= '<label for="' . $this->id . '_' . $i . '" class="menu_label">' . $option->text . '</label>';
-            $return .= '<div class="osmap-menu-options" id="menu_options_' . $i . '">';
-            $return .= '<label class="control-label">' . JText::_('COM_OSMAP_PRIORITY') . '</label>';
-            $return .= '<div class="controls">' . JHTML::_('osmap.priorities', $prioritiesName, ($selected ? $value[$option->value]['priority'] : '0.5'), $i) . '</div>';
-            $return .= '<label class="control-label">' . JText::_('COM_OSMAP_CHANGE_FREQUENCY') . '</label>';
-            $return .= '<div class="controls">' . JHTML::_('osmap.changefrequency', $changefreqName, ($selected ? $value[$option->value]['changefreq'] : 'weekly'), $i) . '</div>';
-            $return .= '</div>';
-            $return .= '</li>';
+            $return .= <<<HTML
+                <li id="menu_{$option->value}" class="osmap-menu-item">
+                    <div class="osmap-cell osmap-col-selected">
+                        <input type="{$type}" id="{$this->id}_{$i}" name="{$this->name}" value="{$option->value}" {$attributes} {$selected} />
+                    </div>
+                    <div class="osmap-cell osmap-col-title">
+                        <label for="{$this->id}_{$i}" class="menu_label">{$option->text}</label>
+                    </div>
+
+                    <div class="osmap-cell osmap-col-priority osmap-menu-options">
+                        <div class="controls">{$changePriorityField}</div>
+                    </div>
+
+                    <div class="osmap-cell osmap-col-changefreq osmap-menu-options">
+                        <div class="controls">{$changeChangeFreqField}</div>
+                    </div>
+                </li>
+HTML;
         }
 
-        $return .= "</ul>";
+        $return .= "</ul></div>";
 
         return $return;
     }

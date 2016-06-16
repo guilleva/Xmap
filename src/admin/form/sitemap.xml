@@ -22,13 +22,6 @@
             required="true"/>
 
         <field
-            name="description"
-            type="editor"
-            label="COM_OSMAP_SITEMAP_DESCRIPTION_LABEL"
-            description="COM_OSMAP_SITEMAP_DESCRIPTION_DESC"
-            filter="safehtml"/>
-
-        <field
             name="is_default"
             type="list"
             label="COM_OSMAP_SITEMAP_IS_DEFAULT_LABEL"
