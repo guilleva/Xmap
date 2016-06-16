@@ -25,16 +25,6 @@
         <!-- Basic options. -->
         <fieldset name="basic"
             label="COM_OSMAP_ATTRIBS_SITEMAP_SETTINGS_LABEL">
-            <field
-                name="include_css"
-                type="list"
-                default="0"
-                label="COM_OSMAP_INCLUDE_CSS_LABEL"
-                description="COM_OSMAP_INCLUDE_CSS_DESC">
-
-                <option value="1">JYES</option>
-                <option value="0">JNO</option>
-            </field>
 
             <field
                 name="show_sitemap_description"
