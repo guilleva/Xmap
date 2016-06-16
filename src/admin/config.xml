@@ -2,7 +2,7 @@
 <config>
     <fieldset
         name="basic"
-        label="COM_OSMAP_FIELDSET_BASIC_LABEL">
+        label="COM_OSMAP_FIELDSET_GENERAL_LABEL">
 
         <field
             name="show_external_links"
@@ -14,11 +14,6 @@
             <option value="0">JNO</option>
             <option value="1">JYES</option>
         </field>
-    </fieldset>
-
-    <fieldset
-        name="admin"
-        label="COM_OSMAP_FIELDSET_ADMIN_LABEL">
 
         <field
             name="show_item_uid"

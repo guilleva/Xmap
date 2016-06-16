@@ -24,7 +24,7 @@
     <fields name="params">
         <!-- Basic options. -->
         <fieldset name="basic"
-            label="COM_OSMAP_FIELDSET_BASIC_LABEL">
+            label="COM_OSMAP_FIELDSET_GENERAL_LABEL">
 
             <field
                 name="debug"
@@ -36,11 +36,6 @@
                 <option value="0">JNO</option>
                 <option value="1">JYES</option>
             </field>
-        </fieldset>
-
-        <fieldset name="news"
-            label="COM_OSMAP_FIELDSET_NEWS_LABEL"
-            description="COM_OSMAP_FIELDSET_NEWS_DESC">
 
             <field
                 name="news_publication_name"
