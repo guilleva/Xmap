@@ -33,7 +33,7 @@ class OSMapControllerSitemapItems extends OSMap\Controller\Form
 
     public function cancel($key = NULL)
     {
-        $this->setRedirect(JRoute::_('index.php?option=com_osmap&view=sitemaps'));
+        $this->setRedirect('index.php?option=com_osmap&view=sitemaps');
     }
 
     public function apply()
@@ -42,7 +42,7 @@ class OSMapControllerSitemapItems extends OSMap\Controller\Form
 
         $sitemapId = OSMap\Factory::getApplication()->input->getInt('id');
 
-        $this->setRedirect(JRoute::_('index.php?option=com_osmap&view=sitemapitems&id=' . $sitemapId));
+        $this->setRedirect('index.php?option=com_osmap&view=sitemapitems&id=' . $sitemapId);
     }
 
     public function save($key = NULL, $urlVar = NULL)
@@ -77,6 +77,6 @@ class OSMapControllerSitemapItems extends OSMap\Controller\Form
             }
         }
 
-        $this->setRedirect(JRoute::_('index.php?option=com_osmap&view=sitemaps'));
+        $this->setRedirect('index.php?option=com_osmap&view=sitemaps');
     }
 }
