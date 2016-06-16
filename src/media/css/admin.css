@@ -89,12 +89,12 @@ ul.ul_sortable li:hover {
 
 ul.ul_sortable li {
     cursor: move;
-    margin-bottom: 5px;
     padding: 5px;
     -webkit-transition: background-color 0.2s;
     transition: background-color 0.2s;
     max-width: auto !important;
     width: 99%;
+    border-top: 1px solid #ddd;
 }
 
 ul.ul_sortable li label.menu_label {
