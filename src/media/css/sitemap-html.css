@@ -1,4 +1,5 @@
-ul {
+/* Debug */
+.osmap-debug ul {
     border-left: 1px solid #eaeaea;
     border-bottom: 1px solid #eaeaea;
     margin-top: 10px !important;
