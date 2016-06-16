@@ -56,6 +56,10 @@ header('Content-Disposition: inline');
         padding: 1px;
     }
 
+    .data a {
+        text-decoration: none;
+    }
+
     .icon-new-tab {
         font-size: 10px;
         margin-left: 4px;
