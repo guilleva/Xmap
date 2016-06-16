@@ -216,6 +216,7 @@ ul.ul_sortable li.ui-sortable-placeholder {
     width: 100% !important;
 }
 
+.osmap-links .icon-new-tab,
 .sitemapitem-link .icon-new-tab {
     color: #b5b5b5;
 }

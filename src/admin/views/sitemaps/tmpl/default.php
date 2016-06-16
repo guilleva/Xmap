@@ -137,7 +137,7 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                             title="<?php echo JText::_('COM_OSMAP_XML_LINK_TOOLTIP', true); ?>">
 
                             <?php echo JText::_('COM_OSMAP_XML_LINK'); ?>
-                            <span class="icon-out-2"></span>
+                            <span class="icon-new-tab"></span>
                         </a>
                         &nbsp;&nbsp;
                         <?php $link = isset($item->menuIdList['html'])
@@ -150,7 +150,7 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                             title="<?php echo JText::_('COM_OSMAP_HTML_LINK_TOOLTIP', true); ?>">
 
                             <?php echo JText::_('COM_OSMAP_HTML_LINK'); ?>
-                            <span class="icon-out-2"></span>
+                            <span class="icon-new-tab"></span>
                         </a>
                         &nbsp;&nbsp;
                         <?php $link = isset($item->menuIdList['xml'])
@@ -163,7 +163,7 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                             title="<?php echo JText::_('COM_OSMAP_NEWS_LINK_TOOLTIP', true); ?>">
 
                             <?php echo JText::_('COM_OSMAP_NEWS_LINK'); ?>
-                            <span class="icon-out-2"></span>
+                            <span class="icon-new-tab"></span>
                         </a>
                         &nbsp;&nbsp;
                         <?php $link = isset($item->menuIdList['xml'])
@@ -176,7 +176,7 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                             title="<?php echo JText::_('COM_OSMAP_IMAGES_LINK_TOOLTIP', true); ?>">
 
                             <?php echo JText::_('COM_OSMAP_IMAGES_LINK'); ?>
-                            <span class="icon-out-2"></span>
+                            <span class="icon-new-tab"></span>
                         </a>
                     </td>
 

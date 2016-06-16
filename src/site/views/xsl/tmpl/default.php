@@ -58,7 +58,8 @@ header('Content-Disposition: inline');
 
     .icon-new-tab {
         font-size: 10px;
-        margin-right: 2px;
+        margin-left: 4px;
+        color: #b5b5b5;
     }
 
     .count {
@@ -96,13 +97,13 @@ header('Content-Disposition: inline');
                 <xsl:variable name="sitemapURL"><xsl:value-of select="xna:loc"/></xsl:variable>
                 <tr>
                     <td>
-                        <span class="icon-new-tab"></span>
                         <a
                             href="{$sitemapURL}"
                             target="_blank"
                             ref="nofollow">
                             <xsl:value-of select="$sitemapURL"></xsl:value-of>
                         </a>
+                        <span class="icon-new-tab"></span>
                     </td>
                     <td>
                         <xsl:value-of select="xna:lastmod"/>
