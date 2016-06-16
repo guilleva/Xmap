@@ -31,12 +31,15 @@
         </schemas>
     </update>
 
+    <languages folder="site/language">
+         <language tag="en-GB">en-GB/en-GB.com_osmap.ini</language>
+    </languages>
+
     <files folder="site">
         <filename>osmap.php</filename>
         <filename>controller.php</filename>
         <filename>router.php</filename>
         <folder>helpers</folder>
-        <folder>language</folder>
         <folder>views</folder>
     </files>
 
@@ -49,6 +52,12 @@
 
     <administration>
         <menu>COM_OSMAP_TITLE</menu>
+
+        <languages folder="admin/language">
+             <language tag="en-GB">en-GB/en-GB.com_osmap.ini</language>
+             <language tag="en-GB">en-GB/en-GB.com_osmap.sys.ini</language>
+        </languages>
+
         <files folder="admin">
             <filename>osmap.php</filename>
             <filename>include.php</filename>
@@ -61,7 +70,6 @@
             <folder>models</folder>
             <folder>library</folder>
             <folder>form</folder>
-            <folder>language</folder>
             <folder>helpers</folder>
         </files>
     </administration>
