@@ -159,7 +159,6 @@ class Collector
 
         // echo sprintf('<m>%s</m>', memory_get_usage() - $baseMemory);
         // echo sprintf('<t>%s</t>', microtime() - $baseTime);
-
         return $this->counter;
     }
 
@@ -194,10 +193,13 @@ class Collector
         }
 
         // Verify if the item's link was already listed, if not ignored
-        if (!$item->ignore) {
+        if ($this->checkItemWillBeDisplayed($item)) {
             $this->checkDuplicatedUIDToIgnore($item);
 
-            ++$this->counter;
+            // Check again, after verify the duplicity
+            if ($this->checkItemWillBeDisplayed($item)) {
+                ++$this->counter;
+            }
         }
 
         // Set the current level to the item
@@ -522,5 +524,18 @@ class Collector
             $item->priority   = is_float($settings['priority']) ? $settings['priority'] : $settings['priority'];
             $item->published  = (bool)$settings['published'];
         }
+    }
+
+    /**
+     * Checks the item's ignore and published states to say if it will be
+     * displayed or not in the sitemap.
+     *
+     * @param \Item $item
+     *
+     * @return bool
+     */
+    protected function checkItemWillBeDisplayed($item)
+    {
+        return !$item->ignore && $item->published;
     }
 }
