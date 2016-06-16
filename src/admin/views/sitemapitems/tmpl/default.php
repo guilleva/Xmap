@@ -51,10 +51,6 @@ $showItemUID = $this->osmapParams->get('show_item_uid', 0);
                                     <?php echo JText::_('COM_OSMAP_HEADING_STATUS'); ?>
                                 </th>
 
-                                <th width="1%" style="min-width:55px" class="nowrap center">
-                                    <?php echo JText::_('COM_OSMAP_HEADING_IGNORED'); ?>
-                                </th>
-
                                 <th class="title">
                                     <?php echo JText::_('COM_OSMAP_HEADING_URL'); ?>
                                 </th>
@@ -86,13 +82,13 @@ $showItemUID = $this->osmapParams->get('show_item_uid', 0);
                                             data-original="<?php echo $item->published ? '1' : '0'; ?>"
                                             data-value="<?php echo $item->published ? '1' : '0'; ?>">
 
+                                                <?php if ($item->ignore) : ?>
+                                                    <span class="icon-warning" title="<?php echo JText::_('COM_OSMAP_IGNORED_TOOLTIP'); ?>"></span>
+                                                <?php endif; ?>
+
                                                 <span class="icon-<?php echo $item->published ? 'publish' : 'unpublish'; ?>"></span>
+
                                         </div>
-                                    </td>
-                                    <td>
-                                        <?php if ($item->ignore) : ?>
-                                            <span class="icon-warning" title="<?php echo JText::_('COM_OSMAP_IGNORED_TOOLTIP'); ?>"></span>
-                                        <?php endif; ?>
                                     </td>
                                     <td class="sitemapitem-link">
                                         <a
