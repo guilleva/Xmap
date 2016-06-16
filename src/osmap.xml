@@ -106,6 +106,21 @@
                 type="plugin"
                 group="xmap"
                 element="com_content">plg_xmap_com_content</extension>
+
+            <file>administrator/components/com_osmap/helpers/html/grid.php</file>
+            <file>administrator/components/com_osmap/helpers/osmap.php</file>
+            <folder>administrator/components/com_osmap/models/forms</folder>
+            <folder>administrator/components/com_osmap/models/fields/modal</folder>
+            <file>administrator/components/com_osmap/views/sitemap/tmpl/edit_legacy.php</file>
+            <file>administrator/components/com_osmap/views/sitemap/tmpl/edit.php</file>
+            <file>administrator/components/com_osmap/views/sitemap/tmpl/navigator_class.php</file>
+            <file>administrator/components/com_osmap/views/sitemap/tmpl/navigator_links.php</file>
+            <file>administrator/components/com_osmap/views/sitemap/tmpl/navigator.php</file>
+            <file>administrator/components/com_osmap/views/sitemaps/tmpl/default_legacy.php</file>
+            <file>administrator/components/com_osmap/views/sitemaps/tmpl/form.php</file>
+            <file>components/com_osmap/views/html/tmpl/default_class.php</file>
+            <file>components/com_osmap/views/xml/tmpl/default_class.php</file>
+            <file>components/com_osmap/views/xml/tmpl/default_xsl.php</file>
         </obsolete>
     </alledia>
 </extension>
