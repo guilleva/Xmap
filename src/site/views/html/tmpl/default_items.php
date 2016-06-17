@@ -88,7 +88,7 @@ $printNodeCallback = function ($node) {
 </ul>
 
 <?php if ($this->debug) : ?>
-    <div class="osmap-debug-sitemap-count">
+    <div class="osmap-debug-items-count">
         <?php echo JText::_('COM_OSMAP_SITEMAP_ITEMS_COUNT'); ?>: <?php echo $count; ?>
     </div>
 <?php endif; ?>
