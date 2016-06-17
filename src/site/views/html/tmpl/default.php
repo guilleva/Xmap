@@ -19,7 +19,7 @@ if ($this->debug) {
 JHtml::stylesheet('media/com_osmap/css/sitemap-html.css');
 ?>
 
-<div id="osmap <?php echo $this->debug ? 'osmap-debug' : ''; ?>">
+<div id="osmap-sitemap <?php echo $this->debug ? 'osmap-debug' : ''; ?>">
     <?php if ($this->params->get('show_page_heading', 1) && $this->params->get('page_heading') != '') : ?>
         <!-- Heading -->
         <h2><?php echo $this->escape($this->params->get('page_heading')); ?></h2>
@@ -27,7 +27,7 @@ JHtml::stylesheet('media/com_osmap/css/sitemap-html.css');
 
     <?php if ($this->params->get('show_sitemap_description', 1)) :   ?>
         <!-- Description -->
-        <?php echo $this->params->get('sitemap_description', ''); ?>
+        <p><?php echo $this->params->get('sitemap_description', ''); ?></p>
     <?php endif; ?>
 
     <!-- Error message, if exists -->
@@ -39,6 +39,6 @@ JHtml::stylesheet('media/com_osmap/css/sitemap-html.css');
 
     <!-- Items -->
     <?php if (empty($this->message)) : ?>
-        <?php echo $this->loadTemplate('items'); ?>
+        <div class="osmap-items"><?php echo $this->loadTemplate('items'); ?></div>
     <?php endif; ?>
 </div>
