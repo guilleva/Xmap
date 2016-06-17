@@ -595,7 +595,8 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
 
                 if ($params->get('add_pagebreaks', 1)) {
                     $node->subnodes = OSMap\Helper::getPagebreaks($text, $node->link, $node->uid);
-                    $node->expandible = (count($node->subnodes) > 0); // This article has children
+                    // This article has children
+                    $node->expandible = (count($node->subnodes) > 0);
                 }
 
                 if ($osmap->printNode($node) && $node->expandible) {
