@@ -139,17 +139,15 @@ class Collector
 
                 // Get the menu items
                 $items = $this->getMenuItems($menu);
-
                 foreach ($items as $item) {
                     if ($this->itemIsBlackListed($item)) {
                         continue;
                     }
 
-                    // Set the legacy UID
+                    // Set the menu item UID. The UID can be changed by 3rd party plugins, according to the content
                     $item['uid'] = 'menuitem.' . $item['id'];
 
-                    // Store the menu settings to use in the submitItemToCallback called
-                    // by callbacks
+                    // Store the menu settings to use in the submitItemToCallback called by callbacks
                     $this->tmpItemDefaultSettings['changefreq'] = $menu->changefreq;
                     $this->tmpItemDefaultSettings['priority']   = $menu->priority;
 
@@ -200,24 +198,19 @@ class Collector
         // Check if is external URL and if should be ignored
         if (!$item->isInternal) {
             if (!(bool)$this->params->get('show_external_links', 0)) {
-                $item->ignore = true;
+                $item->set('ignore', true);
             }
         }
 
-        // Verify if the item's link was already listed, if not ignored
-        if (!$item->ignore && $item->published) {
-            $this->checkDuplicatedUIDToIgnore($item);
+        $this->checkDuplicatedUIDToIgnore($item);
 
-            // Check again, after verify the duplicity
-            if (!$item->ignore && $item->published) {
-                if (!$item->duplicate) {
-                    ++$this->counter;
-                }
-            }
+        // Verify if the item's link was already listed, if not ignored
+        if (!$item->ignore && $item->published && !$item->duplicate) {
+            ++$this->counter;
         }
 
         // Set the current level to the item
-        $item->level = $this->currentLevel;
+        $item->set('level', $this->currentLevel);
 
         // Call the given callback function
         return (bool)call_user_func($callback, $item);
@@ -445,7 +438,7 @@ class Collector
     public function changeLevel($step)
     {
         if (is_numeric($step)) {
-            $this->currentLevel += $step;
+            $this->currentLevel += (int)$step;
         }
 
         return true;

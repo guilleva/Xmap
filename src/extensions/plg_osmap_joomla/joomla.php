@@ -67,7 +67,7 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
      */
     public static function prepareMenuItem($node, &$params)
     {
-        $db = JFactory::getDbo();
+        $db = OSMap\Factory::getDbo();
 
         $linkQuery = parse_url($node->link);
 
@@ -207,7 +207,8 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
      */
     public static function getTree($osmap, $parent, &$params)
     {
-        $db     = JFactory::getDBO();
+        $db = OSMap\Factory::getDBO();
+
         $result = null;
 
         $linkQuery = parse_url($parent->link);
@@ -260,12 +261,12 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
             // Load it just once
             define('OSMAP_PLUGIN_JOOMLA_LOADED', 1);
 
-            JFactory::getLanguage()->load('plg_content_pagebreak');
+            OSMap\Factory::getLanguage()->load('plg_content_pagebreak');
         }
 
         switch ($view) {
             case 'category':
-                if (!$id) {
+                if (empty($id)) {
                     $id = intval($params->get('id', 0));
                 }
 
@@ -284,7 +285,11 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
 
             case 'categories':
                 if ($paramExpandCategories) {
-                    $result = self::expandCategory($osmap, $parent, ($id ? $id : 1), $params, $parent->id);
+                    if (empty($id)) {
+                        $id = 1;
+                    }
+
+                    $result = self::expandCategory($osmap, $parent, $id, $params, $parent->id);
                 }
 
                 break;
@@ -326,8 +331,8 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
                     $parent->slug = $item->alias ? ($id . ':' . $item->alias) : $id;
                     $parent->link = ContentHelperRoute::getArticleRoute($parent->slug, $item->catid);
 
-                    $subnodes = OSMap\Helper::getPagebreaks($item->introtext.$item->fulltext, $parent->link, $item->uid);
-                    self::printNodes($osmap, $parent, $params, $subnodes);
+                    $parent->subnodes = OSMap\Helper::getPagebreaks($item->introtext.$item->fulltext, $parent->link, $item->uid);
+                    self::printNodes($osmap, $parent, $params, $parent->subnodes);
                 }
         }
 
@@ -346,7 +351,7 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
      */
     public static function expandCategory($osmap, $parent, $catid, &$params, $itemid, $prevnode = null, $curlevel = 0)
     {
-        $db = JFactory::getDBO();
+        $db = OSMap\Factory::getDBO();
 
         $where = array(
             'a.parent_id = ' . $catid,
@@ -376,13 +381,12 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
             ->from('#__categories AS a')
             ->where($where);
 
-        if ($osmap->view != 'xml') {
-            $query->order('a.lft');
-        }
+        $query->order('a.lft');
 
         $db->setQuery($query);
 
         $items = $db->loadObjectList();
+
         $curlevel++;
 
         $node     = null;
@@ -391,6 +395,7 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
         if ($curlevel <= $maxLevel || $maxLevel == -1) {
             if (count($items) > 0) {
                 $osmap->changeLevel(1);
+
                 foreach ($items as $item) {
                     if (OSMAP_LICENSE === 'pro') {
                         $content = new Alledia\OSMap\Pro\Joomla\Item($item);
@@ -421,6 +426,7 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
 
                     $node->slug = $item->route ? ($item->id . ':' . $item->route) : $item->id;
                     $node->link = ContentHelperRoute::getCategoryRoute($node->slug);
+
 
                     if (strpos($node->link, 'Itemid=')===false) {
                         $node->itemid = $itemid;
@@ -455,12 +461,9 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
      */
     public static function includeCategoryContent($osmap, $parent, $catid, &$params, $itemid, $prevnode = null)
     {
-        $db = JFactory::getDBO();
+        $db = OSMap\Factory::getDBO();
 
-        // We do not do ordering for XML sitemap.
-        if ($osmap->view != 'xml') {
-            $orderBy = self::buildContentOrderBy($parent->params, $parent->id, $itemid);
-        }
+        $orderBy = self::buildContentOrderBy($parent->params, $parent->id, $itemid);
 
         if ($params->get('include_archived', 2)) {
             $where = array('(a.state = 1 or a.state = 2)');
@@ -488,7 +491,7 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
         }
 
         $nullDate = $db->quote($db->getNullDate());
-        $nowDate  = $db->quote(JFactory::getDate()->toSql());
+        $nowDate  = $db->quote(OSMap\Factory::getDate()->toSql());
 
         $query = $db->getQuery(true)
             ->select(
@@ -522,9 +525,7 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
             ->where('(a.publish_up = ' . $nullDate . ' OR a.publish_up <= ' . $nowDate . ')')
             ->where('(a.publish_down = ' . $nullDate . ' OR a.publish_down >= ' . $nowDate . ')');
 
-        if ($osmap->view != 'xml') {
-            $query->order($orderBy);
-        }
+        $query->order($orderBy);
 
         $maxArt = $params->get('max_art');
         if (!empty($maxArt)) {
@@ -639,7 +640,7 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
      */
     public static function buildContentOrderBy(&$params, $parentId, $itemid)
     {
-        $app = JFactory::getApplication('site');
+        $app = OSMap\Factory::getApplication('site');
 
         // Case when the child gets a different menu itemid than it's parent
         if ($parentId != $itemid) {

@@ -42,7 +42,8 @@ class OSMapViewSitemapItems extends OSMap\View\Admin
     /**
      * This method is called while traversing the sitemap items tree, and is
      * used to append the found item to the sitemapItems attribute, which will
-     * be used in the view.
+     * be used in the view. Will not add ignored items. Duplicate items will
+     * be included.
      *
      * @param object $item
      *
@@ -50,7 +51,13 @@ class OSMapViewSitemapItems extends OSMap\View\Admin
      */
     public function appendSitemapItem($item)
     {
+        if ($item->ignore) {
+            return false;
+        }
+
         $this->sitemapItems[] = $item;
+
+        return true;
     }
 
     protected function setToolBar($addDivider = true)

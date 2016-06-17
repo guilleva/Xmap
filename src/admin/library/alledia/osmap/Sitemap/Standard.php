@@ -113,6 +113,10 @@ class Standard implements SitemapInterface
 
     /**
      * Updates the count of links in the database
+     *
+     * @param int $count
+     *
+     * @return void
      */
     protected function updateLinksCount($count)
     {
