@@ -29,7 +29,7 @@ class XmapConverter
      *
      * @var array
      */
-    protected $refactoredXmapPlugins = array('com_content');
+    protected $refactoredXmapPlugins = array('com_content' => 'joomla');
 
     /**
      * Look for the Xmap data to suggest a data migration
@@ -72,7 +72,7 @@ class XmapConverter
                 array(
                     'type = "plugin"',
                     'folder = "xmap"',
-                    'element IN ("' . implode('","', $this->refactoredXmapPlugins) . '")'
+                    'element IN ("' . implode('","', array_keys($this->refactoredXmapPlugins)) . '")'
                 )
             );
         $legacyPlugins = $db->setQuery($query)->loadObjectList();
@@ -118,7 +118,7 @@ class XmapConverter
                         array(
                             'type = "plugin"',
                             'folder = "osmap"',
-                            'element = "' . $plugin->element . '"'
+                            'element = "' . @$this->refactoredXmapPlugins[$plugin->element] . '"'
                         )
                     );
                 $osmapPluginID = $db->setQuery($query)->loadResult();
