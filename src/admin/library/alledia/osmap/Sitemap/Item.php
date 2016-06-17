@@ -131,18 +131,25 @@ class Item extends \JObject
     public $fullLinkHash;
 
     /**
+     * @var object
+     */
+    public $menu;
+
+    /**
      * The constructor
      *
      * @param object  $item
      * @param Sitemap $sitemap
+     * @param Object  $menu
      *
      * @return void
      */
-    public function __construct($item, $sitemap)
+    public function __construct($item, $sitemap, $menu)
     {
         $this->setProperties($item);
 
-        $this->set('sitemap', $sitemap);
+        $this->sitemap =& $sitemap;
+        $this->menu    =& $menu;
 
         // Check if the link is an internal link
         $this->isInternal = \JUri::isInternal($this->link);

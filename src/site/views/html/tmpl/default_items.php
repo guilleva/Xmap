@@ -10,56 +10,97 @@
 defined('_JEXEC') or die();
 
 // Declares global variables to be used into the callback
-global $lastLevel, $debug, $count;
+global $lastMenuId, $lastLevel, $debug, $count;
 
-$lastLevel = 0;
-$count     = 0;
-$debug     = $this->debug;
+$lastMenuId = 0;
+$lastLevel  = 0;
+$count      = 0;
+$debug      = $this->debug;
+
+function closeLevels($offset)
+{
+    if ($offset > 0) {
+        for ($i = 0; $i < $offset; $i++) {
+            echo '</ul>';
+        }
+    }
+}
+
+function openMenu($node)
+{
+    echo '<h2>' . $node->menu->name . '</h2>';
+    echo '<ul>';
+}
+
+function closeMenu()
+{
+    echo '</ul>';
+}
+
+function openSubLevel($node)
+{
+    echo '<ul class="level_' . $node->level . '">';
+}
+
+function printDebugInfo($node, $count)
+{
+    echo '<div class="osmap-debug-box">';
+    echo '<div><span>#:</span> ' . $count . '</div>';
+    echo '<div><span>' . JText::_('COM_OSMAP_UID') . ':</span> ' . $node->uid . '</div>';
+    echo '<div><span>' . JText::_('COM_OSMAP_FULL_LINK') . ':</span> ' . htmlspecialchars($node->fullLink) . '</div>';
+    echo '<div><span>' . JText::_('COM_OSMAP_LINK') . ':</span> ' . htmlspecialchars($node->link) . '</div>';
+    echo '<div><span>' . JText::_('COM_OSMAP_LEVEL') . ':</span> ' . $node->level . '</div>';
+    echo '</div>';
+}
+
+function printItem($node, $debug, $count)
+{
+    $liClass = $debug ? 'osmap-debug-item' : '';
+    $liClass .= $count % 2 == 0 ? ' even' : '';
+
+    echo "<li class=\"{$liClass}\">";
+    echo '<a href="' . $node->fullLink . '" target="_blank" class="osmap-link">';
+    echo htmlspecialchars($node->name);
+    echo '</a>';
+
+    // Debug box
+    if ($debug) {
+        printDebugInfo($node, $count);
+    }
+    echo '</li>';
+}
 
 $printNodeCallback = function ($node) {
-    global $lastLevel, $debug, $count;
+    global $lastMenuId, $lastLevel, $debug, $count;
 
     if (!$node->ignore && $node->published) {
-
         $count++;
+
+        if ($lastMenuId !== $node->menu->id) {
+            // Make sure we need to close the last menu
+            if ($lastMenuId > 0) {
+                closeLevels($lastLevel);
+                closeMenu();
+            }
+            openMenu($node);
+        }
 
         // Check if we have a different level to start or close tags
         if ($lastLevel !== $node->level) {
             if ($node->level > $lastLevel) {
-                echo '<ul class="level_' . $node->level . '">';
+                openSubLevel($node);
             }
 
             if ($node->level < $lastLevel) {
                 // Make sure we close the stack of prior levels
-                $offset = $lastLevel - $node->level;
-                if ($offset > 0) {
-                    for ($i = 0; $i < $offset; $i++) {
-                        echo '</ul>';
-                    }
-                }
+                closeLevels($lastLevel - $node->level);
             }
         }
 
-        $liClass = $debug ? 'osmap-debug-item' : '';
-        $liClass .= $count % 2 == 0 ? ' even' : '';
-        echo "<li class=\"{$liClass}\">";
-        echo '<a href="' . $node->fullLink . '" target="_blank" class="osmap-link">';
-        echo htmlspecialchars($node->name);
-        echo '</a>';
+        printItem($node, $debug, $count);
 
-        // Debug box
-        if ($debug) {
-            echo '<div class="osmap-debug-box">';
-            echo '<div><span>#:</span> ' . $count . '</div>';
-            echo '<div><span>' . JText::_('COM_OSMAP_UID') . ':</span> ' . $node->uid . '</div>';
-            echo '<div><span>' . JText::_('COM_OSMAP_FULL_LINK') . ':</span> ' . htmlspecialchars($node->fullLink) . '</div>';
-            echo '<div><span>' . JText::_('COM_OSMAP_LINK') . ':</span> ' . htmlspecialchars($node->link) . '</div>';
-            echo '<div><span>' . JText::_('COM_OSMAP_LEVEL') . ':</span> ' . $node->level . '</div>';
-            echo '</div>';
-        }
-        echo '</li>';
-
-        $lastLevel = $node->level;
+        $lastLevel  = $node->level;
+        $lastMenuId = $node->menu->id;
     }
 
     return !$node->ignore;
@@ -68,24 +109,20 @@ $printNodeCallback = function ($node) {
 
 <?php if ($this->debug) : ?>
     <div class="osmap-debug-sitemap">
-        <h3><?php echo JText::_('COM_OSMAP_DEBUG_ALERT_TITLE'); ?></h3>
+        <h1><?php echo JText::_('COM_OSMAP_DEBUG_ALERT_TITLE'); ?></h1>
         <p><?php echo JText::_('COM_OSMAP_DEBUG_ALERT'); ?></p>
         <?php echo JText::_('COM_OSMAP_SITEMAP_ID'); ?>: <?php echo $this->sitemap->id; ?>
     </div>
 <?php endif; ?>
 
-<ul>
-    <?php $this->sitemap->traverse($printNodeCallback); ?>
+<?php $this->sitemap->traverse($printNodeCallback); ?>
 
-    <?php
-    // Make sure we close the stack of levels
-    if ($lastLevel > 0) {
-        for ($i = 0; $i < $lastLevel; $i++) {
-            echo '</ul>';
-        }
-    }
-    ?>
-</ul>
+<?php // Make sure we close the stack of levels ?>
+<?php if ($lastLevel > 0) : ?>
+    <?php closeLevels($lastLevel); ?>
+<?php endif; ?>
+
+<?php closeMenu(); ?>
 
 <?php if ($this->debug) : ?>
     <div class="osmap-debug-items-count">

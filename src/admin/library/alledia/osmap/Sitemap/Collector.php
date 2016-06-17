@@ -87,6 +87,14 @@ class Collector
     protected $currentLevel = 0;
 
     /**
+     * The reference for the instance of the current menu for item and its
+     * subitems.
+     *
+     * @var object
+     */
+    protected $currentMenu;
+
+    /**
      * The component's params
      *
      * @var \JRegistry
@@ -126,6 +134,10 @@ class Collector
             $this->getItemsSettings();
 
             foreach ($menus as $menu) {
+                // Store a reference for the current menu
+                $this->currentMenu = &$menu;
+
+                // Get the menu items
                 $items = $this->getMenuItems($menu);
 
                 foreach ($items as $item) {
@@ -176,7 +188,7 @@ class Collector
     public function submitItemToCallback(&$item, $callback, $prepareItem = false)
     {
         // Converts to an Item instance, setting internal attributes
-        $item = new Item($item, $this->sitemap);
+        $item = new Item($item, $this->sitemap, $this->currentMenu);
 
         if ($prepareItem) {
             // Call the plugins to prepare the item
@@ -227,6 +239,7 @@ class Collector
         $query = $db->getQuery(true)
             ->select(
                 array(
+                    'mt.id',
                     'mt.title AS ' . $db->quoteName('name'),
                     'mt.menutype',
                     'osm.changefreq',
