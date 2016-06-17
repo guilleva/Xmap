@@ -10,16 +10,20 @@
 defined('_JEXEC') or die();
 
 $printNodeCallback = function ($node) {
-    if (!$node->ignore && $node->published) {
-        echo '<url>';
-        echo '<loc><![CDATA[' . $node->fullLink . ']]></loc>';
-        echo '<lastmod>' . $node->modified . '</lastmod>';
-        echo '<changefreq>' . $node->changefreq . '</changefreq>';
-        echo '<priority>' . $node->priority . '</priority>';
-        echo '</url>';
+    $display = !$node->ignore && $node->published && !$node->duplicate;
+
+    if (!$display) {
+        return false;
     }
 
-    return !$node->ignore;
+    echo '<url>';
+    echo '<loc><![CDATA[' . $node->fullLink . ']]></loc>';
+    echo '<lastmod>' . $node->modified . '</lastmod>';
+    echo '<changefreq>' . $node->changefreq . '</changefreq>';
+    echo '<priority>' . $node->priority . '</priority>';
+    echo '</url>';
+
+    return true;
 };
 
 echo '<?xml-stylesheet type="text/xsl" href="' . JUri::base() . '/index.php?option=com_osmap&amp;view=xsl&amp;format=xsl&amp;tmpl=component&amp;id=' . $this->sitemap->id . '"?>';

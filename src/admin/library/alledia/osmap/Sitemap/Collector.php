@@ -210,7 +210,9 @@ class Collector
 
             // Check again, after verify the duplicity
             if ($this->checkItemWillBeDisplayed($item)) {
-                ++$this->counter;
+                if (!$item->duplicate) {
+                    ++$this->counter;
+                }
             }
         }
 
@@ -335,7 +337,7 @@ class Collector
     {
         // If is already set, interrupt the flux and ignore the item
         if (isset($this->uidList[$item->uid])) {
-            $item->set('ignore', true);
+            $item->set('duplicate', true);
 
             return true;
         }

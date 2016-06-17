@@ -76,6 +76,11 @@ class Item extends \JObject
     public $ignore = false;
 
     /**
+     * @var bool
+     */
+    public $duplicate = false;
+
+    /**
      * @var int
      */
     public $browserNav = null;

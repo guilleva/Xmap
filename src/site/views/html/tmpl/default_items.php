@@ -45,11 +45,12 @@ function openSubLevel($node)
 function printDebugInfo($node, $count)
 {
     echo '<div class="osmap-debug-box">';
-    echo '<div><span>#:</span> ' . $count . '</div>';
-    echo '<div><span>' . JText::_('COM_OSMAP_UID') . ':</span> ' . $node->uid . '</div>';
-    echo '<div><span>' . JText::_('COM_OSMAP_FULL_LINK') . ':</span> ' . htmlspecialchars($node->fullLink) . '</div>';
-    echo '<div><span>' . JText::_('COM_OSMAP_LINK') . ':</span> ' . htmlspecialchars($node->link) . '</div>';
-    echo '<div><span>' . JText::_('COM_OSMAP_LEVEL') . ':</span> ' . $node->level . '</div>';
+    echo '<div><span>#:</span>&nbsp;' . $count . '</div>';
+    echo '<div><span>' . JText::_('COM_OSMAP_UID') . ':</span>&nbsp;' . $node->uid . '</div>';
+    echo '<div><span>' . JText::_('COM_OSMAP_FULL_LINK') . ':</span>&nbsp;' . htmlspecialchars($node->fullLink) . '</div>';
+    echo '<div><span>' . JText::_('COM_OSMAP_LINK') . ':</span>&nbsp;' . htmlspecialchars($node->link) . '</div>';
+    echo '<div><span>' . JText::_('COM_OSMAP_LEVEL') . ':</span>&nbsp;' . $node->level . '</div>';
+    echo '<div><span>' . JText::_('COM_OSMAP_DUPLICATE') . ':</span>&nbsp;' . JText::_($node->duplicate ? 'JYES' : 'JNO') . '</div>';
     echo '</div>';
 }
 
@@ -73,37 +74,42 @@ function printItem($node, $debug, $count)
 $printNodeCallback = function ($node) {
     global $lastMenuId, $lastLevel, $debug, $count;
 
-    if (!$node->ignore && $node->published) {
-        $count++;
+    $display = !$node->ignore && $node->published;
 
-        if ($lastMenuId !== $node->menu->id) {
-            // Make sure we need to close the last menu
-            if ($lastMenuId > 0) {
-                closeLevels($lastLevel);
-                closeMenu();
-            }
-            openMenu($node);
-        }
-
-        // Check if we have a different level to start or close tags
-        if ($lastLevel !== $node->level) {
-            if ($node->level > $lastLevel) {
-                openSubLevel($node);
-            }
-
-            if ($node->level < $lastLevel) {
-                // Make sure we close the stack of prior levels
-                closeLevels($lastLevel - $node->level);
-            }
-        }
-
-        printItem($node, $debug, $count);
-
-        $lastLevel  = $node->level;
-        $lastMenuId = $node->menu->id;
+    if (!$display) {
+        return false;
     }
 
-    return !$node->ignore;
+    $count++;
+
+    if ($lastMenuId !== $node->menu->id) {
+        // Make sure we need to close the last menu
+        if ($lastMenuId > 0) {
+            closeLevels($lastLevel);
+            closeMenu();
+        }
+
+        openMenu($node, $debug);
+    }
+
+    // Check if we have a different level to start or close tags
+    if ($lastLevel !== $node->level) {
+        if ($node->level > $lastLevel) {
+            openSubLevel($node);
+        }
+
+        if ($node->level < $lastLevel) {
+            // Make sure we close the stack of prior levels
+            closeLevels($lastLevel - $node->level);
+        }
+    }
+
+    printItem($node, $debug, $count);
+
+    $lastLevel  = $node->level;
+    $lastMenuId = $node->menu->id;
+
+    return true;
 };
 ?>
 
