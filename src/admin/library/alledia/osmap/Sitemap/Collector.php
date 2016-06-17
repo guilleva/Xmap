@@ -205,11 +205,11 @@ class Collector
         }
 
         // Verify if the item's link was already listed, if not ignored
-        if ($this->checkItemWillBeDisplayed($item)) {
+        if (!$item->ignore && $item->published) {
             $this->checkDuplicatedUIDToIgnore($item);
 
             // Check again, after verify the duplicity
-            if ($this->checkItemWillBeDisplayed($item)) {
+            if (!$item->ignore && $item->published) {
                 if (!$item->duplicate) {
                     ++$this->counter;
                 }
@@ -539,18 +539,5 @@ class Collector
             $item->priority   = is_float($settings['priority']) ? $settings['priority'] : $settings['priority'];
             $item->published  = (bool)$settings['published'];
         }
-    }
-
-    /**
-     * Checks the item's ignore and published states to say if it will be
-     * displayed or not in the sitemap.
-     *
-     * @param \Item $item
-     *
-     * @return bool
-     */
-    protected function checkItemWillBeDisplayed($item)
-    {
-        return !$item->ignore && $item->published;
     }
 }
