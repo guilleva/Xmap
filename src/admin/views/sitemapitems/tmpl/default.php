@@ -139,6 +139,7 @@ $showItemUID = $this->osmapParams->get('show_item_uid', 0);
                             <?php endforeach; ?>
                         </tbody>
                     </table>
+                    <div><?php echo JText::sprintf('COM_OSMAP_NUMBER_OF_ITEMS_FOUND', $i); ?></div>
                 <?php endif; ?>
             </div>
         </div>
