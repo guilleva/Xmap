@@ -60,13 +60,13 @@ class Script extends AbstractScript
         // Load Alledia Framework
         require_once JPATH_ADMINISTRATOR . '/components/com_osmap/include.php';
 
+        if ($type === 'update') {
+            $this->migrateLegacySitemaps();
+        }
+
         if ($type === 'install') {
             // Check if we have any sitemap. If not, create a default one
             $this->createDefaultSitemap();
-        }
-
-        if ($type === 'update') {
-            $this->migrateLegacySitemaps();
         }
 
         // Check if we have params from Xmap plugins to apply to OSMap plugins
@@ -123,6 +123,21 @@ class Script extends AbstractScript
     }
 
     /**
+     * In case we are updating from a legacy version, make sure to cleanup
+     * the new tables to get a clean start for the data migration
+     *
+     * @return void
+     */
+    protected function cleanupDatabase()
+    {
+        $db = OSMap\Factory::getDbo();
+
+        $db->setQuery('DELETE FROM ' . $db->quoteName('#__osmap_items_settings'))->execute();
+        $db->setQuery('DELETE FROM ' . $db->quoteName('#__osmap_sitemap_menus'))->execute();
+        $db->setQuery('DELETE FROM ' . $db->quoteName('#__osmap_sitemaps'))->execute();
+    }
+
+    /**
      * Check if there are sitemaps in the old table. After migrate, remove
      * the table.
      *
@@ -133,6 +148,9 @@ class Script extends AbstractScript
         $db = OSMap\Factory::getDbo();
 
         if ($this->tableExists('#__osmap_sitemap')) {
+            // For the migration, as we only have new tables, make sure to have a clean start
+            $this->cleanupDatabase();
+
             // Get legacy sitemaps
             $query = $db->getQuery(true)
                 ->select(
