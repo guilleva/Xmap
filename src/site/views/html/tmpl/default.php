@@ -39,6 +39,6 @@ JHtml::stylesheet('media/com_osmap/css/sitemap-html.css');
 
     <!-- Items -->
     <?php if (empty($this->message)) : ?>
-        <div class="osmap-items"><?php echo $this->loadTemplate('items'); ?></div>
+        <?php echo $this->loadTemplate('items'); ?>
     <?php endif; ?>
 </div>

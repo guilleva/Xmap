@@ -115,7 +115,9 @@ $printNodeCallback = function ($node) {
     </div>
 <?php endif; ?>
 
-<?php $this->sitemap->traverse($printNodeCallback); ?>
+<div class="osmap-items">
+    <?php $this->sitemap->traverse($printNodeCallback); ?>
+</div>
 
 <?php // Make sure we close the stack of levels ?>
 <?php if ($lastLevel > 0) : ?>
