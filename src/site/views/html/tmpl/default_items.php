@@ -90,6 +90,7 @@ $printNodeCallback = function ($node) {
         }
 
         openMenu($node, $debug);
+        $lastLevel = 0;
     }
 
     // Check if we have a different level to start or close tags
