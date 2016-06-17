@@ -222,7 +222,7 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
         $id   = intval(JArrayHelper::getValue($linkVars, 'id', ''));
 
         /*
-         * Parameters Initialitation
+         * Parameters Initialisation
          */
         $paramExpandCategories = $params->get('expand_categories', 1);
         $paramExpandFeatured   = $params->get('expand_featured', 1);
