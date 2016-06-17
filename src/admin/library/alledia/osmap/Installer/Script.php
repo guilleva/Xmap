@@ -20,6 +20,7 @@ if (file_exists(__DIR__ . '/../../../Installer/include.php')) {
     $basePath = __DIR__ . '/../..';
 }
 require_once $basePath . '/Installer/include.php';
+require_once __DIR__ . '/XmapConverter.php';
 
 require_once JPATH_ADMINISTRATOR . '/modules/mod_menu/helper.php';
 
@@ -30,12 +31,28 @@ require_once JPATH_ADMINISTRATOR . '/modules/mod_menu/helper.php';
 class Script extends AbstractScript
 {
     /**
+     * @var bool
+     */
+    protected $isXmapDataFound = false;
+
+    /**
      * Post installation actions
      *
      * @return bool
      */
     public function postFlight($type, $parent)
     {
+        // Check if XMap is installed, to start a migration
+        $xmapConverter = new XmapConverter;
+        // This attribute will be used by the cusotm template to display the option to migrate legacy sitemaps
+        $this->isXmapDataFound = $this->tableExists('#__xmap_sitemap') ?
+            $xmapConverter->checkXmapDataExists() : false;
+
+        // If Xmap plugins are still available and we don't have the OSMap plugins yet,
+        // save Xmap plugins params to re-apply after install OSMap plugins
+        $xmapConverter->saveXmapPluginParamsIfExists();
+
+        // Runs the post install/update method
         if (!parent::postFlight($type, $parent)) {
             return false;
         }
@@ -44,12 +61,16 @@ class Script extends AbstractScript
         require_once JPATH_ADMINISTRATOR . '/components/com_osmap/include.php';
 
         if ($type === 'install') {
+            // Check if we have any sitemap. If not, create a default one
             $this->createDefaultSitemap();
         }
 
         if ($type === 'update') {
             $this->migrateLegacySitemaps();
         }
+
+        // Check if we have params from Xmap plugins to apply to OSMap plugins
+        $xmapConverter->moveXmapPluginsParamsToOSMapPlugins();
 
         return true;
     }
