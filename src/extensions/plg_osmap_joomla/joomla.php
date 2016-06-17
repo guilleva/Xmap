@@ -81,6 +81,7 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
         $id     = JArrayHelper::getValue($linkVars, 'id', 0);
 
         switch ($view) {
+            case 'categories':
             case 'category':
                 if ($id) {
                     $query = $db->getQuery(true);
