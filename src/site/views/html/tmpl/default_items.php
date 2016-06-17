@@ -43,7 +43,7 @@ $printNodeCallback = function ($node) {
         $liClass = $debug ? 'osmap-debug-item' : '';
         $liClass .= $count % 2 == 0 ? ' even' : '';
         echo "<li class=\"{$liClass}\">";
-        echo '<a href="' . $node->fullLink . '" target="_blank">';
+        echo '<a href="' . $node->fullLink . '" target="_blank" class="osmap-link">';
         echo htmlspecialchars($node->name);
         echo '</a>';
 
