@@ -108,7 +108,7 @@ $showItemUID = $this->osmapParams->get('show_item_uid', 0);
 
                                         <?php if ($showItemUID) : ?>
                                             <br>
-                                            <div class="small">
+                                            <div class="small osmap-item-uid">
                                                 <?php echo JText::_('COM_OSMAP_UID'); ?>: <?php echo $item->uid; ?>
                                             </div>
                                         <?php endif; ?>

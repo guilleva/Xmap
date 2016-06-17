@@ -225,3 +225,7 @@ ul.ul_sortable li.ui-sortable-placeholder {
 span.level-mark {
     margin-right: 2px;
 }
+
+.sitemapitem-link .osmap-item-uid {
+    color: #888;
+}
