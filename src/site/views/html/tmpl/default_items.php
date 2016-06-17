@@ -26,9 +26,15 @@ function closeLevels($offset)
     }
 }
 
-function openMenu($node)
+function openMenu($node, $debug)
 {
-    echo '<h2>' . $node->menu->name . '</h2>';
+    echo '<h2>' . $node->menu->name;
+
+    if ($debug) {
+        echo '<div><span>' . JText::_('COM_OSMAP_MENUTYPE') . ':</span>&nbsp;' . $node->menu->id . ': ' . $node->menu->menutype . '</div>';
+    }
+
+    echo '</h2>';
     echo '<ul>';
 }
 
