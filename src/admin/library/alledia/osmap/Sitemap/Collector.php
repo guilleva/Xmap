@@ -193,6 +193,9 @@ class Collector
             $this->callPluginsPreparingTheItem($item);
         }
 
+        $item->setAdapter();
+        $item->adapter->checkVisibilityForRobots();
+
         $this->setItemCustomSettings($item);
 
         // Check if is external URL and if should be ignored
@@ -205,7 +208,7 @@ class Collector
         $this->checkDuplicatedUIDToIgnore($item);
 
         // Verify if the item's link was already listed, if not ignored
-        if (!$item->ignore && $item->published && !$item->duplicate) {
+        if (!$item->ignore && $item->published && !$item->duplicate && $item->visibleForRobots) {
             ++$this->counter;
         }
 
@@ -297,7 +300,7 @@ class Collector
             // Only published menu items
             ->where('m.published = 1')
             // Only public/guest menu items
-            ->where('m.access IN (' . OSMap\Helper::getAuthorisedViewLevels() . ')')
+            ->where('m.access IN (' . OSMap\Helper\General::getAuthorisedViewLevels() . ')')
             ->where('m.lft > p.lft')
             ->where('m.lft < p.rgt')
             ->order('m.lft');
@@ -336,7 +339,7 @@ class Collector
         }
 
         // Not set and published, so let's register
-        if ($item->published) {
+        if ($item->published && $item->visibleForRobots) {
             $this->uidList[$item->uid] = 1;
         }
 
@@ -355,7 +358,7 @@ class Collector
     protected function callPluginsPreparingTheItem($item)
     {
         // Call the OSMap and XMap legacy plugins, if exists
-        $plugins = OSMap\Helper::getPluginsForComponent($item->option);
+        $plugins = OSMap\Helper\General::getPluginsForComponent($item->option);
 
         if (!empty($plugins)) {
             foreach ($plugins as $plugin) {
@@ -393,7 +396,7 @@ class Collector
         $this->printNodeCallback = $callback;
 
         // Call the OSMap and XMap legacy plugins, if exists
-        $plugins = OSMap\Helper::getPluginsForComponent($item->option);
+        $plugins = OSMap\Helper\General::getPluginsForComponent($item->option);
 
         if (!empty($plugins)) {
             foreach ($plugins as $plugin) {

@@ -67,13 +67,16 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
      */
     public static function prepareMenuItem($node, &$params)
     {
-        $db = OSMap\Factory::getDbo();
+        $db        = OSMap\Factory::getDbo();
+        $container = OSMap\Factory::getContainer();
 
         $linkQuery = parse_url($node->link);
 
         if (!isset($linkQuery['query'])) {
             return;
         }
+
+        $node->pluginParams = &$params;
 
         parse_str(html_entity_decode($linkQuery['query']), $linkVars);
 
@@ -83,42 +86,18 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
         switch ($view) {
             case 'categories':
             case 'category':
-                if ($id) {
-                    $query = $db->getQuery(true);
-
-                    if (OSMAP_LICENSE === 'pro') {
-                        $query->select($db->quoteName('metadata'))
-                            ->select($db->quoteName('params'))
-                            ->from($db->quoteName('#__categories'))
-                            ->where($db->quoteName('id') . '=' . (int) $id);
-                        $db->setQuery($query);
-
-                        if (($item = $db->loadObject()) != null) {
-
-                            $category = new Alledia\OSMap\Pro\Joomla\Item($item);
-
-                            if (!$category->isVisibleForRobots()) {
-                                return false;
-                            }
-                        } else {
-                            return false;
-                        }
-                    }
-
-                    // Set the node UID
-                    $node->uid = 'joomla.category.' . $id;
-                }
-
-                $node->expandible = true;
+                $node->adapterName = 'JoomlaCategory';
+                $node->uid         = 'joomla.category.' . $id;
+                $node->expandible  = true;
 
                 break;
 
             case 'article':
-                $node->expandible = false;
+                $node->adapterName = 'JoomlaArticle';
+                $node->expandible  = false;
 
                 $paramAddPageBreaks = $params->get('add_pagebreaks', 1);
                 $paramAddImages     = $params->get('add_images', 1);
-                $paramMaxImages     = $params->get('max_images', 1000);
 
                 $query = $db->getQuery(true)
                     ->select($db->quoteName('created'))
@@ -140,12 +119,12 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
                     $node->uid = 'joomla.article.' . $id;
 
                     // Check if we have a modification date
-                    if (!OSMap\Helper::isEmptyDate($item->modified)) {
+                    if (!OSMap\Helper\General::isEmptyDate($item->modified)) {
                         $node->modified = $item->modified;
                     }
 
                     // Make sure we have a modification date. If null, use the creation date
-                    if (OSMap\Helper::isEmptyDate($node->modified)) {
+                    if (OSMap\Helper\General::isEmptyDate($node->modified)) {
                         if (isset($item->createdOn)) {
                             $node->modified = $item->createdOn;
                         } else {
@@ -155,28 +134,20 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
 
                     $item->params = $item->attribs;
 
-                    if (OSMAP_LICENSE === 'pro') {
-                        $content = new Alledia\OSMap\Pro\Joomla\Item($item);
-                        if (!$content->isVisibleForRobots()) {
-                            return false;
-                        }
-                    }
-
                     $text = '';
                     if (isset($item->introtext) && isset($item->fulltext)) {
                         $text = $item->introtext . $item->fulltext;
                     }
 
                     if ($paramAddImages) {
-                        if (OSMAP_LICENSE === 'pro') {
-                            $node->images = Alledia\OSMap\Pro\Joomla\Helper::getImages($text, $paramMaxImages);
-                        } else {
-                            $node->images = OSMap\Helper::getImages($text, $paramMaxImages);
-                        }
+                        $maxImages = $params->get('max_images', 1000);
+
+                        $node->images = $container->imagesHelper->getImagesFromText($text, $maxImages);
                     }
 
+
                     if ($paramAddPageBreaks) {
-                        $node->subnodes   = OSMap\Helper::getPagebreaks($text, $node->link, $node->uid);
+                        $node->subnodes   = OSMap\Helper\General::getPagebreaks($text, $node->link, $node->uid);
                         $node->expandible = (count($node->subnodes) > 0); // This article has children
                     }
                 } else {
@@ -186,13 +157,15 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
                 break;
 
             case 'archive':
-                $node->expandible = true;
+                $node->adapterName = 'JoomlaCategory';
+                $node->expandible  = true;
 
                 break;
 
             case 'featured':
-                $node->uid = 'joomla.featured.' . $id;
-                $node->expandible = false;
+                $node->adapterName = 'JoomlaArticle';
+                $node->uid         = 'joomla.featured.' . $id;
+                $node->expandible  = false;
 
                 break;
         }
@@ -322,7 +295,7 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
                     $item = $db->loadObject();
 
                     // Make sure we have a modification date. If null, use the creation date
-                    if (OSMap\Helper::isEmptyDate($item->modified)) {
+                    if (OSMap\Helper\General::isEmptyDate($item->modified)) {
                         $item->modified = $item->created;
                     }
 
@@ -332,7 +305,7 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
                     $parent->slug = $item->alias ? ($id . ':' . $item->alias) : $id;
                     $parent->link = ContentHelperRoute::getArticleRoute($parent->slug, $item->catid);
 
-                    $parent->subnodes = OSMap\Helper::getPagebreaks($item->introtext.$item->fulltext, $parent->link, $item->uid);
+                    $parent->subnodes = OSMap\Helper\General::getPagebreaks($item->introtext . $item->fulltext, $parent->link, $item->uid);
                     self::printNodes($osmap, $parent, $params, $parent->subnodes);
                 }
         }
@@ -361,7 +334,7 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
         );
 
         if (!$params->get('show_unauth', 0)) {
-            $where[] = 'a.access IN (' . OSMap\Helper::getAuthorisedViewLevels() . ') ';
+            $where[] = 'a.access IN (' . OSMap\Helper\General::getAuthorisedViewLevels() . ') ';
         }
 
         $query = $db->getQuery(true)
@@ -398,28 +371,23 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
                 $osmap->changeLevel(1);
 
                 foreach ($items as $item) {
-                    if (OSMAP_LICENSE === 'pro') {
-                        $content = new Alledia\OSMap\Pro\Joomla\Item($item);
-                        if (!$content->isVisibleForRobots()) {
-                            return false;
-                        }
-                    }
-
-                    $node = new stdClass();
-                    $node->id         = $parent->id;
-                    $node->uid        = 'joomla.category.' . $item->id;
-                    $node->browserNav = $parent->browserNav;
-                    $node->priority   = $params->get('cat_priority');
-                    $node->changefreq = $params->get('cat_changefreq');
-                    $node->name       = $item->title;
-                    $node->expandible = true;
-                    $node->secure     = $parent->secure;
-                    $node->keywords   = $item->metakey;
-                    $node->newsItem   = 0;
+                    $node               = new stdClass();
+                    $node->id           = $item->id;
+                    $node->uid          = 'joomla.category.' . $item->id;
+                    $node->browserNav   = $parent->browserNav;
+                    $node->priority     = $params->get('cat_priority');
+                    $node->changefreq   = $params->get('cat_changefreq');
+                    $node->name         = $item->title;
+                    $node->expandible   = true;
+                    $node->secure       = $parent->secure;
+                    $node->keywords     = $item->metakey;
+                    $node->newsItem     = 0;
+                    $node->adapterName  = 'JoomlaCategory';
+                    $node->pluginParams = &$params;
 
                     // For the google news we should use te publication date instead
                     // the last modification date. See
-                    if (OSMap\Helper::isEmptyDate($item->modified)) {
+                    if (OSMap\Helper\General::isEmptyDate($item->modified)) {
                         $item->modified = $item->created;
                     }
 
@@ -462,7 +430,8 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
      */
     public static function includeCategoryContent($osmap, $parent, $catid, &$params, $itemid, $prevnode = null)
     {
-        $db = OSMap\Factory::getDBO();
+        $db        = OSMap\Factory::getDBO();
+        $container = OSMap\Factory::getContainer();
 
         $orderBy = self::buildContentOrderBy($parent->params, $parent->id, $itemid);
 
@@ -488,7 +457,7 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
         }
 
         if (!$params->get('show_unauth', 0)) {
-            $where[] = 'a.access IN (' . OSMap\Helper::getAuthorisedViewLevels() . ') ';
+            $where[] = 'a.access IN (' . OSMap\Helper\General::getAuthorisedViewLevels() . ') ';
         }
 
         $nullDate = $db->quote($db->getNullDate());
@@ -541,28 +510,21 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
             $osmap->changeLevel(1);
 
             foreach ($items as $item) {
-
-                if (OSMAP_LICENSE === 'pro') {
-                    $content = new Alledia\OSMap\Pro\Joomla\Item($item);
-
-                    if (!$content->isVisibleForRobots()) {
-                        continue;
-                    }
-                }
-
                 $node = new stdClass();
-                $node->id         = $parent->id;
-                $node->uid        = 'joomla.article.' . $item->id;
-                $node->browserNav = $parent->browserNav;
-                $node->priority   = $params->get('art_priority');
-                $node->changefreq = $params->get('art_changefreq');
-                $node->name       = $item->title;
-                $node->modified   = OSMap\Helper::isEmptyDate($item->modified) ? $item->created : $item->modified;
-                $node->expandible = false;
-                $node->secure     = $parent->secure;
-                $node->keywords   = $item->metakey;
-                $node->newsItem   = 1;
-                $node->language   = $item->language;
+                $node->id           = $item->id;
+                $node->uid          = 'joomla.article.' . $item->id;
+                $node->browserNav   = $parent->browserNav;
+                $node->priority     = $params->get('art_priority');
+                $node->changefreq   = $params->get('art_changefreq');
+                $node->name         = $item->title;
+                $node->modified     = OSMap\Helper\General::isEmptyDate($item->modified) ? $item->created : $item->modified;
+                $node->expandible   = false;
+                $node->secure       = $parent->secure;
+                $node->keywords     = $item->metakey;
+                $node->newsItem     = 1;
+                $node->language     = $item->language;
+                $node->adapterName  = 'JoomlaArticle';
+                $node->pluginParams = &$params;
 
                 $node->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
                 //$node->catslug = $item->category_route ? ($catid . ':' . $item->category_route) : $catid;
@@ -586,15 +548,11 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
                 if ($params->get('add_images', 1)) {
                     $maxImages = $params->get('max_images', 1000);
 
-                    if (OSMAP_LICENSE === 'pro') {
-                        $node->images = Alledia\OSMap\Pro\Joomla\Helper::getImages($text, $maxImages);
-                    } else {
-                        $node->images = OSMap\Helper::getImages($text, $maxImages);
-                    }
+                    $node->images = $container->imagesHelper->getImagesFromText($text, $maxImages);
                 }
 
                 if ($params->get('add_pagebreaks', 1)) {
-                    $node->subnodes = OSMap\Helper::getPagebreaks($text, $node->link, $node->uid);
+                    $node->subnodes = OSMap\Helper\General::getPagebreaks($text, $node->link, $node->uid);
                     // This article has children
                     $node->expandible = (count($node->subnodes) > 0);
                 }
@@ -618,7 +576,6 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
         foreach ($subnodes as $subnode) {
             $i++;
 
-            // $subnode->id         = $parent->id;
             $subnode->browserNav = $parent->browserNav;
             $subnode->priority   = $params->get('art_priority');
             $subnode->changefreq = $params->get('art_changefreq');
@@ -674,13 +631,10 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
             $orderBy .= $filterOrder . ' ' . $filterOrderDir . ', ';
         }
 
-        $articleOrderby     = $menuParams->get('orderby_sec', 'rdate');
-        $articleOrderDate   = $menuParams->get('order_date');
-        //$categoryOrderby  = $menuParams->def('orderby_pri', '');
-        $secondary      = ContentHelperQuery::orderbySecondary($articleOrderby, $articleOrderDate) . ', ';
-        //$primary      = ContentHelperQuery::orderbyPrimary($categoryOrderby);
+        $articleOrderby   = $menuParams->get('orderby_sec', 'rdate');
+        $articleOrderDate = $menuParams->get('order_date');
+        $secondary        = ContentHelperQuery::orderbySecondary($articleOrderby, $articleOrderDate) . ', ';
 
-        //$orderBy .= $primary . ' ' . $secondary . ' a.created ';
         $orderBy .=  $secondary . ' a.created ';
 
         return str_replace('m.', 'a.', $orderBy);

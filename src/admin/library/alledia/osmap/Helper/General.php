@@ -7,14 +7,15 @@
  * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
-namespace Alledia\OSMap;
+namespace Alledia\OSMap\Helper;
 
 use Alledia\Framework;
+use Alledia\OSMap;
 
 defined('_JEXEC') or die();
 
 
-abstract class Helper
+abstract class General
 {
     protected static $plugins = array();
 
@@ -49,7 +50,7 @@ abstract class Helper
             )
         );
 
-        $events = Factory::getContainer()->getEvents();
+        $events = OSMap\Factory::getContainer()->getEvents();
         $events->trigger('onOSMapAddAdminSubmenu', array(&$submenus));
 
         if (!empty($submenus)) {
@@ -76,7 +77,7 @@ abstract class Helper
      */
     public static function getSitemapTypeFromInput()
     {
-        $input = Factory::getContainer()->input;
+        $input = OSMap\Factory::getContainer()->input;
 
         if ((bool)$input->getStr('images', 0)) {
             return 'images';
@@ -100,7 +101,7 @@ abstract class Helper
      */
     public static function getPluginsFromDatabase()
     {
-        $db = Factory::getContainer()->db;
+        $db = OSMap\Factory::getContainer()->db;
 
         // Get all the OSMap and XMap plugins. Get first the XMap plugins and
         // than OSMap. Always respecting the ordering.
@@ -210,64 +211,6 @@ abstract class Helper
     }
 
     /**
-     * Extracts images from the given text.
-     *
-     * @param string $text
-     * @param int    $max
-     *
-     * @return array
-     */
-    public static function getImages($text, $max)
-    {
-        if (!isset($urlBase)) {
-            $urlBase    = \JURI::base();
-            $urlBaseLen = strlen($urlBase);
-        }
-
-        $images  = null;
-        $matches = $matches1 = $matches2 = array();
-
-        // Look <img> tags
-        preg_match_all('/<img[^>]*?(?:(?:[^>]*src="(?P<src>[^"]+)")|(?:[^>]*alt="(?P<alt>[^"]+)")|(?:[^>]*title="(?P<title>[^"]+)"))+[^>]*>/i', $text, $matches1, PREG_SET_ORDER);
-
-        // Look for <a> tags with href to images
-        preg_match_all('/<a[^>]*?(?:(?:[^>]*href="(?P<src>[^"]+\.(gif|png|jpg|jpeg))")|(?:[^>]*alt="(?P<alt>[^"]+)")|(?:[^>]*title="(?P<title>[^"]+)"))+[^>]*>/i', $text, $matches2, PREG_SET_ORDER);
-
-        $matches = array_merge($matches1, $matches2);
-
-        if (count($matches)) {
-            $images = array();
-
-            $count = count($matches);
-
-            $j = 0;
-            for ($i = 0; $i < $count && $j < $max; $i++) {
-                if (trim($matches[$i]['src']) && (substr($matches[$i]['src'], 0, 1) == '/' || !preg_match('/^https?:\/\//i', $matches[$i]['src']) || substr($matches[$i]['src'], 0, $urlBaseLen) == $urlBase)) {
-                    $src = $matches[$i]['src'];
-
-                    if (substr($src, 0, 1) == '/') {
-                        $src = substr($src, 1);
-                    }
-
-                    if (!preg_match('/^https?:\//i', $src)) {
-                        $src = $urlBase . $src;
-                    }
-
-                    $image = new \stdClass;
-                    $image->src   = $src;
-                    $image->title = (isset($matches[$i]['title']) ? $matches[$i]['title'] : @$matches[$i]['alt']);
-
-                    $images[] = $image;
-
-                    $j++;
-                }
-            }
-        }
-
-        return $images;
-    }
-
-    /**
      * Extracts pagebreaks from the given text. Returns a list of subnodes
      * related to each pagebreak.
      *
@@ -327,7 +270,7 @@ abstract class Helper
      */
     public static function isEmptyDate($date)
     {
-        $db = Factory::getContainer()->db;
+        $db = OSMap\Factory::getContainer()->db;
 
         $invalidDates = array(
             '',
@@ -374,15 +317,15 @@ abstract class Helper
      */
     public static function loadOptionLanguage($option, $adminPath, $sitePath)
     {
-        $app = Factory::getApplication();
+        $app = OSMap\Factory::getApplication();
 
         switch ($app->getName()) {
             case 'administrator':
-                Factory::getLanguage()->load($option, $adminPath);
+                OSMap\Factory::getLanguage()->load($option, $adminPath);
                 break;
 
             case 'site':
-                Factory::getLanguage()->load($option, $sitePath);
+                OSMap\Factory::getLanguage()->load($option, $sitePath);
                 break;
         }
     }

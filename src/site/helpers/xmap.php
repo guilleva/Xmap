@@ -18,7 +18,7 @@ use Alledia\OSMap;
  * @subpackage     com_osmap
  */
 if (!class_exists('XmapHelper')) {
-    class XMapHelper extends OSMap\Helper
+    class XMapHelper extends OSMap\Helper\General
     {
 
     }

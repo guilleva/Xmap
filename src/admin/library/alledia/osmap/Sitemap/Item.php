@@ -141,6 +141,23 @@ class Item extends \JObject
     public $menu;
 
     /**
+     * @var string
+     */
+    public $adapterName = 'Generic';
+
+    /**
+     * @var object
+     */
+    public $adapter;
+
+    /**
+     * If true, says the item is visible for robots
+     *
+     * @var bool
+     */
+    public $visibleForRobots = true;
+
+    /**
      * The constructor
      *
      * @param object  $item
@@ -167,10 +184,12 @@ class Item extends \JObject
         $this->extractOptionFromLink();
         $this->setFullLink();
 
+        // Sanitize internal links
         if ($this->isInternal) {
             $this->sanitizeFullLink();
         }
 
+        // Make sure to have a hash of the full link
         $this->fullLinkHash = md5($this->fullLink);
 
         // Prepare the boolean attributes
@@ -234,11 +253,11 @@ class Item extends \JObject
      */
     protected function setModificationDate()
     {
-        if (OSMap\Helper::isEmptyDate($this->modified)) {
+        if (OSMap\Helper\General::isEmptyDate($this->modified)) {
             $this->modified = time();
         }
 
-        if (!OSMap\Helper::isEmptyDate($this->modified)) {
+        if (!OSMap\Helper\General::isEmptyDate($this->modified)) {
             if (!is_numeric($this->modified)) {
                 $date =  new \JDate($this->modified);
                 $this->modified = $date->toUnix();
@@ -348,6 +367,23 @@ class Item extends \JObject
 
             // Make sure the link has the base uri
             $this->fullLink = OSMap\Router::forceFrontendURL($this->fullLink);
+        }
+    }
+
+    /**
+     * Set the item adapter according to the type of content. The adapter can
+     * extract custom params from the item like params and metadata.
+     *
+     * @return void
+     */
+    public function setAdapter()
+    {
+        // Check if there is class for the option
+        $adapterClass = '\\Alledia\\OSMap\\Sitemap\\ItemAdapter\\' . $this->adapterName;
+        if (class_exists($adapterClass)) {
+            $this->adapter = new $adapterClass($this);
+        } else {
+            $this->adapter = new ItemAdapter\Generic($this);
         }
     }
 }

@@ -44,7 +44,7 @@ if (!defined('OSMAP_LOADED')) {
     JPluginHelper::importPlugin('osmap');
 
     // Load the language files
-    OSMap\Helper::loadOptionLanguage('com_osmap', OSMAP_ADMIN_PATH, OSMAP_SITE_PATH);
+    OSMap\Helper\General::loadOptionLanguage('com_osmap', OSMAP_ADMIN_PATH, OSMAP_SITE_PATH);
 
     JTable::addIncludePath(OSMAP_ADMIN_PATH . '/tables');
     JForm::addFieldPath(OSMAP_ADMIN_PATH . '/fields');

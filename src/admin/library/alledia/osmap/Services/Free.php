@@ -65,5 +65,17 @@ class Free implements ServiceProviderInterface
         $pimple['language'] = function (OSMap\Container $c) {
             return OSMap\Factory::getLanguage();
         };
+
+        $this->registerHelper($pimple);
+    }
+
+    /**
+     * Registers the image helper
+     */
+    protected function registerHelper(Pimple $pimple)
+    {
+        $pimple['imagesHelper'] = function (OSMap\Container $c) {
+            return new OSMap\Helper\Images;
+        };
     }
 }

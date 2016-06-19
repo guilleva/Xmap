@@ -57,6 +57,8 @@ function printDebugInfo($node, $count)
     echo '<div><span>' . JText::_('COM_OSMAP_LINK') . ':</span>&nbsp;' . htmlspecialchars($node->link) . '</div>';
     echo '<div><span>' . JText::_('COM_OSMAP_LEVEL') . ':</span>&nbsp;' . $node->level . '</div>';
     echo '<div><span>' . JText::_('COM_OSMAP_DUPLICATE') . ':</span>&nbsp;' . JText::_($node->duplicate ? 'JYES' : 'JNO') . '</div>';
+    echo '<div><span>' . JText::_('COM_OSMAP_VISIBLE_FOR_ROBOTS') . ':</span>&nbsp;' . JText::_($node->visibleForRobots ? 'JYES' : 'JNO') . '</div>';
+    echo '<div><span>' . JText::_('COM_OSMAP_ADAPTER_CLASS') . ':</span>&nbsp;' . get_class($node->adapter) . '</div>';
     echo '</div>';
 }
 

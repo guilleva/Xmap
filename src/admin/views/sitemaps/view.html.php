@@ -42,7 +42,7 @@ class OSMapViewSitemaps extends OSMap\View\Admin
     {
         $this->setTitle('COM_OSMAP_SUBMENU_SITEMAPS');
 
-        OSMap\Helper::addSubmenu('sitemaps');
+        OSMap\Helper\General::addSubmenu('sitemaps');
 
         JToolBarHelper::addNew('sitemap.add');
         JToolBarHelper::custom('sitemap.edit', 'edit.png', 'edit_f2.png', 'JTOOLBAR_EDIT', true);
