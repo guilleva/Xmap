@@ -41,12 +41,8 @@ abstract class Admin extends \JControllerAdmin
         $results = \JEventDispatcher::getInstance()->trigger('osmapOnBeforeExecuteTask', $eventParams);
 
         // Check if any of the plugins returned true. If found, stop to not execute the task
-        if (is_array($results) && !empty($results)) {
-            foreach ($results as $result) {
-                if ($result === false) {
-                    return;
-                }
-            }
+        if (in_array(false, $results)) {
+            return;
         }
 
         if (isset($this->taskMap[$task])) {

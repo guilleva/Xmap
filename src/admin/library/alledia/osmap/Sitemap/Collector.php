@@ -122,14 +122,10 @@ class Collector
      */
     public function fetch($callback)
     {
-        // $baseMemory = memory_get_usage();
-        // $baseTime   = microtime();
-
         $menus = $this->getSitemapMenus();
         $this->counter = 0;
 
         if (!empty($menus)) {
-
             // Get the custom settings from db for the items
             $this->getItemsSettings();
 
@@ -167,8 +163,6 @@ class Collector
             }
         }
 
-        // echo sprintf('<m>%s</m>', memory_get_usage() - $baseMemory);
-        // echo sprintf('<t>%s</t>', microtime() - $baseTime);
         return $this->counter;
     }
 

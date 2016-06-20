@@ -93,9 +93,6 @@ class Base extends OSMap\View\Base
      */
     protected function setToolBar($addDivider = true)
     {
-        // Prepare the plugins
-        \JPluginHelper::importPlugin('osmap');
-
         $user = OSMap\Factory::getUser();
         if ($user->authorise('core.admin', 'com_osmap')) {
             if ($addDivider) {
