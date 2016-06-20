@@ -20,6 +20,10 @@
     text-decoration: none !important;
 }
 
+.osmap-links .osmap-link {
+    white-space: nowrap;
+}
+
 .osmap-modal-status {
     font-size: 13px;
 }
