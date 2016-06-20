@@ -110,14 +110,32 @@ class Standard implements SitemapInterface
      * passing each node as parameter.
      *
      * @param callable $callback
-     * @param bool     $updateCount
+     * @param bool     $triggerEvents
      *
      * @return void
      */
-    public function traverse($callback)
+    public function traverse($callback, $triggerEvents = true)
     {
-        $count = $this->collector->fetch($callback);
+        if ($triggerEvents) {
+            // Prepare the plugins
+            \JPluginHelper::importPlugin('osmap');
 
+            // Call the plugins, allowing to interact or override the collector
+            $eventParams = array(
+                $this,
+                $callback
+            );
+            $results = \JEventDispatcher::getInstance()->trigger('osmapOnBeforeCollectItems', $eventParams);
+
+            // A plugin asked to stop the traverse
+            if (in_array(false, $results)) {
+                return;
+            }
+        }
+
+        // Fetch the sitemap items
+        $count = $this->collector->fetch($callback);
+        // Update the links count in the sitemap
         $this->updateLinksCount($count);
     }
 
