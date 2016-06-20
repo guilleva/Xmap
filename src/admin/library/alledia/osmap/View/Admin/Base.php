@@ -93,6 +93,9 @@ class Base extends OSMap\View\Base
      */
     protected function setToolBar($addDivider = true)
     {
+        // Prepare the plugins
+        \JPluginHelper::importPlugin('osmap');
+
         $user = OSMap\Factory::getUser();
         if ($user->authorise('core.admin', 'com_osmap')) {
             if ($addDivider) {
@@ -100,6 +103,15 @@ class Base extends OSMap\View\Base
             }
             \JToolBarHelper::preferences('com_osmap');
         }
+
+        // Prepare the plugins
+        \JPluginHelper::importPlugin('osmap');
+
+        $viewName = strtolower(str_replace('OSMapView', '', $this->getName()));
+        $eventParams = array(
+            $viewName
+        );
+        \JEventDispatcher::getInstance()->trigger('osmapOnAfterSetToolBar', $eventParams);
     }
 
     /**
