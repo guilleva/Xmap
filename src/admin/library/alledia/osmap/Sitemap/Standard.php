@@ -92,6 +92,16 @@ class Standard implements SitemapInterface
         $this->params->loadString($row->params);
 
         // Initiate the collector
+        $this->initCollector();
+    }
+
+    /**
+     * Method to initialize the items collector
+     *
+     * @return void
+     */
+    protected function initCollector()
+    {
         $this->collector = new Collector($this);
     }
 

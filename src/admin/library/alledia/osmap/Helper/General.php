@@ -155,8 +155,9 @@ abstract class General
 
             // Instantiate the plugin if the class exists
             if (class_exists($className)) {
+                $dispatcher = \JEventDispatcher::getInstance();
                 $instance = method_exists($className, 'getInstance') ?
-                    $className::getInstance() : new $className;
+                    $className::getInstance() : new $className($dispatcher);
 
                 // If is legacy, we know it is compatible since the element and option were already validated
                 $compatible = $isLegacy

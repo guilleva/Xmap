@@ -7,12 +7,12 @@
  * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
-namespace Alledia\OSMap;
+namespace Alledia\OSMap\Plugin;
 
 defined('_JEXEC') or die();
 
 
-interface PluginInterface
+interface ContentInterface
 {
     /**
      * Returns the unique instance of the plugin

@@ -12,7 +12,7 @@ use Alledia\OSMap;
 defined('_JEXEC') or die();
 
 
-class OSMapControllerSitemap extends OSMap\Controller\Form
+class OSMapControllerSitemap extends OSMap\Controller\Admin
 {
     /**
      * Method override to check if the user can edit an existing record.
@@ -28,7 +28,7 @@ class OSMapControllerSitemap extends OSMap\Controller\Form
         $recordId = (int) isset($data[$key]) ? $data[$key] : 0;
 
         // Assets are being tracked, so no need to look into the category.
-        return JFactory::getUser()->authorise('core.edit', 'com_osmap.sitemap.' . $recordId);
+        return \JFactory::getUser()->authorise('core.edit', 'com_osmap.sitemap.' . $recordId);
     }
 
     /**

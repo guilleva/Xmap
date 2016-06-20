@@ -25,7 +25,7 @@ require_once JPATH_SITE . '/components/com_content/helpers/query.php';
 
 use Alledia\OSMap;
 
-class PlgOSMapJoomla implements OSMap\PluginInterface
+class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentInterface
 {
     private static $instance = null;
 
@@ -37,7 +37,8 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
     public static function getInstance()
     {
         if (empty(static::$instance)) {
-            $instance = new self;
+            $dispatcher = \JEventDispatcher::getInstance();
+            $instance = new self($dispatcher);
 
             static::$instance = $instance;
         }
@@ -433,7 +434,7 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
         $db        = OSMap\Factory::getDBO();
         $container = OSMap\Factory::getContainer();
 
-        $orderBy = self::buildContentOrderBy($parent->params, $parent->id, $itemid);
+        $orderBy = ' a.created ASC';
 
         if ($params->get('include_archived', 2)) {
             $where = array('(a.state = 1 or a.state = 2)');
@@ -585,58 +586,5 @@ class PlgOSMapJoomla implements OSMap\PluginInterface
         }
 
         $osmap->changeLevel(-1);
-    }
-
-    /**
-     * Generates the order by part of the query according to the
-     * menu/component/user settings. It checks if the current user
-     * has already changed the article's ordering column in the frontend
-     *
-     * @param JRegistry $params
-     * @param int $parentId
-     * @param int $itemid
-     * @return string
-     */
-    public static function buildContentOrderBy(&$params, $parentId, $itemid)
-    {
-        $app = OSMap\Factory::getApplication('site');
-
-        // Case when the child gets a different menu itemid than it's parent
-        if ($parentId != $itemid) {
-            $menu       = $app->getMenu();
-            $item       = $menu->getItem($itemid);
-            $menuParams = clone($params);
-            $itemParams = new JRegistry($item->params);
-
-            $menuParams->merge($itemParams);
-        } else {
-            $menuParams =& $params;
-        }
-
-        $filterOrder = $app->getUserStateFromRequest(
-            'com_content.category.list.' . $itemid . '.filter_order',
-            'filter_order',
-            '',
-            'string'
-        );
-        $filterOrderDir = $app->getUserStateFromRequest(
-            'com_content.category.list.' . $itemid . '.filter_order_Dir',
-            'filter_order_Dir',
-            '',
-            'cmd'
-        );
-        $orderBy = ' ';
-
-        if ($filterOrder && $filterOrderDir) {
-            $orderBy .= $filterOrder . ' ' . $filterOrderDir . ', ';
-        }
-
-        $articleOrderby   = $menuParams->get('orderby_sec', 'rdate');
-        $articleOrderDate = $menuParams->get('order_date');
-        $secondary        = ContentHelperQuery::orderbySecondary($articleOrderby, $articleOrderDate) . ', ';
-
-        $orderBy .=  $secondary . ' a.created ';
-
-        return str_replace('m.', 'a.', $orderBy);
     }
 }

@@ -12,7 +12,7 @@ use Alledia\OSMap;
 defined('_JEXEC') or die();
 
 
-class OSMapViewSitemap extends OSMap\View\Admin
+class OSMapViewSitemap extends OSMap\View\Admin\Base
 {
     /**
      * @var JObject

@@ -12,7 +12,7 @@ use Alledia\OSMap;
 defined('_JEXEC') or die();
 
 
-class OSMapViewSitemapItems extends OSMap\View\Admin
+class OSMapViewSitemapItems extends OSMap\View\Admin\Base
 {
     /**
      * @var Sitemap

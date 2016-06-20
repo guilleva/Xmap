@@ -7,7 +7,7 @@
  * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
-namespace Alledia\OSMap\View;
+namespace Alledia\OSMap\View\Admin;
 
 use Alledia\OSMap;
 use Alledia\Framework\Joomla\Extension;
@@ -15,7 +15,7 @@ use Alledia\Framework\Joomla\Extension;
 defined('_JEXEC') or die();
 
 
-class Admin extends Base
+class Base extends OSMap\View\Base
 {
     /**
      * @var JObject

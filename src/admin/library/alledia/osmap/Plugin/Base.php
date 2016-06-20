@@ -7,34 +7,20 @@
  * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
-use Alledia\OSMap;
+namespace Alledia\OSMap\Plugin;
 
 defined('_JEXEC') or die();
 
-class PlgOSMapDemo extends OSMap\Plugin\Base
+
+/**
+ * Base plugin
+ */
+class Base extends \JPlugin
 {
     public function __construct(&$subject, $config = array())
     {
         require_once JPATH_ADMINISTRATOR . '/components/com_osmap/include.php';
 
         parent::__construct($subject, $config);
-    }
-
-    /**
-     * Manipulate the submenus
-     *
-     * @param array $submenus An array of submenus to manipulate
-     *
-     * @return bool
-     */
-    public function onOSMapAddAdminSubmenu(&$submenus)
-    {
-        $submenus[] = array(
-            'text' => 'COM_OSMAP_CUSTOM_SUBMENU',
-            'link' => 'index.php&option=com_osmap',
-            'view' => 'custom'
-        );
-
-        return true;
     }
 }
