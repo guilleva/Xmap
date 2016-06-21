@@ -1,26 +1,10 @@
 <?php
 /**
  * @package   OSMap
- * @copyright 2007-2014 XMap - Joomla! Vargas. All rights reserved.
- * @copyright 2016 Open Source Training, LLC. All rights reserved..
- * @author    Guillermo Vargas <guille@vargas.co.cr>
- * @author    Alledia <support@alledia.com>
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- *
- * This file is part of OSMap.
- *
- * OSMap is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * any later version.
- *
- * OSMap is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OSMap. If not, see <http://www.gnu.org/licenses/>.
+ * @copyright 2007-2014 XMap - Joomla! Vargas - Guillermo Vargas. All rights reserved.
+ * @copyright 2016 Open Source Training, LLC. All rights reserved.
+ * @contact   www.alledia.com, support@alledia.com
+ * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
 // no direct access
@@ -29,30 +13,11 @@ defined('_JEXEC') or die('Restricted access');
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 
 JHtml::_('behavior.tooltip');
+JHtml::_('formbehavior.chosen', 'select');
 
 JHtml::stylesheet('media/com_osmap/css/admin.css');
 
 $function = JRequest::getString('function', 'jSelectSitemap');
-?>
-<form
-    action="<?php echo JRoute::_('index.php?option=com_osmap&view=sitemaps');?>"
-    method="post"
-    name="adminForm"><?php
-/**
- * @package   OSMap
- * @copyright 2007-2014 XMap - Joomla! Vargas - Guillermo Vargas. All rights reserved.
- * @copyright 2016 Open Source Training, LLC. All rights reserved.
- * @contact   www.alledia.com, support@alledia.com
- * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
- */
-
-defined('_JEXEC') or die();
-
-JHtml::addIncludePath(OSMAP_ADMIN_PATH . '/helpers/html');
-
-JHtml::_('bootstrap.tooltip');
-JHtml::_('formbehavior.chosen', 'select');
-
 $baseUrl   = JUri::root();
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDir   = $this->escape($this->state->get('list.direction'));
@@ -160,5 +125,4 @@ $listDir   = $this->escape($this->state->get('list.direction'));
     <input type="hidden" name="filter_order" value="<?php echo $this->state->get('list.ordering'); ?>" />
     <input type="hidden" name="filter_order_Dir" value="<?php echo $this->state->get('list.direction'); ?>" />
     <?php echo JHtml::_('form.token'); ?>
-</form>
 </form>
