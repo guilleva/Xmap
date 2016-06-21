@@ -8,11 +8,6 @@
 
 * plugins (backward compatibility)
 
-## For Pro
-
-* Cache - images and news
-* change release date of plugins
-
 ## Improve later:
 
 * stats (unique links, links in html, images, news)? Better description of number of links? Unique and published Links
