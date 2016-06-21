@@ -128,7 +128,7 @@ class Standard implements SitemapInterface
             $results = \JEventDispatcher::getInstance()->trigger('osmapOnBeforeCollectItems', $eventParams);
 
             // A plugin asked to stop the traverse
-            if (in_array(false, $results)) {
+            if (in_array(true, $results)) {
                 return;
             }
         }

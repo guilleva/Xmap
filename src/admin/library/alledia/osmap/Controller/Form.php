@@ -36,17 +36,14 @@ abstract class Form extends \JControllerForm
         $controllerName = strtolower(str_replace('OSMapController', '', get_class($this)));
         $eventParams = array(
             $controllerName,
-            $task
+            $task,
+            'admin'
         );
         $results = \JEventDispatcher::getInstance()->trigger('osmapOnBeforeExecuteTask', $eventParams);
 
         // Check if any of the plugins returned true. If found, stop to not execute the task
-        if (is_array($results) && !empty($results)) {
-            foreach ($results as $result) {
-                if ($result === false) {
-                    return;
-                }
-            }
+        if (is_array($results) && in_array('true', $results)) {
+            return;
         }
 
         if (isset($this->taskMap[$task])) {
