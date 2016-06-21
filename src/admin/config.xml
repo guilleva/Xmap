@@ -2,7 +2,7 @@
 <config>
     <fieldset
         name="basic"
-        label="COM_OSMAP_FIELDSET_GENERAL_LABEL">
+        label="COM_OSMAP_FIELDSET_SITEMAP_SETTINGS_LABEL">
 
         <field
             name="show_external_links"
