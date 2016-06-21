@@ -136,6 +136,11 @@ class BaseItem extends \JObject
     public $fullLinkHash;
 
     /**
+     * @var int
+     */
+    public $level;
+
+    /**
      * @var object
      */
     public $menu;
