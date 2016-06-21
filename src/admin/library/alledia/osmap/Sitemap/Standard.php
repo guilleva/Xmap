@@ -122,8 +122,8 @@ class Standard implements SitemapInterface
 
             // Call the plugins, allowing to interact or override the collector
             $eventParams = array(
-                $this,
-                $callback
+                &$this,
+                &$callback
             );
             $results = \JEventDispatcher::getInstance()->trigger('osmapOnBeforeCollectItems', $eventParams);
 
