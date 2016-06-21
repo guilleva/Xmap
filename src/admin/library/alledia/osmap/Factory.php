@@ -65,7 +65,7 @@ class Factory extends Framework\Factory
      *
      * @return mixed
      */
-    public static function getSitemap($id, $type)
+    public static function getSitemap($id, $type = 'standard')
     {
         if ($type === 'standard') {
             return new Sitemap\Standard($id);

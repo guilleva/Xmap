@@ -16,7 +16,7 @@ defined('_JEXEC') or die();
 /**
  * Sitemap item
  */
-class Item extends \JObject
+class Item extends BaseItem
 {
     /**
      * @var int;
@@ -168,10 +168,7 @@ class Item extends \JObject
      */
     public function __construct($item, $sitemap, $menu)
     {
-        $this->setProperties($item);
-
-        $this->sitemap =& $sitemap;
-        $this->menu    =& $menu;
+        parent::__construct($item, $sitemap, $menu);
 
         // Check if the link is an internal link
         $this->isInternal = \JUri::isInternal($this->link);
@@ -228,21 +225,6 @@ class Item extends \JObject
     {
         if (empty($this->uid) || $force) {
             $this->set('uid', $prefix . md5($this->fullLink));
-        }
-    }
-
-    /**
-     * Extract the option from the link, to identify the component called by
-     * the link.
-     *
-     * @return void
-     */
-    protected function extractOptionFromLink()
-    {
-        $this->option = null;
-
-        if (preg_match('#^/?index.php.*option=(com_[^&]+)#', $this->link, $matches)) {
-            $this->option = $matches[1];
         }
     }
 
