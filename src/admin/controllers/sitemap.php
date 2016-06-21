@@ -12,7 +12,7 @@ use Alledia\OSMap;
 defined('_JEXEC') or die();
 
 
-class OSMapControllerSitemap extends OSMap\Controller\Admin
+class OSMapControllerSitemap extends OSMap\Controller\Form
 {
     /**
      * Method override to check if the user can edit an existing record.
