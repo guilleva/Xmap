@@ -85,6 +85,20 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
         $id     = JArrayHelper::getValue($linkVars, 'id', 0);
 
         switch ($view) {
+            case 'archive':
+                $node->adapterName = 'JoomlaCategory';
+                $node->uid         = 'joomla.archive';
+                $node->expandible  = true;
+
+                break;
+
+            case 'featured':
+                $node->adapterName = 'JoomlaCategory';
+                $node->uid         = 'joomla.featured';
+                $node->expandible  = true;
+
+                break;
+
             case 'categories':
             case 'category':
                 $node->adapterName = 'JoomlaCategory';
@@ -154,19 +168,6 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                 } else {
                     return false;
                 }
-
-                break;
-
-            case 'archive':
-                $node->adapterName = 'JoomlaCategory';
-                $node->expandible  = true;
-
-                break;
-
-            case 'featured':
-                $node->adapterName = 'JoomlaArticle';
-                $node->uid         = 'joomla.featured.' . $id;
-                $node->expandible  = false;
 
                 break;
         }
