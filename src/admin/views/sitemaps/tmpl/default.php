@@ -115,7 +115,7 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                     </td>
 
                     <td>
-                        <a href="<?php echo JRoute::_('index.php?option=com_osmap&task=sitemap.edit&id=' . $item->id);?>">
+                        <a href="<?php echo JRoute::_('index.php?option=com_osmap&view=sitemap&layout=edit&id=' . $item->id);?>">
                             <?php echo $this->escape($item->name); ?>
                         </a>
                     </td>

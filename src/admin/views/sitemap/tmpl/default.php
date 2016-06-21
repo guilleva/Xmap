@@ -9,33 +9,32 @@
 
 defined('_JEXEC') or die();
 
-JHtml::_('behavior.core');
-JHtml::_('behavior.tabstate');
 JHtml::_('behavior.formvalidation');
 JHtml::_('behavior.keepalive');
 JHtml::_('formbehavior.chosen', 'select');
 
 JHtml::stylesheet('media/com_osmap/css/admin.css');
+$input = JFactory::getApplication()->input;
 ?>
 <script>
     ;(function(Joomla, document, $) {
         Joomla.submitbutton = function (task) {
-            if (task == 'sitemap.cancel' || document.formvalidator.isValid(document.id('item-form'))) {
+            if (task == 'sitemap.cancel' || document.formvalidator.isValid(document.id('adminForm'))) {
                 // Convert the ordering of sortable in a serialized value to indentify the ordering of menus and values
                 var ordering = $('#ul_menus').sortable('toArray').toString();
                 $('#menus_ordering').val(ordering);
 
-                Joomla.submitform(task, document.getElementById('item-form'));
+                Joomla.submitform(task, document.getElementById('adminForm'));
             }
         }
     })(Joomla, document, jQuery);
 </script>
 
 <form
-    action="<?php echo JRoute::_('index.php?option=com_osmap&layout=edit&id=' . (int)$this->item->id); ?>"
+    action="<?php echo JRoute::_('index.php?option=com_osmap&view=sitemap&layout=edit&id=' . (int)$this->item->id); ?>"
     method="post"
     name="adminForm"
-    id="item-form"
+    id="adminForm"
     class="form-validate sitemap">
 
     <div class="form-inline form-inline-header">
@@ -69,6 +68,7 @@ JHtml::stylesheet('media/com_osmap/css/admin.css');
 
     <input type="hidden" id="menus_ordering" name="jform[menus_ordering]" value=""/>
     <input type="hidden" name="task" value=""/>
+    <input type="hidden" name="return" value="<?php echo $input->getCmd('return'); ?>"/>
     <?php echo JHtml::_('form.token'); ?>
 </form>
 
