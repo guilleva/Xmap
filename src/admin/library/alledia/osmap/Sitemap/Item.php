@@ -39,7 +39,7 @@ class Item extends BaseItem
         $this->prepareParams();
         $this->setModificationDate();
         $this->setLink();
-        $this->extractOptionFromLink();
+        $this->extractComponentFromLink();
         $this->setFullLink();
 
         // Sanitize internal links

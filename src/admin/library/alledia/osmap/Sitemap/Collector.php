@@ -352,7 +352,7 @@ class Collector
     protected function callPluginsPreparingTheItem($item)
     {
         // Call the OSMap and XMap legacy plugins, if exists
-        $plugins = OSMap\Helper\General::getPluginsForComponent($item->option);
+        $plugins = OSMap\Helper\General::getPluginsForComponent($item->component);
 
         if (!empty($plugins)) {
             foreach ($plugins as $plugin) {
@@ -390,7 +390,7 @@ class Collector
         $this->printNodeCallback = $callback;
 
         // Call the OSMap and XMap legacy plugins, if exists
-        $plugins = OSMap\Helper\General::getPluginsForComponent($item->option);
+        $plugins = OSMap\Helper\General::getPluginsForComponent($item->component);
 
         if (!empty($plugins)) {
             foreach ($plugins as $plugin) {

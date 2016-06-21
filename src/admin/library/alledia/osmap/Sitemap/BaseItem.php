@@ -63,7 +63,7 @@ class BaseItem extends \JObject
      *
      * @var string
      */
-    public $option;
+    public $component;
 
     /**
      * @var Sitemap
@@ -185,12 +185,12 @@ class BaseItem extends \JObject
      *
      * @return void
      */
-    protected function extractOptionFromLink()
+    protected function extractComponentFromLink()
     {
-        $this->option = null;
+        $this->component = null;
 
         if (preg_match('#^/?index.php.*option=(com_[^&]+)#', $this->link, $matches)) {
-            $this->option = $matches[1];
+            $this->component = $matches[1];
         }
     }
 }
