@@ -19,5 +19,5 @@ jimport('joomla.application.component.controller');
  */
 class OSMapController extends JControllerLegacy
 {
-
+    protected $default_view = 'xml';
 }
