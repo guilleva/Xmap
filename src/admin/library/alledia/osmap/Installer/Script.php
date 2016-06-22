@@ -231,30 +231,59 @@ class Script extends AbstractScript
 
                         if (!empty($excludedItems)) {
                             foreach ($excludedItems as $item) {
+                                $uid = $this->convertItemUID($item[0]);
+
+                                // Check if the item was already registered
                                 $query = $db->getQuery(true)
-                                    ->insert('#__osmap_items_settings')
-                                    ->columns(
+                                    ->select('COUNT(*)')
+                                    ->from('#__osmap_items_settings')
+                                    ->where(
                                         array(
-                                            'sitemap_id',
-                                            'uid',
-                                            'published',
-                                            'changefreq',
-                                            'priority'
-                                        )
-                                    )
-                                    ->values(
-                                        implode(
-                                            ',',
-                                            array(
-                                                $sitemapId,
-                                                $db->quote($this->convertItemUID($item[0])),
-                                                0,
-                                                $db->quote('weekly'),
-                                                $db->quote('0.5')
-                                            )
+                                            'sitemap_id = ' . $db->quote($sitemapId),
+                                            'uid = ' . $db->quote($ui)
                                         )
                                     );
-                                $db->setQuery($query)->execute();
+                                $count = $db->setQuery($query)->loadResult();
+
+                                if ($count == 0) {
+                                    // Insert the settings
+                                    $query = $db->getQuery(true)
+                                        ->insert('#__osmap_items_settings')
+                                        ->columns(
+                                            array(
+                                                'sitemap_id',
+                                                'uid',
+                                                'published',
+                                                'changefreq',
+                                                'priority'
+                                            )
+                                        )
+                                        ->values(
+                                            implode(
+                                                ',',
+                                                array(
+                                                    $sitemapId,
+                                                    $db->quote($uid),
+                                                    0,
+                                                    $db->quote('weekly'),
+                                                    $db->quote('0.5')
+                                                )
+                                            )
+                                        );
+                                    $db->setQuery($query)->execute();
+                                } else {
+                                    // Update the setting
+                                    $query = $db->getQuery(true)
+                                        ->update('#__osmap_items_settings')
+                                        ->set('published = 0')
+                                        ->where(
+                                            array(
+                                                'sitemap_id = ' . $db->quote($sitemapId),
+                                                'uid = ' . $db->quote($ui)
+                                            )
+                                        );
+                                    $db->setQuery($query)->execute();
+                                }
                             }
                         }
                     }
