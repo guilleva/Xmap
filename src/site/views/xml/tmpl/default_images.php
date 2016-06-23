@@ -26,8 +26,9 @@ $printNodeCallback = function ($node) {
 
     foreach ($node->images as $image) {
         echo '<image:image>';
-        echo '<image:loc>' . $image->src . '</image:loc>';
-        echo '<image:title>' . $image->title . '</image:title>';
+        echo '<image:loc><![CDATA[' . $image->src . ']]</image:loc>';
+        echo '<image:title><![CDATA[' . $image->title . ']]></image:title>';
+
         echo '</image:image>';
     }
 
