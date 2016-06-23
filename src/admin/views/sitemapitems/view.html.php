@@ -31,33 +31,19 @@ class OSMapViewSitemapItems extends OSMap\View\Admin\Base
 
     public function display($tpl = null)
     {
-        $this->loadSitemap();
+        $this->id = OSMap\Factory::getApplication()->input->getInt('id', 0);
+
+        $this->sitemap = null;
+
+        if (!empty($this->id)) {
+            $this->sitemap = OSMap\Factory::getSitemap($this->id, 'standard');
+        }
+
         $this->setToolBar();
 
         $this->osmapParams = JComponentHelper::getParams('com_osmap');
 
         parent::display($tpl);
-    }
-
-    /**
-     * This method is called while traversing the sitemap items tree, and is
-     * used to append the found item to the sitemapItems attribute, which will
-     * be used in the view. Will not add ignored items. Duplicate items will
-     * be included.
-     *
-     * @param object $item
-     *
-     * @result void
-     */
-    public function appendSitemapItem($item)
-    {
-        if ($item->ignore) {
-            return false;
-        }
-
-        $this->sitemapItems[] = $item;
-
-        return true;
     }
 
     protected function setToolBar($addDivider = true)
@@ -78,22 +64,5 @@ class OSMapViewSitemapItems extends OSMap\View\Admin\Base
         JToolBarHelper::cancel('sitemapitems.cancel', $alt);
 
         parent::setToolBar($addDivider);
-    }
-
-    /**
-     * Loads the sitemap and set to the attribute.
-     *
-     * @return void
-     */
-    protected function loadSitemap()
-    {
-        $app = OSMap\Factory::getApplication();
-
-        $this->id = $app->input->getInt('id', 0);
-        $this->sitemap = null;
-        if (!empty($this->id)) {
-            $this->sitemap = OSMap\Factory::getSitemap($this->id, 'standard');
-            $this->sitemap->traverse(array($this, 'appendSitemapItem'));
-        }
     }
 }
