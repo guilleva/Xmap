@@ -36,15 +36,6 @@ class OSMapControllerSitemapItems extends OSMap\Controller\Form
         $this->setRedirect('index.php?option=com_osmap&view=sitemaps');
     }
 
-    public function apply()
-    {
-        $this->save();
-
-        $sitemapId = OSMap\Factory::getApplication()->input->getInt('id');
-
-        $this->setRedirect('index.php?option=com_osmap&view=sitemapitems&id=' . $sitemapId);
-    }
-
     public function save($key = NULL, $urlVar = NULL)
     {
         // Check for request forgeries.
@@ -78,6 +69,10 @@ class OSMapControllerSitemapItems extends OSMap\Controller\Form
             }
         }
 
-        $this->setRedirect('index.php?option=com_osmap&view=sitemaps');
+        if ($this->getTask() === 'apply') {
+            $this->setRedirect('index.php?option=com_osmap&view=sitemapitems&id=' . $sitemapId);
+        } else {
+            $this->setRedirect('index.php?option=com_osmap&view=sitemaps');
+        }
     }
 }
