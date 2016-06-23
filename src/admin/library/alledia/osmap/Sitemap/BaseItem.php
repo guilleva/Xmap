@@ -231,4 +231,23 @@ class BaseItem extends \JObject
 
         return '';
     }
+
+    /**
+     * Check if the current link is an internal link.
+     *
+     * @return bool
+     */
+    protected function checkLinkIsInternal()
+    {
+        $internal = \JUri::isInternal($this->link);
+
+        // Check if is a link with with the same base url
+        if (!$internal) {
+            if (preg_match('#^' . \JUri::base() . '#', $this->link)) {
+                 $internal = true;
+            }
+        }
+
+        return $internal;
+    }
 }

@@ -32,7 +32,7 @@ class Item extends BaseItem
         parent::__construct($item, $sitemap, $menu);
 
         // Check if the link is an internal link
-        $this->isInternal = \JUri::isInternal($this->link);
+        $this->isInternal = $this->checkLinkIsInternal();
 
         $this->isMenuItem = (bool)$this->isMenuItem;
 
