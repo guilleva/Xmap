@@ -26,7 +26,7 @@ $printNodeCallback = function ($node) {
     return true;
 };
 
-echo '<?xml-stylesheet type="text/xsl" href="' . JUri::base() . '/index.php?option=com_osmap&amp;view=xsl&amp;format=xsl&amp;tmpl=component&amp;id=' . $this->sitemap->id . '"?>';
+echo '<?xml-stylesheet type="text/xsl" href="' . JUri::base() . 'index.php?option=com_osmap&amp;view=xsl&amp;format=xsl&amp;tmpl=component&amp;id=' . $this->sitemap->id . '"?>';
 
 echo '<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 
