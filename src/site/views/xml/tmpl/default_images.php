@@ -29,6 +29,10 @@ $printNodeCallback = function ($node) {
         echo '<image:loc><![CDATA[' . $image->src . ']]</image:loc>';
         echo '<image:title><![CDATA[' . $image->title . ']]></image:title>';
 
+        if (isset($image->license)) {
+            echo '<image:license><![CDATA[' . $image->license . ']]></image:license>';
+        }
+
         echo '</image:image>';
     }
 
