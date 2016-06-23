@@ -23,18 +23,26 @@ $printNodeCallback = function ($node) {
 
 
     echo '<url>';
-    echo '<loc><![CDATA[' . $node->fullLink . ']]></loc>';
+    echo '<loc>' . $node->fullLink . '</loc>';
 
     foreach ($node->images as $image) {
-        echo '<image:image>';
-        echo '<image:loc><![CDATA[' . $image->src . ']]</image:loc>';
-        echo '<image:title><![CDATA[' . $image->title . ']]></image:title>';
+        if (!empty($image->src)) {
+            echo '<image:image>';
+            // Link
+            echo '<image:loc>' . $image->src . '</image:loc>';
+            // Title
+            echo '<image:title>';
+            if (!empty($image->title)) {
+                echo '<![CDATA[' . $image->title . ']]>';
+            }
+            echo '</image:title>';
+            // Lincense
+            if (isset($image->license)) {
+                echo '<image:license><![CDATA[' . $image->license . ']]></image:license>';
+            }
 
-        if (isset($image->license)) {
-            echo '<image:license><![CDATA[' . $image->license . ']]></image:license>';
+            echo '</image:image>';
         }
-
-        echo '</image:image>';
     }
 
     echo '</url>';
