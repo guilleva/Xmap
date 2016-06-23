@@ -233,3 +233,7 @@ span.level-mark {
 .sitemapitem-link .osmap-item-uid {
     color: #888;
 }
+
+.osmap-info {
+    cursor: help;
+}

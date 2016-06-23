@@ -72,7 +72,14 @@ class Collector
     protected $itemsSettings;
 
     /**
+     * If false, say that any next sub-level should be unpublished
      *
+     * @var mixed
+     */
+    protected $unpublishLevel = false;
+
+    /**
+     * @var array
      */
     protected $tmpItemDefaultSettings = array(
         'changefreq' => 'weekly',
@@ -190,24 +197,26 @@ class Collector
         $item->setAdapter();
         $item->adapter->checkVisibilityForRobots();
 
+        // Set the current level to the item
+        $item->set('level', $this->currentLevel);
+
         $this->setItemCustomSettings($item);
+        $this->checkParentIsUnpublished($item);
 
         // Check if is external URL and if should be ignored
         if (!$item->isInternal) {
             if (!(bool)$this->params->get('show_external_links', 0)) {
-                $item->set('ignore', true);
+                $item->set('published', false);
+                $item->addAdminNote('COM_OSMAP_ADMIN_NOTE_IGNORED_EXTERNAL');
             }
         }
 
         $this->checkDuplicatedUIDToIgnore($item);
 
-        // Verify if the item's link was already listed, if not ignored
+        // Verify if the item can be displayed to count as unique for the XML sitemap
         if (!$item->ignore && $item->published && !$item->duplicate && $item->visibleForRobots) {
             ++$this->counter;
         }
-
-        // Set the current level to the item
-        $item->set('level', $this->currentLevel);
 
         // Call the given callback function
         return (bool)call_user_func($callback, $item);
@@ -328,12 +337,14 @@ class Collector
         // If is already set, interrupt the flux and ignore the item
         if (isset($this->uidList[$item->uid])) {
             $item->set('duplicate', true);
+            $item->set('published', false);
+            $item->addAdminNote('COM_OSMAP_ADMIN_NOTE_DUPLICATED');
 
             return true;
         }
 
         // Not set and published, so let's register
-        if ($item->published && $item->visibleForRobots) {
+        if ($item->published && $item->visibleForRobots && !$item->ignore) {
             $this->uidList[$item->uid] = 1;
         }
 
@@ -528,6 +539,33 @@ class Collector
             $item->changefreq = $settings['changefreq'];
             $item->priority   = is_float($settings['priority']) ? $settings['priority'] : $settings['priority'];
             $item->published  = (bool)$settings['published'];
+        }
+    }
+
+    /**
+     * Check if the parent is unpublished or ignored and makes sure to ignore any item on it's sublevel
+     *
+     * @param Item $item
+     *
+     * @return void
+     */
+    protected function checkParentIsUnpublished($item)
+    {
+        // Check if this item belongs to a sub-level which needs to be unpublished
+        if ($this->unpublishLevel !== false && $item->level > $this->unpublishLevel) {
+            $item->set('published', false);
+            $item->addAdminNote('COM_OSMAP_ADMIN_NOTE_PARENT_UNPUBLISHED');
+        }
+
+        // If the item is unpublished, and the ignore level is false, mark the level to ignore sub-items
+        $displayable = $item->published && !$item->ignore && !$item->duplicate;
+        if (!$displayable && $this->unpublishLevel === false) {
+            $this->unpublishLevel = $item->level;
+        }
+
+        // If the item won't be ignored, make sure to reset the ignore level
+        if ($item->published && !$item->ignore && !$item->duplicate) {
+            $this->unpublishLevel = false;
         }
     }
 }

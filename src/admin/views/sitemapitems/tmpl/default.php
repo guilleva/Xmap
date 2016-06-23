@@ -9,6 +9,7 @@
 
 defined('_JEXEC') or die();
 
+JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.core');
 JHtml::_('behavior.keepalive');
 JHtml::_('formbehavior.chosen', 'select');
@@ -78,19 +79,23 @@ $showItemUID = $this->osmapParams->get('show_item_uid', 0);
                                     data-url-hash="<?php echo $item->fullLinkHash; ?>">
 
                                     <td class="center">
-                                        <div class="sitemapitem-published"
-                                            data-original="<?php echo $item->published ? '1' : '0'; ?>"
-                                            data-value="<?php echo $item->published ? '1' : '0'; ?>">
+                                        <?php
+                                        $notes    = $item->getAdminNotesString();
+                                        $editable = !$item->duplicate && !$item->ignore && empty($notes);
+                                        ?>
 
-                                                <?php if ($item->duplicate) : ?>
-                                                    <?php $title = $item->isInternal ? 'COM_OSMAP_DUPLICATE_TOOLTIP' : 'COM_OSMAP_IGNORED_EXTERNAL_TOOLTIP'; ?>
-                                                    <span class="icon-warning" title="<?php echo JText::_($title); ?>"></span>
-                                                <?php endif; ?>
+                                        <?php if ($editable) : ?>
+                                            <div class="sitemapitem-published"
+                                                data-original="<?php echo $item->published ? '1' : '0'; ?>"
+                                                data-value="<?php echo $item->published ? '1' : '0'; ?>">
 
-                                                <span class="icon-<?php echo $item->published ? 'publish' : 'unpublish'; ?>"></span>
-
-                                        </div>
+                                                <span class="icon-<?php echo $item->published && !$item->duplicate ? 'publish' : 'unpublish'; ?>" ></span>
+                                            </div>
+                                        <?php else : ?>
+                                            <span class="icon-warning hasTooltip osmap-info" title="<?php echo $notes; ?>"></span>
+                                        <?php endif; ?>
                                     </td>
+
                                     <td class="sitemapitem-link">
                                         <?php if ($item->level > 0) : ?>
                                             <span class="level-mark">
@@ -101,6 +106,7 @@ $showItemUID = $this->osmapParams->get('show_item_uid', 0);
                                         <a
                                             href="<?php echo $item->fullLink; ?>"
                                             target="_blank"
+                                            class="hasTooltip"
                                             title="<?php echo $item->link; ?>">
                                             <?php echo $item->fullLink; ?>
                                         </a>
@@ -113,9 +119,11 @@ $showItemUID = $this->osmapParams->get('show_item_uid', 0);
                                             </div>
                                         <?php endif; ?>
                                     </td>
+
                                     <td class="sitemapitem-name">
                                         <?php echo isset($item->name) ? $item->name : ''; ?>
                                     </td>
+
                                     <td class="center">
                                         <div class="sitemapitem-priority"
                                             data-original="<?php echo $item->priority; ?>"
@@ -124,6 +132,7 @@ $showItemUID = $this->osmapParams->get('show_item_uid', 0);
                                             <?php echo $item->priority; ?>
                                         </div>
                                     </td>
+
                                     <td class="center">
                                         <div class="sitemapitem-changefreq"
                                             data-original="<?php echo $item->changefreq; ?>"
