@@ -14,7 +14,8 @@ $printNodeCallback = function ($node) {
         && $node->published
         && !$node->duplicate
         && isset($node->images)
-        && !empty($node->images);
+        && !empty($node->images)
+        && $node->visibleForRobots;
 
     if (!$display) {
         return false;

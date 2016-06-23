@@ -18,7 +18,8 @@ $printNodeCallback = function ($node) use ($params) {
         && $node->published
         && !$node->duplicate
         && isset($node->newsItem)
-        && !empty($node->newsItem);
+        && !empty($node->newsItem)
+        && $node->visibleForRobots;
 
     if (!$display) {
         return false;

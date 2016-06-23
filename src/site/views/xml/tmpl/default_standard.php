@@ -10,7 +10,7 @@
 defined('_JEXEC') or die();
 
 $printNodeCallback = function ($node) {
-    $display = !$node->ignore && $node->published && !$node->duplicate;
+    $display = !$node->ignore && $node->published && !$node->duplicate && $node->visibleForRobots;
 
     if (!$display) {
         return false;
