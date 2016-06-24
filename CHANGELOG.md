@@ -1,3 +1,7 @@
+## 4.0.1 Free
+
+* Fixes detection of internal URLs in raw and relative URLs
+
 ## 4.0.0 Free
 
 * Code refactored and cleaned up, keeping backward compatibility with 3rd party plugins (OSMap and XMap)
