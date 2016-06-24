@@ -130,7 +130,7 @@ abstract class Router
      */
     public static function getFrontendBase()
     {
-        return preg_replace('#/administrator[/]?$#', '', \JUri::base());
+        return preg_replace('#/administrator[/]?$#', '/', \JUri::base());
     }
 
     /**
