@@ -6,8 +6,8 @@
  * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
-;(function($, Joomla, document, JSON, JText) {
-    $.fn.osmapSitemapItems = function(JText) {
+;(function($, Joomla, document, JSON) {
+    var configureForm = function(lang) {
         /**
          * Add field to select priority of an item.
          */
@@ -56,12 +56,12 @@
             $div = $tr.find('.sitemapitem-changefreq');
 
             $input = $('<select>');
-            $opt01 = $('<option>').attr('value', 'hourly').text(JText.COM_OSMAP_HOURLY).appendTo($input);
-            $opt02 = $('<option>').attr('value', 'daily').text(JText.COM_OSMAP_DAILY).appendTo($input);
-            $opt03 = $('<option>').attr('value', 'weekly').text(JText.COM_OSMAP_WEEKLY).appendTo($input);
-            $opt04 = $('<option>').attr('value', 'monthly').text(JText.COM_OSMAP_MONTHLY).appendTo($input);
-            $opt05 = $('<option>').attr('value', 'yearly').text(JText.COM_OSMAP_YEARLY).appendTo($input);
-            $opt06 = $('<option>').attr('value', 'never').text(JText.COM_OSMAP_NEVER).appendTo($input);
+            $opt01 = $('<option>').attr('value', 'hourly').text(lang.COM_OSMAP_HOURLY).appendTo($input);
+            $opt02 = $('<option>').attr('value', 'daily').text(lang.COM_OSMAP_DAILY).appendTo($input);
+            $opt03 = $('<option>').attr('value', 'weekly').text(lang.COM_OSMAP_WEEKLY).appendTo($input);
+            $opt04 = $('<option>').attr('value', 'monthly').text(lang.COM_OSMAP_MONTHLY).appendTo($input);
+            $opt05 = $('<option>').attr('value', 'yearly').text(lang.COM_OSMAP_YEARLY).appendTo($input);
+            $opt06 = $('<option>').attr('value', 'never').text(lang.COM_OSMAP_NEVER).appendTo($input);
 
             $input.val($div.data('value'));
 
@@ -155,5 +155,19 @@
         setTimeout(function() {
             $('.osmap-loading').remove();
         }, 1000);
+    };
+
+    $.fn.osmap = {
+        loadSitemapItems: function(params) {
+            $.ajax({
+                url: params.baseUri + '/index.php?option=com_osmap&view=adminsitemapitems&tmpl=component&id=' + params.sitemapId,
+                async: true,
+                success: function(data) {
+                    $(params.container).html(data);
+
+                    configureForm(params.lang);
+                }
+            });
+        }
     };
 })(jQuery, Joomla, document, JSON);

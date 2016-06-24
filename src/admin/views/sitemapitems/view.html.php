@@ -14,34 +14,11 @@ defined('_JEXEC') or die();
 
 class OSMapViewSitemapItems extends OSMap\View\Admin\Base
 {
-    /**
-     * @var Sitemap
-     */
-    protected $sitemap = null;
-
-    /**
-     * @var JForm
-     */
-    public $form = null;
-
-    /**
-     * @var array
-     */
-    protected $sitemapItems = array();
-
     public function display($tpl = null)
     {
-        $this->id = OSMap\Factory::getApplication()->input->getInt('id', 0);
-
-        $this->sitemap = null;
-
-        if (!empty($this->id)) {
-            $this->sitemap = OSMap\Factory::getSitemap($this->id, 'standard');
-        }
+        $this->sitemapId = OSMap\Factory::getApplication()->input->getInt('id', 0);
 
         $this->setToolBar();
-
-        $this->osmapParams = JComponentHelper::getParams('com_osmap');
 
         parent::display($tpl);
     }
@@ -52,13 +29,8 @@ class OSMapViewSitemapItems extends OSMap\View\Admin\Base
 
         $this->setTitle('COM_OSMAP_PAGE_VIEW_SITEMAP_ITEMS');
 
-        if (isset($this->sitemap)) {
-            $isNew = ($this->sitemap->id == 0);
-            OSMap\Factory::getApplication()->input->set('hidemainmenu', true);
-
-            JToolBarHelper::apply('sitemapitems.apply');
-            JToolBarHelper::save('sitemapitems.save');
-        }
+        JToolBarHelper::apply('sitemapitems.apply');
+        JToolBarHelper::save('sitemapitems.save');
 
         $alt = $isNew ? 'JTOOLBAR_CANCEL' : 'JTOOLBAR_CLOSE';
         JToolBarHelper::cancel('sitemapitems.cancel', $alt);
