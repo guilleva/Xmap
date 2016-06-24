@@ -86,4 +86,35 @@ abstract class Router
 
         return $url;
     }
+
+    /**
+     * Checks if the supplied URL is internal
+     *
+     * @param   string  $url  The URL to check.
+     *
+     * @return  boolean  True if Internal.
+     *
+     * @since   11.1
+     */
+    public static function isInternalURL($url)
+    {
+        $uri      = \JUri::getInstance($url);
+        $base     = $uri->toString(array('scheme', 'host', 'port', 'path'));
+        $host     = $uri->toString(array('scheme', 'host', 'port'));
+        $path     = $uri->toString(array('path'));
+        $baseHost = \JUri::getInstance(\JUri::base())->toString(array('host'));
+
+        $jriBase  = preg_replace('#/administrator[/]?$#', '', \JUri::base());
+
+        // @see JURITest
+        if (empty($host) && strpos($path, 'index.php') === 0
+            || !empty($host) && preg_match('#' . preg_quote($jriBase, '#') . '#', $base)
+            || !empty($host) && $host === $baseHost && strpos($path, 'index.php') !== false
+            || !empty($host) && $base === $host && preg_match('#' . preg_quote($base, '#') . '#', \JUri::base())) {
+
+            return true;
+        }
+
+        return false;
+    }
 }

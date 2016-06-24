@@ -135,6 +135,7 @@ class Standard implements SitemapInterface
 
         // Fetch the sitemap items
         $count = $this->collector->fetch($callback);
+
         // Update the links count in the sitemap
         $this->updateLinksCount($count);
     }
