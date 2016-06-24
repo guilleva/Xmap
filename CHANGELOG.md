@@ -1,3 +1,7 @@
+## 4.0.2 Free
+
+* Fixes missed slash in URLs in the admin
+
 ## 4.0.1 Free
 
 * Fixes detection of internal URLs in raw and relative URLs
