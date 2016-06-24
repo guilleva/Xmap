@@ -148,251 +148,266 @@ class Script extends AbstractScript
         $db = OSMap\Factory::getDbo();
 
         if ($this->tableExists('#__osmap_sitemap')) {
-            // For the migration, as we only have new tables, make sure to have a clean start
-            $this->cleanupDatabase();
+            try {
+                $db->transactionStart();
 
-            // Get legacy sitemaps
-            $query = $db->getQuery(true)
-                ->select(
-                    array(
-                        'id',
-                        'title',
-                         'is_default',
-                         'state',
-                         'created',
-                         'selections',
-                         'excluded_items'
+                // For the migration, as we only have new tables, make sure to have a clean start
+                $this->cleanupDatabase();
+
+                // Get legacy sitemaps
+                $query = $db->getQuery(true)
+                    ->select(
+                        array(
+                            'id',
+                            'title',
+                             'is_default',
+                             'state',
+                             'created',
+                             'selections',
+                             'excluded_items'
+                        )
                     )
-                )
-                ->from('#__osmap_sitemap');
-            $sitemaps = $db->setQuery($query)->loadObjectList();
+                    ->from('#__osmap_sitemap');
+                $sitemaps = $db->setQuery($query)->loadObjectList();
 
-            // Move the legacy sitemaps to the new table
-            if (!empty($sitemaps)) {
-                foreach ($sitemaps as $sitemap) {
-                    // Make sure we have a creation date
-                    if ($sitemap->created === $db->getNullDate()) {
-                        $sitemap->created = OSMap\Factory::getDate()->toSql();
-                    }
-
-                    $query = $db->getQuery(true)
-                        ->insert('#__osmap_sitemaps')
-                        ->set(
-                            array(
-                                'name = ' . $db->quote($sitemap->title),
-                                'is_default = ' . $db->quote($sitemap->is_default),
-                                'published = ' . $db->quote($sitemap->state),
-                                'created_on = ' . $db->quote($sitemap->created)
-                            )
-                        );
-                    $db->setQuery($query)->execute();
-
-                    $sitemapId = $db->insertid();
-
-                    // Add the selected menus to the correct table
-                    $menus = json_decode($sitemap->selections, true);
-
-                    if (!empty($menus)) {
-                        foreach ($menus as $menuType => $menu) {
-                            $menuTypeId = $this->getMenuTypeId($menuType);
-
-                            // Convert the selection of menus into a row
-                            $query = $db->getQuery(true)
-                                ->insert('#__osmap_sitemap_menus')
-                                ->columns(
-                                    array(
-                                        'sitemap_id',
-                                        'menutype_id',
-                                        'priority',
-                                        'changefreq',
-                                        'ordering'
-                                    )
-                                )
-                                ->values(
-                                    implode(
-                                        ',',
-                                        array(
-                                            $db->quote($sitemapId),
-                                            $db->quote($menuTypeId),
-                                            $db->quote($menu['priority']),
-                                            $db->quote($menu['changefreq']),
-                                            $db->quote($menu['ordering'])
-                                        )
-                                    )
-                                );
-                            $db->setQuery($query)->execute();
+                // Move the legacy sitemaps to the new table
+                if (!empty($sitemaps)) {
+                    foreach ($sitemaps as $sitemap) {
+                        // Make sure we have a creation date
+                        if ($sitemap->created === $db->getNullDate()) {
+                            $sitemap->created = OSMap\Factory::getDate()->toSql();
                         }
-                    }
 
-                    // Convert settings about excluded items
-                    $excludedItems = array();
-                    if (!empty($sitemap->excluded_items)) {
-                        $excludedItems = json_decode($sitemap->excluded_items);
+                        $query = $db->getQuery(true)
+                            ->insert('#__osmap_sitemaps')
+                            ->set(
+                                array(
+                                    'name = ' . $db->quote($sitemap->title),
+                                    'is_default = ' . $db->quote($sitemap->is_default),
+                                    'published = ' . $db->quote($sitemap->state),
+                                    'created_on = ' . $db->quote($sitemap->created)
+                                )
+                            );
+                        $db->setQuery($query)->execute();
 
-                        if (!empty($excludedItems)) {
-                            foreach ($excludedItems as $item) {
-                                $uid = $this->convertItemUID($item[0]);
+                        $sitemapId = $db->insertid();
 
-                                // Check if the item was already registered
-                                $query = $db->getQuery(true)
-                                    ->select('COUNT(*)')
-                                    ->from('#__osmap_items_settings')
-                                    ->where(
-                                        array(
-                                            'sitemap_id = ' . $db->quote($sitemapId),
-                                            'uid = ' . $db->quote($ui)
-                                        )
-                                    );
-                                $count = $db->setQuery($query)->loadResult();
+                        // Add the selected menus to the correct table
+                        $menus = json_decode($sitemap->selections, true);
 
-                                if ($count == 0) {
-                                    // Insert the settings
+                        if (!empty($menus)) {
+                            foreach ($menus as $menuType => $menu) {
+                                $menuTypeId = $this->getMenuTypeId($menuType);
+
+                                // Check if the menutype still exists
+                                if (!empty($menuTypeId)) {
+                                    // Convert the selection of menus into a row
                                     $query = $db->getQuery(true)
-                                        ->insert('#__osmap_items_settings')
+                                        ->insert('#__osmap_sitemap_menus')
                                         ->columns(
                                             array(
                                                 'sitemap_id',
-                                                'uid',
-                                                'published',
+                                                'menutype_id',
+                                                'priority',
                                                 'changefreq',
-                                                'priority'
+                                                'ordering'
                                             )
                                         )
                                         ->values(
                                             implode(
                                                 ',',
                                                 array(
-                                                    $sitemapId,
-                                                    $db->quote($uid),
-                                                    0,
-                                                    $db->quote('weekly'),
-                                                    $db->quote('0.5')
+                                                    $db->quote($sitemapId),
+                                                    $db->quote($menuTypeId),
+                                                    $db->quote($menu['priority']),
+                                                    $db->quote($menu['changefreq']),
+                                                    $db->quote($menu['ordering'])
                                                 )
                                             )
                                         );
                                     $db->setQuery($query)->execute();
-                                } else {
-                                    // Update the setting
+                                }
+                            }
+                        }
+
+                        // Convert settings about excluded items
+                        $excludedItems = array();
+                        if (!empty($sitemap->excluded_items)) {
+                            $excludedItems = json_decode($sitemap->excluded_items);
+
+                            if (!empty($excludedItems)) {
+                                foreach ($excludedItems as $item) {
+                                    $uid = $this->convertItemUID($item[0]);
+
+                                    // Check if the item was already registered
                                     $query = $db->getQuery(true)
-                                        ->update('#__osmap_items_settings')
-                                        ->set('published = 0')
+                                        ->select('COUNT(*)')
+                                        ->from('#__osmap_items_settings')
                                         ->where(
                                             array(
                                                 'sitemap_id = ' . $db->quote($sitemapId),
                                                 'uid = ' . $db->quote($ui)
                                             )
                                         );
-                                    $db->setQuery($query)->execute();
+                                    $count = $db->setQuery($query)->loadResult();
+
+                                    if ($count == 0) {
+                                        // Insert the settings
+                                        $query = $db->getQuery(true)
+                                            ->insert('#__osmap_items_settings')
+                                            ->columns(
+                                                array(
+                                                    'sitemap_id',
+                                                    'uid',
+                                                    'published',
+                                                    'changefreq',
+                                                    'priority'
+                                                )
+                                            )
+                                            ->values(
+                                                implode(
+                                                    ',',
+                                                    array(
+                                                        $sitemapId,
+                                                        $db->quote($uid),
+                                                        0,
+                                                        $db->quote('weekly'),
+                                                        $db->quote('0.5')
+                                                    )
+                                                )
+                                            );
+                                        $db->setQuery($query)->execute();
+                                    } else {
+                                        // Update the setting
+                                        $query = $db->getQuery(true)
+                                            ->update('#__osmap_items_settings')
+                                            ->set('published = 0')
+                                            ->where(
+                                                array(
+                                                    'sitemap_id = ' . $db->quote($sitemapId),
+                                                    'uid = ' . $db->quote($ui)
+                                                )
+                                            );
+                                        $db->setQuery($query)->execute();
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    // Convert custom settings for items
-                    if ($this->tableExists('#__osmap_items')) {
-                        $query = $db->getQuery(true)
-                            ->select(
-                                array(
-                                    'uid',
-                                    'properties'
+                        // Convert custom settings for items
+                        if ($this->tableExists('#__osmap_items')) {
+                            $query = $db->getQuery(true)
+                                ->select(
+                                    array(
+                                        'uid',
+                                        'properties'
+                                    )
                                 )
-                            )
-                            ->from('#__osmap_items')
-                            ->where('sitemap_id = ' . $db->quote($sitemap->id))
-                            ->where('view = ' . $db->quote('xml'));
-                        $modifiedItems = $db->setQuery($query)->loadObjectList();
+                                ->from('#__osmap_items')
+                                ->where('sitemap_id = ' . $db->quote($sitemap->id))
+                                ->where('view = ' . $db->quote('xml'));
+                            $modifiedItems = $db->setQuery($query)->loadObjectList();
 
-                        if (!empty($modifiedItems)) {
-                            foreach ($modifiedItems as $item) {
-                                $item->properties = str_replace(';', '&', $item->properties);
-                                parse_str($item->properties, $properties);
+                            if (!empty($modifiedItems)) {
+                                foreach ($modifiedItems as $item) {
+                                    $item->properties = str_replace(';', '&', $item->properties);
+                                    parse_str($item->properties, $properties);
 
-                                $item->uid = $this->convertItemUID($item->uid);
+                                    $item->uid = $this->convertItemUID($item->uid);
 
-                                // Check if the item already exists to update, or insert
-                                $query = $db->getQuery(true)
-                                    ->select('COUNT(*)')
-                                    ->from('#__osmap_items_settings')
-                                    ->where(
-                                        array(
-                                            'sitemap_id = ' . $db->quote($sitemapId),
-                                            'uid = ' . $db->quote($item->uid)
-                                        )
-                                    );
-                                $exists = (bool)$db->setQuery($query)->loadResult();
-
-
-                                if ($exists) {
-                                    $fields = array();
-
-                                    // Check if the changefreq is set and set to update
-                                    if (isset($properties['changefreq'])) {
-                                        $fields = 'changefreq = ' . $db->quote($properties['changefreq']);
-                                    }
-
-                                    // Check if the priority is set and set to update
-                                    if (isset($properties['priority'])) {
-                                        $fields = 'priority = ' . $db->quote($properties['priority']);
-                                    }
-
-                                    // Update the item
+                                    // Check if the item already exists to update, or insert
                                     $query = $db->getQuery(true)
-                                        ->update('#__osmap_items_settings')
-                                        ->set($fields)
+                                        ->select('COUNT(*)')
+                                        ->from('#__osmap_items_settings')
                                         ->where(
                                             array(
                                                 'sitemap_id = ' . $db->quote($sitemapId),
                                                 'uid = ' . $db->quote($item->uid)
                                             )
                                         );
-                                    $db->setQuery($query)->execute();
-                                }
+                                    $exists = (bool)$db->setQuery($query)->loadResult();
 
-                                if (!$exists) {
-                                    $columns = array(
-                                        'sitemap_id',
-                                        'uid',
-                                        'published'
-                                    );
 
-                                    $values = array(
-                                        $db->quote($sitemapId),
-                                        $db->quote($item->uid),
-                                        1
-                                    );
+                                    if ($exists) {
+                                        $fields = array();
 
-                                    // Check if the changefreq is set and set to update
-                                    if (isset($properties['changefreq'])) {
-                                        $columns[] = 'changefreq';
-                                        $values[] = 'changefreq = ' . $db->quote($properties['changefreq']);
+                                        // Check if the changefreq is set and set to update
+                                        if (isset($properties['changefreq'])) {
+                                            $fields = 'changefreq = ' . $db->quote($properties['changefreq']);
+                                        }
+
+                                        // Check if the priority is set and set to update
+                                        if (isset($properties['priority'])) {
+                                            $fields = 'priority = ' . $db->quote($properties['priority']);
+                                        }
+
+                                        // Update the item
+                                        $query = $db->getQuery(true)
+                                            ->update('#__osmap_items_settings')
+                                            ->set($fields)
+                                            ->where(
+                                                array(
+                                                    'sitemap_id = ' . $db->quote($sitemapId),
+                                                    'uid = ' . $db->quote($item->uid)
+                                                )
+                                            );
+                                        $db->setQuery($query)->execute();
                                     }
 
-                                    // Check if the priority is set and set to update
-                                    if (isset($properties['priority'])) {
-                                        $columns[] = 'priority';
-                                        $values[] = 'priority = ' . $db->quote($properties['priority']);
-                                    }
+                                    if (!$exists) {
+                                        $columns = array(
+                                            'sitemap_id',
+                                            'uid',
+                                            'published'
+                                        );
 
-                                    // Insert a new item
-                                    $query = $db->getQuery(true)
-                                        ->insert('#__osmap_items_settings')
-                                        ->columns($columns)
-                                        ->values(implode(',', $values));
-                                    $db->setQuery($query)->execute();
+                                        $values = array(
+                                            $db->quote($sitemapId),
+                                            $db->quote($item->uid),
+                                            1
+                                        );
+
+                                        // Check if the changefreq is set and set to update
+                                        if (isset($properties['changefreq'])) {
+                                            $columns[] = 'changefreq';
+                                            $values[] = 'changefreq = ' . $db->quote($properties['changefreq']);
+                                        }
+
+                                        // Check if the priority is set and set to update
+                                        if (isset($properties['priority'])) {
+                                            $columns[] = 'priority';
+                                            $values[] = 'priority = ' . $db->quote($properties['priority']);
+                                        }
+
+                                        // Insert a new item
+                                        $query = $db->getQuery(true)
+                                            ->insert('#__osmap_items_settings')
+                                            ->columns($columns)
+                                            ->values(implode(',', $values));
+                                        $db->setQuery($query)->execute();
+                                    }
                                 }
                             }
-                        }
 
-                        // Remove the old table
-                        $query = 'DROP TABLE IF EXISTS ' . $db->quoteName('#__osmap_items');
-                        $db->setQuery($query)->execute();
+                            // Remove the old table
+                            $query = 'DROP TABLE IF EXISTS ' . $db->quoteName('#__osmap_items');
+                            $db->setQuery($query)->execute();
+                        }
                     }
                 }
-            }
 
-            // Remove the old table
-            $query = 'DROP TABLE IF EXISTS ' . $db->quoteName('#__osmap_sitemap');
-            $db->setQuery($query)->execute();
+                // Remove the old table
+                $query = 'DROP TABLE IF EXISTS ' . $db->quoteName('#__osmap_sitemap');
+                $db->setQuery($query)->execute();
+
+                $db->transactionCommit();
+            } catch (\Exception $e) {
+                \JFactory::getApplication()->enqueueMessage(
+                    \JText::sprintf('COM_OSMAP_INSTALLER_ERROR_MIGRATING_DATA', $e->getMessage()),
+                    'error'
+                );
+                $db->transactionRollback();
+            }
         }
     }
 
