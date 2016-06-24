@@ -74,10 +74,7 @@ abstract class Router
     public static function forceFrontendURL($url)
     {
         if (!preg_match('#^[^:]+://#', $url)) {
-            $baseUri = \JUri::base();
-
-            // Removes /administrator from the url
-            $baseUri = preg_replace('#/administrator/?$#', '/', $baseUri);
+            $baseUri = static::getFrontendBase();
 
             if (!substr_count($url, $baseUri)) {
                 $url = $baseUri . $url;
@@ -102,19 +99,65 @@ abstract class Router
         $base     = $uri->toString(array('scheme', 'host', 'port', 'path'));
         $host     = $uri->toString(array('scheme', 'host', 'port'));
         $path     = $uri->toString(array('path'));
-        $baseHost = \JUri::getInstance(\JUri::base())->toString(array('host'));
+        $baseHost = \JUri::getInstance(static::getFrontendBase())->toString(array('host'));
 
-        $jriBase  = preg_replace('#/administrator[/]?$#', '', \JUri::base());
+        // Check if we have a relative path as url, considering it will always be internal
+        if ($path === $url) {
+            return true;
+        }
+
+        $jriBase  = static::getFrontendBase();
 
         // @see JURITest
         if (empty($host) && strpos($path, 'index.php') === 0
             || !empty($host) && preg_match('#' . preg_quote($jriBase, '#') . '#', $base)
             || !empty($host) && $host === $baseHost && strpos($path, 'index.php') !== false
-            || !empty($host) && $base === $host && preg_match('#' . preg_quote($base, '#') . '#', \JUri::base())) {
+            || !empty($host) && $base === $host && preg_match('#' . preg_quote($base, '#') . '#', static::getFrontendBase())) {
 
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * Returns the result of JUri::base() from the site used in the sitemap.
+     * This is better than the JUri::base() because when we are editing a
+     * sitemap in the admin that method returns the /administrator and mess
+     * all the urls, which should point to the frontend only.
+     *
+     * @return string
+     */
+    public static function getFrontendBase()
+    {
+        return preg_replace('#/administrator[/]?$#', '', \JUri::base());
+    }
+
+    /**
+     * Check if the given URL is a relative URI. Returns true, if afirmative.
+     *
+     * @param string
+     *
+     * @return bool
+     */
+    public static function isRelativeUri($url)
+    {
+        $uri  = \JUri::getInstance($url);
+
+        return $uri->toString(array('path')) === $url;
+    }
+
+    /**
+     * Converts an internal relative URI into a full link.
+     *
+     * @param string $url
+     *
+     * @return string
+     */
+    public static function convertRelativeUriToFullUri($path)
+    {
+        $path = preg_replace('#^/#', '', $path);
+
+        return static::getFrontendBase() . '/' . $path;
     }
 }

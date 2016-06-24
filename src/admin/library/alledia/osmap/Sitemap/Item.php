@@ -158,7 +158,7 @@ class Item extends BaseItem
     {
         if ((bool)$this->home) {
             // Correct the URL for the home page.
-            $this->fullLink = \JUri::base();
+            $this->fullLink = OSMap\Router::getFrontendBase();
 
             // Removes the /administrator from the URI if in the administrator
             $this->fullLink = OSMap\Router::forceFrontendURL($this->fullLink);
@@ -176,6 +176,12 @@ class Item extends BaseItem
         // If is an URL, but external, return the external URL. If internal,
         // follow with the routing
         if ($this->type === 'url') {
+            // Check if it is a relative URI
+            if (OSMap\Router::isRelativeUri($this->link)) {
+                $this->fullLink = OSMap\Router::convertRelativeUriToFullUri($this->link);
+                return;
+            }
+
             $this->fullLink = $this->link;
 
             if (!$this->isInternal) {
@@ -193,7 +199,7 @@ class Item extends BaseItem
         }
 
         // If is a menu item but not an alias, force to use the current menu's item id
-        if ($this->isMenuItem && $this->type !== 'alias') {
+        if ($this->isMenuItem && $this->type !== 'alias' && $this->type !== 'url') {
             $this->fullLink = 'index.php?Itemid=' . $this->id;
         }
 

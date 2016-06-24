@@ -239,15 +239,6 @@ class BaseItem extends \JObject
      */
     protected function checkLinkIsInternal()
     {
-        $internal = OSMap\Router::isInternalURL($this->link);
-
-        // Check if is a link with with the same base url
-        if (!$internal) {
-            if (preg_match('#^' . \JUri::base() . '#', $this->link)) {
-                 $internal = true;
-            }
-        }
-
-        return $internal;
+        return OSMap\Router::isInternalURL($this->link);
     }
 }
