@@ -9,8 +9,6 @@
 
 namespace Alledia\OSMap\Installer;
 
-use Alledia\OSMap;
-
 defined('_JEXEC') or die();
 
 
@@ -38,7 +36,7 @@ class XmapConverter
      */
     public function checkXmapDataExists()
     {
-        $db = OSMap\Factory::getDbo();
+        $db = \JFactory::getDbo();
 
         // Do we have any Xmap sitemap?
         $query = $db->getQuery(true)
