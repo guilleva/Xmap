@@ -368,12 +368,11 @@ class Collector
         if (!empty($plugins)) {
             foreach ($plugins as $plugin) {
                 $className = '\\' . $plugin->className;
-
-                $result = true;
+                $result    = true;
 
                 if (method_exists($className, 'prepareMenuItem')) {
                     // If a legacy plugin doesn't specify this method as static, fix the plugin to avoid warnings
-                    $result = $className::prepareMenuItem($item, $plugin->params);
+                    $result = call_user_func(array($className, 'prepareMenuItem'), $item, $plugin->params);
 
                     // If a plugin doesn't return true we ignore the item and break
                     if ($result === false) {
@@ -406,9 +405,8 @@ class Collector
         if (!empty($plugins)) {
             foreach ($plugins as $plugin) {
                 $className = '\\' . $plugin->className;
-
                 if (method_exists($className, 'getTree')) {
-                    $className::getTree($this, $item, $plugin->params);
+                    call_user_func(array($className, 'getTree'), $this, $item, $plugin->params);
                 }
             }
         }
