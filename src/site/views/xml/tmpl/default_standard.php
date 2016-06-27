@@ -16,6 +16,12 @@ $printNodeCallback = function ($node) {
         return false;
     }
 
+    // Ignore links without a url
+    if (trim($node->fullLink) === '') {
+        return false;
+    }
+
+    // Print the item
     echo '<url>';
     echo '<loc><![CDATA[' . $node->fullLink . ']]></loc>';
     echo '<lastmod>' . $node->modified . '</lastmod>';

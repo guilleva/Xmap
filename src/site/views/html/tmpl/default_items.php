@@ -68,14 +68,23 @@ function printItem($node, $debug, $count)
     $liClass .= $count % 2 == 0 ? ' even' : '';
 
     echo "<li class=\"{$liClass}\">";
-    echo '<a href="' . $node->fullLink . '" target="_blank" class="osmap-link">';
-    echo htmlspecialchars($node->name);
-    echo '</a>';
+
+    // Some items are just separator, without a link. Do not print as link then
+    if (trim($node->fullLink) === '') {
+        echo '<span class="osmap-separator">';
+        echo htmlspecialchars($node->name);
+        echo '</span>';
+    } else {
+        echo '<a href="' . $node->fullLink . '" target="_blank" class="osmap-link">';
+        echo htmlspecialchars($node->name);
+        echo '</a>';
+    }
 
     // Debug box
     if ($debug) {
         printDebugInfo($node, $count);
     }
+
     echo '</li>';
 }
 

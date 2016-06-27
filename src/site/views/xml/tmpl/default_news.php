@@ -25,10 +25,15 @@ $printNodeCallback = function ($node) use ($params) {
         return false;
     }
 
+    // Ignore links without a url
+    if (trim($node->fullLink) === '') {
+        return false;
+    }
 
     // Publication name
     $publicationName = $params->get('news_publication_name', '');
 
+    // Print the item
     echo '<url>';
     echo '<loc><![CDATA[' . $node->fullLink . ']]></loc>';
     echo "<news:news>";

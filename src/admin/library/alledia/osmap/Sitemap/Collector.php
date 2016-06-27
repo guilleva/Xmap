@@ -211,11 +211,6 @@ class Collector
             }
         }
 
-        // Ignore empty links, including Text Separator menus
-        if (trim($item->fullLink) === '') {
-            $item->ignore = true;
-        }
-
         $this->checkDuplicatedUIDToIgnore($item);
 
         // Verify if the item can be displayed to count as unique for the XML sitemap
