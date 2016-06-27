@@ -154,6 +154,12 @@ class Collector
                     $this->tmpItemDefaultSettings['changefreq'] = $menu->changefreq;
                     $this->tmpItemDefaultSettings['priority']   = $menu->priority;
 
+                    // Check the level of menu
+                    $level = (int)$item['level'] - 1;
+                    if ($level !== $this->currentLevel) {
+                        $this->changeLevel($level - $this->currentLevel);
+                    }
+
                     // Submit the item and prepare it calling the plugins
                     $this->submitItemToCallback($item, $callback, true);
 
