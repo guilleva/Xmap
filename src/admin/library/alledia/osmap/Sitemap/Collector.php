@@ -213,6 +213,11 @@ class Collector
 
         $this->checkDuplicatedUIDToIgnore($item);
 
+        // Ignore empty links, including Text Separator menus
+        if (trim($item->fullLink) === '') {
+            $item->ignore = true;
+        }
+
         // Verify if the item can be displayed to count as unique for the XML sitemap
         if (!$item->ignore && $item->published && !$item->duplicate && $item->visibleForRobots) {
             ++$this->counter;
