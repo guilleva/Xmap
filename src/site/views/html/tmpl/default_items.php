@@ -71,7 +71,8 @@ function printItem($node, $debug, $count)
 
     // Some items are just separator, without a link. Do not print as link then
     if (trim($node->fullLink) === '') {
-        echo '<span class="osmap-separator">';
+        $type = isset($node->type) ? $node->type : 'separator';
+        echo '<span class="osmap-item-' . $type . '">';
         echo htmlspecialchars($node->name);
         echo '</span>';
     } else {
