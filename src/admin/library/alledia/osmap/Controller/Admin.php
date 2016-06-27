@@ -38,8 +38,7 @@ abstract class Admin extends \JControllerAdmin
         $controllerName = strtolower(str_replace('OSMapController', '', get_class($this)));
         $eventParams = array(
             $controllerName,
-            $task,
-            'admin'
+            $task
         );
         $results = \JEventDispatcher::getInstance()->trigger('osmapOnBeforeExecuteTask', $eventParams);
 
