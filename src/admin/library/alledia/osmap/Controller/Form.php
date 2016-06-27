@@ -9,6 +9,8 @@
 
 namespace Alledia\OSMap\Controller;
 
+use Alledia\OSMap;
+
 defined('_JEXEC') or die();
 
 jimport('joomla.application.component.controllerform');
@@ -41,8 +43,9 @@ abstract class Form extends \JControllerForm
         );
         $results = \JEventDispatcher::getInstance()->trigger('osmapOnBeforeExecuteTask', $eventParams);
 
-        // Check if any of the plugins returned true. If found, stop to not execute the task
-        if (is_array($results) && in_array('true', $results)) {
+        // Check if any of the plugins returned the exit signal
+        if (is_array($results) && in_array('exit', $results, true)) {
+            OSMap\Factory::getApplication()->enqueueMessage('COM_OSMAP_MSG_TASK_STOPPED_BY_PLUGIN', 'warning');
             return;
         }
 
