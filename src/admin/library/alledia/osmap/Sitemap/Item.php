@@ -106,7 +106,11 @@ class Item extends BaseItem
                 $this->modified = $date->toUnix();
             }
 
-            $this->modified = gmdate('Y-m-d\TH:i:s\Z', $this->modified);
+            // Convert dates from UTC
+            $offset = OSMap\Factory::getApplication()->getCfg('offset');
+            if (intval($this->modified)) {
+                $this->modified = \JHtml::date($this->modified, 'Y-m-d H:i:s', $offset);
+            }
         }
     }
 
