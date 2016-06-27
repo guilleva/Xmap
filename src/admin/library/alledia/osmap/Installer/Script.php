@@ -182,6 +182,7 @@ class Script extends AbstractScript
                             ->insert('#__osmap_sitemaps')
                             ->set(
                                 array(
+                                    'id = ' . $db->quote($sitemap->id),
                                     'name = ' . $db->quote($sitemap->title),
                                     'is_default = ' . $db->quote($sitemap->is_default),
                                     'published = ' . $db->quote($sitemap->state),
@@ -189,8 +190,6 @@ class Script extends AbstractScript
                                 )
                             );
                         $db->setQuery($query)->execute();
-
-                        $sitemapId = $db->insertid();
 
                         // Add the selected menus to the correct table
                         $menus = json_decode($sitemap->selections, true);
@@ -217,7 +216,7 @@ class Script extends AbstractScript
                                             implode(
                                                 ',',
                                                 array(
-                                                    $db->quote($sitemapId),
+                                                    $db->quote($sitemap->id),
                                                     $db->quote($menuTypeId),
                                                     $db->quote($menu['priority']),
                                                     $db->quote($menu['changefreq']),
@@ -245,7 +244,7 @@ class Script extends AbstractScript
                                         ->from('#__osmap_items_settings')
                                         ->where(
                                             array(
-                                                'sitemap_id = ' . $db->quote($sitemapId),
+                                                'sitemap_id = ' . $db->quote($sitemap->id),
                                                 'uid = ' . $db->quote($ui)
                                             )
                                         );
@@ -268,7 +267,7 @@ class Script extends AbstractScript
                                                 implode(
                                                     ',',
                                                     array(
-                                                        $sitemapId,
+                                                        $sitemap->id,
                                                         $db->quote($uid),
                                                         0,
                                                         $db->quote('weekly'),
@@ -284,7 +283,7 @@ class Script extends AbstractScript
                                             ->set('published = 0')
                                             ->where(
                                                 array(
-                                                    'sitemap_id = ' . $db->quote($sitemapId),
+                                                    'sitemap_id = ' . $db->quote($sitemap->id),
                                                     'uid = ' . $db->quote($ui)
                                                 )
                                             );
@@ -321,7 +320,7 @@ class Script extends AbstractScript
                                         ->from('#__osmap_items_settings')
                                         ->where(
                                             array(
-                                                'sitemap_id = ' . $db->quote($sitemapId),
+                                                'sitemap_id = ' . $db->quote($sitemap->id),
                                                 'uid = ' . $db->quote($item->uid)
                                             )
                                         );
@@ -347,7 +346,7 @@ class Script extends AbstractScript
                                             ->set($fields)
                                             ->where(
                                                 array(
-                                                    'sitemap_id = ' . $db->quote($sitemapId),
+                                                    'sitemap_id = ' . $db->quote($sitemap->id),
                                                     'uid = ' . $db->quote($item->uid)
                                                 )
                                             );
@@ -362,7 +361,7 @@ class Script extends AbstractScript
                                         );
 
                                         $values = array(
-                                            $db->quote($sitemapId),
+                                            $db->quote($sitemap->id),
                                             $db->quote($item->uid),
                                             1
                                         );
