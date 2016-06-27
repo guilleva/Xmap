@@ -224,7 +224,7 @@ class Collector
         }
 
         // Call the given callback function
-        return (bool)call_user_func($callback, $item);
+        return (bool)call_user_func_array($callback, array(&$item));
     }
 
     /**
@@ -377,7 +377,17 @@ class Collector
 
                 if (method_exists($className, 'prepareMenuItem')) {
                     // If a legacy plugin doesn't specify this method as static, fix the plugin to avoid warnings
-                    $result = call_user_func(array($className, 'prepareMenuItem'), $item, $plugin->params);
+                    $params = array(
+                        &$item,
+                        &$plugin->params
+                    );
+
+                    $result = OSMap\Helper\General::callUserFunc(
+                        $className,
+                        $plugin->instance,
+                        'prepareMenuItem',
+                        $params
+                    );
 
                     // If a plugin doesn't return true we ignore the item and break
                     if ($result === false) {
@@ -411,7 +421,18 @@ class Collector
             foreach ($plugins as $plugin) {
                 $className = '\\' . $plugin->className;
                 if (method_exists($className, 'getTree')) {
-                    call_user_func(array($className, 'getTree'), $this, $item, $plugin->params);
+                    $params = array(
+                        &$this,
+                        &$item,
+                        &$plugin->params
+                    );
+
+                    OSMap\Helper\General::callUserFunc(
+                        $className,
+                        $plugin->instance,
+                        'getTree',
+                        $params
+                    );
                 }
             }
         }

@@ -330,4 +330,36 @@ abstract class General
                 break;
         }
     }
+
+    /**
+     * Check if the needed method is static or no and call it in the proper
+     * way, avoiding Strict warnings in 3rd party plugins. It returns the
+     * result of the called method.
+     *
+     * @param string $class
+     * @param object $instance
+     * @param string $method
+     * @param array  $params
+     *
+     * @return mixed
+     */
+    public static function callUserFunc($class, $instance, $method, Array &$params = array())
+    {
+        $reflection = new \ReflectionMethod($class, $method);
+        $result     = null;
+
+        if ($reflection->isStatic()) {
+            $result = call_user_func_array(
+                array($class, $method),
+                $params
+            );
+        } else {
+            $result = call_user_func_array(
+                array($instance, $method),
+                $params
+            );
+        }
+
+        return $result;
+    }
 }
