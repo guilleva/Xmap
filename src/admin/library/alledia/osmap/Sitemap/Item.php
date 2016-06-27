@@ -94,23 +94,16 @@ class Item extends BaseItem
      *
      * @return void
      */
-    protected function setModificationDate()
+    public function setModificationDate()
     {
-        if (OSMap\Helper\General::isEmptyDate($this->modified)) {
-            $this->modified = time();
+        if (!is_numeric($this->modified)) {
+            $date =  new \JDate($this->modified);
+            $this->modified = $date->toUnix();
         }
 
-        if (!OSMap\Helper\General::isEmptyDate($this->modified)) {
-            if (!is_numeric($this->modified)) {
-                $date =  new \JDate($this->modified);
-                $this->modified = $date->toUnix();
-            }
-
-            // Convert dates from UTC
-            $offset = OSMap\Factory::getApplication()->getCfg('offset');
-            if (intval($this->modified)) {
-                $this->modified = \JHtml::date($this->modified, 'Y-m-d H:i:s', $offset);
-            }
+        // Convert dates to UTC
+        if (is_numeric($this->modified)) {
+            $this->modified = \JHtml::date($this->modified, 'Y-m-d H:i:s\Z', true);
         }
     }
 

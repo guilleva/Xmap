@@ -200,6 +200,9 @@ class Collector
             $this->callPluginsPreparingTheItem($item);
         }
 
+        // Make sure to have the correct date format (UTC)
+        $item->setModificationDate();
+
         $item->setAdapter();
         $item->adapter->checkVisibilityForRobots();
 
