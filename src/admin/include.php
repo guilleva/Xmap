@@ -49,4 +49,19 @@ if (!defined('OSMAP_LOADED')) {
     JTable::addIncludePath(OSMAP_ADMIN_PATH . '/tables');
     JForm::addFieldPath(OSMAP_ADMIN_PATH . '/fields');
     JForm::addFormPath(OSMAP_ADMIN_PATH . '/form');
+
+    // Initialise the log
+    jimport('joomla.log.log');
+    JLog::addLogger(
+        array(
+            // Sets file name
+            'text_file' => 'com_osmap.errors.php'
+        ),
+        // Sets messages of all log levels to be sent to the file
+        JLog::ALL,
+        // The log category/categories which should be recorded in this file
+        // In this case, it's just the one category from our extension, still
+        // we need to put it inside an array
+        array('com_osmap')
+   );
 }
