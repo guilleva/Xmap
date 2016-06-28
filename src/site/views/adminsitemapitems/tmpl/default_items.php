@@ -52,12 +52,12 @@ $printNodeCallback = function ($item) {
         data-url-hash="<?php echo $item->fullLinkHash; ?>">
 
         <td class="center">
-            <?php if (!$item->duplicate && !$item->ignore) : ?>
+            <?php if (!$item->ignore) : ?>
                 <div class="sitemapitem-published"
                     data-original="<?php echo $item->published ? '1' : '0'; ?>"
                     data-value="<?php echo $item->published ? '1' : '0'; ?>">
 
-                    <span class="icon-<?php echo $item->published && !$item->duplicate ? 'publish' : 'unpublish'; ?>" ></span>
+                    <span class="icon-<?php echo $item->published ? 'publish' : 'unpublish'; ?>" ></span>
                 </div>
             <?php endif; ?>
             <?php $notes = $item->getAdminNotesString(); ?>

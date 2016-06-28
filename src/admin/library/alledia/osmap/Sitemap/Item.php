@@ -148,6 +148,8 @@ class Item extends BaseItem
         // Check if is not a url, and disable browser nav
         if ($this->type === 'separator' || $this->type === 'heading') {
             $this->browserNav = 3;
+            // Always a unique UID, since this only appears in the HTML sitemap
+            $this->set('uid', $this->type . '.' . md5($this->name . $this->id));
 
             return;
         }

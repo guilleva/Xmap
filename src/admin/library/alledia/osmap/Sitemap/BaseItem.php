@@ -239,7 +239,14 @@ class BaseItem extends \JObject
      */
     protected function checkLinkIsInternal()
     {
-        return OSMap\Router::isInternalURL($this->link);
+        return OSMap\Router::isInternalURL($this->link)
+            || in_array(
+                $this->type,
+                array(
+                    'separator',
+                    'heading'
+                )
+            );
     }
 
     /**

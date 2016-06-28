@@ -338,7 +338,6 @@ class Collector
         // If is already set, interrupt the flux and ignore the item
         if (isset($this->uidList[$item->uid])) {
             $item->set('duplicate', true);
-            $item->set('published', false);
             $item->addAdminNote('COM_OSMAP_ADMIN_NOTE_DUPLICATED');
 
             return true;
