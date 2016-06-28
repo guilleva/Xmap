@@ -129,11 +129,11 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                     <td class="center osmap-links">
                         <span class="osmap-link">
                             <?php $link = isset($item->menuIdList['xml'])
-                                ? 'index.php?Itemid=' . $item->menuIdList['xml']
+                                ? OSMap\Router::routeURL('index.php?Itemid=' . $item->menuIdList['xml'] . '&tmpl=component')
                                 : 'index.php?option=com_osmap&amp;view=xml&tmpl=component&id=' . $item->id;
                             ?>
                             <a
-                                href="<?php echo $baseUrl . OSMap\Router::routeURL($link); ?>"
+                                href="<?php echo $baseUrl . $link; ?>"
                                 target="_blank"
                                 title="<?php echo JText::_('COM_OSMAP_XML_LINK_TOOLTIP', true); ?>">
 
@@ -143,11 +143,11 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                         </span>
                         <span class="osmap-link">
                             <?php $link = isset($item->menuIdList['html'])
-                                ? 'index.php?Itemid=' . $item->menuIdList['html']
+                                ? OSMap\Router::routeURL('index.php?Itemid=' . $item->menuIdList['html'])
                                 : 'index.php?option=com_osmap&amp;view=html&id=' . $item->id;
                             ?>
                             <a
-                                href="<?php echo $baseUrl . OSMap\Router::routeURL($link); ?>"
+                                href="<?php echo $baseUrl . $link; ?>"
                                 target="_blank"
                                 title="<?php echo JText::_('COM_OSMAP_HTML_LINK_TOOLTIP', true); ?>">
 
@@ -157,11 +157,11 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                         </span>
                         <span class="osmap-link">
                             <?php $link = isset($item->menuIdList['xml'])
-                                ? 'index.php?Itemid=' . $item->menuIdList['xml'] . '&tmpl=component&news=1&id=' . $item->id
+                                ? OSMap\Router::routeURL('index.php?Itemid=' . $item->menuIdList['xml'] . '&tmpl=component&news=1&id=' . $item->id)
                                 : 'index.php?option=com_osmap&amp;view=xml&tmpl=component&news=1&id=' . $item->id;
                             ?>
                             <a
-                                href="<?php echo $baseUrl . OSMap\Router::routeURL($link); ?>"
+                                href="<?php echo $baseUrl . $link; ?>"
                                 target="_blank"
                                 title="<?php echo JText::_('COM_OSMAP_NEWS_LINK_TOOLTIP', true); ?>">
 
@@ -171,7 +171,7 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                         </span>
                         <span class="osmap-link">
                             <?php $link = isset($item->menuIdList['xml'])
-                                ? 'index.php?Itemid=' . $item->menuIdList['xml'] . '&tmpl=component&images=1&id=' . $item->id
+                                ? OSMap\Router::routeURL('index.php?Itemid=' . $item->menuIdList['xml'] . '&tmpl=component&images=1&id=' . $item->id)
                                 : 'index.php?option=com_osmap&amp;view=xml&tmpl=component&images=1&id=' . $item->id;
                             ?>
                             <a
