@@ -16,10 +16,6 @@
     font-size: 12px;
 }
 
-.osmap-links a:hover {
-    text-decoration: none !important;
-}
-
 .osmap-links .osmap-link {
     white-space: nowrap;
 }
