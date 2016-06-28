@@ -241,4 +241,29 @@ class BaseItem extends \JObject
     {
         return OSMap\Router::isInternalURL($this->link);
     }
+
+    /**
+     * Set the correct modification date.
+     *
+     * @return void
+     */
+    public function setModificationDate()
+    {
+        if (OSMap\Helper\General::isEmptyDate($this->modified)) {
+            $this->modified = time();
+        }
+
+        if (!OSMap\Helper\General::isEmptyDate($this->modified)) {
+            if (!is_numeric($this->modified)) {
+                $date =  new \JDate($this->modified);
+                $this->modified = $date->toUnix();
+            }
+
+            // Convert dates from UTC
+            if (intval($this->modified)) {
+                $date = new \JDate($this->modified);
+                $this->modified = $date->toISO8601();
+            }
+        }
+    }
 }
