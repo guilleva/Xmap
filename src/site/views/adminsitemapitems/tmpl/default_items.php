@@ -73,7 +73,7 @@ $printNodeCallback = function ($item) {
                 </span>
             <?php endif; ?>
 
-            <?php if (!empty($item->fullLink) && $item->fullLink !== '#') : ?>
+            <?php if (!empty($item->fullLink) && $item->fullLink !== '#' && $item->link !== '#') : ?>
                 <a
                     href="<?php echo $item->fullLink; ?>"
                     target="_blank"
