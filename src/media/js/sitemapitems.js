@@ -159,8 +159,11 @@
 
     $.fn.osmap = {
         loadSitemapItems: function(params) {
+            var url = params.baseUri.replace(/\/$/, '')
+                + '/index.php?option=com_osmap&view=adminsitemapitems&tmpl=component&id=' + params.sitemapId;
+
             $.ajax({
-                url: params.baseUri + '/index.php?option=com_osmap&view=adminsitemapitems&tmpl=component&id=' + params.sitemapId,
+                url: url,
                 async: true,
                 success: function(data) {
                     $(params.container).html(data);
