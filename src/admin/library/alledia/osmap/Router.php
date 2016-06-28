@@ -52,13 +52,11 @@ abstract class Router
         // Replace spaces.
         $url = preg_replace('/\s/u', '%20', $url);
 
-        // Extract the subfolders to replace and return a relative frontend link, without any subfolder
-        preg_match('#(.*)?index\.php#i', $uri->toString(array('path')), $matches);
-        if (isset($matches[1])) {
-            $url = preg_replace('#^' . $matches[1] . '#', '', $url);
-        } else {
-            $url = preg_replace('#^/administrator/#', '', $url);
-        }
+        // Remove subfolders to return a relative frontend link
+        $url = preg_replace('#^' . \JUri::base(true) . '#', '', $url);
+
+        // Remove administrator folder
+        $url = preg_replace('#^/administrator/#', '', $url);
 
         return $url;
     }
