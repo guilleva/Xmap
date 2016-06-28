@@ -175,7 +175,7 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                                 : 'index.php?option=com_osmap&amp;view=xml&tmpl=component&images=1&id=' . $item->id;
                             ?>
                             <a
-                                href="<?php echo $baseUrl . OSMap\Router::routeURL($link); ?>"
+                                href="<?php echo $baseUrl . $link; ?>"
                                 target="_blank"
                                 title="<?php echo JText::_('COM_OSMAP_IMAGES_LINK_TOOLTIP', true); ?>">
 
