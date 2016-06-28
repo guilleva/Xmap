@@ -73,14 +73,20 @@ $printNodeCallback = function ($item) {
                 </span>
             <?php endif; ?>
 
-            <a
-                href="<?php echo $item->fullLink; ?>"
-                target="_blank"
-                class="hasTooltip"
-                title="<?php echo $item->link; ?>">
-                <?php echo $item->fullLink; ?>
-            </a>
-            <span class="icon-new-tab"></span>
+            <?php if (!empty($item->fullLink) && $item->fullLink !== '#') : ?>
+                <a
+                    href="<?php echo $item->fullLink; ?>"
+                    target="_blank"
+                    class="hasTooltip"
+                    title="<?php echo $item->link; ?>">
+                    <?php echo $item->fullLink; ?>
+                </a>
+                <span class="icon-new-tab"></span>
+            <?php else : ?>
+                <span>
+                    <?php echo isset($item->name) ? $item->name : ''; ?>
+                </span>
+            <?php endif; ?>
 
             <?php if ($showItemUID) : ?>
                 <br>
