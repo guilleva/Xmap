@@ -96,14 +96,21 @@ class Item extends BaseItem
      */
     public function setModificationDate()
     {
-        if (!is_numeric($this->modified)) {
-            $date =  new \JDate($this->modified);
-            $this->modified = $date->toUnix();
+        if (OSMap\Helper\General::isEmptyDate($this->modified)) {
+            $this->modified = time();
         }
 
-        // Convert dates to UTC
-        if (is_numeric($this->modified)) {
-            $this->modified = \JHtml::date($this->modified, 'Y-m-d H:i:s\Z', true);
+        if (!OSMap\Helper\General::isEmptyDate($this->modified)) {
+            if (!is_numeric($this->modified)) {
+                $date =  new \JDate($this->modified);
+                $this->modified = $date->toUnix();
+            }
+
+            // Convert dates from UTC
+            if (intval($this->modified)) {
+                $date = new \JDate($this->modified);
+                $this->modified = $date->toISO8601();
+            }
         }
     }
 
