@@ -11,12 +11,16 @@ use Alledia\OSMap;
 
 defined('_JEXEC') or die();
 
+// Check if we need to inject the CSS
+if ($this->params->get('use_css', 1)) {
+    JHtml::stylesheet('media/com_osmap/css/sitemap_html.css');
+}
+
 // If debug is enabled, use text content type
 if ($this->debug) {
     OSMap\Factory::getApplication()->input->set('tmpl', 'component');
+    JHtml::stylesheet('media/com_osmap/css/sitemap_html_debug.css');
 }
-
-JHtml::stylesheet('media/com_osmap/css/sitemap-html.css');
 ?>
 
 <div id="osmap-sitemap" class="<?php echo $this->debug ? 'osmap-debug' : ''; ?>">

@@ -38,6 +38,17 @@
             </field>
 
             <field
+                name="use_css"
+                label="COM_OSMAP_OPTION_USE_CSS_LABEL"
+                description="COM_OSMAP_OPTION_USE_CSS_DESC"
+                type="list"
+                default="1">
+
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+
+            <field
                 name="show_sitemap_description"
                 type="list"
                 default="0"
