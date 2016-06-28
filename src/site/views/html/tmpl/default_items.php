@@ -10,12 +10,13 @@
 defined('_JEXEC') or die();
 
 // Declares global variables to be used into the callback
-global $lastMenuId, $lastLevel, $debug, $count;
+global $lastMenuId, $lastLevel, $debug, $count, $showExternalLinks;
 
-$lastMenuId = 0;
-$lastLevel  = 0;
-$count      = 0;
-$debug      = $this->debug;
+$lastMenuId        = 0;
+$lastLevel         = 0;
+$count             = 0;
+$debug             = $this->debug;
+$showExternalLinks = (int)$this->osmapParams->get('show_external_links', 0);
 
 function closeLevels($offset)
 {
@@ -90,9 +91,14 @@ function printItem($node, $debug, $count)
 }
 
 $printNodeCallback = function ($node) {
-    global $lastMenuId, $lastLevel, $debug, $count;
+    global $lastMenuId, $lastLevel, $debug, $count, $showExternalLinks;
 
     $display = !$node->ignore && $node->published;
+
+    // Check if is external URL and if should be ignored
+    if ($display && !$node->isInternal) {
+        $display = $showExternalLinks > 0;
+    }
 
     if (!$display) {
         return false;

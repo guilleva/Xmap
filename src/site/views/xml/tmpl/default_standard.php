@@ -9,15 +9,25 @@
 
 defined('_JEXEC') or die();
 
-$printNodeCallback = function ($node) {
-    $display = !$node->ignore && $node->published && !$node->duplicate && $node->visibleForRobots;
+global $showExternalLinks;
 
-    if (!$display) {
-        return false;
+$showExternalLinks = (int)$this->osmapParams->get('show_external_links', 0);
+
+$printNodeCallback = function ($node) {
+    global $showExternalLinks;
+
+    $display = !$node->ignore
+        && $node->published
+        && !$node->duplicate
+        && $node->visibleForRobots
+        && trim($node->fullLink) != '';
+
+    // Check if is external URL and if should be ignored
+    if ($display && !$node->isInternal) {
+        $display = $showExternalLinks === 1;
     }
 
-    // Ignore links without a url
-    if (trim($node->fullLink) === '') {
+    if (!$display) {
         return false;
     }
 

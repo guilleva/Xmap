@@ -19,14 +19,11 @@ $printNodeCallback = function ($node) use ($params) {
         && !$node->duplicate
         && isset($node->newsItem)
         && !empty($node->newsItem)
-        && $node->visibleForRobots;
+        && $node->visibleForRobots
+        && $node->isInternal
+        && trim($node->fullLink) != '';
 
     if (!$display) {
-        return false;
-    }
-
-    // Ignore links without a url
-    if (trim($node->fullLink) === '') {
         return false;
     }
 

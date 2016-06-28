@@ -10,11 +10,11 @@
 defined('_JEXEC') or die();
 
 // Declares global variables to be used into the callback
-global $count, $showItemUID;
+global $count, $showItemUID, $showExternalLinks;
 
-$showItemUID = $this->osmapParams->get('show_item_uid', 0);
-
-$count = 0;
+$count             = 0;
+$showItemUID       = $this->osmapParams->get('show_item_uid', 0);
+$showExternalLinks = (int)$this->osmapParams->get('show_external_links', 0);
 
 /**
  * This method is called while traversing the sitemap items tree, and is
@@ -27,11 +27,24 @@ $count = 0;
  * @result void
  */
 $printNodeCallback = function ($item) {
-    global $count, $showItemUID;
+    global $count, $showItemUID, $showExternalLinks;
+
+    // Check if is external URL and if should be ignored
+    if (!$item->isInternal) {
+        if ($showExternalLinks === 0) {
+            // No external links
+            $item->set('ignore', true);
+            $item->addAdminNote('COM_OSMAP_ADMIN_NOTE_IGNORED_EXTERNAL');
+        } elseif ($showExternalLinks === 2) {
+            // Display only in the HTML sitemap
+            $item->addAdminNote('COM_OSMAP_ADMIN_NOTE_IGNORED_EXTERNAL_HTML');
+        }
+    }
 
     if ($item->ignore) {
         return false;
     }
+
     ?>
     <tr
         class="sitemapitem row<?php echo $count; ?> <?php echo ($showItemUID) ? 'with-uid' : ''; ?>"
@@ -39,19 +52,16 @@ $printNodeCallback = function ($item) {
         data-url-hash="<?php echo $item->fullLinkHash; ?>">
 
         <td class="center">
-            <?php
-            $notes    = $item->getAdminNotesString();
-            $editable = !$item->duplicate && !$item->ignore && empty($notes);
-            ?>
-
-            <?php if ($editable) : ?>
+            <?php if (!$item->duplicate && !$item->ignore) : ?>
                 <div class="sitemapitem-published"
                     data-original="<?php echo $item->published ? '1' : '0'; ?>"
                     data-value="<?php echo $item->published ? '1' : '0'; ?>">
 
                     <span class="icon-<?php echo $item->published && !$item->duplicate ? 'publish' : 'unpublish'; ?>" ></span>
                 </div>
-            <?php else : ?>
+            <?php endif; ?>
+            <?php $notes = $item->getAdminNotesString(); ?>
+            <?php if (!empty($notes)) : ?>
                 <span class="icon-warning hasTooltip osmap-info" title="<?php echo $notes; ?>"></span>
             <?php endif; ?>
         </td>

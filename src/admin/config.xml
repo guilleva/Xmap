@@ -13,6 +13,7 @@
 
             <option value="0">JNO</option>
             <option value="1">JYES</option>
+            <option value="2">COM_OSMAP_OPTION_ONLY_HTML</option>
         </field>
 
         <field

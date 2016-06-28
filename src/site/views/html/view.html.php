@@ -25,8 +25,9 @@ class OSMapViewHtml extends JViewLegacy
         try {
             $id = $container->input->getInt('id');
 
-            $this->params = JFactory::getApplication()->getParams();
-            $this->debug  =  (bool)$this->params->get('debug', 0);
+            $this->params      = JFactory::getApplication()->getParams();
+            $this->debug       =  (bool)$this->params->get('debug', 0);
+            $this->osmapParams = JComponentHelper::getParams('com_osmap');
 
             // Load the sitemap instance
             $this->sitemap = OSMap\Factory::getSitemap($id, 'standard');

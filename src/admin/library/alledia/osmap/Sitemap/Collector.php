@@ -212,14 +212,6 @@ class Collector
         $this->setItemCustomSettings($item);
         $this->checkParentIsUnpublished($item);
 
-        // Check if is external URL and if should be ignored
-        if (!$item->isInternal) {
-            if (!(bool)$this->params->get('show_external_links', 0)) {
-                $item->set('published', false);
-                $item->addAdminNote('COM_OSMAP_ADMIN_NOTE_IGNORED_EXTERNAL');
-            }
-        }
-
         $this->checkDuplicatedUIDToIgnore($item);
 
         // Verify if the item can be displayed to count as unique for the XML sitemap

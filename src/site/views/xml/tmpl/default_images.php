@@ -15,14 +15,11 @@ $printNodeCallback = function ($node) {
         && !$node->duplicate
         && isset($node->images)
         && !empty($node->images)
-        && $node->visibleForRobots;
+        && $node->visibleForRobots
+        && $node->isInternal
+        && trim($node->fullLink) != '';
 
     if (!$display) {
-        return false;
-    }
-
-    // Ignore links without a url
-    if (trim($node->fullLink) === '') {
         return false;
     }
 
