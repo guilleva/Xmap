@@ -119,6 +119,7 @@
             <file>administrator/components/com_osmap/helpers/osmap.php</file>
             <folder>administrator/components/com_osmap/models/forms</folder>
             <folder>administrator/components/com_osmap/models/fields</folder>
+            <folder>administrator/components/com_osmap/library/Free</folder>
             <file>administrator/components/com_osmap/views/sitemap/tmpl/edit_legacy.php</file>
             <file>administrator/components/com_osmap/views/sitemap/tmpl/edit.php</file>
             <file>administrator/components/com_osmap/views/sitemap/tmpl/navigator_class.php</file>
