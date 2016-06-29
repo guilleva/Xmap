@@ -113,14 +113,23 @@
                 var $this = $(this),
                     newValue  = $this.data('value') == 1 ? 0 : 1,
                     spanClass = newValue == 1 ? 'publish' : 'unpublish',
-                    span = $this.find('span');
+                    $span = $this.find('span');
 
                 $this.data('value', newValue);
 
                 $this.parents('.sitemapitem').addClass('updated');
 
-                span.attr('class', '');
-                span.addClass('icon-' + spanClass);
+                $span.attr('class', '');
+                $span.addClass('icon-' + spanClass);
+
+                // Tooltip
+                $span.attr(
+                    'title',
+                    newValue == 1 ? lang.COM_OSMAP_TOOLTIP_CLICK_TO_UNPUBLISH : lang.COM_OSMAP_TOOLTIP_CLICK_TO_PUBLISH
+                );
+
+                $span.tooltip('destroy');
+                $span.tooltip();
             }
         );
 
@@ -169,6 +178,8 @@
                     $(params.container).html(data);
 
                     configureForm(params.lang);
+
+                    $('.hasTooltip').tooltip();
                 }
             });
         }

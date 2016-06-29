@@ -64,7 +64,9 @@ JHtml::script('com_osmap/sitemapitems.js', false, true);
                 'COM_OSMAP_WEEKLY': '<?php echo JText::_('COM_OSMAP_WEEKLY'); ?>',
                 'COM_OSMAP_MONTHLY': '<?php echo JText::_('COM_OSMAP_MONTHLY'); ?>',
                 'COM_OSMAP_YEARLY': '<?php echo JText::_('COM_OSMAP_YEARLY'); ?>',
-                'COM_OSMAP_NEVER': '<?php echo JText::_('COM_OSMAP_NEVER'); ?>'
+                'COM_OSMAP_NEVER': '<?php echo JText::_('COM_OSMAP_NEVER'); ?>',
+                'COM_OSMAP_TOOLTIP_CLICK_TO_UNPUBLISH': '<?php echo JText::_('COM_OSMAP_TOOLTIP_CLICK_TO_UNPUBLISH'); ?>',
+                'COM_OSMAP_TOOLTIP_CLICK_TO_PUBLISH': '<?php echo JText::_('COM_OSMAP_TOOLTIP_CLICK_TO_PUBLISH'); ?>'
             }
         });
     });

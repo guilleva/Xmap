@@ -66,7 +66,15 @@ $printNodeCallback = function ($item) {
                     data-original="<?php echo $item->published ? '1' : '0'; ?>"
                     data-value="<?php echo $item->published ? '1' : '0'; ?>">
 
-                    <span class="icon-<?php echo $item->published ? 'publish' : 'unpublish'; ?>" ></span>
+                    <?php
+                    $class = $item->published ? 'publish' : 'unpublish';
+                    $title = $item->published ? 'COM_OSMAP_TOOLTIP_CLICK_TO_UNPUBLISH' : 'COM_OSMAP_TOOLTIP_CLICK_TO_PUBLISH';
+                    ?>
+
+                    <span
+                        title="<?php echo JText::_($title); ?>"
+                        class="hasTooltip icon-<?php echo $class; ?>">
+                    </span>
                 </div>
             <?php endif; ?>
             <?php $notes = $item->getAdminNotesString(); ?>
