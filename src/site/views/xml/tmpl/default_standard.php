@@ -20,6 +20,7 @@ $printNodeCallback = function ($node) {
         && $node->published
         && !$node->duplicate
         && $node->visibleForRobots
+        && $node->visibleForXML
         && trim($node->fullLink) != '';
 
     // Check if is external URL and if should be ignored

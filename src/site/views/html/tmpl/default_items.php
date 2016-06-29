@@ -93,7 +93,9 @@ function printItem($node, $debug, $count)
 $printNodeCallback = function ($node) {
     global $lastMenuId, $lastLevel, $debug, $count, $showExternalLinks;
 
-    $display = !$node->ignore && $node->published;
+    $display = !$node->ignore
+        && $node->published
+        && $node->visibleForHTML;
 
     // Check if is external URL and if should be ignored
     if ($display && !$node->isInternal) {

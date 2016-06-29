@@ -16,6 +16,7 @@ $printNodeCallback = function ($node) {
         && isset($node->images)
         && !empty($node->images)
         && $node->visibleForRobots
+        && $node->visibleForXML
         && $node->isInternal
         && trim($node->fullLink) != '';
 

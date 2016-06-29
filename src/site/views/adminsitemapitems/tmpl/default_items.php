@@ -41,6 +41,15 @@ $printNodeCallback = function ($item) {
         }
     }
 
+    // Add notes about sitemap visibility
+    if (!$item->visibleForXML) {
+        $item->addAdminNote('COM_OSMAP_ADMIN_NOTE_VISIBLE_HTML_ONLY');
+    }
+
+    if (!$item->visibleForHTML) {
+        $item->addAdminNote('COM_OSMAP_ADMIN_NOTE_VISIBLE_XML_ONLY');
+    }
+
     if ($item->ignore) {
         return false;
     }

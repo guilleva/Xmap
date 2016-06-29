@@ -200,7 +200,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
         /*
          * Parameters Initialisation
          */
-        $paramExpandCategories = $params->get('expand_categories', 1);
+        $paramExpandCategories = $params->get('expand_categories', 1) > 0;
         $paramExpandFeatured   = $params->get('expand_featured', 1);
         $paramIncludeArchived  = $params->get('include_archived', 2);
 
@@ -327,6 +327,8 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
      */
     public static function expandCategory($osmap, $parent, $catid, &$params, $itemid, $prevnode = null, $curlevel = 0)
     {
+        $paramExpandCategories = $params->get('expand_categories', 1);
+
         $db = OSMap\Factory::getDBO();
 
         $where = array(
@@ -397,7 +399,6 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
 
                     $node->slug = $item->route ? ($item->id . ':' . $item->route) : $item->id;
                     $node->link = ContentHelperRoute::getCategoryRoute($node->slug);
-
 
                     if (strpos($node->link, 'Itemid=')===false) {
                         $node->itemid = $itemid;
@@ -511,6 +512,10 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
         if (count($items) > 0) {
             $osmap->changeLevel(1);
 
+            $paramExpandCategories = $params->get('expand_categories', 1);
+            $paramExpandFeatured   = $params->get('expand_featured', 1);
+            $paramIncludeArchived  = $params->get('include_archived', 2);
+
             foreach ($items as $item) {
                 $node = new stdClass();
                 $node->id           = $item->id;
@@ -539,6 +544,21 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                 } else {
                     $node->itemid = $itemid;
                     $node->link   = preg_replace('/Itemid=([0-9]+)/', 'Itemid='.$parent->id, $node->link);
+                }
+
+                // Set the visibility for XML or HTML sitempas
+                if ($catid=='featured') {
+                    // Check if the item is visible in the XML or HTML sitemaps
+                    $node->visibleForXML = in_array($paramExpandFeatured, array(1,2));
+                    $node->visibleForHTML = in_array($paramExpandFeatured, array(1,3));
+                } elseif ($catid=='archived') {
+                    // Check if the item is visible in the XML or HTML sitemaps
+                    $node->visibleForXML = in_array($paramIncludeArchived, array(1,2));
+                    $node->visibleForHTML = in_array($paramIncludeArchived, array(1,3));
+                } elseif (is_numeric($catid)) {
+                    // Check if the item is visible in the XML or HTML sitemaps
+                    $node->visibleForXML = in_array($paramExpandCategories, array(1,2));
+                    $node->visibleForHTML = in_array($paramExpandCategories, array(1,3));
                 }
 
                 // Add images to the article

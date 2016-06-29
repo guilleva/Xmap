@@ -170,6 +170,16 @@ class BaseItem extends \JObject
     public $adminNotes;
 
     /**
+     * @var bool
+     */
+    public $visibleForXML = true;
+
+    /**
+     * @var bool
+     */
+    public $visibleForHTML = true;
+
+    /**
      * The constructor
      *
      * @param object  $item
