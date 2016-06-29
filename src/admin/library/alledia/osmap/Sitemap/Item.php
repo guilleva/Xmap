@@ -135,8 +135,25 @@ class Item extends BaseItem
             // Correct the URL for the home page.
             $this->fullLink = OSMap\Router::getFrontendBase();
 
+            // Check if multi-language is enabled to use the proper route
+            if (\JLanguageMultilang::isEnabled()) {
+                $lang  = OSMap\Factory::getLanguage();
+                $tag   = $lang->getTag();
+                $homes = \JLanguageMultilang::getSiteHomePages();
+
+                if (isset($homes[$tag])) {
+                    $home = $homes[$tag];
+                } else {
+                    $home = $homes['*'];
+                }
+
+                $this->fullLink .= OSMap\Router::routeURL('index.php?Itemid=' . $home->id);
+            }
+
             // Removes the /administrator from the URI if in the administrator
-            $this->fullLink = OSMap\Router::forceFrontendURL($this->fullLink);
+            $this->fullLink = OSMap\Router::sanitizeURL(
+                OSMap\Router::forceFrontendURL($this->fullLink)
+            );
 
             return;
         }
@@ -155,7 +172,10 @@ class Item extends BaseItem
         if ($this->type === 'url') {
             // Check if it is a relative URI
             if (OSMap\Router::isRelativeUri($this->link)) {
-                $this->fullLink = OSMap\Router::convertRelativeUriToFullUri($this->link);
+                $this->fullLink = OSMap\Router::sanitizeURL(
+                    OSMap\Router::convertRelativeUriToFullUri($this->link)
+                );
+
                 return;
             }
 
@@ -194,6 +214,8 @@ class Item extends BaseItem
             // Make sure the link has the base uri
             $this->fullLink = OSMap\Router::forceFrontendURL($this->fullLink);
         }
+
+        $this->fullLink = OSMap\Router::sanitizeURL($this->fullLink);
     }
 
     /**
