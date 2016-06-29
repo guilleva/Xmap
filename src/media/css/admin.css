@@ -252,28 +252,30 @@ body.com_osmap .form-horizontal .controls {
     .osmap-cell.osmap-col-title {
         width: 87%;
     }
+    .osmap-cell.osmap-col-selected,
+    .osmap-cell.osmap-col-title {
+        padding-top: 12px;
+    }
     .osmap-cell.osmap-col-priority {
         width: 30%;
         margin-left: 13%;
         text-align: left;
-        padding-top: 0;
-    }
-    .osmap-cell.osmap-col-priority:before {
-        content: 'Priority';
     }
     .osmap-cell.osmap-col-changefreq {
         margin-left: 3%;
         width: 54%;
         text-align: left;
-        padding-top: 0;
     }
-    .osmap-cell.osmap-col-changefreq:before {
-        content: 'Change Frequency';
+    .osmap-cell.osmap-col-priority,
+    .osmap-cell.osmap-col-changefreq {
+        padding-top: 0;
+        padding-bottom: 16px;
     }
     .osmap-cell.osmap-col-changefreq:before,
     .osmap-cell.osmap-col-priority:before {
         display: inline;
         font-weight: normal;
+        content: attr(data-title);
     }
     .osmap-cell.osmap-col-priority .chzn-container {
         width: 70px !important;

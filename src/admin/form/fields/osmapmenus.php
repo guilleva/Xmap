@@ -187,18 +187,18 @@ HTML;
 
             $return .= <<<HTML
                 <li id="menu_{$option->value}" class="osmap-menu-item">
-                    <div class="osmap-cell osmap-col-selected">
+                    <div class="osmap-cell osmap-col-selected" data-title="{$textSelected}">
                         <input type="{$type}" id="{$this->id}_{$i}" name="{$this->name}" value="{$option->value}" {$attributes} {$selected} />
                     </div>
-                    <div class="osmap-cell osmap-col-title">
+                    <div class="osmap-cell osmap-col-title" data-title="{$textTitle}">
                         <label for="{$this->id}_{$i}" class="menu_label">{$option->text}</label>
                     </div>
 
-                    <div class="osmap-cell osmap-col-priority osmap-menu-options">
+                    <div class="osmap-cell osmap-col-priority osmap-menu-options" data-title="{$textChangePriority}">
                         <div class="controls">{$changePriorityField}</div>
                     </div>
 
-                    <div class="osmap-cell osmap-col-changefreq osmap-menu-options">
+                    <div class="osmap-cell osmap-col-changefreq osmap-menu-options" data-title="{$textChangeChangeFreq}">
                         <div class="controls">{$changeChangeFreqField}</div>
                     </div>
                 </li>
