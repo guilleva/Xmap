@@ -34,7 +34,11 @@ $printNodeCallback = function ($node) {
     // Print the item
     echo '<url>';
     echo '<loc><![CDATA[' . $node->fullLink . ']]></loc>';
-    echo '<lastmod>' . $node->modified . '</lastmod>';
+
+    if (!empty($node->modified)) {
+        echo '<lastmod>' . $node->modified . '</lastmod>';
+    }
+
     echo '<changefreq>' . $node->changefreq . '</changefreq>';
     echo '<priority>' . $node->priority . '</priority>';
     echo '</url>';
