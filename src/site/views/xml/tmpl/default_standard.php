@@ -46,10 +46,12 @@ $printNodeCallback = function ($node) {
     return true;
 };
 
-/*
-echo '<?xml-stylesheet type="text/xsl" href="' . JUri::base() . 'index.php?option=com_osmap&amp;view=xsl&amp;format=xsl&amp;tmpl=component&amp;id=' . $this->sitemap->id . '"?>';
-*/
+// Do we need to apply XSL?
+if ($this->params->get('add_styling', 1)) {
+    echo '<?xml-stylesheet type="text/xsl" href="' . JUri::base() . 'index.php?option=com_osmap&amp;view=xsl&amp;format=xsl&amp;tmpl=component&amp;layout=standard&amp;id=' . $this->sitemap->id . '"?>';
+}
 
+// Start the URL set
 echo '<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 
 $this->sitemap->traverse($printNodeCallback);
