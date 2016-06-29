@@ -36,7 +36,7 @@ function openMenu($node, $debug)
     }
 
     echo '</h2>';
-    echo '<ul>';
+    echo '<ul class="level_0">';
 }
 
 function closeMenu()
