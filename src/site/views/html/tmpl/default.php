@@ -24,14 +24,16 @@ if ($this->debug) {
 ?>
 
 <div id="osmap-sitemap" class="<?php echo $this->debug ? 'osmap-debug' : ''; ?>">
+    <!-- Heading -->
     <?php if ($this->params->get('show_page_heading', 1) && $this->params->get('page_heading') != '') : ?>
-        <!-- Heading -->
         <h2><?php echo $this->escape($this->params->get('page_heading')); ?></h2>
     <?php endif; ?>
 
+    <!-- Description -->
     <?php if ($this->params->get('show_sitemap_description', 1)) :   ?>
-        <!-- Description -->
-        <p><?php echo $this->params->get('sitemap_description', ''); ?></p>
+        <div class="osmap-sitemap-description">
+            <?php echo $this->params->get('sitemap_description', ''); ?>
+        </div>
     <?php endif; ?>
 
     <!-- Error message, if exists -->

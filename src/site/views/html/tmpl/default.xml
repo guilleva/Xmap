@@ -63,7 +63,10 @@
                 name="sitemap_description"
                 type="editor"
                 label="COM_OSMAP_SITEMAP_DESCRIPTION_LABEL"
-                description="COM_OSMAP_SITEMAP_DESCRIPTION_DESC" />
+                description="COM_OSMAP_SITEMAP_DESCRIPTION_DESC"
+                buttons="true"
+                hide="pagebreak,readmore"
+                filter="safehtml" />
         </fieldset>
     </fields>
 </metadata>
