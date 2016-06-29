@@ -21,12 +21,15 @@ if ($this->debug) {
     OSMap\Factory::getApplication()->input->set('tmpl', 'component');
     JHtml::stylesheet('media/com_osmap/css/sitemap_html_debug.css');
 }
+
+$pageHeading = $this->params->get('page_heading', $this->params->get('page_title'));
 ?>
 
-<div id="osmap-sitemap" class="<?php echo $this->debug ? 'osmap-debug' : ''; ?>">
+<div id="osmap-sitemap" class="<?php echo $this->debug ? 'osmap-debug' : ''; ?> <?php echo $this->params->get('pageclass_sfx', ''); ?>">
     <!-- Heading -->
-    <?php if ($this->params->get('show_page_heading', 1) && $this->params->get('page_heading') != '') : ?>
-        <h2><?php echo $this->escape($this->params->get('page_heading')); ?></h2>
+
+    <?php if ($this->params->get('show_page_heading', 1)) : ?>
+        <h1><?php echo $this->escape($pageHeading); ?></h1>
     <?php endif; ?>
 
     <!-- Description -->
