@@ -233,3 +233,59 @@ span.level-mark {
 body.com_osmap .form-horizontal .controls {
     margin-left: 0;
 }
+
+@media (max-width: 850px) {
+    .osmap-cell.osmap-col-title {
+        width: 190px;
+    }
+}
+
+@media (max-width: 600px) {
+    .osmap-table .osmap-cell {
+        margin-right: 0;
+    }
+    .osmap-cell.osmap-col-selected {
+        margin-left: 3%;
+        width: 10%;
+        text-align: left;
+    }
+    .osmap-cell.osmap-col-title {
+        width: 87%;
+    }
+    .osmap-cell.osmap-col-priority {
+        width: 30%;
+        margin-left: 13%;
+        text-align: left;
+        padding-top: 0;
+    }
+    .osmap-cell.osmap-col-priority:before {
+        content: 'Priority';
+    }
+    .osmap-cell.osmap-col-changefreq {
+        margin-left: 3%;
+        width: 54%;
+        text-align: left;
+        padding-top: 0;
+    }
+    .osmap-cell.osmap-col-changefreq:before {
+        content: 'Change Frequency';
+    }
+    .osmap-cell.osmap-col-changefreq:before,
+    .osmap-cell.osmap-col-priority:before {
+        display: inline;
+        font-weight: normal;
+    }
+    .osmap-cell.osmap-col-priority .chzn-container {
+        width: 70px !important;
+    }
+    .osmap-cell.osmap-col-changefreq .chzn-container {
+        width: 120px !important;
+    }
+    .osmap-list-header {
+        display: none;
+    }
+    .osmap-cell label {
+        font-weight: bold !important;
+        font-size: 16px;
+    }
+}
