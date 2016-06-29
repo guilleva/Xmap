@@ -232,7 +232,7 @@ class Script extends AbstractScript
                         // Convert settings about excluded items
                         $excludedItems = array();
                         if (!empty($sitemap->excluded_items)) {
-                            $excludedItems = json_decode($sitemap->excluded_items);
+                            $excludedItems = json_decode($sitemap->excluded_items, true);
 
                             if (!empty($excludedItems)) {
                                 foreach ($excludedItems as $item) {
