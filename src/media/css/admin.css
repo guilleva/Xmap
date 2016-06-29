@@ -89,22 +89,19 @@ ul.ul_sortable li:hover {
 
 ul.ul_sortable li {
     cursor: move;
-    margin-bottom: 5px;
     padding: 5px;
     -webkit-transition: background-color 0.2s;
     transition: background-color 0.2s;
     max-width: auto !important;
     width: 99%;
+    display: table;
 }
 
 ul.ul_sortable li label.menu_label {
     font-weight: bold;
     display: inline-block;
     margin-bottom: 0px;
-}
-
-ul.ul_sortable input[type="checkbox"] {
-    margin-top: -2px;
+    line-height: 24px;
 }
 
 ul.ul_sortable li.ui-sortable-helper {
@@ -181,10 +178,10 @@ ul.ul_sortable li.ui-sortable-placeholder {
 
 .osmap-table .osmap-cell {
     line-height: 18px;
-    display: table-cell;
-    text-align: left;
+    float: left;
     font-weight: bold;
-    padding: 8px;
+    padding: 8px 0;
+    margin-right: 10px;
 }
 
 .osmap-cell label {
@@ -192,23 +189,22 @@ ul.ul_sortable li.ui-sortable-placeholder {
 }
 
 .osmap-cell.osmap-col-selected {
-    min-width: 55px;
+    width: 70px;
     text-align: center;
-    width: 10%;
 }
 
 .osmap-cell.osmap-col-title {
-    width: 70%;
+    width: 240px;
 }
 
 .osmap-cell.osmap-col-priority {
-    min-width: 120px;
-    width: 120px;
+    width: 70px;
+    text-align: center;
 }
 
 .osmap-cell.osmap-col-changefreq {
-    min-width: 120px;
-    width: 120px;
+    width: 140px;
+    text-align: center;
 }
 
 .osmap-cell.osmap-col-priority .chzn-container,
@@ -232,4 +228,66 @@ span.level-mark {
 
 .osmap-info {
     cursor: help;
+}
+
+body.com_osmap .form-horizontal .controls {
+    margin-left: 0;
+}
+
+@media (max-width: 850px) {
+    .osmap-cell.osmap-col-title {
+        width: 190px;
+    }
+}
+
+@media (max-width: 600px) {
+    .osmap-table .osmap-cell {
+        margin-right: 0;
+    }
+    .osmap-cell.osmap-col-selected {
+        margin-left: 3%;
+        width: 10%;
+        text-align: left;
+    }
+    .osmap-cell.osmap-col-title {
+        width: 87%;
+    }
+    .osmap-cell.osmap-col-selected,
+    .osmap-cell.osmap-col-title {
+        padding-top: 12px;
+    }
+    .osmap-cell.osmap-col-priority {
+        width: 30%;
+        margin-left: 13%;
+        text-align: left;
+    }
+    .osmap-cell.osmap-col-changefreq {
+        margin-left: 3%;
+        width: 54%;
+        text-align: left;
+    }
+    .osmap-cell.osmap-col-priority,
+    .osmap-cell.osmap-col-changefreq {
+        padding-top: 0;
+        padding-bottom: 16px;
+    }
+    .osmap-cell.osmap-col-changefreq:before,
+    .osmap-cell.osmap-col-priority:before {
+        display: inline;
+        font-weight: normal;
+        content: attr(data-title);
+    }
+    .osmap-cell.osmap-col-priority .chzn-container {
+        width: 70px !important;
+    }
+    .osmap-cell.osmap-col-changefreq .chzn-container {
+        width: 120px !important;
+    }
+    .osmap-list-header {
+        display: none;
+    }
+    .osmap-cell label {
+        font-weight: bold !important;
+        font-size: 16px;
+    }
 }
