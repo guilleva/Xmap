@@ -118,11 +118,7 @@ class Item extends BaseItem
      */
     protected function sanitizeFullLink()
     {
-        // Remove double slashes
-        $this->fullLink = preg_replace('#([^:])(/{2,})#', '$1/', $this->fullLink);
-
-        // Remove trailing slash
-        $this->fullLink = preg_replace('#/$#', '', $this->fullLink);
+        $this->fullLink = OSMap\Router::sanitizeURL($this->fullLink);
     }
 
     /**

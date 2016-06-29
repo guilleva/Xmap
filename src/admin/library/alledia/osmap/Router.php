@@ -158,4 +158,20 @@ abstract class Router
 
         return static::getFrontendBase() . '/' . $path;
     }
+
+    /**
+     * Returns a sanitized URL, removing double slashes and trailing slash.
+     *
+     * @return string
+     */
+    public static function sanitizeURL($url)
+    {
+        // Remove double slashes
+        $url = preg_replace('#([^:])(/{2,})#', '$1/', $url);
+
+        // Remove trailing slash
+        $url = preg_replace('#/$#', '', $url);
+
+        return $url;
+    }
 }
