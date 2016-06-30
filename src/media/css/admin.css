@@ -260,6 +260,9 @@ body.com_osmap .form-horizontal .controls {
     .osmap-cell.osmap-col-title {
         width: 190px;
     }
+    #j-main-container {
+        padding-left: 0 !important;
+    }
 }
 
 @media (max-width: 600px) {
@@ -311,5 +314,25 @@ body.com_osmap .form-horizontal .controls {
     .osmap-cell label {
         font-weight: bold !important;
         font-size: 16px;
+    }
+    #itemList .sitemapitem td.center {
+        padding-left: 0;
+    }
+    #itemList .sitemapitem td.center:first-of-type {
+        width: 14px;
+        padding-left: 8px;
+    }
+    #itemList .sitemapitem td.sitemapitem-link {
+        width: 100px;
+    }
+    #itemList .sitemapitem td.sitemapitem-name {
+        width: 65px;
+    }
+    #itemList {
+        table-layout: fixed;
+        word-wrap: break-word;
+    }
+    #itemList thead {
+        display: none;
     }
 }
