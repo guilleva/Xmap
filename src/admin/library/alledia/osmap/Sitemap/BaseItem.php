@@ -267,7 +267,7 @@ class BaseItem extends \JObject
     public function setModificationDate()
     {
         if (OSMap\Helper\General::isEmptyDate($this->modified)) {
-            $this->modified = '';
+            $this->modified = '0000-00-00 00:00:00';
         }
 
         if (!OSMap\Helper\General::isEmptyDate($this->modified)) {

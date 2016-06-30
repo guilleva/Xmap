@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die();
 
+use Alledia\OSMap;
+
 global $showExternalLinks;
 
 $showExternalLinks = (int)$this->osmapParams->get('show_external_links', 0);
@@ -36,7 +38,7 @@ $printNodeCallback = function ($node) {
     echo '<url>';
     echo '<loc><![CDATA[' . $node->fullLink . ']]></loc>';
 
-    if (!empty($node->modified)) {
+    if (!OSMap\Helper\General::isEmptyDate($node->modified)) {
         echo '<lastmod>' . $node->modified . '</lastmod>';
     }
 

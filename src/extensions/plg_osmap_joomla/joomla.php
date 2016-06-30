@@ -390,12 +390,9 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                     $node->pluginParams = &$params;
 
                     // For the google news we should use te publication date instead
-                    // the last modification date. See
-                    if (OSMap\Helper\General::isEmptyDate($item->modified)) {
-                        $item->modified = $item->created;
-                    }
-
-                    $node->modified = $item->modified;
+                    // the last modification date
+                    $node->modified     = OSMap\Helper\General::isEmptyDate($item->modified)
+                        ? $item->created : $item->modified;
 
                     $node->slug = $item->route ? ($item->id . ':' . $item->route) : $item->id;
                     $node->link = ContentHelperRoute::getCategoryRoute($node->slug);
