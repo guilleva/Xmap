@@ -245,7 +245,7 @@ class Script extends AbstractScript
                                         ->where(
                                             array(
                                                 'sitemap_id = ' . $db->quote($sitemap->id),
-                                                'uid = ' . $db->quote($ui)
+                                                'uid = ' . $db->quote($uid)
                                             )
                                         );
                                     $count = $db->setQuery($query)->loadResult();
