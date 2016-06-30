@@ -308,7 +308,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                     $parent->link = ContentHelperRoute::getArticleRoute($parent->slug, $item->catid);
 
                     $parent->subnodes = OSMap\Helper\General::getPagebreaks($item->introtext . $item->fulltext, $parent->link, $item->uid);
-                    self::printNodes($osmap, $parent, $params, $parent->subnodes);
+                    self::printNodes($osmap, $parent, $params, $parent->subnodes, $item);
                 }
         }
 
@@ -580,7 +580,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                 }
 
                 if ($osmap->printNode($node) && $node->expandible) {
-                    self::printNodes($osmap, $parent, $params, $node->subnodes);
+                    self::printNodes($osmap, $parent, $params, $node->subnodes, $node);
                 }
             }
 
@@ -590,7 +590,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
         return true;
     }
 
-    private static function printNodes($osmap, $parent, &$params, &$subnodes)
+    private static function printNodes($osmap, $parent, &$params, &$subnodes, $item)
     {
         $osmap->changeLevel(1);
 
@@ -602,6 +602,13 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
             $subnode->priority   = $params->get('art_priority');
             $subnode->changefreq = $params->get('art_changefreq');
             $subnode->secure     = $parent->secure;
+
+            // Check if the child item has modified date
+            if (isset($item->modified)) {
+                $subnode->modified = $item->modified;
+            } else {
+                $subnode->modified = $item->created;
+            }
 
             $osmap->printNode($subnode);
         }
