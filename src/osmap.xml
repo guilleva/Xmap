@@ -99,7 +99,8 @@
                 type="plugin"
                 group="osmap"
                 publish="true"
-                element="joomla">plg_osmap_joomla</extension>
+                element="joomla"
+                uninstall="true">plg_osmap_joomla</extension>
         </relatedExtensions>
 
         <include>AllediaFreeDefaultFiles</include>
