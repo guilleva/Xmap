@@ -441,18 +441,18 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
             $where = array('a.state = 1');
         }
 
-        if ($catid=='featured') {
+        if ($catid == 'featured') {
             $where[] = 'a.featured=1';
-        } elseif ($catid=='archived') {
+        } elseif ($catid == 'archived') {
             $where = array('a.state=2');
         } elseif (is_numeric($catid)) {
-            $where[] = 'a.catid='.(int) $catid;
+            $where[] = 'a.catid=' . (int)$catid;
         }
 
         $maxArtAge = $params->get('max_art_age');
         if (!empty($maxArtAge) || $osmap->isNews) {
             $days = empty($maxArtAge) ? 2 : $maxArtAge;
-            $where[] = "( a.created >= '"
+            $where[] = "(a.created >= '"
                 . date('Y-m-d H:i:s', time() - $days * 86400) . "' ) ";
         }
 
