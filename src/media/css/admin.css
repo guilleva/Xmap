@@ -41,9 +41,31 @@
     color: silver;
 }
 
-#itemList .sitemapitem td {
-    vertical-align: middle;
-    line-height: 38px;
+#itemList .sitemapitem td.sitemapitem-link {
+    width: 700px;
+}
+
+#itemList .sitemapitem td.sitemapitem-name {
+    width: 200px;
+}
+
+#itemList .sitemapitem td.sitemapitem-link,
+#itemList .sitemapitem td.sitemapitem-name {
+    padding-bottom: 14px;
+    padding-top: 14px;
+}
+
+#itemList .sitemapitem td .sitemapitem-published,
+#itemList .sitemapitem td .sitemapitem-priority,
+#itemList .sitemapitem td .sitemapitem-changefreq {
+    padding-bottom: 5px;
+    padding-top: 6px;
+}
+
+#itemList .sitemapitem td .sitemapitem-priority select,
+#itemList .sitemapitem td .sitemapitem-changefreq select {
+    margin-bottom: -5px;
+    margin-top: -6px;
 }
 
 #itemList .sitemapitem.with-uid td {
@@ -51,7 +73,7 @@
 }
 
 #itemList .sitemapitem.selected td {
-    background-color: #dbdbdb !important;
+    background-color: rgba(0,0,0,0.1) !important;
 }
 
 #itemList .sitemapitem-published,
