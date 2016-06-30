@@ -32,6 +32,11 @@ class OSMapViewXml extends JViewLegacy
 
             // Load the sitemap instance
             $this->sitemap = OSMap\Factory::getSitemap($id, $this->type);
+
+            // Check if the sitemap is published
+            if (!$this->sitemap->isPublished) {
+                throw new Exception(JText::_('COM_OSMAP_MSG_SITEMAP_IS_UNPUBLISHED'));
+            }
         } catch (Exception $e) {
             $this->message = $e->getMessage();
         }
