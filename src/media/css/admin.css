@@ -336,3 +336,22 @@ body.com_osmap .form-horizontal .controls {
         display: none;
     }
 }
+
+@media (max-width: 320px) {
+    #itemList .sitemapitem td.center:first-of-type {
+        width: 5px;
+        padding-left: 4px;
+        padding-right: 4px;
+    }
+
+    #itemList .sitemapitem td.center:last-of-type {
+        width: 9px;
+        overflow: hidden;
+        white-space: nowrap;
+        letter-spacing: 30px;
+    }
+
+    .sitemapitem {
+        font-size: 11px;
+    }
+}
