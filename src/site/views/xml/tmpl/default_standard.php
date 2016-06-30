@@ -18,7 +18,7 @@ $printNodeCallback = function ($node) {
 
     $display = !$node->ignore
         && $node->published
-        && !$node->duplicate
+        && (!$node->duplicate || ($node->duplicate && !$this->osmapParams->get('ignore_duplicated_uids', 1)))
         && $node->visibleForRobots
         && $node->visibleForXML
         && trim($node->fullLink) != '';

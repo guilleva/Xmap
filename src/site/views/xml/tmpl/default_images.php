@@ -12,7 +12,7 @@ defined('_JEXEC') or die();
 $printNodeCallback = function ($node) {
     $display = !$node->ignore
         && $node->published
-        && !$node->duplicate
+        && (!$node->duplicate || ($node->duplicate && !$this->osmapParams->get('ignore_duplicated_uids', 1)))
         && isset($node->images)
         && !empty($node->images)
         && $node->visibleForRobots

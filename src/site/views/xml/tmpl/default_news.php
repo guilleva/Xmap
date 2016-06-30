@@ -16,7 +16,7 @@ $params = $this->params;
 $printNodeCallback = function ($node) use ($params) {
     $display = !$node->ignore
         && $node->published
-        && !$node->duplicate
+        && (!$node->duplicate || ($node->duplicate && !$this->osmapParams->get('ignore_duplicated_uids', 1)))
         && isset($node->newsItem)
         && !empty($node->newsItem)
         && $node->visibleForRobots

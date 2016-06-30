@@ -215,7 +215,11 @@ class Collector
         $this->checkDuplicatedUIDToIgnore($item);
 
         // Verify if the item can be displayed to count as unique for the XML sitemap
-        if (!$item->ignore && $item->published && !$item->duplicate && $item->visibleForRobots) {
+        if (!$item->ignore
+            && $item->published
+            && $item->visibleForRobots
+            && (!$item->duplicate || ($item->duplicate && !$this->params->get('ignore_duplicated_uids', 1)))
+            ) {
             ++$this->counter;
         }
 
@@ -338,7 +342,12 @@ class Collector
         // If is already set, interrupt the flux and ignore the item
         if (isset($this->uidList[$item->uid])) {
             $item->set('duplicate', true);
-            $item->addAdminNote('COM_OSMAP_ADMIN_NOTE_DUPLICATED');
+
+            if ($this->params->get('ignore_duplicated_uids', 1)) {
+                $item->addAdminNote('COM_OSMAP_ADMIN_NOTE_DUPLICATED_IGNORED');
+            } else {
+                $item->addAdminNote('COM_OSMAP_ADMIN_NOTE_DUPLICATED');
+            }
 
             return true;
         }
@@ -577,13 +586,18 @@ class Collector
         }
 
         // If the item is unpublished, and the ignore level is false, mark the level to ignore sub-items
-        $displayable = $item->published && !$item->ignore && !$item->duplicate;
+        $displayable = $item->published
+            && !$item->ignore
+            && (!$item->duplicate || ($item->duplicate && !$this->params->get('ignore_duplicated_uids', 1)));
         if (!$displayable && $this->unpublishLevel === false) {
             $this->unpublishLevel = $item->level;
         }
 
         // If the item won't be ignored, make sure to reset the ignore level
-        if ($item->published && !$item->ignore && !$item->duplicate) {
+        if ($item->published
+            && !$item->ignore
+            && (!$item->duplicate || ($item->duplicate && !$this->params->get('ignore_duplicated_uids', 1)))
+            ) {
             $this->unpublishLevel = false;
         }
     }
