@@ -33,13 +33,13 @@ class OSMapModelSitemaps extends JModelList
             ->from('#__osmap_sitemaps sitemap');
 
         // Filter by publishing state
-        $published = $this->getState('filter.published', 1);
+        $published = $this->getState('filter.published', '');
 
         if ($published != '*') {
             if ($published != '') {
                 $query->where('sitemap.published = ' . $db->quote($published));
             } else {
-                $query->where('sitemap.published > 0');
+                $query->where('sitemap.published >= 0');
             }
         }
 
