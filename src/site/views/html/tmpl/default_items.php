@@ -61,6 +61,11 @@ function printDebugInfo($node, $count)
     echo '<div><span>' . JText::_('COM_OSMAP_DUPLICATE') . ':</span>&nbsp;' . JText::_($node->duplicate ? 'JYES' : 'JNO') . '</div>';
     echo '<div><span>' . JText::_('COM_OSMAP_VISIBLE_FOR_ROBOTS') . ':</span>&nbsp;' . JText::_($node->visibleForRobots ? 'JYES' : 'JNO') . '</div>';
     echo '<div><span>' . JText::_('COM_OSMAP_ADAPTER_CLASS') . ':</span>&nbsp;' . get_class($node->adapter) . '</div>';
+
+    $adminNotes = $node->getAdminNotesString();
+    if (!empty($adminNotes)) {
+        echo '<div><span>' . JText::_('COM_OSMAP_ADMIN_NOTES') . ':</span>&nbsp;' . nl2br($adminNotes) . '</div>';
+    }
     echo '</div>';
 }
 
