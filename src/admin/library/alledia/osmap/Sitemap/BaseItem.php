@@ -267,7 +267,7 @@ class BaseItem extends \JObject
     public function setModificationDate()
     {
         if (OSMap\Helper\General::isEmptyDate($this->modified)) {
-            $this->modified = '0000-00-00 00:00:00';
+            $this->modified = null;
         }
 
         if (!OSMap\Helper\General::isEmptyDate($this->modified)) {
@@ -278,8 +278,12 @@ class BaseItem extends \JObject
 
             // Convert dates from UTC
             if (intval($this->modified)) {
-                $date = new \JDate($this->modified);
-                $this->modified = $date->toISO8601();
+                if ($this->modified < 0) {
+                    $this->modified = null;
+                } else {
+                    $date = new \JDate($this->modified);
+                    $this->modified = $date->toISO8601();
+                }
             }
         }
     }

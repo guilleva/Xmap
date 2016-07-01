@@ -277,10 +277,12 @@ abstract class General
             '',
             null,
             false,
-            0
+            0,
+            '0',
             -1,
             '-1',
-            $db->getNullDate()
+            $db->getNullDate(),
+            '0000-00-00'
         );
 
         return in_array($date, $invalidDates);
