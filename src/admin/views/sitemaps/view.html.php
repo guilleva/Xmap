@@ -35,6 +35,12 @@ class OSMapViewSitemaps extends OSMap\View\Admin\Base
             $this->setToolbar();
         }
 
+        // Get the active languages for multi-language sites
+        $this->languages = null;
+        if (\JLanguageMultilang::isEnabled()) {
+            $this->languages = \JLanguageHelper::getLanguages();
+        }
+
         parent::display($tpl);
     }
 

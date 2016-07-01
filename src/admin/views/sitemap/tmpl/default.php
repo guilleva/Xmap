@@ -13,7 +13,7 @@ JHtml::_('behavior.formvalidation');
 JHtml::_('behavior.keepalive');
 JHtml::_('formbehavior.chosen', 'select');
 
-JHtml::stylesheet('media/com_osmap/css/admin.css');
+JHtml::stylesheet('media/com_osmap/css/admin.min.css');
 $input = JFactory::getApplication()->input;
 ?>
 <script>
@@ -31,7 +31,7 @@ $input = JFactory::getApplication()->input;
 </script>
 
 <form
-    action="<?php echo JRoute::_('index.php?option=com_osmap&view=sitemap&layout=edit&id=' . (int)$this->item->id); ?>"
+    action="<?php echo JRoute::_('index.php?option=com_osmap&view=sitemap&layout=edit&id=' . (int)$this->item->id . '&lang=' . $this->language); ?>"
     method="post"
     name="adminForm"
     id="adminForm"

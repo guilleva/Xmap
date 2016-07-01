@@ -16,7 +16,7 @@ JHtml::addIncludePath(OSMAP_ADMIN_PATH . '/helpers/html');
 JHtml::_('bootstrap.tooltip');
 JHtml::_('formbehavior.chosen', 'select');
 
-JHtml::stylesheet('media/com_osmap/css/admin.css');
+JHtml::stylesheet('media/com_osmap/css/admin.min.css');
 
 $baseUrl   = OSmap\Router::sanitizeURL(JUri::root());
 $listOrder = $this->escape($this->state->get('list.ordering'));
@@ -66,7 +66,11 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                         ); ?>
                     </th>
 
-                    <th width="8%" style="min-width: 63px" class="center">
+                    <?php
+                    $editLinksWidth = empty($this->languages) ? '63' : '130';
+                    $editLinksClass = empty($this->languages) ? 'center' : '';
+                    ?>
+                    <th width="8%" style="min-width: <?php echo $editLinksWidth; ?>px" class="<?php echo $editLinksClass; ?>">
                         <?php echo JText::_('COM_OSMAP_HEADING_SITEMAP_EDIT_LINKS'); ?>
                     </th>
 
@@ -120,10 +124,20 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                         </a>
                     </td>
 
-                    <td class="center">
-                        <a href="<?php echo JRoute::_('index.php?option=com_osmap&view=sitemapitems&id=' . $item->id);?>">
-                            <span class="icon-edit"></span>
-                        </a>
+                    <td class="<?php echo $editLinksClass; ?>">
+                        <?php if (empty($this->languages)) : ?>
+                            <a href="<?php echo JRoute::_('index.php?option=com_osmap&view=sitemapitems&id=' . $item->id);?>">
+                                <span class="icon-edit"></span>
+                            </a>
+                        <?php else : ?>
+                            <?php foreach ($this->languages as $language) : ?>
+                                <a href="<?php echo JRoute::_('index.php?option=com_osmap&view=sitemapitems&id=' . $item->id . '&lang=' . $language->sef);?>">
+                                    <span class="icon-edit"></span>
+                                    <img src="/media/mod_languages/images/<?php echo $language->image; ?>.gif" />
+                                    <?php echo $language->title; ?>
+                                </a><br />
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </td>
 
                     <td class="center osmap-links">

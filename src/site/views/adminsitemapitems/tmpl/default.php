@@ -13,7 +13,7 @@ defined('_JEXEC') or die();
 
 OSMap\Factory::getApplication()->input->set('tmpl', 'component');
 
-JHtml::stylesheet('media/com_osmap/css/admin.css');
+JHtml::stylesheet('media/com_osmap/css/admin.min.css');
 
 if (empty($this->message)) {
     echo $this->loadTemplate('items');

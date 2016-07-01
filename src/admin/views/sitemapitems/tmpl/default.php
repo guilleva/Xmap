@@ -16,10 +16,10 @@ JHtml::_('behavior.core');
 JHtml::_('behavior.keepalive');
 JHtml::_('formbehavior.chosen', 'select');
 
-JHtml::stylesheet('media/com_osmap/css/admin.css');
+JHtml::stylesheet('media/com_osmap/css/admin.min.css');
 JHtml::stylesheet('media/jui/css/icomoon.css');
 
-JHtml::script('com_osmap/sitemapitems.js', false, true);
+JHtml::script('com_osmap/sitemapitems.min.js', false, true);
 ?>
 
 <form
@@ -47,6 +47,7 @@ JHtml::script('com_osmap/sitemapitems.js', false, true);
     <input type="hidden" name="task" value=""/>
     <input type="hidden" name="id" value="<?php echo $this->sitemapId; ?>"/>
     <input type="hidden" name="update-data" id="update-data" value=""/>
+    <input type="hidden" name="language" value="<?php echo $this->language; ?>"/>
     <?php echo JHtml::_('form.token'); ?>
 </form>
 
@@ -58,6 +59,7 @@ JHtml::script('com_osmap/sitemapitems.js', false, true);
             baseUri: '<?php echo OSMap\Router::getFrontendBase(); ?>',
             sitemapId: '<?php echo $this->sitemapId; ?>',
             container: '#osmap-items-list',
+            language: '<?php echo $this->language; ?>',
             lang: {
                 'COM_OSMAP_HOURLY': '<?php echo JText::_('COM_OSMAP_HOURLY'); ?>',
                 'COM_OSMAP_DAILY': '<?php echo JText::_('COM_OSMAP_DAILY'); ?>',

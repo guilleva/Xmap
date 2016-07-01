@@ -15,7 +15,7 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 JHtml::_('behavior.tooltip');
 JHtml::_('formbehavior.chosen', 'select');
 
-JHtml::stylesheet('media/com_osmap/css/admin.css');
+JHtml::stylesheet('media/com_osmap/css/admin.min.css');
 
 $function = JRequest::getString('function', 'jSelectSitemap');
 $baseUrl   = JUri::root();

@@ -45,6 +45,7 @@ class OSMapControllerSitemapItems extends OSMap\Controller\Form
 
         $sitemapId  = $app->input->getInt('id');
         $updateData = $app->input->getRaw('update-data');
+        $language   = $app->input->getRaw('language');
 
         $model = $this->getModel();
 
@@ -70,7 +71,13 @@ class OSMapControllerSitemapItems extends OSMap\Controller\Form
         }
 
         if ($this->getTask() === 'apply') {
-            $this->setRedirect('index.php?option=com_osmap&view=sitemapitems&id=' . $sitemapId);
+            $url = 'index.php?option=com_osmap&view=sitemapitems&id=' . $sitemapId;
+
+            if (!empty($language)) {
+                $url .= '&lang=' . $language;
+            }
+
+            $this->setRedirect($url);
         } else {
             $this->setRedirect('index.php?option=com_osmap&view=sitemaps');
         }
