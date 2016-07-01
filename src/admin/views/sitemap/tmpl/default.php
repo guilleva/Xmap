@@ -31,7 +31,7 @@ $input = JFactory::getApplication()->input;
 </script>
 
 <form
-    action="<?php echo JRoute::_('index.php?option=com_osmap&view=sitemap&layout=edit&id=' . (int)$this->item->id . '&lang=' . $this->language); ?>"
+    action="<?php echo JRoute::_('index.php?option=com_osmap&view=sitemap&layout=edit&id=' . (int)$this->item->id); ?>"
     method="post"
     name="adminForm"
     id="adminForm"
