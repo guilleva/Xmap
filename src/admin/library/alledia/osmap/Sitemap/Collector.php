@@ -380,17 +380,23 @@ class Collector
                 $result    = true;
 
                 if (method_exists($className, 'prepareMenuItem')) {
-                    // If a legacy plugin doesn't specify this method as static, fix the plugin to avoid warnings
-                    $params = array(
+                    if ($plugin->isLegacy) {
+                        $params = $plugin->params->toArray();
+                    } else {
+                        $params =& $plugin->params;
+                    }
+
+                    $arguments = array(
                         &$item,
-                        &$plugin->params
+                        &$params
                     );
 
+                    // If a legacy plugin doesn't specify this method as static, fix the plugin to avoid warnings
                     $result = OSMap\Helper\General::callUserFunc(
                         $className,
                         $plugin->instance,
                         'prepareMenuItem',
-                        $params
+                        $arguments
                     );
 
                     // If a plugin doesn't return true we ignore the item and break
@@ -425,17 +431,23 @@ class Collector
             foreach ($plugins as $plugin) {
                 $className = '\\' . $plugin->className;
                 if (method_exists($className, 'getTree')) {
-                    $params = array(
+                    if ($plugin->isLegacy) {
+                        $params = $plugin->params->toArray();
+                    } else {
+                        $params =& $plugin->params;
+                    }
+
+                    $arguments = array(
                         &$this,
                         &$item,
-                        &$plugin->params
+                        &$params
                     );
 
                     OSMap\Helper\General::callUserFunc(
                         $className,
                         $plugin->instance,
                         'getTree',
-                        $params
+                        $arguments
                     );
                 }
             }
