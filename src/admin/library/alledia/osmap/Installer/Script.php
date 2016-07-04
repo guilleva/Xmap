@@ -389,13 +389,13 @@ class Script extends AbstractScript
                                     }
                                 }
                             }
-
-                            // Remove the old table
-                            $query = 'DROP TABLE IF EXISTS ' . $db->quoteName('#__osmap_items');
-                            $db->setQuery($query)->execute();
                         }
                     }
                 }
+
+                // Remove the old table
+                $query = 'DROP TABLE IF EXISTS ' . $db->quoteName('#__osmap_items');
+                $db->setQuery($query)->execute();
 
                 // Remove the old table
                 $query = 'DROP TABLE IF EXISTS ' . $db->quoteName('#__osmap_sitemap');
