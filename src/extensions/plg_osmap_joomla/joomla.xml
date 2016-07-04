@@ -50,6 +50,26 @@
                 </field>
 
                 <field
+                    name="max_category_level"
+                    type="list"
+                    default="all"
+                    label="PLG_OSMAP_JOOMLA_SETTING_MAX_CATEG_LEVEL_LABEL"
+                    description="PLG_OSMAP_JOOMLA_SETTING_MAX_CATEG_LEVEL_DESC">
+
+                    <option value="100">PLG_OSMAP_JOOMLA_OPTION_ALL</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </field>
+
+                <field
                     name="include_archived"
                     type="list"
                     default="2"

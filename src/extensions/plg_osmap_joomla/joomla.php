@@ -368,9 +368,9 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
         $curlevel++;
 
         $node     = null;
-        $maxLevel = $parent->params->get('maxLevel', -1);
+        $maxLevel = $parent->params->get('max_category_level', 100);
 
-        if ($curlevel <= $maxLevel || $maxLevel == -1) {
+        if ($curlevel <= $maxLevel) {
             if (count($items) > 0) {
                 $osmap->changeLevel(1);
 
@@ -406,9 +406,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                     }
 
                     if ($osmap->printNode($node)) {
-                        if ($curlevel <= $maxLevel || $maxLevel == -1) {
-                            self::expandCategory($osmap, $parent, $item->id, $params, $node->itemid, $node, $curlevel);
-                        }
+                        self::expandCategory($osmap, $parent, $item->id, $params, $node->itemid, $node, $curlevel);
                     }
                 }
 
