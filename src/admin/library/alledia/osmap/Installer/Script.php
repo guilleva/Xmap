@@ -19,6 +19,7 @@ if (file_exists(__DIR__ . '/../../../Installer/include.php')) {
 } else {
     $basePath = __DIR__ . '/../..';
 }
+
 require_once $basePath . '/Installer/include.php';
 require_once __DIR__ . '/XmapConverter.php';
 
@@ -44,6 +45,7 @@ class Script extends AbstractScript
     {
         // Check if XMap is installed, to start a migration
         $xmapConverter = new XmapConverter;
+
         // This attribute will be used by the cusotm template to display the option to migrate legacy sitemaps
         $this->isXmapDataFound = $this->tableExists('#__xmap_sitemap') ?
             $xmapConverter->checkXmapDataExists() : false;
