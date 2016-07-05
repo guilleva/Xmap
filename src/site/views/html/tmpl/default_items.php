@@ -10,13 +10,14 @@
 defined('_JEXEC') or die();
 
 // Declares global variables to be used into the callback
-global $lastMenuId, $lastLevel, $debug, $count, $showExternalLinks;
+global $lastMenuId, $lastLevel, $debug, $count, $showExternalLinks, $showMenuTitles;
 
 $lastMenuId        = 0;
 $lastLevel         = 0;
 $count             = 0;
 $debug             = $this->debug;
 $showExternalLinks = (int)$this->osmapParams->get('show_external_links', 0);
+$showMenuTitles    = (int)$this->params->get('show_menu_titles', 1);
 
 function closeLevels($offset)
 {
@@ -29,13 +30,18 @@ function closeLevels($offset)
 
 function openMenu($node, $debug)
 {
-    echo '<h2>' . $node->menu->name;
+    global $showMenuTitles;
 
-    if ($debug) {
-        echo '<div><span>' . JText::_('COM_OSMAP_MENUTYPE') . ':</span>&nbsp;' . $node->menu->id . ': ' . $node->menu->menutype . '</div>';
+    if ($showMenuTitles) {
+        echo '<h2>' . $node->menu->name;
+
+        if ($debug) {
+            echo '<div><span>' . JText::_('COM_OSMAP_MENUTYPE') . ':</span>&nbsp;' . $node->menu->id . ': ' . $node->menu->menutype . '</div>';
+        }
+
+        echo '</h2>';
     }
 
-    echo '</h2>';
     echo '<ul class="level_0">';
 }
 
