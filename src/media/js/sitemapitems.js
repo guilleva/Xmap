@@ -170,11 +170,11 @@
         loadSitemapItems: function(params) {
             var url = params.baseUri.replace(/\/$/, '');
 
-            if (params.language !== '') {
-                url += '/' + params.language;
-            }
-
             url += '/index.php?option=com_osmap&view=adminsitemapitems&tmpl=component&id=' + params.sitemapId;
+
+            if (params.language !== '') {
+                url += '&lang=' + params.language;
+            }
 
             $.ajax({
                 url: url,
