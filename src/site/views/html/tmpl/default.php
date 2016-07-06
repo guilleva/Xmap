@@ -22,7 +22,14 @@ if ($this->debug) {
     JHtml::stylesheet('media/com_osmap/css/sitemap_html_debug.min.css');
 }
 
-$pageHeading = $this->params->get('page_heading', $this->params->get('page_title'));
+// Check if we have parameters from a menu, acknowledging we have a menu
+if (!is_null($this->params->get('menu_text'))) {
+    // We have a menu, so let's use its params to display the heading
+    $pageHeading = $this->params->get('page_heading', $this->params->get('page_title'));
+} else {
+    // We don't have a menu, so lets use the sitemap name
+    $pageHeading = $this->sitemap->name;
+}
 ?>
 
 <div id="osmap-sitemap" class="<?php echo $this->debug ? 'osmap-debug' : ''; ?> <?php echo $this->params->get('pageclass_sfx', ''); ?>">

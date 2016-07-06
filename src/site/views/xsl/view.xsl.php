@@ -23,6 +23,9 @@ class OSMapViewXsl extends JViewLegacy
         // Help to show a clean XSL without other content
         $container->input->set('tmpl', 'component');
 
+        // Get the title
+        $this->pageHeading = htmlspecialchars(urldecode(JFactory::getApplication()->input->getRaw('title')));
+
         parent::display($tpl);
 
         // Force to show a clean XSL without other content

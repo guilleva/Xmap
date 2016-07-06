@@ -51,7 +51,12 @@ $printNodeCallback = function ($node) {
 
 // Do we need to apply XSL?
 if ($this->params->get('add_styling', 1)) {
-    echo '<?xml-stylesheet type="text/xsl" href="' . JUri::base() . 'index.php?option=com_osmap&amp;view=xsl&amp;format=xsl&amp;tmpl=component&amp;layout=standard&amp;id=' . $this->sitemap->id . '"?>';
+    $title = '';
+    if ($this->params->get('show_page_heading', 1)) {
+        $title = '&amp;title=' . urlencode($this->pageHeading);
+    }
+
+    echo '<?xml-stylesheet type="text/xsl" href="' . JUri::base() . 'index.php?option=com_osmap&amp;view=xsl&amp;format=xsl&amp;tmpl=component&amp;layout=standard&amp;id=' . $this->sitemap->id . $title . '"?>';
 }
 
 // Start the URL set

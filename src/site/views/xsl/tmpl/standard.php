@@ -76,7 +76,9 @@ header('Content-Disposition: inline');
 <body>
     <div class="header">
         <div class="title">
-            <h1><?php echo JText::_('COM_OSMAP_SITEMAP'); ?></h1>
+            <?php if (!empty($this->pageHeading)) : ?>
+                <h1><?php echo JText::_($this->pageHeading); ?></h1>
+            <?php endif; ?>
             <div class="count">
                 <?php echo JText::_('COM_OSMAP_NUMBER_OF_URLS'); ?>: <xsl:value-of select="count(xna:urlset/xna:url)"></xsl:value-of>
             </div>
