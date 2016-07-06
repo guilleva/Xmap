@@ -6,7 +6,7 @@
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <author>Alledia</author>
     <authorEmail>support@alledia.com</authorEmail>
-    <authorUrl>http://www.alledia.com</authorUrl>
+    <authorUrl>https://www.alledia.com</authorUrl>
     <version>4.1.1</version>
     <variant>FREE</variant>
     <description>COM_OSMAP_DESCRIPTION</description>
@@ -75,7 +75,7 @@
     </administration>
 
     <updateservers>
-        <server type="extension" priority="1" name="OSMap"><![CDATA[http://deploy.ostraining.com/client/update/free/stable/com_osmap]]></server>
+        <server type="extension" priority="1" name="OSMap">https://deploy.ostraining.com/client/update/free/stable/com_osmap</server>
     </updateservers>
 
     <alledia>
