@@ -39,6 +39,12 @@ class OSMapViewSitemap extends OSMap\View\Admin\Base
 
         $this->setToolBar();
 
+        // Display message about the params which were moved to the menu items.
+        $app->enqueueMessage(
+            JText::_('COM_OSMAP_PARAMS_MOVED_TO_MENU'),
+            'warning'
+        );
+
         parent::display($tpl);
     }
 
