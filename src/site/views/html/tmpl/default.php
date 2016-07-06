@@ -32,7 +32,7 @@ if (!is_null($this->params->get('menu_text'))) {
 }
 ?>
 
-<div id="osmap-sitemap" class="<?php echo $this->debug ? 'osmap-debug' : ''; ?> <?php echo $this->params->get('pageclass_sfx', ''); ?>">
+<div id="osmap" class="osmap-sitemap <?php echo $this->debug ? 'osmap-debug' : ''; ?> <?php echo $this->params->get('pageclass_sfx', ''); ?>">
     <!-- Heading -->
 
     <?php if ($this->params->get('show_page_heading', 1)) : ?>
