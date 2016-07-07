@@ -52,6 +52,11 @@ class Html extends OSMap\View\Base
     protected $showMenuTitles = 1;
 
     /**
+     * @var bool
+     */
+    protected $shouldCloseMenu = false;
+
+    /**
      * The constructor
      */
     public function __construct($config = array())
@@ -131,6 +136,9 @@ class Html extends OSMap\View\Base
         }
 
         echo '<ul class="level_0 ' . $cssClass . '">';
+
+        // It says we opened at least one menu, so we need to close it after traverse the sitemap
+        $this->shouldCloseMenu = true;
     }
 
     /**

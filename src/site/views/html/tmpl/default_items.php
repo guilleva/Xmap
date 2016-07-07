@@ -20,14 +20,16 @@ defined('_JEXEC') or die();
 
 <div class="osmap-items">
     <?php $this->sitemap->traverse(array($this, 'printNodeCallback')); ?>
+
+    <?php if ($this->shouldCloseMenu) : ?>
+        <?php $this->closeMenu(); ?>
+    <?php endif; ?>
 </div>
 
 <?php // Make sure we close the stack of levels ?>
 <?php if ($this->lastLevel > 0) : ?>
     <?php $this->closeLevels($this->lastLevel); ?>
 <?php endif; ?>
-
-<?php $this->closeMenu(); ?>
 
 <?php if ($this->debug) : ?>
     <div class="osmap-debug-items-count">
