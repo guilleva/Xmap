@@ -291,7 +291,8 @@ abstract class General
     /**
      * Returns an array or string with the authorised view levels for public or
      * guest users. If the param $asString is true, it returns a string as CSV.
-     * If false, an array
+     * If false, an array. If the current view was called by the admin to edit
+     * the sitemap links, we returns all access levels to give access for everything.
      *
      * @param bool $asString
      *
@@ -299,7 +300,27 @@ abstract class General
      */
     public static function getAuthorisedViewLevels($asString = true)
     {
-        $levels = (array)\JAccess::getAuthorisedViewLevels(null);
+        $container = OSMap\Factory::getContainer();
+        $levels    = array();
+
+        // Check if we need to return all levels, if it was called from the admin to edit the link list
+        if ($container->input->get('view') === 'adminsitemapitems') {
+            $db = OSMap\Factory::getDbo();
+
+            // Get all access levels
+            $query = $db->getQuery(true)
+                ->select('id')
+                ->from($db->quoteName('#__viewlevels'));
+            $db->setQuery($query);
+            $rows = $db->loadRowList();
+            
+            foreach ($rows as $row) {
+                $levels[] = $row[0];
+            }
+        } else {
+            // Only shows returns the level for the current user
+            $levels = (array)OSMap\Factory::getUser()->getAuthorisedViewLevels();
+        }
 
         if ($asString) {
             $levels = implode(',', $levels);
