@@ -34,7 +34,7 @@ class Html extends OSMap\View\Base
     /**
      * @var int
      */
-    protected $lastLevel = 0;
+    protected $lastLevel = -1;
 
     /**
      * @var int
@@ -118,17 +118,16 @@ class Html extends OSMap\View\Base
      * Open a menu list
      *
      * @param object $node
-     * @param bool   $debug
      * @param string $cssClass
      *
      * @return void
      */
-    public function openMenu($node, $debug, $cssClass = '')
+    public function openMenu($node, $cssClass = '')
     {
         if ($this->showMenuTitles) {
             echo '<h2>' . $node->menu->name;
 
-            if ($debug) {
+            if ($this->debug) {
                 echo '<div><span>' . \JText::_('COM_OSMAP_MENUTYPE') . ':</span>&nbsp;' . $node->menu->id . ': ' . $node->menu->menutype . '</div>';
             }
 
@@ -195,14 +194,13 @@ class Html extends OSMap\View\Base
      * Print an item
      *
      * @param object $node
-     * @param bool   $debug
      * @param int    $count
      *
      * @return void
      */
-    public function printItem($node, $debug, $count)
+    public function printItem($node, $count)
     {
-        $liClass = $debug ? 'osmap-debug-item' : '';
+        $liClass = $this->debug ? 'osmap-debug-item' : '';
         $liClass .= $count % 2 == 0 ? ' even' : '';
 
         echo "<li class=\"{$liClass}\">";
@@ -220,7 +218,7 @@ class Html extends OSMap\View\Base
         }
 
         // Debug box
-        if ($debug) {
+        if ($this->debug) {
             $this->printDebugInfo($node, $count);
         }
 
@@ -237,50 +235,48 @@ class Html extends OSMap\View\Base
      */
     public function printNodeCallback($node)
     {
-        global $lastMenuId, $lastLevel, $debug, $count, $showExternalLinks;
-
         $display = !$node->ignore
             && $node->published
             && $node->visibleForHTML;
 
         // Check if is external URL and if should be ignored
         if ($display && !$node->isInternal) {
-            $display = $showExternalLinks > 0;
+            $display = $this->showExternalLinks > 0;
         }
 
         if (!$display) {
             return false;
         }
 
-        $count++;
+        $this->count++;
 
-        if ($lastMenuId !== $node->menu->id) {
+        if ($this->lastMenuId !== $node->menu->id) {
             // Make sure we need to close the last menu
-            if ($lastMenuId > 0) {
-                $this->closeLevels($lastLevel);
+            if ($this->lastMenuId > 0) {
+                $this->closeLevels($this->lastLevel);
                 $this->closeMenu();
             }
 
-            $this->openMenu($node, $debug);
-            $lastLevel = 0;
+            $this->openMenu($node);
+            $this->lastLevel = 0;
         }
 
         // Check if we have a different level to start or close tags
-        if ($lastLevel !== $node->level) {
-            if ($node->level > $lastLevel) {
+        if ($this->lastLevel !== $node->level) {
+            if ($node->level > $this->lastLevel) {
                 $this->openSubLevel($node);
             }
 
-            if ($node->level < $lastLevel) {
+            if ($node->level < $this->lastLevel) {
                 // Make sure we close the stack of prior levels
-                $this->closeLevels($lastLevel - $node->level);
+                $this->closeLevels($this->lastLevel - $node->level);
             }
         }
 
-        $this->printItem($node, $debug, $count);
+        $this->printItem($node, $this->count);
 
-        $lastLevel  = $node->level;
-        $lastMenuId = $node->menu->id;
+        $this->lastLevel  = $node->level;
+        $this->lastMenuId = $node->menu->id;
 
         return true;
     }
