@@ -397,12 +397,11 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                     $node->slug = $item->route ? ($item->id . ':' . $item->route) : $item->id;
                     $node->link = ContentHelperRoute::getCategoryRoute($node->slug);
 
+                    $node->itemid = $itemid;
                     if (strpos($node->link, 'Itemid=')===false) {
-                        $node->itemid = $itemid;
-                        $node->link   .= '&Itemid='.$itemid;
+                        $node->link .= '&Itemid=' . $itemid;
                     } else {
-                        $node->itemid = $itemid;
-                        $node->link   = preg_replace('/Itemid=([0-9]+)/', 'Itemid='.$itemid, $node->link);
+                        $node->link = preg_replace('/Itemid=([0-9]+)/', 'Itemid='.$itemid, $node->link);
                     }
 
                     if ($osmap->printNode($node)) {
@@ -532,14 +531,6 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                 //$node->catslug = $item->category_route ? ($catid . ':' . $item->category_route) : $catid;
                 $node->catslug = $item->catid;
                 $node->link    = ContentHelperRoute::getArticleRoute($node->slug, $node->catslug);
-
-                if (strpos($node->link, 'Itemid=') === false) {
-                    $node->itemid = $itemid;
-                    $node->link   .= '&Itemid='.$parent->id;
-                } else {
-                    $node->itemid = $itemid;
-                    $node->link   = preg_replace('/Itemid=([0-9]+)/', 'Itemid='.$parent->id, $node->link);
-                }
 
                 // Set the visibility for XML or HTML sitempas
                 if ($catid=='featured') {
