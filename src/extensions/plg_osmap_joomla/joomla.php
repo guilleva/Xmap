@@ -535,15 +535,15 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                 // Set the visibility for XML or HTML sitempas
                 if ($catid=='featured') {
                     // Check if the item is visible in the XML or HTML sitemaps
-                    $node->visibleForXML = in_array($paramExpandFeatured, array(1,2));
+                    $node->visibleForXML  = in_array($paramExpandFeatured, array(1,2));
                     $node->visibleForHTML = in_array($paramExpandFeatured, array(1,3));
                 } elseif ($catid=='archived') {
                     // Check if the item is visible in the XML or HTML sitemaps
-                    $node->visibleForXML = in_array($paramIncludeArchived, array(1,2));
+                    $node->visibleForXML  = in_array($paramIncludeArchived, array(1,2));
                     $node->visibleForHTML = in_array($paramIncludeArchived, array(1,3));
                 } elseif (is_numeric($catid)) {
                     // Check if the item is visible in the XML or HTML sitemaps
-                    $node->visibleForXML = in_array($paramExpandCategories, array(1,2));
+                    $node->visibleForXML  = in_array($paramExpandCategories, array(1,2));
                     $node->visibleForHTML = in_array($paramExpandCategories, array(1,3));
                 }
 

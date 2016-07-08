@@ -206,8 +206,6 @@ class Item extends BaseItem
         }
 
         if ($this->isInternal) {
-            // If this is an internal Joomla link, ensure the Itemid is set
-
             // Route the full link
             $this->fullLink = OSMap\Router::routeURL($this->fullLink);
 
