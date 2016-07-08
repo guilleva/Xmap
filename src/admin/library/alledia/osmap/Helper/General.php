@@ -313,7 +313,7 @@ abstract class General
                 ->from($db->quoteName('#__viewlevels'));
             $db->setQuery($query);
             $rows = $db->loadRowList();
-            
+
             foreach ($rows as $row) {
                 $levels[] = $row[0];
             }
