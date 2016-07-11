@@ -216,7 +216,7 @@
                 <field
                     name="keywords"
                     type="list"
-                    default="1"
+                    default="metakey"
                     label="PLG_OSMAP_JOOMLA_SETTING_NEWS_KEYWORDS_LABEL"
                     description="PLG_OSMAP_JOOMLA_SETTING_NEWS_KEYWORDS_DESC">
 

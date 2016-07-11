@@ -33,7 +33,7 @@ $printNodeCallback = function ($node) use ($params) {
 
     // Print the item
     echo '<url>';
-    echo '<loc><![CDATA[' . $node->fullLink . ']]></loc>';
+    echo '<loc>' . htmlspecialchars($node->fullLink) . '</loc>';
     echo "<news:news>";
     echo '<news:publication>';
     echo '<news:name>' . htmlspecialchars($publicationName) . '</news:name>';
@@ -81,7 +81,7 @@ $printNodeCallback = function ($node) use ($params) {
     echo '<news:publication_date>' . $publicationDate . '</news:publication_date>';
 
     // Title
-    echo '<news:title><![CDATA[' . $node->name . ']]></news:title>';
+    echo '<news:title>' . htmlspecialchars($node->name) . '</news:title>';
 
     // Keywords
     if (isset($node->keywords)) {

@@ -351,9 +351,9 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                     'a.path AS route',
                     'a.created_time created',
                     'a.modified_time modified',
-                    'params',
-                    'metadata',
-                    'metakey'
+                    'a.params',
+                    'a.metadata',
+                    'a.metakey'
                 )
             )
             ->from('#__categories AS a')
@@ -384,10 +384,17 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                     $node->name         = $item->title;
                     $node->expandible   = true;
                     $node->secure       = $parent->secure;
-                    $node->keywords     = $item->metakey;
                     $node->newsItem     = 0;
                     $node->adapterName  = 'JoomlaCategory';
                     $node->pluginParams = &$params;
+
+                    // Keywords
+                    $paramKeywords = $params->get('keywords', 'metakey');
+                    $keywords      = null;
+                    if ($paramKeywords !== 'none') {
+                        $keywords = $item->metakey;
+                    }
+                    $node->keywords = $keywords;
 
                     // For the google news we should use te publication date instead
                     // the last modification date
@@ -467,12 +474,13 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                     'a.title',
                     'a.alias',
                     'a.catid',
-                    'a.created created',
-                    'a.modified modified',
-                    'attribs as params',
-                    'metadata',
+                    'a.created',
+                    'a.modified',
+                    'a.attribs AS params',
+                    'a.metadata',
                     'a.language',
-                    'metakey'
+                    'a.metakey',
+                    'c.title AS categMetakey'
                 )
             );
 
@@ -487,7 +495,9 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
 
         $query
             ->from('#__content AS a')
+            //@todo: Do we need this join for frontpage?
             ->join('LEFT', '#__content_frontpage AS fp ON (a.id = fp.content_id)')
+            ->join('LEFT', '#__categories AS c ON (a.catid = c.id)')
             ->where($where)
             ->where('(a.publish_up = ' . $nullDate . ' OR a.publish_up <= ' . $nowDate . ')')
             ->where('(a.publish_down = ' . $nullDate . ' OR a.publish_down >= ' . $nowDate . ')');
@@ -521,11 +531,28 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                 $node->modified     = OSMap\Helper\General::isEmptyDate($item->modified) ? $item->created : $item->modified;
                 $node->expandible   = false;
                 $node->secure       = $parent->secure;
-                $node->keywords     = $item->metakey;
                 $node->newsItem     = 1;
                 $node->language     = $item->language;
                 $node->adapterName  = 'JoomlaArticle';
                 $node->pluginParams = &$params;
+
+                // Keywords
+                $paramKeywords = $params->get('keywords', 'metakey');
+                $keywords      = '';
+                if ($paramKeywords !== 'none') {
+                    if (in_array($paramKeywords, array('metakey', 'both'))) {
+                        $keywords = $item->metakey;
+                    }
+
+                    if (in_array($paramKeywords, array('category', 'both'))) {
+                        if (!empty($keywords)) {
+                            $keywords .= ',';
+                        }
+
+                        $keywords .= $item->categMetakey;
+                    }
+                }
+                $node->keywords = trim($keywords);
 
                 $node->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
                 //$node->catslug = $item->category_route ? ($catid . ':' . $item->category_route) : $catid;
