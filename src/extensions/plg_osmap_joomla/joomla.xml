@@ -121,6 +121,31 @@
                     default="0"
                     label="PLG_OSMAP_JOOMLA_SETTING_MAX_ART_AGE"
                     description="PLG_OSMAP_JOOMLA_SETTING_MAX_ART_AGE_DESC" />
+
+                <field
+                    name="article_order"
+                    type="list"
+                    default="0"
+                    label="PLG_OSMAP_JOOMLA_SETTING_ARTICLE_ORDER_LABEL"
+                    description="PLG_OSMAP_JOOMLA_SETTING_ARTICLE_ORDER_DESC">
+
+                    <option value="0">PLG_OSMAP_JOOMLA_OPTION_CREATED</option>
+                    <option value="1">PLG_OSMAP_JOOMLA_OPTION_MODIFIED</option>
+                    <option value="2">PLG_OSMAP_JOOMLA_OPTION_PUBLISH</option>
+                    <option value="3">PLG_OSMAP_JOOMLA_OPTION_HITS</option>
+                    <option value="4">PLG_OSMAP_JOOMLA_OPTION_TITLE</option>
+                </field>
+
+                <field
+                    name="article_orderdir"
+                    type="list"
+                    default="0"
+                    label="PLG_OSMAP_JOOMLA_SETTING_ARTICLE_ORDER_DIR_LABEL"
+                    description="PLG_OSMAP_JOOMLA_SETTING_ARTICLE_ORDER_DIR_DESC">
+
+                    <option value="0">PLG_OSMAP_JOOMLA_OPTION_ASC</option>
+                    <option value="1">PLG_OSMAP_JOOMLA_OPTION_DESC</option>
+                </field>
             </fieldset>
 
             <fieldset name="xml">

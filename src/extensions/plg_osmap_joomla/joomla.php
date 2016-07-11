@@ -437,8 +437,6 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
         $db        = OSMap\Factory::getDBO();
         $container = OSMap\Factory::getContainer();
 
-        $orderBy = ' a.created ASC';
-
         if ($params->get('include_archived', 2)) {
             $where = array('(a.state = 1 or a.state = 2)');
         } else {
@@ -502,6 +500,23 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
             ->where('(a.publish_up = ' . $nullDate . ' OR a.publish_up <= ' . $nowDate . ')')
             ->where('(a.publish_down = ' . $nullDate . ' OR a.publish_down >= ' . $nowDate . ')');
 
+
+        // Ordering
+        $orderOptions = array(
+            'a.created',
+            'a.modified',
+            'a.publish_up',
+            'a.hits',
+            'a.title'
+        );
+        $orderDirOptions = array(
+            'ASC',
+            'DESC'
+        );
+        $order    = JArrayHelper::getValue($orderOptions, $params->get('article_order', 0), 0);
+        $orderDir = JArrayHelper::getValue($orderDirOptions, $params->get('article_orderdir', 0), 0);
+
+        $orderBy = ' ' . $order . ' ' . $orderDir;
         $query->order($orderBy);
 
         $maxArt = $params->get('max_art');
