@@ -20,6 +20,10 @@ $printNodeCallback = function ($node) {
         && $node->isInternal
         && trim($node->fullLink) != '';
 
+    if (!$node->hasCompatibleLanguage()) {
+        $display = false;
+    }
+
     if (!$display) {
         return false;
     }

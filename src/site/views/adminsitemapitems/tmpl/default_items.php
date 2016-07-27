@@ -50,6 +50,10 @@ $printNodeCallback = function ($item) {
         $item->addAdminNote('COM_OSMAP_ADMIN_NOTE_VISIBLE_XML_ONLY');
     }
 
+    if (!$item->hasCompatibleLanguage()) {
+        return false;
+    }
+
     if ($item->ignore) {
         return false;
     }

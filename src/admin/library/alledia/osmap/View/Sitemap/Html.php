@@ -244,6 +244,10 @@ class Html extends OSMap\View\Base
             $display = $this->showExternalLinks > 0;
         }
 
+        if (!$node->hasCompatibleLanguage()) {
+            $display = false;
+        }
+
         if (!$display) {
             return false;
         }

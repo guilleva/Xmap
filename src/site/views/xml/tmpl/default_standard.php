@@ -30,6 +30,10 @@ $printNodeCallback = function ($node) {
         $display = $showExternalLinks === 1;
     }
 
+    if (!$node->hasCompatibleLanguage()) {
+        $display = false;
+    }
+
     if (!$display) {
         return false;
     }
