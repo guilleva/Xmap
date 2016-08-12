@@ -73,7 +73,7 @@ header('Content-Disposition: inline');
 
     tr.sitemap-url td {
         background: #e6e3ec;
-        padding: 4px 2px;
+        padding: 1px 2px;
         color: #b3b3b3;
     }
 
