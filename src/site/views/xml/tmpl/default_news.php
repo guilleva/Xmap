@@ -98,6 +98,16 @@ $printNodeCallback = function ($node) use ($params) {
     return true;
 };
 
+// Do we need to apply XSL?
+if ($this->params->get('add_styling', 1)) {
+    $title = '';
+    if ($this->params->get('show_page_heading', 1)) {
+        $title = '&amp;title=' . urlencode($this->pageHeading);
+    }
+
+    echo '<?xml-stylesheet type="text/xsl" href="' . JUri::base() . 'index.php?option=com_osmap&amp;view=xsl&amp;format=xsl&amp;tmpl=component&amp;layout=news&amp;id=' . $this->sitemap->id . $title . '"?>';
+}
+
 echo '<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">';
 
 $this->sitemap->traverse($printNodeCallback);
