@@ -9,16 +9,26 @@
 
 defined('_JEXEC') or die();
 
+global $ignoreDuplicatedUIDs;
+
+$ignoreDuplicatedUIDs = (int)$this->osmapParams->get('ignore_duplicated_uids', 1);
+
 $printNodeCallback = function ($node) {
+    global $ignoreDuplicatedUIDs;
+
     $display = !$node->ignore
         && $node->published
-        && (!$node->duplicate || ($node->duplicate && !$this->osmapParams->get('ignore_duplicated_uids', 1)))
+        && (!$node->duplicate || ($node->duplicate && !$ignoreDuplicatedUIDs))
         && isset($node->images)
         && !empty($node->images)
         && $node->visibleForRobots
         && $node->visibleForXML
         && $node->isInternal
         && trim($node->fullLink) != '';
+
+    if (!$node->hasCompatibleLanguage()) {
+        $display = false;
+    }
 
     if (!$display) {
         return false;

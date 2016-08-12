@@ -41,6 +41,8 @@ class OSMapModelSitemaps extends JModelList
             } else {
                 $query->where('sitemap.published >= 0');
             }
+        } else {
+            $query->where('(sitemap.published = 0 OR sitemap.published = 1)');
         }
 
         // Filter by default state

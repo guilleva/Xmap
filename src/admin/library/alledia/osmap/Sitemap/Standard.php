@@ -84,7 +84,7 @@ class Standard implements SitemapInterface
         $this->id          = $row->id;
         $this->name        = $row->name;
         $this->isDefault   = (bool)$row->is_default;
-        $this->isPublished = (bool)$row->published;
+        $this->isPublished = $row->published == 1;
         $this->createdOn   = $row->created_on;
         $this->linksCount  = (int)$row->links_count;
 

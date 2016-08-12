@@ -139,7 +139,12 @@ class Item extends BaseItem
             if (\JLanguageMultilang::isEnabled()) {
                 $lang  = OSMap\Factory::getLanguage();
                 $tag   = $lang->getTag();
-                $homes = \JLanguageMultilang::getSiteHomePages();
+
+                if (version_compare(JVERSION, '3.5', '<')) {
+                    $homes = OSMap\Helper\Legacy::getSiteHomePages();
+                } else {
+                    $homes = \JLanguageMultilang::getSiteHomePages();
+                }
 
                 if (isset($homes[$tag])) {
                     $home = $homes[$tag];
@@ -206,8 +211,6 @@ class Item extends BaseItem
         }
 
         if ($this->isInternal) {
-            // If this is an internal Joomla link, ensure the Itemid is set
-
             // Route the full link
             $this->fullLink = OSMap\Router::routeURL($this->fullLink);
 

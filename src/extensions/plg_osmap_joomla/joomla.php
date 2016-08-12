@@ -351,9 +351,9 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                     'a.path AS route',
                     'a.created_time created',
                     'a.modified_time modified',
-                    'params',
-                    'metadata',
-                    'metakey'
+                    'a.params',
+                    'a.metadata',
+                    'a.metakey'
                 )
             )
             ->from('#__categories AS a')
@@ -384,10 +384,17 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                     $node->name         = $item->title;
                     $node->expandible   = true;
                     $node->secure       = $parent->secure;
-                    $node->keywords     = $item->metakey;
                     $node->newsItem     = 0;
                     $node->adapterName  = 'JoomlaCategory';
                     $node->pluginParams = &$params;
+
+                    // Keywords
+                    $paramKeywords = $params->get('keywords', 'metakey');
+                    $keywords      = null;
+                    if ($paramKeywords !== 'none') {
+                        $keywords = $item->metakey;
+                    }
+                    $node->keywords = $keywords;
 
                     // For the google news we should use te publication date instead
                     // the last modification date
@@ -397,12 +404,11 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                     $node->slug = $item->route ? ($item->id . ':' . $item->route) : $item->id;
                     $node->link = ContentHelperRoute::getCategoryRoute($node->slug);
 
+                    $node->itemid = $itemid;
                     if (strpos($node->link, 'Itemid=')===false) {
-                        $node->itemid = $itemid;
-                        $node->link   .= '&Itemid='.$itemid;
+                        $node->link .= '&Itemid=' . $itemid;
                     } else {
-                        $node->itemid = $itemid;
-                        $node->link   = preg_replace('/Itemid=([0-9]+)/', 'Itemid='.$itemid, $node->link);
+                        $node->link = preg_replace('/Itemid=([0-9]+)/', 'Itemid='.$itemid, $node->link);
                     }
 
                     if ($osmap->printNode($node)) {
@@ -430,8 +436,6 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
     {
         $db        = OSMap\Factory::getDBO();
         $container = OSMap\Factory::getContainer();
-
-        $orderBy = ' a.created ASC';
 
         if ($params->get('include_archived', 2)) {
             $where = array('(a.state = 1 or a.state = 2)');
@@ -468,12 +472,13 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                     'a.title',
                     'a.alias',
                     'a.catid',
-                    'a.created created',
-                    'a.modified modified',
-                    'attribs as params',
-                    'metadata',
+                    'a.created',
+                    'a.modified',
+                    'a.attribs AS params',
+                    'a.metadata',
                     'a.language',
-                    'metakey'
+                    'a.metakey',
+                    'c.title AS categMetakey'
                 )
             );
 
@@ -488,11 +493,30 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
 
         $query
             ->from('#__content AS a')
+            //@todo: Do we need this join for frontpage?
             ->join('LEFT', '#__content_frontpage AS fp ON (a.id = fp.content_id)')
+            ->join('LEFT', '#__categories AS c ON (a.catid = c.id)')
             ->where($where)
             ->where('(a.publish_up = ' . $nullDate . ' OR a.publish_up <= ' . $nowDate . ')')
             ->where('(a.publish_down = ' . $nullDate . ' OR a.publish_down >= ' . $nowDate . ')');
 
+
+        // Ordering
+        $orderOptions = array(
+            'a.created',
+            'a.modified',
+            'a.publish_up',
+            'a.hits',
+            'a.title'
+        );
+        $orderDirOptions = array(
+            'ASC',
+            'DESC'
+        );
+        $order    = JArrayHelper::getValue($orderOptions, $params->get('article_order', 0), 0);
+        $orderDir = JArrayHelper::getValue($orderDirOptions, $params->get('article_orderdir', 0), 0);
+
+        $orderBy = ' ' . $order . ' ' . $orderDir;
         $query->order($orderBy);
 
         $maxArt = $params->get('max_art');
@@ -522,37 +546,46 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                 $node->modified     = OSMap\Helper\General::isEmptyDate($item->modified) ? $item->created : $item->modified;
                 $node->expandible   = false;
                 $node->secure       = $parent->secure;
-                $node->keywords     = $item->metakey;
                 $node->newsItem     = 1;
                 $node->language     = $item->language;
                 $node->adapterName  = 'JoomlaArticle';
                 $node->pluginParams = &$params;
+
+                // Keywords
+                $paramKeywords = $params->get('keywords', 'metakey');
+                $keywords      = '';
+                if ($paramKeywords !== 'none') {
+                    if (in_array($paramKeywords, array('metakey', 'both'))) {
+                        $keywords = $item->metakey;
+                    }
+
+                    if (in_array($paramKeywords, array('category', 'both'))) {
+                        if (!empty($keywords)) {
+                            $keywords .= ',';
+                        }
+
+                        $keywords .= $item->categMetakey;
+                    }
+                }
+                $node->keywords = trim($keywords);
 
                 $node->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
                 //$node->catslug = $item->category_route ? ($catid . ':' . $item->category_route) : $catid;
                 $node->catslug = $item->catid;
                 $node->link    = ContentHelperRoute::getArticleRoute($node->slug, $node->catslug);
 
-                if (strpos($node->link, 'Itemid=') === false) {
-                    $node->itemid = $itemid;
-                    $node->link   .= '&Itemid='.$parent->id;
-                } else {
-                    $node->itemid = $itemid;
-                    $node->link   = preg_replace('/Itemid=([0-9]+)/', 'Itemid='.$parent->id, $node->link);
-                }
-
                 // Set the visibility for XML or HTML sitempas
                 if ($catid=='featured') {
                     // Check if the item is visible in the XML or HTML sitemaps
-                    $node->visibleForXML = in_array($paramExpandFeatured, array(1,2));
+                    $node->visibleForXML  = in_array($paramExpandFeatured, array(1,2));
                     $node->visibleForHTML = in_array($paramExpandFeatured, array(1,3));
                 } elseif ($catid=='archived') {
                     // Check if the item is visible in the XML or HTML sitemaps
-                    $node->visibleForXML = in_array($paramIncludeArchived, array(1,2));
+                    $node->visibleForXML  = in_array($paramIncludeArchived, array(1,2));
                     $node->visibleForHTML = in_array($paramIncludeArchived, array(1,3));
                 } elseif (is_numeric($catid)) {
                     // Check if the item is visible in the XML or HTML sitemaps
-                    $node->visibleForXML = in_array($paramExpandCategories, array(1,2));
+                    $node->visibleForXML  = in_array($paramExpandCategories, array(1,2));
                     $node->visibleForHTML = in_array($paramExpandCategories, array(1,3));
                 }
 

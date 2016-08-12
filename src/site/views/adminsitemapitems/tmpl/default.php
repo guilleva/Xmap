@@ -15,6 +15,12 @@ OSMap\Factory::getApplication()->input->set('tmpl', 'component');
 
 JHtml::stylesheet('media/com_osmap/css/admin.min.css');
 
+if (!empty($this->message)) : ?>
+    <div class="alert alert-warning">
+        <?php echo $this->message; ?>
+    </div>
+<?php endif;
+
 if (empty($this->message)) {
     echo $this->loadTemplate('items');
 }

@@ -40,13 +40,13 @@ class Collector
 
     /**
      * The current view: xml or html. Kept for backward compatibility with
-     * the legacy plugins. It is always HTML since the collector is generic now
+     * the legacy plugins. It is always XML since the collector is generic now
      * and needs to have the information about the item's level even for the
      * XML view in the Pro version, to store that info in the cache.
      *
      * @var string
      */
-    public $view = 'html';
+    public $view = 'xml';
 
     /**
      * Legacy property used by some plugins. True if we are collecting news.
@@ -115,6 +115,17 @@ class Collector
     {
         $this->sitemap = $sitemap;
         $this->params = \JComponentHelper::getParams('com_osmap');
+
+        /*
+         * Try to detect the current view. This is just for backward compatibility
+         * for legacy plugins. New plugins doesn't need to know what is the view.
+         * They always calculate the visibility for both views and the view is
+         * the one who decides to whow or not. If not equals HTML, is always XML.
+         */
+        $inputView = OSMap\Factory::getContainer()->input->get('view', 'xml');
+        if ($inputView === 'html') {
+            $this->view = 'html';
+        }
     }
 
     /**

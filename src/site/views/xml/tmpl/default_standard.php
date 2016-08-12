@@ -11,16 +11,18 @@ defined('_JEXEC') or die();
 
 use Alledia\OSMap;
 
-global $showExternalLinks;
+global $showExternalLinks, $ignoreDuplicatedUIDs;
 
-$showExternalLinks = (int)$this->osmapParams->get('show_external_links', 0);
+$showExternalLinks    = (int)$this->osmapParams->get('show_external_links', 0);
+$ignoreDuplicatedUIDs = (int)$this->osmapParams->get('ignore_duplicated_uids', 1);
+
 
 $printNodeCallback = function ($node) {
-    global $showExternalLinks;
+    global $showExternalLinks, $ignoreDuplicatedUIDs;
 
     $display = !$node->ignore
         && $node->published
-        && (!$node->duplicate || ($node->duplicate && !$this->osmapParams->get('ignore_duplicated_uids', 1)))
+        && (!$node->duplicate || ($node->duplicate && !$ignoreDuplicatedUIDs))
         && $node->visibleForRobots
         && $node->visibleForXML
         && trim($node->fullLink) != '';
@@ -28,6 +30,10 @@ $printNodeCallback = function ($node) {
     // Check if is external URL and if should be ignored
     if ($display && !$node->isInternal) {
         $display = $showExternalLinks === 1;
+    }
+
+    if (!$node->hasCompatibleLanguage()) {
+        $display = false;
     }
 
     if (!$display) {

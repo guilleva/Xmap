@@ -287,4 +287,24 @@ class BaseItem extends \JObject
             }
         }
     }
+
+    /**
+     * Check if the item's language has compatible language with
+     * the current language.
+     *
+     * @return bool
+     */
+    public function hasCompatibleLanguage()
+    {
+        // Check the language
+        if (\JLanguageMultilang::isEnabled() && isset($this->language)) {
+            if ($this->language === '*' || $this->language === \JFactory::getLanguage()->getTag()) {
+                return true;
+            }
+
+            return false;
+        }
+
+        return true;
+    }
 }
