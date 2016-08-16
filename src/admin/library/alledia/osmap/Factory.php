@@ -81,4 +81,17 @@ class Factory extends Framework\Factory
 
         return false;
     }
+
+    /**
+     * Returns an instance of a table. If no prefix is set, we use OSMap's table
+     * prefix as default.
+     *
+     * @param string $tableName
+     *
+     * @return mixed
+     */
+    public static function getTable($tableName, $prefix = 'OSMapTable')
+    {
+        return \JTable::getInstance($tableName, $prefix);
+    }
 }
