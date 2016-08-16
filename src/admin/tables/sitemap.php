@@ -286,4 +286,49 @@ class OSMapTableSitemap extends JTable
             $db->setQuery($query)->execute();
         }
     }
+
+    /**
+     * Method to load a row from the database by primary key and bind the fields to the JTable instance properties.
+     *
+     * @param   mixed    $keys   An optional primary key value to load the row by, or an array of fields to match.
+     *                           If not set the instance property value is used.
+     * @param   boolean  $reset  True to reset the default values before loading the new row.
+     *
+     * @return  boolean  True if successful. False if row not found.
+     *
+     * @since   11.1
+     * @throws  InvalidArgumentException
+     * @throws  RuntimeException
+     * @throws  UnexpectedValueException
+     */
+    public function load($keys = null, $reset = true)
+    {
+        $success = parent::load($keys, $reset);
+
+        if ($success) {
+            // Load the menus information
+            $db       = OSMap\Factory::getDbo();
+            $ordering = array();
+
+            $query = $db->getQuery(true)
+                ->select('*')
+                ->from('#__osmap_sitemap_menus')
+                ->where('sitemap_id = ' . $db->quote($this->id))
+                ->order('ordering');
+            $menusRows = $db->setQuery($query)->loadObjectList();
+
+            if (!empty($menusRows)) {
+                foreach ($menusRows as $menu) {
+                    $this->menus[]            = $menu->menutype_id;
+                    $this->menus_priority[]   = $menu->priority;
+                    $ordering[]               = 'menu_' . $menu->menutype_id;
+                    $this->menus_changefreq[] = $menu->changefreq;
+                }
+            }
+
+            $this->menus_ordering = implode(',', $ordering);
+        }
+
+        return $success;
+    }
 }
