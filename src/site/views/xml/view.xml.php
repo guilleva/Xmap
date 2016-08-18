@@ -12,14 +12,6 @@ use Alledia\OSMap;
 defined('_JEXEC') or die();
 
 
-/**
- * This class won't be removed to keep backward compatibility with older
- * versions and avoid breaking any submitted URL. The ideal is to use format
- * set to 'xml', to trigger a fix on OSEmbed to the bug where it was being
- * called and delaying the sitemap request.
- *
- * @deprecated Since v1.2.2
- */
 class OSMapViewXml extends OSMap\View\Sitemap\Xml
 {
 
