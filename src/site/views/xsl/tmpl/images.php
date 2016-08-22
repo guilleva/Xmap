@@ -27,15 +27,6 @@ header('Content-Disposition: inline');
         position: relative;
     }
 
-    div.instructions {
-        position: absolute;
-        top: 0;
-        right: 0;
-        background: #bbD9ee;
-        padding: 15px;
-        width: auto;
-    }
-
     table {
         font-size: 11px;
         width: 100%;
@@ -97,10 +88,6 @@ header('Content-Disposition: inline');
             <div class="count">
                 <?php echo JText::_('COM_OSMAP_NUMBER_OF_URLS'); ?>: <xsl:value-of select="count(xna:urlset/xna:url)"></xsl:value-of> (<xsl:value-of select="count(xna:urlset/xna:url/image:image/image:loc)"></xsl:value-of> <?php echo JText::_('COM_OSMAP_IMAGES'); ?>)
             </div>
-        </div>
-
-        <div class="instructions">
-            <?php echo JText::_('COM_OSMAP_INSTRUCTIONS'); ?> <a href="https://www.alledia.com/docs/osmap/"><?php echo JText::_('COM_OSMAP_DOCUMENTATION'); ?></a>.
         </div>
     </div>
 
