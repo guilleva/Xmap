@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension type="plugin" group="osmap" version="3.4" method="upgrade">
     <name>PLG_OSMAP_JOOMLA</name>
-    <creationDate>August 18 2016</creationDate>
+    <creationDate>August 23 2016</creationDate>
     <copyright>Copyright (C) 2016 Open Source Training, LLC. All rights reserved. / Forked from XMap - Guillermo Vargas - guille@vargas.co.cr</copyright>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <author>Alledia</author>
     <authorEmail>support@alledia.com</authorEmail>
     <authorUrl>https://www.alledia.com</authorUrl>
-    <version>4.1.4</version>
+    <version>4.1.5a2</version>
     <variant>FREE</variant>
     <description>PLG_OSMAP_JOOMLA_PLUGIN_DESCRIPTION</description>
 
