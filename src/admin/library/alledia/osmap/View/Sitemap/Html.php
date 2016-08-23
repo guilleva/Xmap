@@ -84,6 +84,8 @@ class Html extends OSMap\View\Base
         try {
             $id = $container->input->getInt('id');
 
+            $this->osmapParams = \JComponentHelper::getParams('com_osmap');
+
             // Load the sitemap instance
             $this->sitemap = OSMap\Factory::getSitemap($id, 'standard');
 
@@ -235,8 +237,11 @@ class Html extends OSMap\View\Base
      */
     public function printNodeCallback($node)
     {
+        $ignoreDuplicatedUIDs = (int)$this->osmapParams->get('ignore_duplicated_uids', 1);
+
         $display = !$node->ignore
             && $node->published
+            && (!$node->duplicate || ($node->duplicate && !$ignoreDuplicatedUIDs))
             && $node->visibleForHTML;
 
         // Check if is external URL and if should be ignored
