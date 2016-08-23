@@ -102,6 +102,13 @@ class Collector
     protected $currentMenu;
 
     /**
+     * The reference for the ID of the current menu item for nodes
+     *
+     * @var object
+     */
+    protected $currentMenuItemId;
+
+    /**
      * The component's params
      *
      * @var \JRegistry
@@ -157,6 +164,10 @@ class Collector
                     if ($this->itemIsBlackListed($item)) {
                         continue;
                     }
+
+                    // Store the current menu item id. Added to use it while defining the node's settings hash, so same
+                    // items, but from different menus can have individual settings
+                    $this->currentMenuItemId = $item['id'];
 
                     // Set the menu item UID. The UID can be changed by 3rd party plugins, according to the content
                     $item['uid'] = 'menuitem.' . $item['id'];
@@ -530,7 +541,7 @@ class Collector
                 ->select(
                     array(
                         '*',
-                        'IF (url_hash IS NULL OR url_hash = "", uid, CONCAT(uid, ":", url_hash)) AS ' . $db->quoteName('key')
+                        'IF (settings_hash IS NULL OR settings_hash = "", uid, CONCAT(uid, ":", settings_hash)) AS ' . $db->quoteName('key')
                     )
                 )
                 ->from('#__osmap_items_settings')
@@ -570,7 +581,7 @@ class Collector
         // Check if the menu item has custom settings. If not, use the values from the menu
         // Check if there is a custom settings specific for this URL. Sometimes the same page has different URLs.
         // We can have different settings for items with the same UID, but different URLs
-        $key = $item->uid . ':' . $item->fullLinkHash;
+        $key = $item->uid . ':' . $item->settingsHash;
         $settings = $this->getItemCustomSettings($key);
 
         // Check if there is a custom settings for all links with that UID (happens right after a migration from
@@ -623,5 +634,15 @@ class Collector
             ) {
             $this->unpublishLevel = false;
         }
+    }
+
+    /**
+     * Returns the current menu item id
+     *
+     * @return int
+     */
+    public function getCurrentMenuItemId()
+    {
+        return $this->currentMenuItemId;
     }
 }

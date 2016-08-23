@@ -150,4 +150,14 @@ class Standard implements SitemapInterface
         $data = array('links_count' => (int)$count);
         $row->save($data);
     }
+
+    /**
+     * Returns the instance of the collector
+     *
+     * @return Collector
+     */
+    public function getCollector()
+    {
+        return $this->collector;
+    }
 }

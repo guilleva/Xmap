@@ -57,9 +57,9 @@ class OSMapControllerSitemapItems extends OSMap\Controller\Form
                     $row = $model->getTable();
                     $row->load(
                         array(
-                            'sitemap_id' => $sitemapId,
-                            'uid'        => $data['uid'],
-                            'url_hash'   => $data['url_hash'],
+                            'sitemap_id'    => $sitemapId,
+                            'uid'           => $data['uid'],
+                            'settings_hash' => $data['settings_hash'],
                         )
                     );
 

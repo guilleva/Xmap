@@ -133,7 +133,7 @@ class BaseItem extends \JObject
     /**
      * @var string
      */
-    public $fullLinkHash;
+    public $settingsHash;
 
     /**
      * @var int

@@ -47,8 +47,8 @@ class Item extends BaseItem
             $this->sanitizeFullLink();
         }
 
-        // Make sure to have a hash of the full link
-        $this->fullLinkHash = md5($this->fullLink);
+        // Make sure to have a unique hash for the settings
+        $this->settingsHash = md5($this->fullLink . $sitemap->getCollector()->getCurrentMenuItemId());
 
         // Prepare the boolean attributes
         $this->published = (bool)$this->published;

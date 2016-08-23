@@ -62,7 +62,7 @@ $printNodeCallback = function ($item) {
     <tr
         class="sitemapitem row<?php echo $count; ?> <?php echo ($showItemUID) ? 'with-uid' : ''; ?>"
         data-uid="<?php echo $item->uid; ?>"
-        data-url-hash="<?php echo $item->fullLinkHash; ?>">
+        data-settings-hash="<?php echo $item->settingsHash; ?>">
 
         <td class="center">
             <?php if (!$item->ignore) : ?>
