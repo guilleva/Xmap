@@ -36,7 +36,9 @@ if (!is_null($this->params->get('menu_text'))) {
     <!-- Heading -->
 
     <?php if ($this->params->get('show_page_heading', 1)) : ?>
-        <h1><?php echo $this->escape($pageHeading); ?></h1>
+        <div class="page-header">
+            <h1><?php echo $this->escape($pageHeading); ?></h1>
+        </div>
     <?php endif; ?>
 
     <!-- Description -->
