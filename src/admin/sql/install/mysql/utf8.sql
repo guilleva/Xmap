@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS `#__osmap_sitemaps` (
   `created_on` DATETIME NULL DEFAULT NULL,
   `links_count` INT(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  INDEX `default` (`is_default` ASC, `id` ASC))
+  INDEX `default_idx` (`is_default` ASC, `id` ASC))
 ENGINE=INNODB DEFAULT CHARSET=utf8;
 
 
@@ -24,9 +24,9 @@ CREATE TABLE IF NOT EXISTS `#__osmap_sitemap_menus` (
   `priority` FLOAT NOT NULL DEFAULT '0.5',
   `ordering` INT(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`sitemap_id`, `menutype_id`),
-  INDEX `fk_osmap_sitemap_menus_osmap_sitemaps_idx` (`sitemap_id` ASC),
-  INDEX `ordering` (`sitemap_id` ASC, `ordering` ASC),
-  CONSTRAINT `fk_osmap_sitemap_menus_osmap_sitemaps`
+  INDEX `fk_sitemaps_idx` (`sitemap_id` ASC),
+  INDEX `ordering_idx` (`sitemap_id` ASC, `ordering` ASC),
+  CONSTRAINT `fk_sitemaps`
     FOREIGN KEY (`sitemap_id`)
     REFERENCES `#__osmap_sitemaps` (`id`)
     ON DELETE NO ACTION
