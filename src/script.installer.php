@@ -20,5 +20,4 @@ if (file_exists(__DIR__ . '/admin/library/alledia/osmap/Installer/Script.php')) 
 
 class com_osmapInstallerScript extends OSMap\Installer\Script
 {
-
 }

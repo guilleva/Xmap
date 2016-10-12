@@ -247,7 +247,7 @@ class OSMapTableSitemap extends JTable
         // Update the publishing state for rows with the given primary keys.
         $query =  $this->_db->getQuery(true)
             ->update($this->_db->quoteName('#__osmap_sitemaps'))
-            ->set($this->_db->quoteName('state').' = '. (int) $state)
+            ->set($this->_db->quoteName('state') . ' = ' . (int) $state)
             ->where($where);
 
         $this->_db->setQuery($query);
@@ -279,7 +279,7 @@ class OSMapTableSitemap extends JTable
     public function removeMenus()
     {
         if (!empty($this->id)) {
-            $db = OSMap\Factory::getDbo();
+            $db    = OSMap\Factory::getDbo();
             $query = $db->getQuery(true)
                 ->delete('#__osmap_sitemap_menus')
                 ->where('sitemap_id = ' . $db->quote($this->id));

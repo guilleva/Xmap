@@ -89,8 +89,8 @@ class JFormFieldOSMapMenus extends JFormFieldList
      */
     protected function getInput()
     {
-        $disabled = $this->element['disabled'] == 'true' ? true : false;
-        $readonly = $this->element['readonly'] == 'true' ? true : false;
+        $disabled   = $this->element['disabled'] == 'true' ? true : false;
+        $readonly   = $this->element['readonly'] == 'true' ? true : false;
         $attributes = ' ';
 
         $type = 'radio';
@@ -177,10 +177,10 @@ HTML;
         uasort($options, array($this, 'myCompare'));
 
         foreach ($options as $option) {
-            $prioritiesName = preg_replace('/(jform\[[^\]]+)(\].*)/', '$1_priority$2', $this->name);
-            $changefreqName = preg_replace('/(jform\[[^\]]+)(\].*)/', '$1_changefreq$2', $this->name);
-            $selected = (isset($value[$option->value]) ? ' checked="checked"' : '');
-            $changePriorityField = JHTML::_('osmap.priorities', $prioritiesName, ($selected ? $value[$option->value]['priority'] : '0.5'), $i);
+            $prioritiesName        = preg_replace('/(jform\[[^\]]+)(\].*)/', '$1_priority$2', $this->name);
+            $changefreqName        = preg_replace('/(jform\[[^\]]+)(\].*)/', '$1_changefreq$2', $this->name);
+            $selected              = (isset($value[$option->value]) ? ' checked="checked"' : '');
+            $changePriorityField   = JHTML::_('osmap.priorities', $prioritiesName, ($selected ? $value[$option->value]['priority'] : '0.5'), $i);
             $changeChangeFreqField = JHTML::_('osmap.changefrequency', $changefreqName, ($selected ? $value[$option->value]['changefreq'] : 'weekly'), $i);
 
             $i++;

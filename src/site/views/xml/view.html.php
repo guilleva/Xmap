@@ -22,5 +22,4 @@ defined('_JEXEC') or die();
  */
 class OSMapViewXml extends OSMap\View\Sitemap\Xml
 {
-
 }

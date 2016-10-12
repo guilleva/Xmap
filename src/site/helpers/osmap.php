@@ -20,6 +20,5 @@ use Alledia\OSMap;
 if (!class_exists('OSMapHelper')) {
     class OSMapHelper extends OSMap\Helper\General
     {
-
     }
 }

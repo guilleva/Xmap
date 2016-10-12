@@ -16,7 +16,7 @@ class OSMapViewSitemapItems extends OSMap\View\Admin\Base
 {
     public function display($tpl = null)
     {
-        $app = OSMap\Factory::getApplication();
+        $app             = OSMap\Factory::getApplication();
         $this->sitemapId = $app->input->getInt('id', 0);
         $this->language  = $app->input->get('lang', '');
 

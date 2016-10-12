@@ -31,12 +31,12 @@ class OSMapControllerSitemapItems extends OSMap\Controller\Form
         return JFactory::getUser()->authorise('core.edit', 'com_osmap.sitemap.' . $recordId);
     }
 
-    public function cancel($key = NULL)
+    public function cancel($key = null)
     {
         $this->setRedirect('index.php?option=com_osmap&view=sitemaps');
     }
 
-    public function save($key = NULL, $urlVar = NULL)
+    public function save($key = null, $urlVar = null)
     {
         // Check for request forgeries.
         JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));

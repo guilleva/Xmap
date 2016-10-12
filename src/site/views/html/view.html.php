@@ -11,8 +11,6 @@ defined('_JEXEC') or die();
 
 use Alledia\OSMap;
 
-
 class OSMapViewHtml extends OSMap\View\Sitemap\Html
 {
-
 }

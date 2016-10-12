@@ -38,7 +38,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
     {
         if (empty(static::$instance)) {
             $dispatcher = \JEventDispatcher::getInstance();
-            $instance = new self($dispatcher);
+            $instance   = new self($dispatcher);
 
             static::$instance = $instance;
         }
@@ -218,7 +218,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
         $params->set('cat_priority', $paramCatPriority);
         $params->set('cat_changefreq', $paramCatChangefreq);
 
-        $paramArtPriority = $params->get('art_priority', $parent->priority);
+        $paramArtPriority   = $params->get('art_priority', $parent->priority);
         $paramArtChangefreq = $params->get('art_changefreq', $parent->changefreq);
 
         if ($paramArtPriority == '-1') {
@@ -408,7 +408,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                     if (strpos($node->link, 'Itemid=')===false) {
                         $node->link .= '&Itemid=' . $itemid;
                     } else {
-                        $node->link = preg_replace('/Itemid=([0-9]+)/', 'Itemid='.$itemid, $node->link);
+                        $node->link = preg_replace('/Itemid=([0-9]+)/', 'Itemid=' . $itemid, $node->link);
                     }
 
                     if ($osmap->printNode($node)) {
@@ -453,7 +453,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
 
         $maxArtAge = $params->get('max_art_age');
         if (!empty($maxArtAge) || $osmap->isNews) {
-            $days = empty($maxArtAge) ? 2 : $maxArtAge;
+            $days    = empty($maxArtAge) ? 2 : $maxArtAge;
             $where[] = "(a.created >= '"
                 . date('Y-m-d H:i:s', time() - $days * 86400) . "' ) ";
         }
@@ -536,7 +536,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
             $paramIncludeArchived  = $params->get('include_archived', 2);
 
             foreach ($items as $item) {
-                $node = new stdClass();
+                $node               = new stdClass();
                 $node->id           = $item->id;
                 $node->uid          = 'joomla.article.' . $item->id;
                 $node->browserNav   = $parent->browserNav;
@@ -577,16 +577,16 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                 // Set the visibility for XML or HTML sitempas
                 if ($catid=='featured') {
                     // Check if the item is visible in the XML or HTML sitemaps
-                    $node->visibleForXML  = in_array($paramExpandFeatured, array(1,2));
-                    $node->visibleForHTML = in_array($paramExpandFeatured, array(1,3));
+                    $node->visibleForXML  = in_array($paramExpandFeatured, array(1, 2));
+                    $node->visibleForHTML = in_array($paramExpandFeatured, array(1, 3));
                 } elseif ($catid=='archived') {
                     // Check if the item is visible in the XML or HTML sitemaps
-                    $node->visibleForXML  = in_array($paramIncludeArchived, array(1,2));
-                    $node->visibleForHTML = in_array($paramIncludeArchived, array(1,3));
+                    $node->visibleForXML  = in_array($paramIncludeArchived, array(1, 2));
+                    $node->visibleForHTML = in_array($paramIncludeArchived, array(1, 3));
                 } elseif (is_numeric($catid)) {
                     // Check if the item is visible in the XML or HTML sitemaps
-                    $node->visibleForXML  = in_array($paramExpandCategories, array(1,2));
-                    $node->visibleForHTML = in_array($paramExpandCategories, array(1,3));
+                    $node->visibleForXML  = in_array($paramExpandCategories, array(1, 2));
+                    $node->visibleForHTML = in_array($paramExpandCategories, array(1, 3));
                 }
 
                 // Add images to the article

@@ -49,8 +49,7 @@ $printNodeCallback = function ($node) use ($params) {
         // Legacy code. Not sure why the hardcoded zh-cn and zh-tw
         if (preg_match('/^([a-z]+)-.*/', $defaultLanguage, $matches)
 
-           && !in_array($defaultLanguage, array(' zh-cn',' zh-tw'))) {
-
+           && !in_array($defaultLanguage, array(' zh-cn', ' zh-tw'))) {
             $defaultLanguage = $matches[1];
         }
 
@@ -74,7 +73,7 @@ $printNodeCallback = function ($node) use ($params) {
     }
 
     if ($publicationDate && !is_numeric($publicationDate)) {
-        $date = new JDate($publicationDate);
+        $date            = new JDate($publicationDate);
         $publicationDate = $date->toUnix();
     }
 
