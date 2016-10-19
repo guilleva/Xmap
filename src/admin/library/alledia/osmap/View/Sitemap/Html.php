@@ -111,7 +111,7 @@ class Html extends OSMap\View\Base
     {
         if ($offset > 0) {
             for ($i = 0; $i < $offset; $i++) {
-                echo '</ul>';
+                echo '</ul></li>';
             }
         }
     }
@@ -161,7 +161,7 @@ class Html extends OSMap\View\Base
      */
     public function openSubLevel($node)
     {
-        echo '<ul class="level_' . $node->level . '">';
+        echo '<li><ul class="level_' . $node->level . '">';
     }
 
     /**
