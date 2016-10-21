@@ -86,6 +86,8 @@ class Standard implements SitemapInterface
         $this->params = new \JRegistry;
         $this->params->loadString($row->params);
 
+        $row = null;
+
         // Initiate the collector
         $this->initCollector();
     }
@@ -126,6 +128,9 @@ class Standard implements SitemapInterface
             if (in_array(true, $results)) {
                 return;
             }
+
+            $results     = null;
+            $eventParams = array();
         }
 
         // Fetch the sitemap items
@@ -133,6 +138,10 @@ class Standard implements SitemapInterface
 
         // Update the links count in the sitemap
         $this->updateLinksCount($count);
+
+        // Cleanup
+        $this->collector->cleanup();
+        $this->collector = null;
     }
 
     /**
@@ -151,13 +160,9 @@ class Standard implements SitemapInterface
         $row->save($data);
     }
 
-    /**
-     * Returns the instance of the collector
-     *
-     * @return Collector
-     */
-    public function getCollector()
+    public function cleanup()
     {
-        return $this->collector;
+        $this->collector = null;
+        $this->params = null;
     }
 }

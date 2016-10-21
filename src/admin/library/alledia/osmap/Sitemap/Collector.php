@@ -162,6 +162,8 @@ class Collector
                 $items = $this->getMenuItems($menu);
                 foreach ($items as $item) {
                     if ($this->itemIsBlackListed($item)) {
+                        $item = null;
+
                         continue;
                     }
 
@@ -185,18 +187,26 @@ class Collector
                     // Submit the item and prepare it calling the plugins
                     $this->submitItemToCallback($item, $callback, true);
 
-                    // Internal items can trigger plugins to grab more items
+                    // Internal links can trigger plugins to grab more items
                     // The child items are not displayed if the parent item is ignored
                     if ($item->isInternal && !$item->ignore) {
-                        // Call the plugin to get additional items related to
+                        // Call the plugin to get additional items related to it
                         $this->callPluginsGetItemTree($item, $callback);
                     }
 
-                    // Make sure the memory is cleaned
+                    // Make sure the memory is cleaned up
                     $item = null;
                 }
+                $items = array();
+                unset($items);
             }
+
+            $menu = null;
         }
+
+        $this->currentMenu            = null;
+        $this->tmpItemDefaultSettings = array();
+        $callback = null;
 
         return $this->counter;
     }
@@ -214,8 +224,10 @@ class Collector
      */
     public function submitItemToCallback(&$item, $callback, $prepareItem = false)
     {
+        $currentMenuItemId = $this->getCurrentMenuItemId();
+
         // Converts to an Item instance, setting internal attributes
-        $item = new Item($item, $this->sitemap, $this->currentMenu);
+        $item = new Item($item, $currentMenuItemId);
 
         if ($prepareItem) {
             // Call the plugins to prepare the item
@@ -229,7 +241,7 @@ class Collector
         $item->adapter->checkVisibilityForRobots();
 
         // Set the current level to the item
-        $item->set('level', $this->currentLevel);
+        $item->level = $this->currentLevel;
 
         $this->setItemCustomSettings($item);
         $this->checkParentIsUnpublished($item);
@@ -246,7 +258,9 @@ class Collector
         }
 
         // Call the given callback function
-        return (bool)call_user_func_array($callback, array(&$item));
+        $result = (bool)call_user_func_array($callback, array(&$item));
+
+        return $result;
     }
 
     /**
@@ -428,6 +442,8 @@ class Collector
                         break;
                     }
                 }
+
+                $plugin = null;
             }
         }
     }
@@ -644,5 +660,16 @@ class Collector
     public function getCurrentMenuItemId()
     {
         return $this->currentMenuItemId;
+    }
+
+    /**
+     * Removes circular reference
+     */
+    public function cleanup()
+    {
+        $this->sitemap           = null;
+        $this->printNodeCallback = null;
+        $this->params            = null;
+        $this->currentMenu       = null;
     }
 }
