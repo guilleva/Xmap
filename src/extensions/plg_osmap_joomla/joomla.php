@@ -24,6 +24,7 @@ require_once JPATH_SITE . '/components/com_content/helpers/query.php';
  */
 
 use Alledia\OSMap;
+use Alledia\Framework;
 
 class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentInterface
 {
@@ -181,13 +182,13 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
      * @return void
      * @since  1.0
      */
-    public static function getTree($osmap, $parent, &$params)
+    public static function getTree($osmap, $menuItem, &$params)
     {
         $db = OSMap\Factory::getDBO();
 
         $result = null;
 
-        $linkQuery = parse_url($parent->link);
+        $linkQuery = parse_url($menuItem->link);
 
         if (!isset($linkQuery['query'])) {
             return false;
@@ -206,27 +207,27 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
 
         $paramAddPageBreaks    = $params->get('add_pagebreaks', 1);
 
-        $paramCatPriority      = $params->get('cat_priority', $parent->priority);
-        $paramCatChangefreq    = $params->get('cat_changefreq', $parent->changefreq);
+        $paramCatPriority      = $params->get('cat_priority', $menuItem->priority);
+        $paramCatChangefreq    = $params->get('cat_changefreq', $menuItem->changefreq);
 
         if ($paramCatPriority == '-1') {
-            $paramCatPriority = $parent->priority;
+            $paramCatPriority = $menuItem->priority;
         }
         if ($paramCatChangefreq == '-1') {
-            $paramCatChangefreq = $parent->changefreq;
+            $paramCatChangefreq = $menuItem->changefreq;
         }
         $params->set('cat_priority', $paramCatPriority);
         $params->set('cat_changefreq', $paramCatChangefreq);
 
-        $paramArtPriority   = $params->get('art_priority', $parent->priority);
-        $paramArtChangefreq = $params->get('art_changefreq', $parent->changefreq);
+        $paramArtPriority   = $params->get('art_priority', $menuItem->priority);
+        $paramArtChangefreq = $params->get('art_changefreq', $menuItem->changefreq);
 
         if ($paramArtPriority == '-1') {
-            $paramArtPriority = $parent->priority;
+            $paramArtPriority = $menuItem->priority;
         }
 
         if ($paramArtChangefreq == '-1') {
-            $paramArtChangefreq = $parent->changefreq;
+            $paramArtChangefreq = $menuItem->changefreq;
         }
 
         $params->set('art_priority', $paramArtPriority);
@@ -247,14 +248,14 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                 }
 
                 if ($paramExpandCategories && $id) {
-                    $result = self::expandCategory($osmap, $parent, $id, $params, $parent->id);
+                    $result = self::expandCategory($osmap, $menuItem, $id, $params, $menuItem->id);
                 }
 
                 break;
 
             case 'featured':
                 if ($paramExpandFeatured) {
-                    $result = self::includeCategoryContent($osmap, $parent, 'featured', $params, $parent->id);
+                    $result = self::includeCategoryContent($osmap, $menuItem, 'featured', $params, $menuItem->id);
                 }
 
                 break;
@@ -265,14 +266,14 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                         $id = 1;
                     }
 
-                    $result = self::expandCategory($osmap, $parent, $id, $params, $parent->id);
+                    $result = self::expandCategory($osmap, $menuItem, $id, $params, $menuItem->id);
                 }
 
                 break;
 
             case 'archive':
                 if ($paramIncludeArchived) {
-                    $result = self::includeCategoryContent($osmap, $parent, 'archived', $params, $parent->id);
+                    $result = self::includeCategoryContent($osmap, $menuItem, 'archived', $params, $menuItem->id);
                 }
 
                 break;
@@ -304,11 +305,11 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                     // // Set the node UID
                     $item->uid = 'joomla.article.' . $id;
 
-                    $parent->slug = $item->alias ? ($id . ':' . $item->alias) : $id;
-                    $parent->link = ContentHelperRoute::getArticleRoute($parent->slug, $item->catid);
+                    $menuItem->slug = $item->alias ? ($id . ':' . $item->alias) : $id;
+                    $menuItem->link = ContentHelperRoute::getArticleRoute($menuItem->slug, $item->catid);
 
-                    $parent->subnodes = OSMap\Helper\General::getPagebreaks($item->introtext . $item->fulltext, $parent->link, $item->uid);
-                    self::printNodes($osmap, $parent, $params, $parent->subnodes, $item);
+                    $menuItem->subnodes = OSMap\Helper\General::getPagebreaks($item->introtext . $item->fulltext, $menuItem->link, $item->uid);
+                    self::printNodes($osmap, $menuItem, $params, $menuItem->subnodes, $item);
                 }
         }
 
