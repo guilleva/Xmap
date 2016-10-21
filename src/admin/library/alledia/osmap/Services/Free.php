@@ -12,6 +12,7 @@ namespace Alledia\OSMap\Services;
 use Pimple\Container as Pimple;
 use Pimple\ServiceProviderInterface;
 use Alledia\OSMap;
+use Alledia\Framework;
 
 defined('_JEXEC') or die();
 
@@ -64,6 +65,10 @@ class Free implements ServiceProviderInterface
 
         $pimple['language'] = function (OSMap\Container $c) {
             return OSMap\Factory::getLanguage();
+        };
+
+        $pimple['profiler'] = function (OSMap\Container $c) {
+            return new Framework\Profiler;
         };
 
         $this->registerHelper($pimple);
