@@ -11,14 +11,15 @@ defined('_JEXEC') or die();
 
 use Alledia\OSMap;
 
-global $showExternalLinks, $ignoreDuplicatedUIDs;
+global $showExternalLinks, $ignoreDuplicatedUIDs, $debug;
 
 $showExternalLinks    = (int)$this->osmapParams->get('show_external_links', 0);
 $ignoreDuplicatedUIDs = (int)$this->osmapParams->get('ignore_duplicated_uids', 1);
+$debug                = (bool)$this->params->get('debug', 0);
 
 
 $printNodeCallback = function ($node) {
-    global $showExternalLinks, $ignoreDuplicatedUIDs;
+    global $showExternalLinks, $ignoreDuplicatedUIDs, $debug;
 
     $display = !$node->ignore
         && $node->published
@@ -40,6 +41,10 @@ $printNodeCallback = function ($node) {
         return false;
     }
 
+    if ($debug) {
+        echo "\n";
+    }
+
     // Print the item
     echo '<url>';
     echo '<loc><![CDATA[' . $node->fullLink . ']]></loc>';
@@ -51,6 +56,10 @@ $printNodeCallback = function ($node) {
     echo '<changefreq>' . $node->changefreq . '</changefreq>';
     echo '<priority>' . $node->priority . '</priority>';
     echo '</url>';
+
+    if ($debug) {
+        echo "\n";
+    }
 
     return true;
 };
