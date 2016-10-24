@@ -79,4 +79,7 @@ echo '<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLo
 
 $this->sitemap->traverse($printNodeCallback);
 
+$printNodeCallback = null;
+$this->sitemap->cleanup();
+$this->sitemap = null;
 echo '</urlset>';
