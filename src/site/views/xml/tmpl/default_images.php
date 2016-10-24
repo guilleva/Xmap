@@ -19,8 +19,6 @@ $printNodeCallback = function ($node) {
     $display = !$node->ignore
         && $node->published
         && (!$node->duplicate || ($node->duplicate && !$ignoreDuplicatedUIDs))
-        && isset($node->images)
-        && !empty($node->images)
         && $node->visibleForRobots
         && $node->visibleForXML
         && $node->isInternal
@@ -28,6 +26,11 @@ $printNodeCallback = function ($node) {
 
     if (!$node->hasCompatibleLanguage()) {
         $display = false;
+    }
+
+    // If the item would be displayed, but doesn't have images, we return true to still get it's child items images.
+    if ($display && (!isset($node->images) || empty($node->images))) {
+        return true;
     }
 
     if (!$display) {
@@ -42,7 +45,7 @@ $printNodeCallback = function ($node) {
         if (!empty($image->src)) {
             echo '<image:image>';
             // Link
-            echo '<image:loc>' . $image->src . '</image:loc>';
+            echo '<image:loc><![CDATA[' . $image->src . ']]></image:loc>';
             // Title
             echo '<image:title>';
             if (!empty($image->title)) {
@@ -50,7 +53,7 @@ $printNodeCallback = function ($node) {
             }
             echo '</image:title>';
             // Lincense
-            if (isset($image->license)) {
+            if (isset($image->license) && !empty($image->license)) {
                 echo '<image:license><![CDATA[' . $image->license . ']]></image:license>';
             }
 
