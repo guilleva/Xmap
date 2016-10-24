@@ -46,5 +46,5 @@ interface ContentInterface
      * @return void
      * @since  1.0
      */
-    public static function getTree($osmap, $parent, &$params);
+    public static function getTree($collector, $parent, &$params);
 }

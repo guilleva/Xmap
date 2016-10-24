@@ -182,7 +182,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
      * @return void
      * @since  1.0
      */
-    public static function getTree($osmap, $menuItem, &$params)
+    public static function getTree($collector, $menuItem, &$params)
     {
         $db = OSMap\Factory::getDBO();
 
@@ -248,14 +248,14 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                 }
 
                 if ($paramExpandCategories && $id) {
-                    $result = self::expandCategory($osmap, $menuItem, $id, $params, $menuItem->id);
+                    $result = self::expandCategory($collector, $menuItem, $id, $params, $menuItem->id);
                 }
 
                 break;
 
             case 'featured':
                 if ($paramExpandFeatured) {
-                    $result = self::includeCategoryContent($osmap, $menuItem, 'featured', $params, $menuItem->id);
+                    $result = self::includeCategoryContent($collector, $menuItem, 'featured', $params, $menuItem->id);
                 }
 
                 break;
@@ -266,14 +266,14 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                         $id = 1;
                     }
 
-                    $result = self::expandCategory($osmap, $menuItem, $id, $params, $menuItem->id);
+                    $result = self::expandCategory($collector, $menuItem, $id, $params, $menuItem->id);
                 }
 
                 break;
 
             case 'archive':
                 if ($paramIncludeArchived) {
-                    $result = self::includeCategoryContent($osmap, $menuItem, 'archived', $params, $menuItem->id);
+                    $result = self::includeCategoryContent($collector, $menuItem, 'archived', $params, $menuItem->id);
                 }
 
                 break;
@@ -309,7 +309,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                     $menuItem->link = ContentHelperRoute::getArticleRoute($menuItem->slug, $item->catid);
 
                     $menuItem->subnodes = OSMap\Helper\General::getPagebreaks($item->introtext . $item->fulltext, $menuItem->link, $item->uid);
-                    self::printNodes($osmap, $menuItem, $params, $menuItem->subnodes, $item);
+                    self::printNodes($collector, $menuItem, $params, $menuItem->subnodes, $item);
                 }
         }
 
@@ -320,13 +320,13 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
      * Get all content items within a content category.
      * Returns an array of all contained content items.
      *
-     * @param object  $osmap
+     * @param object  $collector
      * @param object  $parent   the menu item
      * @param int     $catid    the id of the category to be expanded
      * @param array   $params   an assoc array with the params for this plugin on Xmap
      * @param int     $itemid   the itemid to use for this category's children
      */
-    public static function expandCategory($osmap, $parent, $catid, &$params, $itemid, $prevnode = null, $curlevel = 0)
+    public static function expandCategory($collector, $parent, $catid, &$params, $itemid, $prevnode = null, $curlevel = 0)
     {
         $paramExpandCategories = $params->get('expand_categories', 1);
 
@@ -373,10 +373,10 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
 
         if ($curlevel <= $maxLevel) {
             if (count($items) > 0) {
-                $osmap->changeLevel(1);
+                $collector->changeLevel(1);
 
                 foreach ($items as $item) {
-                    $node               = new stdClass();
+                    $node               = new stdClass;
                     $node->id           = $item->id;
                     $node->uid          = 'joomla.category.' . $item->id;
                     $node->browserNav   = $parent->browserNav;
@@ -412,17 +412,17 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                         $node->link = preg_replace('/Itemid=([0-9]+)/', 'Itemid=' . $itemid, $node->link);
                     }
 
-                    if ($osmap->printNode($node)) {
-                        self::expandCategory($osmap, $parent, $item->id, $params, $node->itemid, $node, $curlevel);
+                    if ($collector->printNode($node)) {
+                        self::expandCategory($collector, $parent, $item->id, $params, $node->itemid, $node, $curlevel);
                     }
                 }
 
-                $osmap->changeLevel(-1);
+                $collector->changeLevel(-1);
             }
         }
 
         // Include Category's content
-        self::includeCategoryContent($osmap, $parent, $catid, $params, $itemid, $node);
+        self::includeCategoryContent($collector, $parent, $catid, $params, $itemid, $node);
 
         return true;
     }
@@ -433,7 +433,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
      *
      * @since 2.0
      */
-    public static function includeCategoryContent($osmap, $parent, $catid, &$params, $itemid, $prevnode = null)
+    public static function includeCategoryContent($collector, $parent, $catid, &$params, $itemid, $prevnode = null)
     {
         $db        = OSMap\Factory::getDBO();
         $container = OSMap\Factory::getContainer();
@@ -453,7 +453,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
         }
 
         $maxArtAge = $params->get('max_art_age');
-        if (!empty($maxArtAge) || $osmap->isNews) {
+        if (!empty($maxArtAge) || $collector->isNews) {
             $days    = empty($maxArtAge) ? 2 : $maxArtAge;
             $where[] = "(a.created >= '"
                 . date('Y-m-d H:i:s', time() - $days * 86400) . "' ) ";
@@ -530,7 +530,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
         $items = $db->loadObjectList();
 
         if (count($items) > 0) {
-            $osmap->changeLevel(1);
+            $collector->changeLevel(1);
 
             $paramExpandCategories = $params->get('expand_categories', 1);
             $paramExpandFeatured   = $params->get('expand_featured', 1);
@@ -608,20 +608,20 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                     $node->expandible = (count($node->subnodes) > 0);
                 }
 
-                if ($osmap->printNode($node) && $node->expandible) {
-                    self::printNodes($osmap, $parent, $params, $node->subnodes, $node);
+                if ($collector->printNode($node) && $node->expandible) {
+                    self::printNodes($collector, $parent, $params, $node->subnodes, $node);
                 }
             }
 
-            $osmap->changeLevel(-1);
+            $collector->changeLevel(-1);
         }
 
         return true;
     }
 
-    private static function printNodes($osmap, $parent, &$params, &$subnodes, $item)
+    private static function printNodes($collector, $parent, &$params, &$subnodes, $item)
     {
-        $osmap->changeLevel(1);
+        $collector->changeLevel(1);
 
         $i = 0;
         foreach ($subnodes as $subnode) {
@@ -639,9 +639,12 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                 $subnode->modified = $item->created;
             }
 
-            $osmap->printNode($subnode);
+            $collector->printNode($subnode);
+
+            $subnode = null;
+            unset($subnode);
         }
 
-        $osmap->changeLevel(-1);
+        $collector->changeLevel(-1);
     }
 }
