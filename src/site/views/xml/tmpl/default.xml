@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+    <layout title="COM_OSMAP_SITEMAP_XML_VIEW_DEFAULT_TITLE">
+        <message>
+            <![CDATA[COM_OSMAP_SITEMAP_XML_VIEW_DEFAULT_DESC]]>
+        </message>
+    </layout>
+
+    <fields name="request">
+        <fieldset name="request"
+            addfieldpath="/administrator/components/com_osmap/form/fields">
+
+            <field
+                name="id"
+                type="sitemaps"
+                default=""
+                required="true"
+                label="COM_OSMAP_SELECT_AN_SITEMAP"
+                description="COM_OSMAP_SELECT_A_SITEMAP" />
+        </fieldset>
+    </fields>
+
+    <!-- Add fields to the parameters object for the layout. -->
+    <fields name="params">
+        <!-- Basic options. -->
+        <fieldset name="basic"
+            label="COM_OSMAP_FIELDSET_SITEMAP_SETTINGS_LABEL">
+
+            <field
+                name="add_styling"
+                label="COM_OSMAP_OPTION_ADD_STYLING_LABEL"
+                description="COM_OSMAP_OPTION_ADD_STYLING_DESC"
+                type="list"
+                default="1">
+
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+
+            <field
+                name="debug"
+                label="COM_OSMAP_OPTION_DEBUG_LABEL"
+                description="COM_OSMAP_OPTION_DEBUG_DESC"
+                type="list"
+                default="0">
+
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+
+            <field
+                name="news_publication_name"
+                type="text"
+                label="COM_OSMAP_NEWS_PUBLICATION_NAME_LABEL"
+                description="COM_OSMAP_NEWS_PUBLICATION_NAME_DESC" />
+        </fieldset>
+    </fields>
+</metadata>

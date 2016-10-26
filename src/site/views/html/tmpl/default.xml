@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+    <layout title="COM_OSMAP_SITEMAP_HTML_VIEW_DEFAULT_TITLE">
+        <message>
+            <![CDATA[COM_OSMAP_SITEMAP_HTML_VIEW_DEFAULT_DESC]]>
+        </message>
+    </layout>
+
+    <fields name="request">
+        <fieldset name="request"
+            addfieldpath="/administrator/components/com_osmap/form/fields">
+
+            <field
+                name="id"
+                type="sitemaps"
+                default=""
+                required="true"
+                label="COM_OSMAP_SELECT_AN_SITEMAP"
+                description="COM_OSMAP_SELECT_A_SITEMAP" />
+        </fieldset>
+    </fields>
+
+    <!-- Add fields to the parameters object for the layout. -->
+    <fields name="params">
+        <!-- Basic options. -->
+        <fieldset name="basic"
+            label="COM_OSMAP_FIELDSET_SITEMAP_SETTINGS_LABEL">
+
+            <field
+                name="debug"
+                label="COM_OSMAP_OPTION_DEBUG_LABEL"
+                description="COM_OSMAP_OPTION_DEBUG_DESC"
+                type="list"
+                default="0">
+
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+
+            <field
+                name="use_css"
+                label="COM_OSMAP_OPTION_USE_CSS_LABEL"
+                description="COM_OSMAP_OPTION_USE_CSS_DESC"
+                type="list"
+                default="1">
+
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+
+            <field
+                name="show_menu_titles"
+                label="COM_OSMAP_OPTION_SHOW_MENU_TITLES_LABEL"
+                description="COM_OSMAP_OPTION_SHOW_MENU_TITLES_DESC"
+                type="list"
+                default="1">
+
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+
+            <field
+                name="show_sitemap_description"
+                type="list"
+                default="0"
+                label="COM_OSMAP_SHOW_SITEMAP_DESCRIPTION_LABEL"
+                description="COM_OSMAP_SHOW_SITEMAP_DESCRIPTION_DESC">
+
+                <option value="1">JYES</option>
+                <option value="0">JNO</option>
+            </field>
+
+            <field
+                name="sitemap_description"
+                type="editor"
+                label="COM_OSMAP_SITEMAP_DESCRIPTION_LABEL"
+                description="COM_OSMAP_SITEMAP_DESCRIPTION_DESC"
+                buttons="true"
+                hide="pagebreak,readmore"
+                filter="safehtml" />
+        </fieldset>
+    </fields>
+</metadata>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fields name="filter">
+        <field
+            name="search"
+            type="text"/>
+
+        <field
+            name="published"
+            type="status"
+            onchange="this.form.submit();"
+            filter="0,1,*">
+            <option value="">COM_OSMAP_OPTION_SELECT_PUBLISHED</option>
+        </field>
+
+        <field
+            name="default"
+            type="list"
+            onchange="this.form.submit();">
+            <option value="">COM_OSMAP_OPTION_SELECT_DEFAULT</option>
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+    </fields>
+
+    <fields name="list">
+        <field
+            name="fullordering"
+            type="list"
+            label="COM_OSMAP_LIST_FULL_ORDERING"
+            description="COM_OSMAP_LIST_FULL_ORDERING_DESC"
+            onchange="this.form.submit();"
+            default="sitemap.id DESC">
+            <option value="">JGLOBAL_SORT_BY</option>
+            <option value="sitemap.published ASC">COM_OSMAP_GRID_PUBLISHED_ASC</option>
+            <option value="sitemap.published DESC">COM_OSMAP_GRID_PUBLISHED_DESC</option>
+            <option value="sitemap.default ASC">COM_OSMAP_GRID_DEFAULT_ASC</option>
+            <option value="sitemap.default DESC">COM_OSMAP_GRID_DEFAULT_DESC</option>
+            <option value="sitemap.name ASC">COM_OSMAP_GRID_NAME_ASC</option>
+            <option value="sitemap.name DESC">COM_OSMAP_GRID_NAME_DESC</option>
+        </field>
+
+        <field
+            name="limit"
+            type="limitbox"
+            class="inputbox input-mini"
+            default="25"
+            label="COM_OSMAP_LIST_LIMIT"
+            description="COM_OSMAP_LIST_LIMIT_DESC"
+            onchange="this.form.submit();"/>
+    </fields>
+</form>

@@ -1,0 +1,36 @@
+{
+    "name"             : "joomlashack/osmap",
+    "description"      : "OSMap",
+    "minimum-stability": "stable",
+    "license"          : "GPL-2+",
+    "type"             : "joomla.component",
+    "extra"            : {
+        "element"        : "com_osmap",
+        "element-short"  : "osmap",
+        "name"           : "OSMap",
+        "client"         : "administrator",
+        "package-license": "free",
+        "target-platform": "3.*"
+    },
+    "authors": [
+        {
+            "name" : "Guillermo Vargas",
+            "email": "guille@vargas.co.cr"
+        },
+        {
+            "name" : "Joomlashack.com",
+            "email": "help@joomlashack.com"
+        },
+        {
+            "name" : "Anderson Grudtner Martins",
+            "email": "anderson@ostraining.com"
+        }
+    ],
+    "require": {
+        "php": ">= 5.3",
+        "pimple/pimple": "v3.0.0"
+    },
+    "require-dev": {
+        "codeception/codeception": "~2.0"
+    }
+}

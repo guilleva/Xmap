@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+    <fieldset
+        name="basic"
+        label="COM_OSMAP_FIELDSET_SITEMAP_SETTINGS_LABEL">
+
+        <field
+            name="show_external_links"
+            label="COM_OSMAP_OPTION_SHOW_EXTERNAL_LINKS_LABEL"
+            description="COM_OSMAP_OPTION_SHOW_EXTERNAL_LINKS_DESC"
+            type="list"
+            default="0">
+
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+            <option value="2">COM_OSMAP_OPTION_ONLY_HTML</option>
+        </field>
+
+        <field
+            name="show_item_uid"
+            label="COM_OSMAP_OPTION_SHOW_ITEM_UID_LABEL"
+            description="COM_OSMAP_OPTION_SHOW_ITEM_UID_DESC"
+            type="list"
+            default="0">
+
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+            name="ignore_duplicated_uids"
+            label="COM_OSMAP_OPTION_IGNORE_DUPLICATED_UIDS_LABEL"
+            description="COM_OSMAP_OPTION_IGNORE_DUPLICATED_UIDS_DESC"
+            type="list"
+            default="1">
+
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+    </fieldset>
+
+    <fieldset
+        name="permissions"
+        label="JCONFIG_PERMISSIONS_LABEL"
+        description="JCONFIG_PERMISSIONS_DESC"
+        addfieldpath="/administrator/components/com_osmap/form/fields">
+
+        <field
+            name="rules"
+            type="rules"
+            label="JCONFIG_PERMISSIONS_LABEL"
+            filter="rules"
+            component="com_osmap"
+            section="component">
+
+            <action
+                name="core.admin"
+                title="JACTION_ADMIN"
+                description="JACTION_ADMIN_COMPONENT_DESC" />
+
+            <action
+                name="core.manage"
+                title="JACTION_MANAGE"
+                description="JACTION_MANAGE_COMPONENT_DESC" />
+        </field>
+
+        <field
+            type="customfooter"
+            name="customfooter"
+            media="com_osmap"
+            showgoproad="1"
+            jedurl="http://extensions.joomla.org/extensions/extension/structure-a-navigation/site-map/osmap" />
+    </fieldset>
+</config>

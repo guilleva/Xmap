@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form
+    addfieldpath="/administrator/components/com_osmap/form/fields">
+
+    <fieldset name="main" label="COM_OSMAP_SITEMAP_PAGE_MAIN">
+        <field
+            name="id"
+            type="hidden"
+            class="readonly"
+            label="COM_OSMAP_ID_LABEL"
+            description="COM_OSMAP_ID_DESC"
+            size="10"
+            default="0"
+            readonly="true"/>
+
+        <field
+            name="name"
+            type="text"
+            label="COM_OSMAP_SITEMAP_NAME_LABEL"
+            description="COM_OSMAP_SITEMAP_NAME_DESC"
+            class="input-xxlarge input-large-text required"
+            required="true"/>
+
+        <field
+            name="is_default"
+            type="list"
+            label="COM_OSMAP_SITEMAP_IS_DEFAULT_LABEL"
+            description="COM_OSMAP_SITEMAP_IS_DEFAULT_DESC">
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+            name="published"
+            type="list"
+            default="1"
+            class="chzn-color-state"
+            label="COM_OSMAP_COMMON_PUBLISHED_LABEL">
+            <option value="0">JUNPUBLISHED</option>
+            <option value="1">JPUBLISHED</option>
+        </field>
+    </fieldset>
+
+    <fieldset
+        name="menus"
+        addfieldpath="/administrator/components/com_osmap/form/fields">
+
+        <field
+            id="menus"
+            name="menus"
+            type="osmapmenus"
+            label="COM_OSMAP_SITEMAP_MENUS_LABEL"
+            description="COM_OSMAP_SITEMAP_MENUS_DESC"
+            class="inputbox"
+            labelclass="control-label"
+            multiple="multiple"
+            array="true"
+            size="5" />
+
+        <field
+            name="menus_priority"
+            type="hidden"/>
+
+        <field
+            name="menus_changefreq"
+            type="hidden"/>
+
+        <field
+            name="menus_ordering"
+            type="hidden"/>
+    </fieldset>
+</form>

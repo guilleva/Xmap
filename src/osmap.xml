@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="3.4" method="upgrade">
+    <name>COM_OSMAP</name>
+    <creationDate>October 25, 2016</creationDate>
+    <copyright>Copyright (C) 2016 Open Source Training, LLC. All rights reserved. / Forked from XMap - Guillermo Vargas - guille@vargas.co.cr</copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <author>Joomlashack</author>
+    <authorEmail>help@joomlashack.com</authorEmail>
+    <authorUrl>https://www.joomlashack.com</authorUrl>
+    <version>4.2.0</version>
+    <variant>FREE</variant>
+    <description>COM_OSMAP_DESCRIPTION</description>
+
+    <scriptfile>script.installer.php</scriptfile>
+
+    <install>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/install/mysql/utf8.sql</file>
+        </sql>
+    </install>
+
+    <uninstall>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/uninstall/mysql/utf8.sql</file>
+        </sql>
+    </uninstall>
+
+    <update>
+        <schemas>
+            <schemapath type="mysql">sql/updates/mysql/utf8</schemapath>
+        </schemas>
+    </update>
+
+    <languages folder="site/language">
+         <language tag="en-GB">en-GB/en-GB.com_osmap.ini</language>
+    </languages>
+
+    <files folder="site">
+        <filename>osmap.php</filename>
+        <filename>controller.php</filename>
+        <filename>router.php</filename>
+        <folder>helpers</folder>
+        <folder>views</folder>
+    </files>
+
+    <media destination="com_osmap" folder="media">
+        <folder>css</folder>
+        <folder>js</folder>
+        <folder>images</folder>
+        <folder>fonts</folder>
+    </media>
+
+    <administration>
+        <menu>COM_OSMAP_TITLE</menu>
+
+        <languages folder="admin/language">
+             <language tag="en-GB">en-GB/en-GB.com_osmap.ini</language>
+             <language tag="en-GB">en-GB/en-GB.com_osmap.sys.ini</language>
+        </languages>
+
+        <files folder="admin">
+            <filename>osmap.php</filename>
+            <filename>include.php</filename>
+            <filename>controller.php</filename>
+            <filename>config.xml</filename>
+            <folder>sql</folder>
+            <folder>controllers</folder>
+            <folder>tables</folder>
+            <folder>views</folder>
+            <folder>models</folder>
+            <folder>library</folder>
+            <folder>form</folder>
+            <folder>helpers</folder>
+        </files>
+    </administration>
+
+    <updateservers>
+        <server type="extension" priority="1" name="OSMap">https://deploy.ostraining.com/client/update/free/stable/com_osmap</server>
+    </updateservers>
+
+    <alledia>
+        <element>osmap</element>
+        <namespace>OSMap</namespace>
+        <license>free</license>
+        <targetplatform>3.*</targetplatform>
+        <relatedExtensions>
+            <extension
+                type="library"
+                element="allediaframework">AllediaFramework</extension>
+
+            <extension
+                type="plugin"
+                group="system"
+                element="ossystem"
+                publish="true"
+                ordering="first">OSSystem</extension>
+
+            <extension
+                type="plugin"
+                group="osmap"
+                publish="true"
+                element="joomla"
+                uninstall="true">plg_osmap_joomla</extension>
+        </relatedExtensions>
+
+        <include>AllediaFreeDefaultFiles</include>
+
+        <obsolete>
+            <extension
+                type="plugin"
+                group="osmap"
+                element="com_content">plg_osmap_com_content</extension>
+
+            <extension
+                type="plugin"
+                group="xmap"
+                element="com_content">plg_xmap_com_content</extension>
+
+            <file>administrator/components/com_osmap/helpers/html/grid.php</file>
+            <file>administrator/components/com_osmap/helpers/osmap.php</file>
+            <folder>administrator/components/com_osmap/models/forms</folder>
+            <folder>administrator/components/com_osmap/models/fields</folder>
+            <folder>administrator/components/com_osmap/library/Free</folder>
+            <file>administrator/components/com_osmap/views/sitemap/tmpl/edit_legacy.php</file>
+            <file>administrator/components/com_osmap/views/sitemap/tmpl/edit.php</file>
+            <file>administrator/components/com_osmap/views/sitemap/tmpl/navigator_class.php</file>
+            <file>administrator/components/com_osmap/views/sitemap/tmpl/navigator_links.php</file>
+            <file>administrator/components/com_osmap/views/sitemap/tmpl/navigator.php</file>
+            <file>administrator/components/com_osmap/views/sitemaps/tmpl/default_legacy.php</file>
+            <file>administrator/components/com_osmap/views/sitemaps/tmpl/form.php</file>
+            <file>components/com_osmap/views/html/tmpl/default_class.php</file>
+            <file>components/com_osmap/views/xml/tmpl/default_class.php</file>
+            <file>components/com_osmap/views/xml/tmpl/default_xsl.php</file>
+        </obsolete>
+    </alledia>
+</extension>
