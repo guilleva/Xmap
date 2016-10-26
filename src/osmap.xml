@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="3.4" method="upgrade">
     <name>COM_OSMAP</name>
-    <creationDate>August 18 2016</creationDate>
+    <creationDate>October 25, 2016</creationDate>
     <copyright>Copyright (C) 2016 Open Source Training, LLC. All rights reserved. / Forked from XMap - Guillermo Vargas - guille@vargas.co.cr</copyright>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-    <author>Alledia</author>
-    <authorEmail>support@alledia.com</authorEmail>
-    <authorUrl>https://www.alledia.com</authorUrl>
-    <version>4.1.4</version>
+    <author>Joomlashack</author>
+    <authorEmail>help@joomlashack.com</authorEmail>
+    <authorUrl>https://www.joomlashack.com</authorUrl>
+    <version>4.2.0</version>
     <variant>FREE</variant>
     <description>COM_OSMAP_DESCRIPTION</description>
 
