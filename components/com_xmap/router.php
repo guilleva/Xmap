@@ -13,7 +13,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  * @subpackage    com_xmap
  * @since 2.0
  */
-class XmapRoute
+class XmapRouter
 {
 
     /**
