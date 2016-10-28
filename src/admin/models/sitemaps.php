@@ -90,7 +90,6 @@ class OSMapModelSitemaps extends JModelList
                 ->where('published = 1')
                 ->where('(
                     link LIKE ' . $db->quote('index.php?option=com_osmap&view=xml&id=' . $item->id)
-                    . ' OR link LIKE ' . $db->quote('index.php?option=com_osmap&view=xml&id=' . $item->id . '&format=xml')
                     . ' OR link LIKE ' . $db->quote('index.php?option=com_osmap&view=html&id=' . $item->id) . ')');
             $menus = $db->setQuery($query)->loadObjectList();
 

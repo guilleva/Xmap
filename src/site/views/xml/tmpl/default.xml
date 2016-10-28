@@ -17,11 +17,6 @@
                 required="true"
                 label="COM_OSMAP_SELECT_AN_SITEMAP"
                 description="COM_OSMAP_SELECT_A_SITEMAP" />
-
-            <field
-                name="format"
-                type="hidden"
-                default="xml" />
         </fieldset>
     </fields>
 
