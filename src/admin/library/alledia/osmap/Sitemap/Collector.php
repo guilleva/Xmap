@@ -102,9 +102,9 @@ class Collector
     protected $currentMenu;
 
     /**
-     * The reference for the ID of the current menu item for nodes
+     * The ID of the current menu item for nodes
      *
-     * @var object
+     * @var int
      */
     protected $currentMenuItemId;
 
@@ -225,6 +225,17 @@ class Collector
     public function submitItemToCallback(&$item, $callback, $prepareItem = false)
     {
         $currentMenuItemId = $this->getCurrentMenuItemId();
+
+        // Add the menu information, specially used when caching
+        if (is_array($item)) {
+            $item['menuItemId']   = $this->currentMenu->id;
+            $item['menuItemName'] = $this->currentMenu->name;
+            $item['menuItemType'] = $this->currentMenu->menutype;
+        } else {
+            $item->menuItemId   = $this->currentMenu->id;
+            $item->menuItemName = $this->currentMenu->name;
+            $item->menuItemType = $this->currentMenu->menutype;
+        }
 
         // Converts to an Item instance, setting internal attributes
         $item = new Item($item, $currentMenuItemId);

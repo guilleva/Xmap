@@ -170,6 +170,21 @@ class Item extends \JObject
     public $visibleForHTML = true;
 
     /**
+     * @var int
+     */
+    public $menuItemId = 0;
+
+    /**
+     * @var string
+     */
+    public $menuItemName;
+
+    /**
+     * @var string
+     */
+    public $menuItemType;
+
+    /**
      * The constructor
      *
      * @param Array  $itemData
