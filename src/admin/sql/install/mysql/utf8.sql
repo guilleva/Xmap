@@ -43,5 +43,6 @@ CREATE TABLE IF NOT EXISTS `#__osmap_items_settings` (
   `published` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
   `changefreq` ENUM('always','hourly','daily','weekly','monthly','yearly','never') NOT NULL DEFAULT 'weekly',
   `priority` FLOAT NOT NULL DEFAULT '0.5',
+  `format` TINYINT(1) UNSIGNED DEFAULT '2' COMMENT='Format of the setting: 1) Legacy Mode - UID Only; 2) Based on menu ID and UID',
   PRIMARY KEY (`sitemap_id`,`uid`,`settings_hash`))
 ENGINE=INNODB DEFAULT CHARSET=utf8;

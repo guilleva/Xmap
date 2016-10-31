@@ -59,11 +59,12 @@ class OSMapControllerSitemapItems extends OSMap\Controller\Form
                         array(
                             'sitemap_id'    => $sitemapId,
                             'uid'           => $data['uid'],
-                            'settings_hash' => $data['settings_hash'],
+                            'settings_hash' => $data['settings_hash']
                         )
                     );
 
                     $data['sitemap_id'] = $sitemapId;
+                    $data['format']     = '2';
 
                     $row->save($data);
                 }

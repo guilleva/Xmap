@@ -30,3 +30,7 @@ INSERT INTO `#__osmap_sitemap_menus_new` SELECT * FROM `#__osmap_sitemap_menus`;
 DROP TABLE `#__osmap_sitemap_menus`;
 
 RENAME TABLE `#__osmap_sitemap_menus_new` TO `#__osmap_sitemap_menus`;
+
+-- ============================================================================
+-- Add the column "format" to the item settings table
+ALTER TABLE `#__osmap_items_settings` ADD `format` TINYINT(1) UNSIGNED DEFAULT NULL COMMENT 'Format of the setting: 1) Legacy Mode - UID Only; 2) Based on menu ID and UID';

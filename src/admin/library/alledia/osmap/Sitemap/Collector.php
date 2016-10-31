@@ -65,11 +65,18 @@ class Collector
     protected $counter = 0;
 
     /**
-     * The items with custom settings
+     * The custom settings for items
      *
      * @var array
      */
     protected $itemsSettings;
+
+    /**
+     * The legacy custom settings for items. Which will be upgraded
+     *
+     * @var array
+     */
+    protected $legacyItemsSettings;
 
     /**
      * If false, say that any next sub-level should be unpublished
@@ -151,6 +158,9 @@ class Collector
         $this->counter = 0;
 
         if (!empty($menus)) {
+            // Get the legacy settings to upgrade them
+            $this->getLegacyItemsSettings();
+
             // Get the custom settings from db for the items
             $this->getItemsSettings();
 
@@ -287,7 +297,7 @@ class Collector
      */
     protected function getSitemapMenus()
     {
-        $db = OSMap\Factory::getContainer()->db;
+        $db = OSMap\Factory::getDbo();
 
         $query = $db->getQuery(true)
             ->select(
@@ -562,7 +572,7 @@ class Collector
     protected function getItemsSettings()
     {
         if (empty($this->itemsSettings)) {
-            $db = OSMap\Factory::getContainer()->db;
+            $db = OSMap\Factory::getDbo();
 
             $query = $db->getQuery(true)
                 ->select(
@@ -572,7 +582,8 @@ class Collector
                     )
                 )
                 ->from('#__osmap_items_settings')
-                ->where('sitemap_id = ' . $db->quote($this->sitemap->id));
+                ->where('sitemap_id = ' . $db->quote($this->sitemap->id))
+                ->where($db->quoteName('format') . ' = 2');
 
             $this->itemsSettings = $db->setQuery($query)->loadAssocList('key');
         }
@@ -597,6 +608,45 @@ class Collector
     }
 
     /**
+     * This method gets the legacy settings for all items to be loaded avoiding
+     * lost the custom settings for items after the migration to v4.2.1.
+     *
+     * @return array
+     */
+    protected function getLegacyItemsSettings()
+    {
+        if (!isset($this->legacyItemsSettings)) {
+            $db = OSMap\Factory::getDbo();
+
+            $query = $db->getQuery(true)
+                ->select('*')
+                ->from('#__osmap_items_settings')
+                ->where('sitemap_id = ' . $db->quote($this->sitemap->id))
+                ->where($db->quoteName('format') . ' IS NULL');
+
+            $this->legacyItemsSettings = $db->setQuery($query)->loadAssocList('uid');
+        }
+
+        return $this->legacyItemsSettings;
+    }
+
+    /**
+     * Returns the settings based on the UID only. Used when we have legacy
+     * settings on the database.
+     *
+     * @param string $uid
+     * @return mix
+     */
+    protected function getLegacyItemCustomSettings($uid)
+    {
+        if (isset($this->legacyItemsSettings[$uid])) {
+            return $this->legacyItemsSettings[$uid];
+        }
+
+        return false;
+    }
+
+    /**
      * Sets the item's custom settings if exists. If no custom settings are
      * found and is a menu item, use the menu's settings. If is s subitem
      * (from plugins), we consider it already set the respective settings. But
@@ -612,9 +662,9 @@ class Collector
         $settings = $this->getItemCustomSettings($key);
 
         // Check if there is a custom settings for all links with that UID (happens right after a migration from
-        // versions before 4.0.0)
+        // versions before 4.0.0 or before 4.2.1)
         if ($settings === false) {
-            $settings = $this->getItemCustomSettings($item->uid);
+            $settings = $this->getLegacyItemCustomSettings($item->uid);
         }
 
         if ($settings === false) {
