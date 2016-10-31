@@ -228,13 +228,13 @@ class Collector
 
         // Add the menu information, specially used when caching
         if (is_array($item)) {
-            $item['menuItemId']   = $this->currentMenu->id;
-            $item['menuItemName'] = $this->currentMenu->name;
-            $item['menuItemType'] = $this->currentMenu->menutype;
+            $item['menuItemId']    = $this->currentMenu->id;
+            $item['menuItemTitle'] = $this->currentMenu->name;
+            $item['menuItemType']  = $this->currentMenu->menutype;
         } else {
-            $item->menuItemId   = $this->currentMenu->id;
-            $item->menuItemName = $this->currentMenu->name;
-            $item->menuItemType = $this->currentMenu->menutype;
+            $item->menuItemId    = $this->currentMenu->id;
+            $item->menuItemTitle = $this->currentMenu->name;
+            $item->menuItemType  = $this->currentMenu->menutype;
         }
 
         // Converts to an Item instance, setting internal attributes

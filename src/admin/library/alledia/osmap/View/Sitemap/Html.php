@@ -127,10 +127,10 @@ class Html extends OSMap\View\Base
     public function openMenu($node, $cssClass = '')
     {
         if ($this->showMenuTitles) {
-            echo '<h2>' . $node->menu->name;
+            echo '<h2>' . $node->menuItemTitle;
 
             if ($this->debug) {
-                echo '<div><span>' . \JText::_('COM_OSMAP_MENUTYPE') . ':</span>&nbsp;' . $node->menu->id . ': ' . $node->menu->menutype . '</div>';
+                echo '<div><span>' . \JText::_('COM_OSMAP_MENUTYPE') . ':</span>&nbsp;' . $node->menuItemId . ': ' . $node->menuItemType . '</div>';
             }
 
             echo '</h2>';
@@ -259,7 +259,7 @@ class Html extends OSMap\View\Base
 
         $this->count++;
 
-        if ($this->lastMenuId !== $node->menu->id) {
+        if ($this->lastMenuId !== $node->menuItemId) {
             // Make sure we need to close the last menu
             if ($this->lastMenuId > 0) {
                 $this->closeLevels($this->lastLevel);
@@ -285,7 +285,7 @@ class Html extends OSMap\View\Base
         $this->printItem($node, $this->count);
 
         $this->lastLevel  = $node->level;
-        $this->lastMenuId = $node->menu->id;
+        $this->lastMenuId = $node->menuItemId;
 
         return true;
     }
