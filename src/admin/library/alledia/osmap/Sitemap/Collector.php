@@ -436,19 +436,21 @@ class Collector
      */
     protected function checkDuplicatedURLToIgnore($item)
     {
-        // We need to make sure to have an URL free of hash chars
-        $hash = md5($item->fullLink);
+        if (!empty($item->fullLink)) {
+            // We need to make sure to have an URL free of hash chars
+            $hash = md5($item->fullLink);
 
-        if (isset($this->urlHashList[$hash])) {
-            $item->duplicate = true;
-            $item->addAdminNote('COM_OSMAP_ADMIN_NOTE_DUPLICATED_URL_IGNORED');
+            if (isset($this->urlHashList[$hash])) {
+                $item->duplicate = true;
+                $item->addAdminNote('COM_OSMAP_ADMIN_NOTE_DUPLICATED_URL_IGNORED');
 
-            return true;
-        }
+                return true;
+            }
 
-        // Not set and published, so let's register
-        if ($item->published && $item->visibleForRobots && !$item->ignore) {
-            $this->urlHashList[$hash] = 1;
+            // Not set and published, so let's register
+            if ($item->published && $item->visibleForRobots && !$item->ignore) {
+                $this->urlHashList[$hash] = 1;
+            }
         }
 
         return false;
