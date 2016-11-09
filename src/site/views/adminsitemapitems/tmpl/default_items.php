@@ -94,13 +94,13 @@ $printNodeCallback = function ($item) {
                 </span>
             <?php endif; ?>
 
-            <?php if (!empty($item->fullLink) && $item->fullLink !== '#' && $item->link !== '#') : ?>
+            <?php if (!empty($item->rawLink) && $item->rawLink !== '#' && $item->link !== '#') : ?>
                 <a
-                    href="<?php echo $item->fullLink; ?>"
+                    href="<?php echo $item->rawLink; ?>"
                     target="_blank"
                     class="hasTooltip"
                     title="<?php echo $item->link; ?>">
-                    <?php echo $item->fullLink; ?>
+                    <?php echo $item->rawLink; ?>
                 </a>
                 <span class="icon-new-tab"></span>
             <?php else : ?>

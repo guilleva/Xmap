@@ -275,19 +275,6 @@ class Collector
             && $item->visibleForRobots
             && (!$item->duplicate || ($item->duplicate && !$this->params->get('ignore_duplicated_uids', 1)))
             ) {
-
-            // Check if the URL has a hash to remove it (XML sitemap shouldn't have hash on the URL)
-            $hashPos = strpos($item->fullLink, '#');
-            if ($hashPos !== false) {
-                // Remove the hash
-                $item->fullLink = substr($item->fullLink, 0, $hashPos);
-
-                // If empty, doens't display on the XML sitemap
-                if (empty($item->fullLink)) {
-                    $item->visibleForXML = false;
-                }
-            }
-
             ++$this->counter;
         }
 

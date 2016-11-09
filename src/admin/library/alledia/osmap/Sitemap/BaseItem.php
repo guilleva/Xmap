@@ -29,14 +29,25 @@ class BaseItem extends \JObject
     public $uid;
 
     /**
+     * Item's link, which can be relative or un-routed
+     *
      * @var string
      */
     public $link;
 
     /**
+     * Routed full link, sanitized and without any hash segment
+     *
      * @var string
      */
     public $fullLink;
+
+    /**
+     * Routed fulll link, sanitized but can contains a hash segment
+     *
+     * @var string
+     */
+    public $rawLink;
 
     /**
      * @var \JRegistry

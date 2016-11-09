@@ -178,6 +178,7 @@ class Html extends OSMap\View\Base
         echo '<div><span>#:</span>&nbsp;' . $count . '</div>';
         echo '<div><span>' . \JText::_('COM_OSMAP_UID') . ':</span>&nbsp;' . $node->uid . '</div>';
         echo '<div><span>' . \JText::_('COM_OSMAP_FULL_LINK') . ':</span>&nbsp;' . htmlspecialchars($node->fullLink) . '</div>';
+        echo '<div><span>' . \JText::_('COM_OSMAP_RAW_LINK') . ':</span>&nbsp;' . htmlspecialchars($node->rawLink) . '</div>';
         echo '<div><span>' . \JText::_('COM_OSMAP_LINK') . ':</span>&nbsp;' . htmlspecialchars($node->link) . '</div>';
         echo '<div><span>' . \JText::_('COM_OSMAP_MODIFIED') . ':</span>&nbsp;' . htmlspecialchars($node->modified) . '</div>';
         echo '<div><span>' . \JText::_('COM_OSMAP_LEVEL') . ':</span>&nbsp;' . $node->level . '</div>';
@@ -208,13 +209,13 @@ class Html extends OSMap\View\Base
         echo "<li class=\"{$liClass}\">";
 
         // Some items are just separator, without a link. Do not print as link then
-        if (trim($node->fullLink) === '') {
+        if (trim($node->rawLink) === '') {
             $type = isset($node->type) ? $node->type : 'separator';
             echo '<span class="osmap-item-' . $type . '">';
             echo htmlspecialchars($node->name);
             echo '</span>';
         } else {
-            echo '<a href="' . $node->fullLink . '" target="_self" class="osmap-link">';
+            echo '<a href="' . $node->rawLink . '" target="_self" class="osmap-link">';
             echo htmlspecialchars($node->name);
             echo '</a>';
         }

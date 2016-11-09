@@ -174,4 +174,24 @@ abstract class Router
 
         return $url;
     }
+
+    /**
+     * Returns an URL without the hash
+     *
+     * @return string
+     */
+    public static function removeHashFromURL($url)
+    {
+        // Check if the URL has a hash to remove it (XML sitemap shouldn't have hash on the URL)
+        $hashPos = strpos($url, '#');
+
+        if ($hashPos !== false) {
+            // Remove the hash
+            $url = substr($url, 0, $hashPos);
+        }
+
+        $url = trim($url);
+
+        return $url;
+    }
 }

@@ -49,6 +49,11 @@ class Item extends BaseItem
             $this->sanitizeFullLink();
         }
 
+        $this->rawLink = $this->fullLink;
+
+        // Removes the hash segment from the Full link, if exists
+        $this->fullLink = OSMap\Router::removeHashFromURL($this->fullLink);
+
         // Make sure to have a unique hash for the settings
         $this->settingsHash = md5($this->fullLink . $currentMenuItemId);
 
@@ -276,6 +281,14 @@ class Item extends BaseItem
         // If is an URL, but external, return the external URL. If internal,
         // follow with the routing
         if ($this->type === 'url') {
+            // Check if it is a single Hash char, the user doesn't want to point to any URL
+            if ($this->link === '#' || empty(trim($this->link))) {
+                $this->fullLink = '';
+                $this->visibleForXML = false;
+
+                return;
+            }
+
             // Check if it is a relative URI
             if (OSMap\Router::isRelativeUri($this->link)) {
                 $this->fullLink = OSMap\Router::sanitizeURL(
