@@ -30,6 +30,11 @@ class Collector
     protected $uidList = array();
 
     /**
+     * @var array
+     */
+    protected $urlHashList = array();
+
+    /**
      * Callback used to trigger the desired action while fetching items.
      * This is only used in the legacy method printNode, which is called by
      * the osmap plugins to process the additional items.
@@ -266,7 +271,6 @@ class Collector
 
         $this->setItemCustomSettings($item);
         $this->checkParentIsUnpublished($item);
-
         $this->checkDuplicatedUIDToIgnore($item);
 
         // Verify if the item can be displayed to count as unique for the XML sitemap
@@ -275,7 +279,12 @@ class Collector
             && $item->visibleForRobots
             && (!$item->duplicate || ($item->duplicate && !$this->params->get('ignore_duplicated_uids', 1)))
             ) {
-            ++$this->counter;
+            // Check if the URL is not duplicated (specially for the XML sitemap)
+            $this->checkDuplicatedURLToIgnore($item);
+
+            if (!$item->duplicate || ($item->duplicate && !$this->params->get('ignore_duplicated_uids', 1))) {
+                ++$this->counter;
+            }
         }
 
         // Call the given callback function
@@ -398,7 +407,7 @@ class Collector
     {
         // If is already set, interrupt the flux and ignore the item
         if (isset($this->uidList[$item->uid])) {
-            $item->set('duplicate', true);
+            $item->duplicate = true;
 
             if ($this->params->get('ignore_duplicated_uids', 1)) {
                 $item->addAdminNote('COM_OSMAP_ADMIN_NOTE_DUPLICATED_IGNORED');
@@ -412,6 +421,34 @@ class Collector
         // Not set and published, so let's register
         if ($item->published && $item->visibleForRobots && !$item->ignore) {
             $this->uidList[$item->uid] = 1;
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if the item's full link was already registered. If positive,
+     * set the item to be ignored and return true. If negative, register the item and return false
+     *
+     * @param object $item
+     *
+     * @return bool
+     */
+    protected function checkDuplicatedURLToIgnore($item)
+    {
+        // We need to make sure to have an URL free of hash chars
+        $hash = md5($item->fullLink);
+
+        if (isset($this->urlHashList[$hash])) {
+            $item->duplicate = true;
+            $item->addAdminNote('COM_OSMAP_ADMIN_NOTE_DUPLICATED_URL_IGNORED');
+
+            return true;
+        }
+
+        // Not set and published, so let's register
+        if ($item->published && $item->visibleForRobots && !$item->ignore) {
+            $this->urlHashList[$hash] = 1;
         }
 
         return false;
