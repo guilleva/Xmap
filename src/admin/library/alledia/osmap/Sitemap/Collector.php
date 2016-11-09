@@ -704,6 +704,14 @@ class Collector
         // versions before 4.0.0 or before 4.2.1)
         if ($settings === false) {
             $settings = $this->getLegacyItemCustomSettings($item->uid);
+
+            // The Joomla plugin changed the UID from joomla.archive => joomla.archive.[id] and joomla.featured => joomla.featured[id]
+            // So we need to try getting the settings from the old UID
+            if ($settings === false) {
+                if (preg_match('/^joomla.(archive|featured)/', $item->uid, $matches)) {
+                    $settings = $this->getLegacyItemCustomSettings('joomla.' . $matches[1]);
+                }
+            }
         }
 
         if ($settings === false) {

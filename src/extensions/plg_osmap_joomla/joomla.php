@@ -82,20 +82,20 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
 
         parse_str(html_entity_decode($linkQuery['query']), $linkVars);
 
-        $view   = JArrayHelper::getValue($linkVars, 'view', '');
-        $id     = JArrayHelper::getValue($linkVars, 'id', 0);
+        $view = JArrayHelper::getValue($linkVars, 'view', '');
+        $id   = JArrayHelper::getValue($linkVars, 'id', 0);
 
         switch ($view) {
             case 'archive':
                 $node->adapterName = 'JoomlaCategory';
-                $node->uid         = 'joomla.archive';
+                $node->uid         = 'joomla.archive.' . $node->id;
                 $node->expandible  = true;
 
                 break;
 
             case 'featured':
                 $node->adapterName = 'JoomlaCategory';
-                $node->uid         = 'joomla.featured';
+                $node->uid         = 'joomla.featured.' . $node->id;
                 $node->expandible  = true;
 
                 break;
