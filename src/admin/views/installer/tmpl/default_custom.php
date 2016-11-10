@@ -4,7 +4,7 @@
  * @copyright 2007-2014 XMap - Joomla! Vargas. All rights reserved.
  * @copyright 2016 Open Source Training, LLC. All rights reserved..
  * @author    Guillermo Vargas <guille@vargas.co.cr>
- * @author    Alledia <help@joomlashack.com>
+ * @author    Joomlashack <help@joomlashack.com>
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  *
  * This file is part of OSMap.
@@ -26,7 +26,7 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-$app  = JFactory::getApplication();
+$app = JFactory::getApplication();
 $link = '<a href="index.php?option=com_plugins&view=plugins&filter.search=OSMap">' . JText::_('COM_OSMAP_INSTALLER_PLUGINS_PAGE') . '</a>';
 $app->enqueueMessage(JText::sprintf('COM_OSMAP_INSTALLER_GOTOPLUGINS', $link), 'warning');
 ?>
