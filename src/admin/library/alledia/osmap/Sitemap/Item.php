@@ -281,8 +281,9 @@ class Item extends BaseItem
         // If is an URL, but external, return the external URL. If internal,
         // follow with the routing
         if ($this->type === 'url') {
+            $this->link = trim($this->link);
             // Check if it is a single Hash char, the user doesn't want to point to any URL
-            if ($this->link === '#' || empty(trim($this->link))) {
+            if ($this->link === '#' || empty($this->link)) {
                 $this->fullLink = '';
                 $this->visibleForXML = false;
 
