@@ -24,6 +24,10 @@ defined('_JEXEC') or die();
     <?php if ($this->shouldCloseMenu) : ?>
         <?php $this->closeMenu(); ?>
     <?php endif; ?>
+
+    <?php if ($this->count > 0) : ?>
+        </li>
+    <?php endif; ?>
 </div>
 
 <?php // Make sure we close the stack of levels ?>

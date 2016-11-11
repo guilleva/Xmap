@@ -39,11 +39,6 @@ class Html extends OSMap\View\Base
     /**
      * @var int
      */
-    protected $count = 0;
-
-    /**
-     * @var int
-     */
     protected $showExternalLinks = 0;
 
     /**
@@ -55,6 +50,11 @@ class Html extends OSMap\View\Base
      * @var bool
      */
     protected $shouldCloseMenu = false;
+
+    /**
+     * @var int
+     */
+    public $count = 0;
 
     /**
      * The constructor
@@ -111,7 +111,7 @@ class Html extends OSMap\View\Base
     {
         if ($offset > 0) {
             for ($i = 0; $i < $offset; $i++) {
-                echo '</ul></li>';
+                echo '</ul>';
             }
         }
     }
@@ -161,7 +161,7 @@ class Html extends OSMap\View\Base
      */
     public function openSubLevel($node)
     {
-        echo '<li><ul class="level_' . $node->level . '">';
+        echo '<ul class="level_' . $node->level . '">';
     }
 
     /**
@@ -206,6 +206,10 @@ class Html extends OSMap\View\Base
         $liClass = $this->debug ? 'osmap-debug-item' : '';
         $liClass .= $count % 2 == 0 ? ' even' : '';
 
+        if ($count > 0) {
+            echo '</li>';
+        }
+
         echo "<li class=\"{$liClass}\">";
 
         // Some items are just separator, without a link. Do not print as link then
@@ -224,8 +228,6 @@ class Html extends OSMap\View\Base
         if ($this->debug) {
             $this->printDebugInfo($node, $count);
         }
-
-        echo '</li>';
     }
 
     /**
