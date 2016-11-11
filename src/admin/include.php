@@ -63,5 +63,5 @@ if (!defined('OSMAP_LOADED')) {
         // In this case, it's just the one category from our extension, still
         // we need to put it inside an array
         array('com_osmap')
-   );
+    );
 }
