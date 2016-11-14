@@ -216,11 +216,11 @@ class Html extends OSMap\View\Base
         if (trim($node->rawLink) === '') {
             $type = isset($node->type) ? $node->type : 'separator';
             echo '<span class="osmap-item-' . $type . '">';
-            echo htmlspecialchars($node->name);
+            echo htmlspecialchars($node->name, ENT_HTML5);
             echo '</span>';
         } else {
             echo '<a href="' . $node->rawLink . '" target="_self" class="osmap-link">';
-            echo htmlspecialchars($node->name);
+            echo htmlspecialchars($node->name, ENT_HTML5);
             echo '</a>';
         }
 
