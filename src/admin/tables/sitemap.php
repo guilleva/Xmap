@@ -9,6 +9,7 @@
 
 use Alledia\OSMap;
 use Joomla\Registry\Registry;
+use Joomla\Utilities\ArrayHelper;
 
 defined('_JEXEC') or die();
 
@@ -226,7 +227,7 @@ class OSMapTableSitemap extends JTable
         $k = $this->_tbl_key;
 
         // Sanitize input.
-        JArrayHelper::toInteger($pks);
+        ArrayHelper::toInteger($pks);
         $userId = (int) $userId;
         $state  = (int) $state;
 
