@@ -134,7 +134,7 @@ class Collector
     public function __construct($sitemap)
     {
         $this->sitemap = $sitemap;
-        $this->params = \JComponentHelper::getParams('com_osmap');
+        $this->params  = \JComponentHelper::getParams('com_osmap');
 
         /*
          * Try to detect the current view. This is just for backward compatibility
@@ -161,8 +161,8 @@ class Collector
     public function fetch($callback)
     {
         $menus = $this->getSitemapMenus();
-        $this->counter = 0;
 
+        $this->counter = 0;
         if (!empty($menus)) {
             // Get the legacy settings to upgrade them
             $this->getLegacyItemsSettings();
@@ -279,7 +279,7 @@ class Collector
             && $item->published
             && $item->visibleForRobots
             && (!$item->duplicate || ($item->duplicate && !$this->params->get('ignore_duplicated_uids', 1)))
-            ) {
+        ) {
             // Check if the URL is not duplicated (specially for the XML sitemap)
             $this->checkDuplicatedURLToIgnore($item);
 
@@ -304,6 +304,7 @@ class Collector
      *  - ordering
      *
      * @return array;
+     * @throws \Exception
      */
     protected function getSitemapMenus()
     {
@@ -636,7 +637,7 @@ class Collector
      *
      * @param string $key
      *
-     * @return mix
+     * @return array[]|false
      */
     public function getItemCustomSettings($key)
     {
@@ -675,7 +676,8 @@ class Collector
      * settings on the database.
      *
      * @param string $uid
-     * @return mix
+     *
+     * @return array[]|false
      */
     protected function getLegacyItemCustomSettings($uid)
     {
@@ -698,7 +700,7 @@ class Collector
         // Check if the menu item has custom settings. If not, use the values from the menu
         // Check if there is a custom settings specific for this URL. Sometimes the same page has different URLs.
         // We can have different settings for items with the same UID, but different URLs
-        $key = $item->uid . ':' . $item->settingsHash;
+        $key      = $item->uid . ':' . $item->settingsHash;
         $settings = $this->getItemCustomSettings($key);
 
         // Check if there is a custom settings for all links with that UID (happens right after a migration from
@@ -706,7 +708,8 @@ class Collector
         if ($settings === false) {
             $settings = $this->getLegacyItemCustomSettings($item->uid);
 
-            // The Joomla plugin changed the UID from joomla.archive => joomla.archive.[id] and joomla.featured => joomla.featured[id]
+            // The Joomla plugin changed the UID
+            // from joomla.archive => joomla.archive.[id] and joomla.featured => joomla.featured[id]
             // So we need to try getting the settings from the old UID
             if ($settings === false) {
                 if (preg_match('/^joomla.(archive|featured)/', $item->uid, $matches)) {
@@ -756,7 +759,7 @@ class Collector
         if ($item->published
             && !$item->ignore
             && (!$item->duplicate || ($item->duplicate && !$this->params->get('ignore_duplicated_uids', 1)))
-            ) {
+        ) {
             $this->unpublishLevel = false;
         }
     }
