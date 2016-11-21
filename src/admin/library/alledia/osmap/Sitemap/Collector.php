@@ -11,6 +11,7 @@ namespace Alledia\OSMap\Sitemap;
 
 use Alledia\OSMap;
 use Alledia\Framework;
+use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die();
 
@@ -123,7 +124,7 @@ class Collector
     /**
      * The component's params
      *
-     * @var \JRegistry
+     * @var Registry
      */
     protected $params;
 

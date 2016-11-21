@@ -8,6 +8,7 @@
  */
 
 use Alledia\OSMap;
+use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die();
 
@@ -92,13 +93,13 @@ class OSMapTableSitemap extends JTable
     public function bind($array, $ignore = '')
     {
         if (isset($array['params']) && is_array($array['params'])) {
-            $registry = new JRegistry();
+            $registry = new Registry();
             $registry->loadArray($array['params']);
             $array['params'] = $registry->toString();
         }
 
         if (isset($array['metadata']) && is_array($array['metadata'])) {
-            $registry = new JRegistry();
+            $registry = new Registry();
             $registry->loadArray($array['metadata']);
             $array['metadata'] = $registry->toString();
         }

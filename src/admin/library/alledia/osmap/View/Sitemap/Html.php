@@ -10,6 +10,7 @@
 namespace Alledia\OSMap\View\Sitemap;
 
 use Alledia\OSMap;
+use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die();
 
@@ -17,7 +18,7 @@ defined('_JEXEC') or die();
 class Html extends OSMap\View\Base
 {
     /**
-     * @var \JRegistry
+     * @var Registry
      */
     protected $params;
 

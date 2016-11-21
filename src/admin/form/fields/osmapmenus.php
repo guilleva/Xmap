@@ -8,6 +8,7 @@
  */
 
 use Alledia\OSMap;
+use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die();
 
@@ -112,7 +113,7 @@ class JFormFieldOSMapMenus extends JFormFieldList
         $value = $this->value;
         if (!is_array($value)) {
             // Convert the selections field to an array.
-            $registry = new JRegistry;
+            $registry = new Registry();
             $registry->loadString($value);
             $value = $registry->toArray();
         }

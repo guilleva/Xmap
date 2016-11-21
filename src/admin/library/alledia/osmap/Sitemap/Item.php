@@ -10,6 +10,7 @@
 namespace Alledia\OSMap\Sitemap;
 
 use Alledia\OSMap;
+use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die();
 
@@ -21,8 +22,8 @@ class Item extends BaseItem
     /**
      * The constructor
      *
-     * @param Array  $itemData
-     * @param id     $currentMenuItemId
+     * @param array $itemData
+     * @param int   $currentMenuItemId
      *
      * @return void
      */
@@ -30,9 +31,9 @@ class Item extends BaseItem
     {
         $this->setProperties($itemData);
 
-        $this->published  = (bool) $this->published;
-        $this->isMenuItem = (bool) $this->isMenuItem;
-        $this->params     = new \JRegistry($this->params);
+        $this->published  = (bool)$this->published;
+        $this->isMenuItem = (bool)$this->isMenuItem;
+        $this->params     = new Registry($this->params);
 
         $itemData = null;
 
@@ -140,7 +141,7 @@ class Item extends BaseItem
 
         if (!OSMap\Helper\General::isEmptyDate($this->modified)) {
             if (!is_numeric($this->modified)) {
-                $date =  new \JDate($this->modified);
+                $date           = new \JDate($this->modified);
                 $this->modified = $date->toUnix();
             }
 
@@ -149,7 +150,7 @@ class Item extends BaseItem
                 if ($this->modified < 0) {
                     $this->modified = null;
                 } else {
-                    $date = new \JDate($this->modified);
+                    $date           = new \JDate($this->modified);
                     $this->modified = $date->toISO8601();
                 }
             }
@@ -284,7 +285,7 @@ class Item extends BaseItem
             $this->link = trim($this->link);
             // Check if it is a single Hash char, the user doesn't want to point to any URL
             if ($this->link === '#' || empty($this->link)) {
-                $this->fullLink = '';
+                $this->fullLink      = '';
                 $this->visibleForXML = false;
 
                 return;
