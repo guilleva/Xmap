@@ -14,6 +14,9 @@ defined('_JEXEC') or die();
 $params = $this->params;
 
 $printNodeCallback = function ($node) use ($params) {
+    // Limit to Google requirements
+    static $limit = 1000;
+
     $display = !$node->ignore
         && $node->published
         && (!$node->duplicate || ($node->duplicate && !$this->osmapParams->get('ignore_duplicated_uids', 1)))
@@ -29,6 +32,10 @@ $printNodeCallback = function ($node) use ($params) {
     }
 
     if (!$display) {
+        return false;
+    }
+
+    if (--$limit < 0) {
         return false;
     }
 
