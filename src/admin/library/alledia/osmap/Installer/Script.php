@@ -477,11 +477,21 @@ class Script extends AbstractScript
         // Table: #__osmap_items_settings
         $existentColumns = $this->getColumnsFromTable('#__osmap_items_settings');
 
+        $db = \JFactory::getDbo();
+
+        // URH Hash
         if (in_array('url_hash', $existentColumns)) {
-            $db = \JFactory::getDbo();
             $db->setQuery('ALTER TABLE `#__osmap_items_settings`
                 CHANGE `url_hash` `settings_hash` CHAR(32)
                 CHARACTER SET utf8 COLLATE utf8_general_ci  NOT NULL DEFAULT ""');
+            $db->execute();
+        }
+
+        // Format
+        if (!in_array('format', $existentColumns)) {
+            $db->setQuery('ALTER TABLE `#__osmap_items_settings`
+                ADD `format` TINYINT(1) UNSIGNED DEFAULT NULL
+                COMMENT \'Format of the setting: 1) Legacy Mode - UID Only; 2) Based on menu ID and UID\'');
             $db->execute();
         }
     }
