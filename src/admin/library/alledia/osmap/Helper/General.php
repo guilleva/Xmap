@@ -11,6 +11,7 @@ namespace Alledia\OSMap\Helper;
 
 use Alledia\Framework;
 use Alledia\OSMap;
+use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die();
 
@@ -170,7 +171,7 @@ abstract class General
                     $plugin->instance  = $instance;
                     $plugin->className = $className;
                     $plugin->isLegacy  = $isLegacy;
-                    $plugin->params    = new \JRegistry($plugin->params);
+                    $plugin->params    = new Registry($plugin->params);
                 }
             }
         }

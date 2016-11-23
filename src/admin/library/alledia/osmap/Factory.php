@@ -20,7 +20,7 @@ defined('_JEXEC') or die();
 class Factory extends Framework\Factory
 {
     /**
-     * @var Service
+     * @var Container
      */
     protected static $container;
 
@@ -28,16 +28,12 @@ class Factory extends Framework\Factory
      * Get a OSMap container class
      *
      * @return Container
-     * @throws Exception
+     * @throws \Exception
      */
     public static function getContainer()
     {
         if (empty(static::$container)) {
-            // $params = Component\Helper::getParams();
-
-            $config = array(
-
-            );
+            $config = array();
 
             $container = new Container(
                 array(

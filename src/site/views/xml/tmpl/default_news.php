@@ -13,7 +13,12 @@ defined('_JEXEC') or die();
 
 $params = $this->params;
 
+$params->set('cutoff_date', new DateTime('-2 days'));
+
 $printNodeCallback = function ($node) use ($params) {
+    // Limit to Google requirements
+    static $limit = 1000;
+
     $display = !$node->ignore
         && $node->published
         && (!$node->duplicate || ($node->duplicate && !$this->osmapParams->get('ignore_duplicated_uids', 1)))
@@ -30,6 +35,23 @@ $printNodeCallback = function ($node) use ($params) {
 
     if (!$display) {
         return false;
+    }
+
+    if (--$limit < 0) {
+        return false;
+    }
+
+    // Publication date
+    $publicationDate = (
+        isset($node->modified)
+        && !empty($node->modified)
+        && $node->modified != OSMap\Factory::getDbo()->getNullDate()
+        && $node->modified != -1
+    ) ? $node->modified : null;
+
+    $publicationDate = new JDate($publicationDate);
+    if ($params->get('cutoff_date') > $publicationDate) {
+        //return false;
     }
 
     // Publication name
@@ -49,7 +71,8 @@ $printNodeCallback = function ($node) use ($params) {
         // Legacy code. Not sure why the hardcoded zh-cn and zh-tw
         if (preg_match('/^([a-z]+)-.*/', $defaultLanguage, $matches)
 
-           && !in_array($defaultLanguage, array(' zh-cn', ' zh-tw'))) {
+            && !in_array($defaultLanguage, array(' zh-cn', ' zh-tw'))
+        ) {
             $defaultLanguage = $matches[1];
         }
 
@@ -60,28 +83,7 @@ $printNodeCallback = function ($node) use ($params) {
 
     echo '</news:publication>';
 
-    // Publication date
-    $publicationDate = (
-        isset($node->modified)
-        && !empty($node->modified)
-        && $node->modified != OSMap\Factory::getDbo()->getNullDate()
-        && $node->modified != -1
-    ) ? $node->modified : null;
-
-    if (empty($publicationDate)) {
-        $publicationDate = time();
-    }
-
-    if ($publicationDate && !is_numeric($publicationDate)) {
-        $date            = new JDate($publicationDate);
-        $publicationDate = $date->toUnix();
-    }
-
-    if ($publicationDate) {
-        $publicationDate = gmdate('Y-m-d\TH:i:s\Z', $publicationDate);
-    }
-
-    echo '<news:publication_date>' . $publicationDate . '</news:publication_date>';
+    echo '<news:publication_date>' . $publicationDate->format('Y-m-d\TH:i:s\Z') . '</news:publication_date>';
 
     // Title
     echo '<news:title>' . htmlspecialchars($node->name) . '</news:title>';

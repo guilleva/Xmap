@@ -10,6 +10,7 @@
 namespace Alledia\OSMap\Sitemap;
 
 use Alledia\OSMap;
+use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die();
 
@@ -50,7 +51,7 @@ class BaseItem extends \JObject
     public $rawLink;
 
     /**
-     * @var \JRegistry
+     * @var Registry
      */
     public $params;
 

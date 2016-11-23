@@ -25,6 +25,7 @@ require_once JPATH_SITE . '/components/com_content/helpers/query.php';
 
 use Alledia\OSMap;
 use Alledia\Framework;
+use Joomla\Utilities\ArrayHelper;
 
 class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentInterface
 {
@@ -82,8 +83,8 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
 
         parse_str(html_entity_decode($linkQuery['query']), $linkVars);
 
-        $view = JArrayHelper::getValue($linkVars, 'view', '');
-        $id   = JArrayHelper::getValue($linkVars, 'id', 0);
+        $view = ArrayHelper::getValue($linkVars, 'view', '');
+        $id   = ArrayHelper::getValue($linkVars, 'id', 0);
 
         switch ($view) {
             case 'archive':
@@ -195,8 +196,8 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
         }
 
         parse_str(html_entity_decode($linkQuery['query']), $linkVars);
-        $view = JArrayHelper::getValue($linkVars, 'view', '');
-        $id   = intval(JArrayHelper::getValue($linkVars, 'id', ''));
+        $view = ArrayHelper::getValue($linkVars, 'view', '');
+        $id   = intval(ArrayHelper::getValue($linkVars, 'id', ''));
 
         /*
          * Parameters Initialisation
@@ -514,8 +515,8 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
             'ASC',
             'DESC'
         );
-        $order    = JArrayHelper::getValue($orderOptions, $params->get('article_order', 0), 0);
-        $orderDir = JArrayHelper::getValue($orderDirOptions, $params->get('article_orderdir', 0), 0);
+        $order    = ArrayHelper::getValue($orderOptions, $params->get('article_order', 0), 0);
+        $orderDir = ArrayHelper::getValue($orderDirOptions, $params->get('article_orderdir', 0), 0);
 
         $orderBy = ' ' . $order . ' ' . $orderDir;
         $query->order($orderBy);
