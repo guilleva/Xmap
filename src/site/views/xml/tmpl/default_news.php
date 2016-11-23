@@ -51,7 +51,7 @@ $printNodeCallback = function ($node) use ($params) {
 
     $publicationDate = new JDate($publicationDate);
     if ($params->get('cutoff_date') > $publicationDate) {
-        //return false;
+        return false;
     }
 
     // Publication name
