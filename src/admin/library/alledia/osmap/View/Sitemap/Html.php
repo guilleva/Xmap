@@ -55,7 +55,12 @@ class Html extends OSMap\View\Base
     /**
      * @var int
      */
-    public $count = 0;
+    public $levelItemsCounter = 0;
+
+    /**
+     * @var int
+     */
+    public $generalCounter = 0;
 
     /**
      * The constructor
@@ -169,14 +174,13 @@ class Html extends OSMap\View\Base
      * Print debug info for a note
      *
      * @param object $node
-     * @param int    $count
      *
      * @return void
      */
-    public function printDebugInfo($node, $count)
+    public function printDebugInfo($node)
     {
         echo '<div class="osmap-debug-box">';
-        echo '<div><span>#:</span>&nbsp;' . $count . '</div>';
+        echo '<div><span>#:</span>&nbsp;' . $this->generalCounter . '</div>';
         echo '<div><span>' . \JText::_('COM_OSMAP_UID') . ':</span>&nbsp;' . $node->uid . '</div>';
         echo '<div><span>' . \JText::_('COM_OSMAP_FULL_LINK') . ':</span>&nbsp;' . htmlspecialchars($node->fullLink) . '</div>';
         echo '<div><span>' . \JText::_('COM_OSMAP_RAW_LINK') . ':</span>&nbsp;' . htmlspecialchars($node->rawLink) . '</div>';
@@ -198,16 +202,16 @@ class Html extends OSMap\View\Base
      * Print an item
      *
      * @param object $node
-     * @param int    $count
      *
      * @return void
      */
-    public function printItem($node, $count)
+    public function printItem($node)
     {
         $liClass = $this->debug ? 'osmap-debug-item' : '';
-        $liClass .= $count % 2 == 0 ? ' even' : '';
+        $liClass .= $this->generalCounter % 2 == 0 ? ' even' : '';
 
-        if ($count > 0) {
+        // Closes the last item (ignoring the first one)
+        if ($this->levelItemsCounter > 0) {
             echo '</li>';
         }
 
@@ -227,7 +231,7 @@ class Html extends OSMap\View\Base
 
         // Debug box
         if ($this->debug) {
-            $this->printDebugInfo($node, $count);
+            $this->printDebugInfo($node);
         }
     }
 
@@ -261,8 +265,6 @@ class Html extends OSMap\View\Base
             return false;
         }
 
-        $this->count++;
-
         if ($this->lastMenuId !== $node->menuItemId) {
             // Make sure we need to close the last menu
             if ($this->lastMenuId > 0) {
@@ -276,6 +278,8 @@ class Html extends OSMap\View\Base
 
         // Check if we have a different level to start or close tags
         if ($this->lastLevel !== $node->level) {
+            $this->levelItemsCounter = 0;
+
             if ($node->level > $this->lastLevel) {
                 $this->openSubLevel($node);
             }
@@ -286,8 +290,10 @@ class Html extends OSMap\View\Base
             }
         }
 
-        $this->printItem($node, $this->count);
+        $this->printItem($node);
 
+        $this->levelItemsCounter++;
+        $this->generalCounter++;
         $this->lastLevel  = $node->level;
         $this->lastMenuId = $node->menuItemId;
 
