@@ -225,7 +225,7 @@ class Html extends OSMap\View\Base
             echo '</span>';
         } else {
             echo '<a href="' . $node->rawLink . '" target="_self" class="osmap-link">';
-            echo htmlspecialchars($node->name, ENT_HTML5);
+            echo htmlspecialchars($node->name);
             echo '</a>';
         }
 
