@@ -27,7 +27,7 @@ class Generic implements AdapterInterface
      *
      * @return void
      */
-    public function __construct(OSMap\Sitemap\Item $item)
+    public function __construct(OSMap\Sitemap\Item &$item)
     {
         $this->item = $item;
     }
@@ -40,7 +40,8 @@ class Generic implements AdapterInterface
      */
     public function checkVisibilityForRobots()
     {
-        $this->item->visibleForRobots = true;
+        // Always visible for the Free version
+        return true;
     }
 
     /**

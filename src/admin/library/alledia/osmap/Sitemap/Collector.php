@@ -265,7 +265,7 @@ class Collector
         $item->setModificationDate();
 
         $item->setAdapter();
-        $item->adapter->checkVisibilityForRobots();
+        $item->visibleForRobots = $item->adapter->checkVisibilityForRobots();
 
         // Set the current level to the item
         $item->level = $this->currentLevel;

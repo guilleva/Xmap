@@ -377,18 +377,19 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                 $collector->changeLevel(1);
 
                 foreach ($items as $item) {
-                    $node               = new stdClass;
-                    $node->id           = $item->id;
-                    $node->uid          = 'joomla.category.' . $item->id;
-                    $node->browserNav   = $parent->browserNav;
-                    $node->priority     = $params->get('cat_priority');
-                    $node->changefreq   = $params->get('cat_changefreq');
-                    $node->name         = $item->title;
-                    $node->expandible   = true;
-                    $node->secure       = $parent->secure;
-                    $node->newsItem     = 0;
-                    $node->adapterName  = 'JoomlaCategory';
-                    $node->pluginParams = &$params;
+                    $node                           = new stdClass;
+                    $node->id                       = $item->id;
+                    $node->uid                      = 'joomla.category.' . $item->id;
+                    $node->browserNav               = $parent->browserNav;
+                    $node->priority                 = $params->get('cat_priority');
+                    $node->changefreq               = $params->get('cat_changefreq');
+                    $node->name                     = $item->title;
+                    $node->expandible               = true;
+                    $node->secure                   = $parent->secure;
+                    $node->newsItem                 = 0;
+                    $node->adapterName              = 'JoomlaCategory';
+                    $node->pluginParams             = &$params;
+                    $node->parentIsVisibleForRobots = $parent->visibleForRobots;
 
                     // Keywords
                     $paramKeywords = $params->get('keywords', 'metakey');
@@ -538,20 +539,21 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
             $paramIncludeArchived  = $params->get('include_archived', 2);
 
             foreach ($items as $item) {
-                $node               = new stdClass();
-                $node->id           = $item->id;
-                $node->uid          = 'joomla.article.' . $item->id;
-                $node->browserNav   = $parent->browserNav;
-                $node->priority     = $params->get('art_priority');
-                $node->changefreq   = $params->get('art_changefreq');
-                $node->name         = $item->title;
-                $node->modified     = OSMap\Helper\General::isEmptyDate($item->modified) ? $item->created : $item->modified;
-                $node->expandible   = false;
-                $node->secure       = $parent->secure;
-                $node->newsItem     = 1;
-                $node->language     = $item->language;
-                $node->adapterName  = 'JoomlaArticle';
-                $node->pluginParams = &$params;
+                $node                           = new stdClass();
+                $node->id                       = $item->id;
+                $node->uid                      = 'joomla.article.' . $item->id;
+                $node->browserNav               = $parent->browserNav;
+                $node->priority                 = $params->get('art_priority');
+                $node->changefreq               = $params->get('art_changefreq');
+                $node->name                     = $item->title;
+                $node->modified                 = OSMap\Helper\General::isEmptyDate($item->modified) ? $item->created : $item->modified;
+                $node->expandible               = false;
+                $node->secure                   = $parent->secure;
+                $node->newsItem                 = 1;
+                $node->language                 = $item->language;
+                $node->adapterName              = 'JoomlaArticle';
+                $node->pluginParams             = &$params;
+                $node->parentIsVisibleForRobots = $parent->visibleForRobots;
 
                 // Keywords
                 $paramKeywords = $params->get('keywords', 'metakey');

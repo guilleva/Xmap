@@ -25,6 +25,7 @@ $printNodeCallback = function ($node) use ($params) {
         && isset($node->newsItem)
         && !empty($node->newsItem)
         && $node->visibleForRobots
+        && $node->parentIsVisibleForRobots
         && $node->visibleForXML
         && $node->isInternal
         && trim($node->fullLink) != '';

@@ -50,6 +50,14 @@ $printNodeCallback = function ($item) {
         $item->addAdminNote('COM_OSMAP_ADMIN_NOTE_VISIBLE_XML_ONLY');
     }
 
+    if (!$item->visibleForRobots) {
+        $item->addAdminNote('COM_OSMAP_ADMIN_NOTE_INVISIBLE_FOR_ROBOTS');
+    }
+
+    if (!$item->parentIsVisibleForRobots) {
+        $item->addAdminNote('COM_OSMAP_ADMIN_NOTE_PARENT_INVISIBLE_FOR_ROBOTS');
+    }
+
     if (!$item->hasCompatibleLanguage()) {
         return false;
     }
