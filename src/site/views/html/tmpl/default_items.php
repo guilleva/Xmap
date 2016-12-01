@@ -19,24 +19,12 @@ defined('_JEXEC') or die();
 <?php endif; ?>
 
 <div class="osmap-items">
-    <?php $this->sitemap->traverse(array($this, 'printNodeCallback')); ?>
-
-    <?php if ($this->shouldCloseMenu) : ?>
-        <?php $this->closeMenu(); ?>
-    <?php endif; ?>
-
-    <?php if ($this->count > 0) : ?>
-        </li>
-    <?php endif; ?>
+    <?php $this->sitemap->traverse(array($this, 'registerNodeIntoList')); ?>
+    <?php $this->renderSitemap(); ?>
 </div>
-
-<?php // Make sure we close the stack of levels ?>
-<?php if ($this->lastLevel > 0) : ?>
-    <?php $this->closeLevels($this->lastLevel); ?>
-<?php endif; ?>
 
 <?php if ($this->debug) : ?>
     <div class="osmap-debug-items-count">
-        <?php echo JText::_('COM_OSMAP_SITEMAP_ITEMS_COUNT'); ?>: <?php echo $this->count; ?>
+        <?php echo JText::_('COM_OSMAP_SITEMAP_ITEMS_COUNT'); ?>: <?php echo $this->generalCounter; ?>
     </div>
 <?php endif; ?>
