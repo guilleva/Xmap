@@ -171,6 +171,8 @@ class Html extends OSMap\View\Base
         // Add this item as the last one on the its level
         $this->lastItemsPerLevel[$queueItem->level] = $queueItem;
 
+        unset($node);
+
         return true;
     }
 
