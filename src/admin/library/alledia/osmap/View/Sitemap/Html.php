@@ -151,11 +151,11 @@ class Html extends OSMap\View\Base
         $queueItem->type     = $node->type;
         $queueItem->level    = $node->level;
         $queueItem->name     = $node->name;
+        $queueItem->uid      = $node->uid;
         $queueItem->children = array();
 
         // Add debug information, if debug is enabled
         if ($this->debug) {
-            $queueItem->uid              = $node->uid;
             $queueItem->fullLink         = $node->fullLink;
             $queueItem->link             = $node->link;
             $queueItem->modified         = $node->modified;
@@ -222,7 +222,9 @@ class Html extends OSMap\View\Base
             $liClass .= ' osmap-has-children';
         }
 
-        echo "<li class=\"{$liClass}\">";
+        $sanitizedUID = \JApplicationHelper::stringURLSafe($item->uid);
+
+        echo "<li class=\"{$liClass}\" id=\"osmap-li-uid-{$sanitizedUID}\">";
 
         // Some items are just separator, without a link. Do not print as link then
         if (trim($item->rawLink) === '') {
@@ -260,7 +262,7 @@ class Html extends OSMap\View\Base
                     && $this->showMenuTitles
                     && !empty($menu->children)
                 ) {
-                    echo '<h2>' . $menu->menuItemTitle;
+                    echo '<h2 id="osmap-menu-uid-' . \JApplicationHelper::stringURLSafe($menu->menuItemType) . '">' . $menu->menuItemTitle;
 
                     if ($this->debug) {
                         echo '<div><span>' . \JText::_('COM_OSMAP_MENUTYPE') . ':</span>&nbsp;' . $menu->menuItemId . ': ' . $menu->menuItemType . '</div>';
@@ -281,7 +283,13 @@ class Html extends OSMap\View\Base
      */
     protected function printMenu($menu)
     {
-        echo '<ul class="level_' . ($menu->level + 1) . '">';
+        if (isset($menu->menuItemType)) {
+            $sanitizedUID = \JApplicationHelper::stringURLSafe($menu->menuItemType);
+        } else {
+            $sanitizedUID = \JApplicationHelper::stringURLSafe($menu->uid);
+        }
+
+        echo '<ul class="level_' . ($menu->level + 1) . '" id="osmap-ul-uid-' . $sanitizedUID . '">';
 
         foreach ($menu->children as $item) {
             $this->printItem($item);
