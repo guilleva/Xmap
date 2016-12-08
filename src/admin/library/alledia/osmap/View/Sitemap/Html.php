@@ -132,11 +132,13 @@ class Html extends OSMap\View\Base
 
         // Check if the menu was already registered and register if needed
         if ($node->level === 0 && !isset($this->menus[$node->menuItemType])) {
-            $queueItem = new \stdClass;
-            $queueItem->menuItemTitle = $node->menuItemTitle;
-            $queueItem->menuItemType  = $node->menuItemType;
-            $queueItem->level         = -1;
-            $queueItem->children = array();
+            $queueItem = (object)array(
+                'menuItemId'    => $node->menuItemId,
+                'menuItemTitle' => $node->menuItemTitle,
+                'menuItemType'  => $node->menuItemType,
+                'level'         => -1,
+                'children'      => array()
+            );
 
             // Add the menu to the main list of items
             $this->menus[$node->menuItemType] = $queueItem;
@@ -146,7 +148,7 @@ class Html extends OSMap\View\Base
         }
 
         // Instantiate the current item
-        $queueItem = new \stdClass;
+        $queueItem           = new \stdClass;
         $queueItem->rawLink  = $node->rawLink;
         $queueItem->type     = $node->type;
         $queueItem->level    = $node->level;
@@ -197,9 +199,11 @@ class Html extends OSMap\View\Base
         echo '<div><span>' . \JText::_('COM_OSMAP_VISIBLE_FOR_ROBOTS') . ':</span>&nbsp;' . \JText::_($node->visibleForRobots ? 'JYES' : 'JNO') . '</div>';
         echo '<div><span>' . \JText::_('COM_OSMAP_ADAPTER_CLASS') . ':</span>&nbsp;' . $node->adapter . '</div>';
 
-        $adminNotes = $node->getAdminNotesString();
-        if (!empty($adminNotes)) {
-            echo '<div><span>' . \JText::_('COM_OSMAP_ADMIN_NOTES') . ':</span>&nbsp;' . nl2br($adminNotes) . '</div>';
+        if (method_exists($node, 'getAdminNotesString')) {
+            $adminNotes = $node->getAdminNotesString();
+            if (!empty($adminNotes)) {
+                echo '<div><span>' . \JText::_('COM_OSMAP_ADMIN_NOTES') . ':</span>&nbsp;' . nl2br($adminNotes) . '</div>';
+            }
         }
         echo '</div>';
     }
