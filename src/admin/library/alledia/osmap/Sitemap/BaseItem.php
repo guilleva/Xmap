@@ -206,13 +206,16 @@ class BaseItem extends \JObject
     /**
      * The constructor
      *
-     * @param object  $itemData
+     * @param array $itemData
      *
      * @return void
      */
-    public function __construct(&$itemData, $currentMenuItemId)
+    public function __construct(&$itemData)
     {
         $this->setProperties($itemData);
+        if (class_exists('\\Alledia\\OSMap\\Sitemap\\ItemAdapter\\GenericPro')) {
+            $this->adapterName = 'GenericPro';
+        }
     }
 
     /**
