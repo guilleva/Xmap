@@ -17,8 +17,7 @@ CREATE TABLE IF NOT EXISTS `#__osmap_sitemap_menus_new` (
   `ordering` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`sitemap_id`,`menutype_id`),
   KEY `idx_ordering` (`sitemap_id`,`ordering`),
-  KEY `idx_sitemap_menus` (`sitemap_id`),
-  CONSTRAINT `fk_sitemaps_menus` FOREIGN KEY (`sitemap_id`) REFERENCES `#__osmap_sitemaps` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `idx_sitemap_menus` (`sitemap_id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
 INSERT INTO `#__osmap_sitemap_menus_new` SELECT * FROM `#__osmap_sitemap_menus`;
