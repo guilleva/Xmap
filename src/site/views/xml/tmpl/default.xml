@@ -30,22 +30,22 @@
                 name="add_styling"
                 label="COM_OSMAP_OPTION_ADD_STYLING_LABEL"
                 description="COM_OSMAP_OPTION_ADD_STYLING_DESC"
-                type="list"
+                type="radio"
+                class="btn-group btn-group-yesno"
                 default="1">
-
-                <option value="0">JNO</option>
                 <option value="1">JYES</option>
+                <option value="0">JNO</option>
             </field>
 
             <field
                 name="debug"
                 label="COM_OSMAP_OPTION_DEBUG_LABEL"
                 description="COM_OSMAP_OPTION_DEBUG_DESC"
-                type="list"
+                type="radio"
+                class="btn-group btn-group-yesno"
                 default="0">
-
-                <option value="0">JNO</option>
                 <option value="1">JYES</option>
+                <option value="0">JNO</option>
             </field>
 
             <field
