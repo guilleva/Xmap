@@ -261,17 +261,13 @@ class Html extends OSMap\View\Base
     public function renderSitemap()
     {
         if (!empty($this->menus)) {
-            $columns = max((int)$this->params->get('columns', 1), 1);
+            $columns     = max((int)$this->params->get('columns', 1), 1);
             $columnWidth = (1 / $columns) * 100;
             $columnWidth = intval($columnWidth);
 
             $i = 1;
             foreach ($this->menus as $menuType => $menu) {
-                echo sprintf(
-                    '<div class="osmap-column osmap-menu-%s osmap-column-%s">',
-                    $menuType,
-                    $columnWidth
-                );
+                echo sprintf('<div class="osmap-column osmap-column-%s">', $columnWidth);
 
                 if (isset($menu->menuItemTitle)
                     && $this->showMenuTitles
