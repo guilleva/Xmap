@@ -261,14 +261,9 @@ class Html extends OSMap\View\Base
     public function renderSitemap()
     {
         if (!empty($this->menus)) {
-            $columns     = max((int)$this->params->get('columns', 1), 1);
-            $columnWidth = (1 / $columns) * 100;
-            $columnWidth = intval($columnWidth);
+            $columns = max((int)$this->params->get('columns', 1), 1);
 
-            $i = 1;
             foreach ($this->menus as $menuType => $menu) {
-                echo sprintf('<div class="osmap-column osmap-column-%s">', $columnWidth);
-
                 if (isset($menu->menuItemTitle)
                     && $this->showMenuTitles
                     && !empty($menu->children)
@@ -290,13 +285,7 @@ class Html extends OSMap\View\Base
                     );
                 }
 
-                $this->printMenu($menu);
-
-                echo '</div>';
-
-                if ($i >= count($this->menus) || !($i++ % $columns)) {
-                    echo '<div class="clr"></div>';
-                }
+                $this->printMenu($menu, $columns);
             }
         }
     }
@@ -305,8 +294,11 @@ class Html extends OSMap\View\Base
      * Render the menu item and its children items
      *
      * @param object $menu
+     * @param int    $columns
+     *
+     * @return void
      */
-    protected function printMenu($menu)
+    protected function printMenu($menu, $columns = null)
     {
         if (isset($menu->menuItemType)) {
             $sanitizedUID = \JApplicationHelper::stringURLSafe($menu->menuItemType);
@@ -314,7 +306,16 @@ class Html extends OSMap\View\Base
             $sanitizedUID = \JApplicationHelper::stringURLSafe($menu->uid);
         }
 
-        echo '<ul class="level_' . ($menu->level + 1) . '" id="osmap-ul-uid-' . $sanitizedUID . '">';
+        $class = array('level_' . ($menu->level + 1));
+        if ($columns && $columns > 1) {
+            $class[] = 'columns_' . $columns;
+        }
+
+        echo sprintf(
+            '<ul class="%s" id="osmap-ul-uid-%s">',
+            join(' ', $class),
+            $sanitizedUID
+        );
 
         foreach ($menu->children as $item) {
             $this->printItem($item);
