@@ -261,21 +261,46 @@ class Html extends OSMap\View\Base
     public function renderSitemap()
     {
         if (!empty($this->menus)) {
-            foreach ($this->menus as $menu) {
+            $columns = max((int)$this->params->get('columns', 1), 1);
+            $columnWidth = (1 / $columns) * 100;
+            $columnWidth = intval($columnWidth);
+
+            $i = 1;
+            foreach ($this->menus as $menuType => $menu) {
+                echo sprintf(
+                    '<div class="osmap-column osmap-menu-%s osmap-column-%s">',
+                    $menuType,
+                    $columnWidth
+                );
+
                 if (isset($menu->menuItemTitle)
                     && $this->showMenuTitles
                     && !empty($menu->children)
                 ) {
-                    echo '<h2 id="osmap-menu-uid-' . \JApplicationHelper::stringURLSafe($menu->menuItemType) . '">' . $menu->menuItemTitle;
-
                     if ($this->debug) {
-                        echo '<div><span>' . \JText::_('COM_OSMAP_MENUTYPE') . ':</span>&nbsp;' . $menu->menuItemId . ': ' . $menu->menuItemType . '</div>';
+                        $debug = sprintf(
+                            '<div><span>%s:</span>&nbsp;%s: %s</div>',
+                            \JText::_('COM_OSMAP_MENUTYPE'),
+                            $menu->menuItemId,
+                            $menu->menuItemType
+                        );
                     }
 
-                    echo '</h2>';
+                    echo sprintf(
+                        '<h2 id="osmap-menu-uid-%s">%s%s</h2>',
+                        \JApplicationHelper::stringURLSafe($menu->menuItemType),
+                        $menu->menuItemTitle,
+                        empty($debug) ? '' : $debug
+                    );
                 }
 
                 $this->printMenu($menu);
+
+                echo '</div>';
+
+                if ($i >= count($this->menus) || !($i++ % $columns)) {
+                    echo '<div class="clr"></div>';
+                }
             }
         }
     }
@@ -283,7 +308,7 @@ class Html extends OSMap\View\Base
     /**
      * Render the menu item and its children items
      *
-     * @param stdClass $menu
+     * @param object $menu
      */
     protected function printMenu($menu)
     {
