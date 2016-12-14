@@ -18,7 +18,7 @@ JHtml::_('formbehavior.chosen', 'select');
 
 JHtml::stylesheet('media/com_osmap/css/admin.min.css');
 
-$baseUrl   = OSmap\Router::sanitizeURL(JUri::root());
+$baseUrl   = OSMap\Router::sanitizeURL(JUri::root());
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDir   = $this->escape($this->state->get('list.direction'));
 ?>
