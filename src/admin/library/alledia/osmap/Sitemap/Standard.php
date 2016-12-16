@@ -62,6 +62,13 @@ class Standard implements SitemapInterface
     protected $collector;
 
     /**
+     * Limit in days for news sitemap items
+     *
+     * @var int
+     */
+    public $newsDateLimit = 2;
+
+    /**
      * The constructor
      *
      * @param int $id

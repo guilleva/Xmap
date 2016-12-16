@@ -13,7 +13,7 @@ defined('_JEXEC') or die();
 
 $params = $this->params;
 
-$params->set('cutoff_date', new DateTime('-2 days'));
+$params->set('cutoff_date', new DateTime('-' . $this->sitemap->newsDateLimit . ' days'));
 
 $printNodeCallback = function ($node) use ($params) {
     // Limit to Google requirements
