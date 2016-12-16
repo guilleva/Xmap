@@ -141,7 +141,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                     // Set dates
                     $node->modified  = $item->modified;
                     $node->created   = $item->created;
-                    $node->publishOn = $item->publish_up;
+                    $node->publishUp = $item->publish_up;
 
                     $item->params = $item->attribs;
 
@@ -400,7 +400,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                     $node->parentIsVisibleForRobots = $parent->visibleForRobots;
                     $node->created                  = $item->created;
                     $node->modified                 = $item->modified;
-                    $node->publishOn                = $item->created;
+                    $node->publishUp                = $item->created;
 
                     // Keywords
                     $paramKeywords = $params->get('keywords', 'metakey');
@@ -548,7 +548,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                 $node->name                     = $item->title;
                 $node->created                  = $item->created;
                 $node->modified                 = $item->modified;
-                $node->publishOn                = $item->publish_up;
+                $node->publishUp                = $item->publish_up;
                 $node->expandible               = false;
                 $node->secure                   = $parent->secure;
                 $node->newsItem                 = 1;
@@ -638,7 +638,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
             $subnode->secure     = $parent->secure;
             $subnode->created    = $item->created;
             $subnode->modified   = $item->modified;
-            $subnode->publishOn  = isset($item->publish_up) ? $item->publish_up : $item->created;
+            $subnode->publishUp  = isset($item->publish_up) ? $item->publish_up : $item->created;
 
             $collector->printNode($subnode);
 

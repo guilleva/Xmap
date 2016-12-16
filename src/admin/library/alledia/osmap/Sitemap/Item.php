@@ -44,7 +44,7 @@ class Item extends BaseItem
         $this->prepareDate('modified');
 
         $defaultDate = is_null($this->created) ? $this->modified : $this->created;
-        $this->prepareDate('publishOn', $defaultDate);
+        $this->prepareDate('publishUp', $defaultDate);
 
         $this->setLink();
         $this->extractComponentFromLink();

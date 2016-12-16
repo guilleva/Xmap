@@ -78,7 +78,7 @@ class BaseItem extends \JObject
     /**
      * @var string
      */
-    public $publishOn;
+    public $publishUp;
 
     /**
      * The component associated to the option URL param
