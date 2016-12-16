@@ -44,11 +44,11 @@ $printNodeCallback = function ($node) use ($params) {
 
     // Publication date
     $publicationDate = (
-        isset($node->modified)
-        && !empty($node->modified)
-        && $node->modified != OSMap\Factory::getDbo()->getNullDate()
-        && $node->modified != -1
-    ) ? $node->modified : null;
+        isset($node->publishOn)
+        && !empty($node->publishOn)
+        && $node->publishOn != OSMap\Factory::getDbo()->getNullDate()
+        && $node->publishOn != -1
+    ) ? $node->publishOn : null;
 
     $publicationDate = new JDate($publicationDate);
     if ($params->get('cutoff_date') > $publicationDate) {

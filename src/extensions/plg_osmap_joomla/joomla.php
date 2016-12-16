@@ -121,6 +121,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                 $query = $db->getQuery(true)
                     ->select($db->quoteName('created'))
                     ->select($db->quoteName('modified'))
+                    ->select($db->quoteName('publish_up'))
                     ->select($db->quoteName('metadata'))
                     ->select($db->quoteName('attribs'))
                     ->from($db->quoteName('#__content'))
@@ -137,19 +138,10 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                     // Set the node UID
                     $node->uid = 'joomla.article.' . $id;
 
-                    // Check if we have a modification date
-                    if (!OSMap\Helper\General::isEmptyDate($item->modified)) {
-                        $node->modified = $item->modified;
-                    }
-
-                    // Make sure we have a modification date. If null, use the creation date
-                    if (OSMap\Helper\General::isEmptyDate($node->modified)) {
-                        if (isset($item->createdOn)) {
-                            $node->modified = $item->createdOn;
-                        } else {
-                            $node->modified = $item->created;
-                        }
-                    }
+                    // Set dates
+                    $node->modified  = $item->modified;
+                    $node->created   = $item->created;
+                    $node->publishOn = $item->publish_up;
 
                     $item->params = $item->attribs;
 
@@ -163,7 +155,6 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
 
                         $node->images = $container->imagesHelper->getImagesFromText($text, $maxImages);
                     }
-
 
                     if ($paramAddPageBreaks) {
                         $node->subnodes   = OSMap\Helper\General::getPagebreaks($text, $node->link, $node->uid);
@@ -296,18 +287,14 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                         ->select($db->quoteName('catid'))
                         ->select($db->quoteName('attribs') . ' AS params')
                         ->select($db->quoteName('metadata'))
-                        ->select($db->quoteName('modified'))
                         ->select($db->quoteName('created'))
+                        ->select($db->quoteName('modified'))
+                        ->select($db->quoteName('publish_up'))
                         ->from($db->quoteName('#__content'))
                         ->where($db->quoteName('id') . '=' . (int)$id);
                     $db->setQuery($query);
 
                     $item = $db->loadObject();
-
-                    // Make sure we have a modification date. If null, use the creation date
-                    if (OSMap\Helper\General::isEmptyDate($item->modified)) {
-                        $item->modified = $item->created;
-                    }
 
                     // // Set the node UID
                     $item->uid = 'joomla.article.' . $id;
@@ -372,8 +359,8 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                     'a.alias',
                     'a.access',
                     'a.path AS route',
-                    'a.created_time created',
-                    'a.modified_time modified',
+                    'a.created_time AS created',
+                    'a.modified_time AS modified',
                     'a.params',
                     'a.metadata',
                     'a.metakey'
@@ -411,6 +398,9 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                     $node->adapterName              = 'JoomlaCategory';
                     $node->pluginParams             = &$params;
                     $node->parentIsVisibleForRobots = $parent->visibleForRobots;
+                    $node->created                  = $item->created;
+                    $node->modified                 = $item->modified;
+                    $node->publishOn                = $item->created;
 
                     // Keywords
                     $paramKeywords = $params->get('keywords', 'metakey');
@@ -419,11 +409,6 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                         $keywords = $item->metakey;
                     }
                     $node->keywords = $keywords;
-
-                    // For the google news we should use te publication date instead
-                    // the last modification date
-                    $node->modified = OSMap\Helper\General::isEmptyDate($item->modified)
-                        ? $item->created : $item->modified;
 
                     $node->slug = $item->route ? ($item->id . ':' . $item->route) : $item->id;
                     $node->link = ContentHelperRoute::getCategoryRoute($node->slug);
@@ -475,13 +460,6 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
             $where[] = 'a.catid=' . (int)$catid;
         }
 
-        $maxArtAge = $params->get('max_art_age');
-        if (!empty($maxArtAge) || $collector->isNews) {
-            $days    = empty($maxArtAge) ? 2 : $maxArtAge;
-            $where[] = "(a.created >= '"
-                . date('Y-m-d H:i:s', time() - $days * 86400) . "' ) ";
-        }
-
         if (!$params->get('show_unauth', 0)) {
             $where[] = 'a.access IN (' . OSMap\Helper\General::getAuthorisedViewLevels() . ') ';
         }
@@ -498,6 +476,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                     'a.catid',
                     'a.created',
                     'a.modified',
+                    'a.publish_up',
                     'a.attribs AS params',
                     'a.metadata',
                     'a.language',
@@ -567,7 +546,9 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                 $node->priority                 = $params->get('art_priority');
                 $node->changefreq               = $params->get('art_changefreq');
                 $node->name                     = $item->title;
-                $node->modified                 = OSMap\Helper\General::isEmptyDate($item->modified) ? $item->created : $item->modified;
+                $node->created                  = $item->created;
+                $node->modified                 = $item->modified;
+                $node->publishOn                = $item->publish_up;
                 $node->expandible               = false;
                 $node->secure                   = $parent->secure;
                 $node->newsItem                 = 1;
@@ -633,7 +614,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                 }
 
                 if ($collector->printNode($node) && $node->expandible) {
-                    self::printNodes($collector, $parent, $params, $node->subnodes, $node);
+                    self::printSubNodes($collector, $parent, $params, $node->subnodes, $node);
                 }
             }
 
@@ -643,7 +624,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
         return true;
     }
 
-    private static function printNodes($collector, $parent, &$params, &$subnodes, $item)
+    private static function printSubNodes($collector, $parent, &$params, &$subnodes, $item)
     {
         $collector->changeLevel(1);
 
@@ -655,13 +636,9 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
             $subnode->priority   = $params->get('art_priority');
             $subnode->changefreq = $params->get('art_changefreq');
             $subnode->secure     = $parent->secure;
-
-            // Check if the child item has modified date
-            if (isset($item->modified)) {
-                $subnode->modified = $item->modified;
-            } else {
-                $subnode->modified = $item->created;
-            }
+            $subnode->created    = $item->created;
+            $subnode->modified   = $item->modified;
+            $subnode->publishOn  = isset($item->publish_up) ? $item->publish_up : $item->created;
 
             $collector->printNode($subnode);
 

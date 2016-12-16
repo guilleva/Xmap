@@ -126,7 +126,7 @@ class Collector
      *
      * @var Registry
      */
-    protected $params;
+    public $params;
 
     /**
      * The constructor

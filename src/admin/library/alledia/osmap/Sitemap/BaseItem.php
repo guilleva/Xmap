@@ -68,7 +68,17 @@ class BaseItem extends \JObject
     /**
      * @var string
      */
+    public $created;
+
+    /**
+     * @var string
+     */
     public $modified;
+
+    /**
+     * @var string
+     */
+    public $publishOn;
 
     /**
      * The component associated to the option URL param
