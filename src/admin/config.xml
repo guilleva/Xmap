@@ -10,9 +10,8 @@
             description="COM_OSMAP_OPTION_SHOW_EXTERNAL_LINKS_DESC"
             type="list"
             default="0">
-
-            <option value="0">JNO</option>
             <option value="1">JYES</option>
+            <option value="0">JNO</option>
             <option value="2">COM_OSMAP_OPTION_ONLY_HTML</option>
         </field>
 
@@ -20,22 +19,22 @@
             name="show_item_uid"
             label="COM_OSMAP_OPTION_SHOW_ITEM_UID_LABEL"
             description="COM_OSMAP_OPTION_SHOW_ITEM_UID_DESC"
-            type="list"
+            type="radio"
+            class="btn-group btn-group-yesno"
             default="0">
-
-            <option value="0">JNO</option>
             <option value="1">JYES</option>
+            <option value="0">JNO</option>
         </field>
 
         <field
             name="ignore_duplicated_uids"
             label="COM_OSMAP_OPTION_IGNORE_DUPLICATED_UIDS_LABEL"
             description="COM_OSMAP_OPTION_IGNORE_DUPLICATED_UIDS_DESC"
-            type="list"
+            type="radio"
+            class="btn-group btn-group-yesno"
             default="1">
-
-            <option value="0">JNO</option>
             <option value="1">JYES</option>
+            <option value="0">JNO</option>
         </field>
     </fieldset>
 

@@ -24,7 +24,9 @@ require_once JPATH_SITE . '/components/com_content/helpers/query.php';
  */
 
 use Alledia\OSMap;
-use Alledia\Framework;
+use Alledia\OSMap\Sitemap\Collector;
+use Alledia\OSMap\Sitemap\Item;
+use Joomla\Registry\Registry;
 use Joomla\Utilities\ArrayHelper;
 
 class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentInterface
@@ -62,10 +64,10 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
      * This function is called before a menu item is used. We use it to set the
      * proper uniqueid for the item
      *
-     * @param object  Menu item to be "prepared"
-     * @param array   The extension params
+     * @param Item     $node   Menu item to be "prepared"
+     * @param Registry $params The extension params
      *
-     * @return void
+     * @return bool
      * @since  1.2
      */
     public static function prepareMenuItem($node, &$params)
@@ -76,10 +78,10 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
         $linkQuery = parse_url($node->link);
 
         if (!isset($linkQuery['query'])) {
-            return;
+            return false;
         }
 
-        $node->pluginParams = &$params;
+        $node->pluginParams = $params;
 
         parse_str(html_entity_decode($linkQuery['query']), $linkVars);
 
@@ -122,7 +124,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                     ->select($db->quoteName('metadata'))
                     ->select($db->quoteName('attribs'))
                     ->from($db->quoteName('#__content'))
-                    ->where($db->quoteName('id') . '=' . (int) $id);
+                    ->where($db->quoteName('id') . '=' . (int)$id);
 
                 if ($paramAddPageBreaks || $paramAddImages) {
                     $query->select($db->quoteName('introtext'));
@@ -180,12 +182,16 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
     /**
      * Expands a com_content menu item
      *
-     * @return void
+     * @param Collector $collector
+     * @param Item      $menuItem
+     * @param Registry  $params
+     *
+     * @return bool
      * @since  1.0
      */
     public static function getTree($collector, $menuItem, &$params)
     {
-        $db = OSMap\Factory::getDBO();
+        $db = OSMap\Factory::getDbo();
 
         $result = null;
 
@@ -206,10 +212,10 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
         $paramExpandFeatured   = $params->get('expand_featured', 1);
         $paramIncludeArchived  = $params->get('include_archived', 2);
 
-        $paramAddPageBreaks    = $params->get('add_pagebreaks', 1);
+        $paramAddPageBreaks = $params->get('add_pagebreaks', 1);
 
-        $paramCatPriority      = $params->get('cat_priority', $menuItem->priority);
-        $paramCatChangefreq    = $params->get('cat_changefreq', $menuItem->changefreq);
+        $paramCatPriority   = $params->get('cat_priority', $menuItem->priority);
+        $paramCatChangefreq = $params->get('cat_changefreq', $menuItem->changefreq);
 
         if ($paramCatPriority == '-1') {
             $paramCatPriority = $menuItem->priority;
@@ -293,7 +299,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                         ->select($db->quoteName('modified'))
                         ->select($db->quoteName('created'))
                         ->from($db->quoteName('#__content'))
-                        ->where($db->quoteName('id') . '=' . (int) $id);
+                        ->where($db->quoteName('id') . '=' . (int)$id);
                     $db->setQuery($query);
 
                     $item = $db->loadObject();
@@ -309,7 +315,11 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                     $menuItem->slug = $item->alias ? ($id . ':' . $item->alias) : $id;
                     $menuItem->link = ContentHelperRoute::getArticleRoute($menuItem->slug, $item->catid);
 
-                    $menuItem->subnodes = OSMap\Helper\General::getPagebreaks($item->introtext . $item->fulltext, $menuItem->link, $item->uid);
+                    $menuItem->subnodes = OSMap\Helper\General::getPagebreaks(
+                        $item->introtext . $item->fulltext,
+                        $menuItem->link,
+                        $item->uid
+                    );
                     self::printNodes($collector, $menuItem, $params, $menuItem->subnodes, $item);
                 }
         }
@@ -321,14 +331,25 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
      * Get all content items within a content category.
      * Returns an array of all contained content items.
      *
-     * @param object  $collector
-     * @param object  $parent   the menu item
-     * @param int     $catid    the id of the category to be expanded
-     * @param array   $params   an assoc array with the params for this plugin on Xmap
-     * @param int     $itemid   the itemid to use for this category's children
+     * @param Collector $collector
+     * @param Item      $parent the menu item
+     * @param int       $catid  the id of the category to be expanded
+     * @param Registry  $params parameters for this plugin on Xmap
+     * @param int       $itemid the itemid to use for this category's children
+     * @param Item      $prevnode
+     * @param int       $curlevel
+     *
+     * @return bool
      */
-    public static function expandCategory($collector, $parent, $catid, &$params, $itemid, $prevnode = null, $curlevel = 0)
-    {
+    public static function expandCategory(
+        $collector,
+        $parent,
+        $catid,
+        &$params,
+        $itemid,
+        $prevnode = null,
+        $curlevel = 0
+    ) {
         $paramExpandCategories = $params->get('expand_categories', 1);
 
         $db = OSMap\Factory::getDBO();
@@ -401,14 +422,14 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
 
                     // For the google news we should use te publication date instead
                     // the last modification date
-                    $node->modified     = OSMap\Helper\General::isEmptyDate($item->modified)
+                    $node->modified = OSMap\Helper\General::isEmptyDate($item->modified)
                         ? $item->created : $item->modified;
 
                     $node->slug = $item->route ? ($item->id . ':' . $item->route) : $item->id;
                     $node->link = ContentHelperRoute::getCategoryRoute($node->slug);
 
                     $node->itemid = $itemid;
-                    if (strpos($node->link, 'Itemid=')===false) {
+                    if (strpos($node->link, 'Itemid=') === false) {
                         $node->link .= '&Itemid=' . $itemid;
                     } else {
                         $node->link = preg_replace('/Itemid=([0-9]+)/', 'Itemid=' . $itemid, $node->link);
@@ -437,7 +458,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
      */
     public static function includeCategoryContent($collector, $parent, $catid, &$params, $itemid, $prevnode = null)
     {
-        $db        = OSMap\Factory::getDBO();
+        $db        = OSMap\Factory::getDbo();
         $container = OSMap\Factory::getContainer();
 
         if ($params->get('include_archived', 2)) {
@@ -505,7 +526,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
 
 
         // Ordering
-        $orderOptions = array(
+        $orderOptions    = array(
             'a.created',
             'a.modified',
             'a.publish_up',
@@ -516,8 +537,8 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
             'ASC',
             'DESC'
         );
-        $order    = ArrayHelper::getValue($orderOptions, $params->get('article_order', 0), 0);
-        $orderDir = ArrayHelper::getValue($orderDirOptions, $params->get('article_orderdir', 0), 0);
+        $order           = ArrayHelper::getValue($orderOptions, $params->get('article_order', 0), 0);
+        $orderDir        = ArrayHelper::getValue($orderDirOptions, $params->get('article_orderdir', 0), 0);
 
         $orderBy = ' ' . $order . ' ' . $orderDir;
         $query->order($orderBy);
@@ -579,11 +600,11 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                 $node->link    = ContentHelperRoute::getArticleRoute($node->slug, $node->catslug);
 
                 // Set the visibility for XML or HTML sitempas
-                if ($catid=='featured') {
+                if ($catid == 'featured') {
                     // Check if the item is visible in the XML or HTML sitemaps
                     $node->visibleForXML  = in_array($paramExpandFeatured, array(1, 2));
                     $node->visibleForHTML = in_array($paramExpandFeatured, array(1, 3));
-                } elseif ($catid=='archived') {
+                } elseif ($catid == 'archived') {
                     // Check if the item is visible in the XML or HTML sitemaps
                     $node->visibleForXML  = in_array($paramIncludeArchived, array(1, 2));
                     $node->visibleForHTML = in_array($paramIncludeArchived, array(1, 3));

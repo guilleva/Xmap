@@ -23,11 +23,12 @@
 
         <field
             name="is_default"
-            type="list"
+            type="radio"
+            class="btn-group btn-group-yesno"
             label="COM_OSMAP_SITEMAP_IS_DEFAULT_LABEL"
             description="COM_OSMAP_SITEMAP_IS_DEFAULT_DESC">
-            <option value="0">JNO</option>
             <option value="1">JYES</option>
+            <option value="0">JNO</option>
         </field>
 
         <field

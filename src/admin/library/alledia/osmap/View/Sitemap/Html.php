@@ -132,11 +132,13 @@ class Html extends OSMap\View\Base
 
         // Check if the menu was already registered and register if needed
         if ($node->level === 0 && !isset($this->menus[$node->menuItemType])) {
-            $queueItem = new \stdClass;
-            $queueItem->menuItemTitle = $node->menuItemTitle;
-            $queueItem->menuItemType  = $node->menuItemType;
-            $queueItem->level         = -1;
-            $queueItem->children = array();
+            $queueItem = (object)array(
+                'menuItemId'    => $node->menuItemId,
+                'menuItemTitle' => $node->menuItemTitle,
+                'menuItemType'  => $node->menuItemType,
+                'level'         => -1,
+                'children'      => array()
+            );
 
             // Add the menu to the main list of items
             $this->menus[$node->menuItemType] = $queueItem;
@@ -146,7 +148,7 @@ class Html extends OSMap\View\Base
         }
 
         // Instantiate the current item
-        $queueItem = new \stdClass;
+        $queueItem           = new \stdClass;
         $queueItem->rawLink  = $node->rawLink;
         $queueItem->type     = $node->type;
         $queueItem->level    = $node->level;
@@ -197,9 +199,11 @@ class Html extends OSMap\View\Base
         echo '<div><span>' . \JText::_('COM_OSMAP_VISIBLE_FOR_ROBOTS') . ':</span>&nbsp;' . \JText::_($node->visibleForRobots ? 'JYES' : 'JNO') . '</div>';
         echo '<div><span>' . \JText::_('COM_OSMAP_ADAPTER_CLASS') . ':</span>&nbsp;' . $node->adapter . '</div>';
 
-        $adminNotes = $node->getAdminNotesString();
-        if (!empty($adminNotes)) {
-            echo '<div><span>' . \JText::_('COM_OSMAP_ADMIN_NOTES') . ':</span>&nbsp;' . nl2br($adminNotes) . '</div>';
+        if (method_exists($node, 'getAdminNotesString')) {
+            $adminNotes = $node->getAdminNotesString();
+            if (!empty($adminNotes)) {
+                echo '<div><span>' . \JText::_('COM_OSMAP_ADMIN_NOTES') . ':</span>&nbsp;' . nl2br($adminNotes) . '</div>';
+            }
         }
         echo '</div>';
     }
@@ -257,21 +261,31 @@ class Html extends OSMap\View\Base
     public function renderSitemap()
     {
         if (!empty($this->menus)) {
-            foreach ($this->menus as $menu) {
+            $columns = max((int)$this->params->get('columns', 1), 1);
+
+            foreach ($this->menus as $menuType => $menu) {
                 if (isset($menu->menuItemTitle)
                     && $this->showMenuTitles
                     && !empty($menu->children)
                 ) {
-                    echo '<h2 id="osmap-menu-uid-' . \JApplicationHelper::stringURLSafe($menu->menuItemType) . '">' . $menu->menuItemTitle;
-
                     if ($this->debug) {
-                        echo '<div><span>' . \JText::_('COM_OSMAP_MENUTYPE') . ':</span>&nbsp;' . $menu->menuItemId . ': ' . $menu->menuItemType . '</div>';
+                        $debug = sprintf(
+                            '<div><span>%s:</span>&nbsp;%s: %s</div>',
+                            \JText::_('COM_OSMAP_MENUTYPE'),
+                            $menu->menuItemId,
+                            $menu->menuItemType
+                        );
                     }
 
-                    echo '</h2>';
+                    echo sprintf(
+                        '<h2 id="osmap-menu-uid-%s">%s%s</h2>',
+                        \JApplicationHelper::stringURLSafe($menu->menuItemType),
+                        $menu->menuItemTitle,
+                        empty($debug) ? '' : $debug
+                    );
                 }
 
-                $this->printMenu($menu);
+                $this->printMenu($menu, $columns);
             }
         }
     }
@@ -279,9 +293,12 @@ class Html extends OSMap\View\Base
     /**
      * Render the menu item and its children items
      *
-     * @param stdClass $menu
+     * @param object $menu
+     * @param int    $columns
+     *
+     * @return void
      */
-    protected function printMenu($menu)
+    protected function printMenu($menu, $columns = null)
     {
         if (isset($menu->menuItemType)) {
             $sanitizedUID = \JApplicationHelper::stringURLSafe($menu->menuItemType);
@@ -289,7 +306,16 @@ class Html extends OSMap\View\Base
             $sanitizedUID = \JApplicationHelper::stringURLSafe($menu->uid);
         }
 
-        echo '<ul class="level_' . ($menu->level + 1) . '" id="osmap-ul-uid-' . $sanitizedUID . '">';
+        $class = array('level_' . ($menu->level + 1));
+        if ($columns && $columns > 1) {
+            $class[] = 'columns_' . $columns;
+        }
+
+        echo sprintf(
+            '<ul class="%s" id="osmap-ul-uid-%s">',
+            join(' ', $class),
+            $sanitizedUID
+        );
 
         foreach ($menu->children as $item) {
             $this->printItem($item);

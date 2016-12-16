@@ -29,7 +29,7 @@ class Item extends BaseItem
      */
     public function __construct(&$itemData, $currentMenuItemId)
     {
-        $this->setProperties($itemData);
+        parent::__construct($itemData);
 
         $this->published  = (bool)$this->published;
         $this->isMenuItem = (bool)$this->isMenuItem;
