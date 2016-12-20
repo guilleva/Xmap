@@ -322,7 +322,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                         $menuItem->link,
                         $item->uid
                     );
-                    self::printNodes($collector, $menuItem, $params, $menuItem->subnodes, $item);
+                    self::printSubNodes($collector, $menuItem, $params, $menuItem->subnodes, $item);
                 }
         }
 
