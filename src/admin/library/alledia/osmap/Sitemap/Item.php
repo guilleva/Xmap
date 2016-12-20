@@ -40,7 +40,12 @@ class Item extends BaseItem
         // Check if the link is an internal link
         $this->isInternal = $this->checkLinkIsInternal();
 
-        $this->setModificationDate();
+        $this->prepareDate('created');
+        $this->prepareDate('modified');
+
+        $defaultDate = is_null($this->created) ? $this->modified : $this->created;
+        $this->prepareDate('publishUp', $defaultDate);
+
         $this->setLink();
         $this->extractComponentFromLink();
         $this->setFullLink();
@@ -129,29 +134,38 @@ class Item extends BaseItem
     }
 
     /**
-     * Set the correct modification date.
+     * Set the correct date for the attribute
+     *
+     * @param string $attributeName
+     * @param string $default
      *
      * @return void
      */
-    public function setModificationDate()
+    public function prepareDate($attributeName, $default = null)
     {
-        if (OSMap\Helper\General::isEmptyDate($this->modified)) {
-            $this->modified = null;
+        if (!is_null($default)) {
+            if (empty($this->$attributeName)) {
+                $this->$attributeName = $default;
+            }
         }
 
-        if (!OSMap\Helper\General::isEmptyDate($this->modified)) {
-            if (!is_numeric($this->modified)) {
-                $date           = new \JDate($this->modified);
-                $this->modified = $date->toUnix();
+        if (OSMap\Helper\General::isEmptyDate($this->$attributeName)) {
+            $this->$attributeName = null;
+        }
+
+        if (!OSMap\Helper\General::isEmptyDate($this->$attributeName)) {
+            if (!is_numeric($this->$attributeName)) {
+                $date           = new \JDate($this->$attributeName);
+                $this->$attributeName = $date->toUnix();
             }
 
             // Convert dates from UTC
-            if (intval($this->modified)) {
-                if ($this->modified < 0) {
-                    $this->modified = null;
+            if (intval($this->$attributeName)) {
+                if ($this->$attributeName < 0) {
+                    $this->$attributeName = null;
                 } else {
-                    $date           = new \JDate($this->modified);
-                    $this->modified = $date->toISO8601();
+                    $date           = new \JDate($this->$attributeName);
+                    $this->$attributeName = $date->toISO8601();
                 }
             }
         }
