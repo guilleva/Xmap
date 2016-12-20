@@ -9,6 +9,8 @@
 
 namespace Alledia\OSMap\Helper;
 
+use Alledia\OSMap;
+
 defined('_JEXEC') or die();
 
 
@@ -24,9 +26,6 @@ class Images
      */
     public function getImagesFromText($text, $max = 9999)
     {
-        $urlBase    = \JURI::base();
-        $urlBaseLen = strlen($urlBase);
-
         $images  = array();
         $matches = $matches1 = $matches2 = array();
 
@@ -43,24 +42,22 @@ class Images
 
             $j = 0;
             for ($i = 0; $i < $count && $j < $max; $i++) {
-                if (trim($matches[$i]['src']) && (substr($matches[$i]['src'], 0, 1) == '/' || !preg_match('/^https?:\/\//i', $matches[$i]['src']) || substr($matches[$i]['src'], 0, $urlBaseLen) == $urlBase)) {
-                    $src = $matches[$i]['src'];
+                $src = trim($matches[$i]['src']);
 
-                    if (substr($src, 0, 1) == '/') {
-                        $src = substr($src, 1);
+                if (!empty($src)) {
+                    if (OSMap\Router::isInternalURL($src)) {
+                        if (OSMap\Router::isRelativeUri($src)) {
+                            $src = OSMap\Router::convertRelativeUriToFullUri($src);
+                        }
+
+                        $image = new \stdClass;
+                        $image->src   = $src;
+                        $image->title = (isset($matches[$i]['title']) ? $matches[$i]['title'] : @$matches[$i]['alt']);
+
+                        $images[] = $image;
+
+                        $j++;
                     }
-
-                    if (!preg_match('/^https?:\//i', $src)) {
-                        $src = $urlBase . $src;
-                    }
-
-                    $image = new \stdClass;
-                    $image->src   = $src;
-                    $image->title = (isset($matches[$i]['title']) ? $matches[$i]['title'] : @$matches[$i]['alt']);
-
-                    $images[] = $image;
-
-                    $j++;
                 }
             }
         }
