@@ -79,14 +79,14 @@ class Images
 
         if (isset($imagesParam->image_intro) && !empty($imagesParam->image_intro)) {
             $images[] = (object)array(
-                'src'   => \JURI::base() . $imagesParam->image_intro,
+                'src'   => OSMap\Router::convertRelativeUriToFullUri($imagesParam->image_intro),
                 'title' => $imagesParam->image_intro_caption
             );
         }
 
         if (isset($imagesParam->image_fulltext) && !empty($imagesParam->image_fulltext)) {
             $images[] = (object)array(
-                'src'   => \JURI::base() . $imagesParam->image_fulltext,
+                'src'   => OSMap\Router::convertRelativeUriToFullUri($imagesParam->image_fulltext),
                 'title' => $imagesParam->image_fulltext_caption
             );
         }
