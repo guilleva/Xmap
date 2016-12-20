@@ -24,12 +24,10 @@ class Images
      */
     public function getImagesFromText($text, $max = 9999)
     {
-        if (!isset($urlBase)) {
-            $urlBase    = \JURI::base();
-            $urlBaseLen = strlen($urlBase);
-        }
+        $urlBase    = \JURI::base();
+        $urlBaseLen = strlen($urlBase);
 
-        $images  = null;
+        $images  = array();
         $matches = $matches1 = $matches2 = array();
 
         // Look <img> tags
@@ -41,8 +39,6 @@ class Images
         $matches = array_merge($matches1, $matches2);
 
         if (count($matches)) {
-            $images = array();
-
             $count = count($matches);
 
             $j = 0;
@@ -67,6 +63,35 @@ class Images
                     $j++;
                 }
             }
+        }
+
+        return $images;
+    }
+
+    /**
+     * Return an array of images found in the content image params.
+     *
+     * @param stdClass $item
+     *
+     * @return array
+     */
+    public function getImagesFromParams($item)
+    {
+        $imagesParam = json_decode($item->images);
+        $images      = array();
+
+        if (isset($imagesParam->image_intro) && !empty($imagesParam->image_intro)) {
+            $images[] = (object)array(
+                'src'   => \JURI::base() . $imagesParam->image_intro,
+                'title' => $imagesParam->image_intro_caption
+            );
+        }
+
+        if (isset($imagesParam->image_fulltext) && !empty($imagesParam->image_fulltext)) {
+            $images[] = (object)array(
+                'src'   => \JURI::base() . $imagesParam->image_fulltext,
+                'title' => $imagesParam->image_fulltext_caption
+            );
         }
 
         return $images;
