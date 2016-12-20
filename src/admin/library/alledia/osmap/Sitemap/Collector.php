@@ -440,7 +440,8 @@ class Collector
     {
         if (!empty($item->fullLink)) {
             // We need to make sure to have an URL free of hash chars
-            $hash = md5($item->fullLink);
+            $url  = OSMap\Router::removeHashFromURL($item->fullLink);
+            $hash = md5($url);
 
             if (isset($this->urlHashList[$hash])) {
                 $item->duplicate = true;
