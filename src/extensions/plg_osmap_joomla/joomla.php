@@ -130,6 +130,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                 if ($paramAddPageBreaks || $paramAddImages) {
                     $query->select($db->quoteName('introtext'));
                     $query->select($db->quoteName('fulltext'));
+                    $query->select($db->quoteName('images'));
                 }
 
                 $db->setQuery($query);
@@ -153,7 +154,21 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                     if ($paramAddImages) {
                         $maxImages = $params->get('max_images', 1000);
 
-                        $node->images = $container->imagesHelper->getImagesFromText($text, $maxImages);
+                        $node->images = array();
+
+                        // Images from text
+                        $node->images = array_merge(
+                            $node->images,
+                            (array)$container->imagesHelper->getImagesFromText($text, $maxImages)
+                        );
+
+                        // Images from params
+                        if (!empty($item->images)) {
+                            $node->images = array_merge(
+                                $node->images,
+                                (array)$container->imagesHelper->getImagesFromParams($item)
+                            );
+                        }
                     }
 
                     if ($paramAddPageBreaks) {
@@ -481,6 +496,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                     'a.metadata',
                     'a.language',
                     'a.metakey',
+                    'a.images',
                     'c.title AS categMetakey'
                 )
             );
@@ -604,7 +620,21 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                 if ($params->get('add_images', 1)) {
                     $maxImages = $params->get('max_images', 1000);
 
-                    $node->images = $container->imagesHelper->getImagesFromText($text, $maxImages);
+                    $node->images = array();
+
+                    // Images from text
+                    $node->images = array_merge(
+                        $node->images,
+                        (array)$container->imagesHelper->getImagesFromText($text, $maxImages)
+                    );
+
+                    // Images from params
+                    if (!empty($item->images)) {
+                        $node->images = array_merge(
+                            $node->images,
+                            (array)$container->imagesHelper->getImagesFromParams($item)
+                        );
+                    }
                 }
 
                 if ($params->get('add_pagebreaks', 1)) {
