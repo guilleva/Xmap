@@ -532,8 +532,8 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
             'ASC',
             'DESC'
         );
-        $order           = ArrayHelper::getValue($orderOptions, $params->get('article_order', 0), 0);
-        $orderDir        = ArrayHelper::getValue($orderDirOptions, $params->get('article_orderdir', 0), 0);
+        $order    = ArrayHelper::getValue($orderOptions, $params->get('article_order', 0), 0);
+        $orderDir = ArrayHelper::getValue($orderDirOptions, $params->get('article_orderdir', 0), 0);
 
         $orderBy = ' ' . $order . ' ' . $orderDir;
         $query->order($orderBy);
