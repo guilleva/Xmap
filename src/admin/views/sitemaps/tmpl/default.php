@@ -144,62 +144,7 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                         </td>
 
                         <td class="center osmap-links">
-                        <span class="osmap-link">
-                            <?php $link = isset($this->item->menuIdList['xml'])
-                                ? $container->router->routeURL('index.php?Itemid=' . $this->item->menuIdList['xml'])
-                                : '/index.php?option=com_osmap&amp;view=xml&id=' . $this->item->id;
-                            ?>
-                            <a
-                                href="<?php echo $baseUrl . $link; ?>"
-                                target="_blank"
-                                title="<?php echo JText::_('COM_OSMAP_XML_LINK_TOOLTIP', true); ?>">
-
-                                <?php echo JText::_('COM_OSMAP_XML_LINK'); ?>
-                            </a>
-                            <span class="icon-new-tab"></span>
-                        </span>
-                            <span class="osmap-link">
-                            <?php $link = isset($this->item->menuIdList['html'])
-                                ? $container->router->routeURL('index.php?Itemid=' . $this->item->menuIdList['html'])
-                                : '/index.php?option=com_osmap&amp;view=html&id=' . $this->item->id;
-                            ?>
-                                <a
-                                    href="<?php echo $baseUrl . $link; ?>"
-                                    target="_blank"
-                                    title="<?php echo JText::_('COM_OSMAP_HTML_LINK_TOOLTIP', true); ?>">
-
-                                <?php echo JText::_('COM_OSMAP_HTML_LINK'); ?>
-                            </a>
-                            <span class="icon-new-tab"></span>
-                        </span>
-                            <span class="osmap-link">
-                            <?php $link = isset($this->item->menuIdList['xml'])
-                                ? $container->router->routeURL('index.php?Itemid=' . $this->item->menuIdList['xml'] . '&news=1&id=' . $this->item->id)
-                                : '/index.php?option=com_osmap&amp;view=xml&news=1&id=' . $this->item->id;
-                            ?>
-                                <a
-                                    href="<?php echo $baseUrl . $link; ?>"
-                                    target="_blank"
-                                    title="<?php echo JText::_('COM_OSMAP_NEWS_LINK_TOOLTIP', true); ?>">
-
-                                <?php echo JText::_('COM_OSMAP_NEWS_LINK'); ?>
-                            </a>
-                            <span class="icon-new-tab"></span>
-                        </span>
-                            <span class="osmap-link">
-                            <?php $link = isset($this->item->menuIdList['xml'])
-                                ? $container->router->routeURL('index.php?Itemid=' . $this->item->menuIdList['xml'] . '&images=1&id=' . $this->item->id)
-                                : '/index.php?option=com_osmap&amp;view=xml&images=1&id=' . $this->item->id;
-                            ?>
-                                <a
-                                    href="<?php echo $baseUrl . $link; ?>"
-                                    target="_blank"
-                                    title="<?php echo JText::_('COM_OSMAP_IMAGES_LINK_TOOLTIP', true); ?>">
-
-                                <?php echo JText::_('COM_OSMAP_IMAGES_LINK'); ?>
-                            </a>
-                            <span class="icon-new-tab"></span>
-                        </span>
+                            <?php echo $this->loadTemplate('previews'); ?>
                         </td>
 
                         <td class="center">
