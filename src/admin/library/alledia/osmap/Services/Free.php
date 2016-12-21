@@ -71,6 +71,15 @@ class Free implements ServiceProviderInterface
             return new Framework\Profiler;
         };
 
+        $pimple['router'] = function (OSMap\Container $c) {
+            return new OSMap\Router;
+        };
+
+        $pimple['uri'] = function (OSMap\Container $c) {
+            return new OSMap\Joomla\Uri;
+        };
+
+
         $this->registerHelper($pimple);
     }
 

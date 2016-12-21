@@ -281,7 +281,9 @@ class BaseItem extends \JObject
      */
     protected function checkLinkIsInternal()
     {
-        return OSMap\Router::isInternalURL($this->link)
+        $container = OSMap\Factory::getContainer();
+
+        return $container->router->isInternalURL($this->link)
             || in_array(
                 $this->type,
                 array(

@@ -439,8 +439,10 @@ class Collector
     protected function checkDuplicatedURLToIgnore($item)
     {
         if (!empty($item->fullLink)) {
+            $container = OSMap\Factory::getContainer();
+
             // We need to make sure to have an URL free of hash chars
-            $url  = OSMap\Router::removeHashFromURL($item->fullLink);
+            $url  = $container->router->removeHashFromURL($item->fullLink);
             $hash = md5($url);
 
             if (isset($this->urlHashList[$hash])) {
