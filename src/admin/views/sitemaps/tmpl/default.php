@@ -127,19 +127,7 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                     </td>
 
                     <td class="<?php echo $editLinksClass; ?>">
-                        <?php if (empty($this->languages)) : ?>
-                            <a href="<?php echo JRoute::_('index.php?option=com_osmap&view=sitemapitems&id=' . $this->item->id);?>">
-                                <span class="icon-edit"></span>
-                            </a>
-                        <?php else : ?>
-                            <?php foreach ($this->languages as $language) : ?>
-                                <a href="<?php echo JRoute::_('index.php?option=com_osmap&view=sitemapitems&id=' . $this->item->id . '&lang=' . $language->sef);?>">
-                                    <span class="icon-edit"></span>
-                                    <img src="/media/mod_languages/images/<?php echo $language->image; ?>.gif" />
-                                    <?php echo $language->title; ?>
-                                </a><br />
-                            <?php endforeach; ?>
-                        <?php endif; ?>
+                        <?php echo $this->loadTemplate('editlinks'); ?>
                     </td>
 
                     <td class="center osmap-links">
