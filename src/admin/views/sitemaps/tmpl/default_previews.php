@@ -53,43 +53,49 @@ $getLink = function ($type, $lang = null) use ($router, $baseUrl) {
     return $router->routeURL('index.php?' . http_build_query($query));
 };
 
-?>
-<span class="osmap-link">
-    <a
-        href="<?php echo $baseUrl . $getLink('xml'); ?>"
-        target="_blank"
-        title="<?php echo JText::_('COM_OSMAP_XML_LINK_TOOLTIP', true); ?>">
-        <?php echo JText::_('COM_OSMAP_XML_LINK'); ?>
-    </a>
-    <span class="icon-new-tab"></span>
-</span>
+$languages = $this->languages ?: array('');
+foreach ($languages as $language) :
+    $langCode = empty($language->sef) ? null : $language->sef;
+    ?>
+    <span class="osmap-link">
+        <a
+            href="<?php echo $baseUrl . $getLink('xml', $langCode); ?>"
+            target="_blank"
+            title="<?php echo JText::_('COM_OSMAP_XML_LINK_TOOLTIP', true); ?>">
+            <?php echo JText::_('COM_OSMAP_XML_LINK'); ?>
+        </a>
+        <span class="icon-new-tab"></span>
+    </span>
 
-<span class="osmap-link">
-    <a
-        href="<?php echo $baseUrl . $getLink('html'); ?>"
-        target="_blank"
-        title="<?php echo JText::_('COM_OSMAP_HTML_LINK_TOOLTIP', true); ?>">
-        <?php echo JText::_('COM_OSMAP_HTML_LINK'); ?>
-     </a>
-    <span class="icon-new-tab"></span>
-</span>
+    <span class="osmap-link">
+        <a
+            href="<?php echo $baseUrl . $getLink('html', $langCode); ?>"
+            target="_blank"
+            title="<?php echo JText::_('COM_OSMAP_HTML_LINK_TOOLTIP', true); ?>">
+            <?php echo JText::_('COM_OSMAP_HTML_LINK'); ?>
+         </a>
+        <span class="icon-new-tab"></span>
+    </span>
 
-<span class="osmap-link">
-    <a
-        href="<?php echo $baseUrl . $getLink('news'); ?>"
-        target="_blank"
-        title="<?php echo JText::_('COM_OSMAP_NEWS_LINK_TOOLTIP', true); ?>">
-        <?php echo JText::_('COM_OSMAP_NEWS_LINK'); ?>
-    </a>
-    <span class="icon-new-tab"></span>
-</span>
+    <span class="osmap-link">
+        <a
+            href="<?php echo $baseUrl . $getLink('news', $langCode); ?>"
+            target="_blank"
+            title="<?php echo JText::_('COM_OSMAP_NEWS_LINK_TOOLTIP', true); ?>">
+            <?php echo JText::_('COM_OSMAP_NEWS_LINK'); ?>
+        </a>
+        <span class="icon-new-tab"></span>
+    </span>
 
-<span class="osmap-link">
-    <a
-        href="<?php echo $baseUrl . $getLink('images'); ?>"
-        target="_blank"
-        title="<?php echo JText::_('COM_OSMAP_IMAGES_LINK_TOOLTIP', true); ?>">
-        <?php echo JText::_('COM_OSMAP_IMAGES_LINK'); ?>
-    </a>
-    <span class="icon-new-tab"></span>
-</span>
+    <span class="osmap-link">
+        <a
+            href="<?php echo $baseUrl . $getLink('images', $langCode); ?>"
+            target="_blank"
+            title="<?php echo JText::_('COM_OSMAP_IMAGES_LINK_TOOLTIP', true); ?>">
+            <?php echo JText::_('COM_OSMAP_IMAGES_LINK'); ?>
+        </a>
+        <span class="icon-new-tab"></span>
+    </span>
+    <br/>
+    <?php
+endforeach;
