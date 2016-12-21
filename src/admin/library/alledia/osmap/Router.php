@@ -163,8 +163,9 @@ class Router
     public function convertRelativeUriToFullUri($path)
     {
         $path = preg_replace('#^/#', '', $path);
+        $base = preg_replace('#/$#', '', $this->getFrontendBase());
 
-        return static::getFrontendBase() . '/' . $path;
+        return $base . '/' . $path;
     }
 
     /**
