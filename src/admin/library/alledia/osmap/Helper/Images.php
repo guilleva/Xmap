@@ -26,8 +26,9 @@ class Images
      */
     public function getImagesFromText($text, $max = 9999)
     {
-        $images  = array();
-        $matches = $matches1 = $matches2 = array();
+        $container = OSMap\Factory::getContainer();
+        $images    = array();
+        $matches   = $matches1 = $matches2 = array();
 
         // Look <img> tags
         preg_match_all('/<img[^>]*?(?:(?:[^>]*src="(?P<src>[^"]+)")|(?:[^>]*alt="(?P<alt>[^"]+)")|(?:[^>]*title="(?P<title>[^"]+)"))+[^>]*>/i', $text, $matches1, PREG_SET_ORDER);
@@ -45,9 +46,9 @@ class Images
                 $src = trim($matches[$i]['src']);
 
                 if (!empty($src)) {
-                    if (OSMap\Router::isInternalURL($src)) {
-                        if (OSMap\Router::isRelativeUri($src)) {
-                            $src = OSMap\Router::convertRelativeUriToFullUri($src);
+                    if ($container->router->isInternalURL($src)) {
+                        if ($container->router->isRelativeUri($src)) {
+                            $src = $container->router->convertRelativeUriToFullUri($src);
                         }
 
                         $image = new \stdClass;
@@ -74,19 +75,20 @@ class Images
      */
     public function getImagesFromParams($item)
     {
+        $container   = OSMap\Factory::getContainer();
         $imagesParam = json_decode($item->images);
         $images      = array();
 
         if (isset($imagesParam->image_intro) && !empty($imagesParam->image_intro)) {
             $images[] = (object)array(
-                'src'   => OSMap\Router::convertRelativeUriToFullUri($imagesParam->image_intro),
+                'src'   => $container->router->convertRelativeUriToFullUri($imagesParam->image_intro),
                 'title' => $imagesParam->image_intro_caption
             );
         }
 
         if (isset($imagesParam->image_fulltext) && !empty($imagesParam->image_fulltext)) {
             $images[] = (object)array(
-                'src'   => OSMap\Router::convertRelativeUriToFullUri($imagesParam->image_fulltext),
+                'src'   => $container->router->convertRelativeUriToFullUri($imagesParam->image_fulltext),
                 'title' => $imagesParam->image_fulltext_caption
             );
         }

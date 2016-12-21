@@ -1,4 +1,4 @@
-
+# Lumen
 
 
 
@@ -16,17 +16,30 @@ Please try it and leave your feedback.
 
 ## Config
 
-* cleanup: `boolean`, default `true` - all db queries will be run in transaction, which will be rolled back at the end of test.
-* bootstrap: `string`, default `bootstrap/app.php` - Relative path to app.php config file.
-* root: `string`, default `` - Root path of our application.
-* packages: `string`, default `workbench` - Root path of application packages (if any).
+* cleanup: `boolean`, default `true` - all database queries will be run in a transaction,
+  which will be rolled back at the end of each test.
+* bootstrap: `string`, default `bootstrap/app.php` - relative path to app.php config file.
+* root: `string`, default `` - root path of the application.
+* packages: `string`, default `workbench` - root path of application packages (if any).
+* url: `string`, default `http://localhost` - the application URL
 
 ## API
 
-* app - `Illuminate\Foundation\Application` instance
-* client - `BrowserKit` client
+* app - `\Laravel\Lumen\Application`
+* config - `array`
+
+## Parts
+
+* ORM - only include the database methods of this module:
+    * have
+    * haveMultiple
+    * haveRecord
+    * grabRecord
+    * seeRecord
+    * dontSeeRecord
 
 
+## Actions
 
 ### _findElements
 
@@ -155,12 +168,11 @@ Authenticates user for HTTP_AUTH
 
 ### amLoggedAs
  
-Set the currently logged in user for the application.
-Takes either an object that implements the User interface or
-an array of credentials.
+Set the authenticated user for the next request.
+This will not persist between multiple requests.
 
- * `param`  \Illuminate\Contracts\Auth\User|array $user
- * `param`  string $driver
+ * `param`  \Illuminate\Contracts\Auth\Authenticatable
+ * `param`  string|null $driver The authentication driver for Lumen <= 5.1.*, guard name for Lumen >= 5.2
  * `return` void
 
 
@@ -254,6 +266,25 @@ $I->click(['link' => 'Login']);
  * `param` $context
 
 
+### deleteHeader
+ 
+Deletes the header with the passed name.  Subsequent requests
+will not have the deleted header in its request.
+
+Example:
+```php
+<?php
+$I->haveHttpHeader('X-Requested-With', 'Codeception');
+$I->amOnPage('test-headers.php');
+// ...
+$I->deleteHeader('X-Requested-With');
+$I->amOnPage('some-other-page.php');
+?>
+```
+
+ * `param string` $name the name of the header to delete.
+
+
 ### dontSee
  
 Checks that the current page doesn't contain the text specified (case insensitive).
@@ -261,9 +292,10 @@ Give a locator as the second parameter to match a specific region.
 
 ```php
 <?php
-$I->dontSee('Login');                    // I can suppose user is already logged in
-$I->dontSee('Sign Up','h1');             // I can suppose it's not a signup page
-$I->dontSee('Sign Up','//body/h1');      // with XPath
+$I->dontSee('Login');                         // I can suppose user is already logged in
+$I->dontSee('Sign Up','h1');                  // I can suppose it's not a signup page
+$I->dontSee('Sign Up','//body/h1');           // with XPath
+$I->dontSee('Sign Up', ['css' => 'body h1']); // with strict CSS locator
 ```
 
 Note that the search is done after stripping all HTML tags from the body,
@@ -286,7 +318,7 @@ For checking the raw source code, use `seeInSource()`.
 
 ### dontSeeAuthentication
  
-Check that user is not authenticated
+Check that user is not authenticated.
 
 
 ### dontSeeCheckboxIsChecked
@@ -491,15 +523,32 @@ $I->dontSeeOptionIsSelected('#form input[name=payment]', 'Visa');
 ### dontSeeRecord
  
 Checks that record does not exist in database.
+You can pass the name of a database table or the class name of an Eloquent model as the first argument.
 
 ``` php
 <?php
 $I->dontSeeRecord('users', array('name' => 'davert'));
+$I->dontSeeRecord('App\User', array('name' => 'davert'));
 ?>
 ```
 
- * `param` $tableName
+ * `param string` $table
  * `param array` $attributes
+ * `[Part]` orm
+
+
+### dontSeeResponseCodeIs
+ 
+Checks that response code is equal to value provided.
+
+```php
+<?php
+$I->dontSeeResponseCodeIs(200);
+
+// recommended \Codeception\Util\HttpCode
+$I->dontSeeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+```
+ * `param` $code
 
 
 ### fillField
@@ -596,15 +645,20 @@ $aLinks = $I->grabMultiple('a', 'href');
 ### grabRecord
  
 Retrieves record from database
+If you pass the name of a database table as the first argument, this method returns an array.
+You can also pass the class name of an Eloquent model, in that case this method returns an Eloquent model.
 
 ``` php
 <?php
-$category = $I->grabRecord('users', array('name' => 'davert'));
+$record = $I->grabRecord('users', array('name' => 'davert')); // returns array
+$record = $I->grabRecord('App\User', array('name' => 'davert')); // returns Eloquent model
 ?>
 ```
 
- * `param` $tableName
+ * `param string` $table
  * `param array` $attributes
+ * `return` array|EloquentModel
+ * `[Part]` orm
 
 
 ### grabService
@@ -633,7 +687,8 @@ $service = $I->grabService('foo');
 ### grabTextFrom
  
 Finds and returns the text contents of the given element.
-If a fuzzy locator is used, the element is found using CSS, XPath, and by matching the full page source by regular expression.
+If a fuzzy locator is used, the element is found using CSS, XPath,
+and by matching the full page source by regular expression.
 
 ``` php
 <?php
@@ -654,23 +709,82 @@ $value = $I->grabTextFrom('~<input value=(.*?)]~sgi'); // match with a regex
  * `return` array|mixed|null|string
 
 
-### haveRecord
+### have
  
-Inserts record into the database.
+Use Lumen's model factory to create a model.
+Can only be used with Lumen 5.1 and later.
 
 ``` php
 <?php
-$user_id = $I->haveRecord('users', array('name' => 'Davert'));
+$I->have('App\User');
+$I->have('App\User', ['name' => 'John Doe']);
+$I->have('App\User', [], 'admin');
 ?>
 ```
 
- * `param` $tableName
+ * `see`  https://lumen.laravel.com/docs/master/testing#model-factories
+ * `param string` $model
  * `param array` $attributes
+ * `param string` $name
+ * `[Part]` orm
 
 
-### logout
+### haveHttpHeader
  
-Logs user out
+Sets the HTTP header to the passed value - which is used on
+subsequent HTTP requests through PhpBrowser.
+
+Example:
+```php
+<?php
+$I->setHeader('X-Requested-With', 'Codeception');
+$I->amOnPage('test-headers.php');
+?>
+```
+
+ * `param string` $name the name of the request header
+ * `param string` $value the value to set it to for subsequent
+       requests
+
+
+### haveMultiple
+ 
+Use Laravel's model factory to create multiple models.
+Can only be used with Lumen 5.1 and later.
+
+``` php
+<?php
+$I->haveMultiple('App\User', 10);
+$I->haveMultiple('App\User', 10, ['name' => 'John Doe']);
+$I->haveMultiple('App\User', 10, [], 'admin');
+?>
+```
+
+ * `see`  https://lumen.laravel.com/docs/master/testing#model-factories
+ * `param string` $model
+ * `param int` $times
+ * `param array` $attributes
+ * `param string` $name
+ * `[Part]` orm
+
+
+### haveRecord
+ 
+Inserts record into the database.
+If you pass the name of a database table as the first argument, this method returns an integer ID.
+You can also pass the class name of an Eloquent model, in that case this method returns an Eloquent model.
+
+``` php
+<?php
+$user_id = $I->haveRecord('users', array('name' => 'Davert')); // returns integer
+$user = $I->haveRecord('App\User', array('name' => 'Davert')); // returns Eloquent model
+?>
+```
+
+ * `param string` $table
+ * `param array` $attributes
+ * `return` integer|EloquentModel
+ * `[Part]` orm
 
 
 ### moveBack
@@ -694,14 +808,15 @@ You can set additional cookie params like `domain`, `path` in array passed as la
  
 Checks that the current page contains the given string (case insensitive).
 
-You can specify a specific HTML element (via CSS or XPath) as the second 
+You can specify a specific HTML element (via CSS or XPath) as the second
 parameter to only search within that element.
 
 ``` php
 <?php
-$I->see('Logout');                 // I can suppose user is logged in
-$I->see('Sign Up', 'h1');          // I can suppose it's a signup page
-$I->see('Sign Up', '//body/h1');   // with XPath
+$I->see('Logout');                        // I can suppose user is logged in
+$I->see('Sign Up', 'h1');                 // I can suppose it's a signup page
+$I->see('Sign Up', '//body/h1');          // with XPath
+$I->see('Sign Up', ['css' => 'body h1']); // with strict CSS locator
 ```
 
 Note that the search is done after stripping all HTML tags from the body,
@@ -724,7 +839,7 @@ For checking the raw source code, use `seeInSource()`.
 
 ### seeAuthentication
  
-Checks that user is authenticated
+Checks that user is authenticated.
 
 
 ### seeCheckboxIsChecked
@@ -907,15 +1022,6 @@ $I->seeInFormFields('//form[ * `id=my-form]',`  $form);
  * `param` $params
 
 
-### seeInSession
- 
-Assert that the session has a given list of values.
-
- * `param`  string|array $key
- * `param`  mixed $value
- * `return` void
-
-
 ### seeInSource
  
 Checks that the current page contains the given string in its
@@ -998,29 +1104,33 @@ Asserts that current page has 404 response status code.
 ### seeRecord
  
 Checks that record exists in database.
+You can pass the name of a database table or the class name of an Eloquent model as the first argument.
 
 ``` php
+<?php
 $I->seeRecord('users', array('name' => 'davert'));
+$I->seeRecord('App\User', array('name' => 'davert'));
+?>
 ```
 
- * `param` $tableName
+ * `param string` $table
  * `param array` $attributes
+ * `[Part]` orm
 
 
 ### seeResponseCodeIs
  
 Checks that response code is equal to value provided.
 
+```php
+<?php
+$I->seeResponseCodeIs(200);
+
+// recommended \Codeception\Util\HttpCode
+$I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+```
+
  * `param` $code
-
-
-
-### seeSessionHasValues
- 
-Assert that the session has a given list of values.
-
- * `param`  array $bindings
- * `return` void
 
 
 ### selectOption
@@ -1040,6 +1150,15 @@ Provide an array for the second argument to select multiple options:
 ``` php
 <?php
 $I->selectOption('Which OS do you use?', array('Windows','Linux'));
+?>
+```
+
+Or provide an associative array for the second argument to specifically define which selection method should be used:
+
+``` php
+<?php
+$I->selectOption('Which OS do you use?', array('text' => 'Windows')); // Only search by text 'Windows'
+$I->selectOption('Which OS do you use?', array('value' => 'windows')); // Only search by value 'windows'
 ?>
 ```
 
@@ -1100,6 +1219,11 @@ $I->sendAjaxRequest('PUT', '/posts/7', array('title' => 'new title'));
  * `param` $params
 
 
+### setApplication
+ 
+ * `param \Laravel\Lumen\Application` $app
+
+
 ### setCookie
  
 Sets a cookie with the given name and value.
@@ -1123,8 +1247,8 @@ Submits the given form on the page, optionally with the given form
 values.  Pass the form field's values as an array in the second
 parameter.
 
-Although this function can be used as a short-hand version of 
-`fillField()`, `selectOption()`, `click()` etc. it has some important 
+Although this function can be used as a short-hand version of
+`fillField()`, `selectOption()`, `click()` etc. it has some important
 differences:
 
  * Only field *names* may be used, not CSS/XPath selectors nor field labels
@@ -1134,7 +1258,7 @@ differences:
    like you would if you called `fillField()` or `selectOption()` with
    a missing field.
 
-Fields that are not provided will be filled by their values from the page, 
+Fields that are not provided will be filled by their values from the page,
 or from any previous calls to `fillField()`, `selectOption()` etc.
 You don't need to click the 'Submit' button afterwards.
 This command itself triggers the request to form's action.
@@ -1215,7 +1339,7 @@ $I->submitForm(
 );
 ```
 
-This function works well when paired with `seeInFormFields()` 
+This function works well when paired with `seeInFormFields()`
 for quickly testing CRUD interfaces and form validation logic.
 
 ``` php
@@ -1259,7 +1383,7 @@ $I->submitForm('#my-form', [
 Mixing string and boolean values for a checkbox's value is not supported
 and may produce unexpected results.
 
-Field names ending in `[]` must be passed without the trailing square 
+Field names ending in `[]` must be passed without the trailing square
 bracket characters, and must contain an array for its value.  This allows
 submitting multiple values with the same name, consider:
 
@@ -1320,4 +1444,4 @@ $I->uncheckOption('#notify');
 
  * `param` $option
 
-<p>&nbsp;</p><div class="alert alert-warning">Module reference is taken from the source code. <a href="https://github.com/Codeception/Codeception/tree/2.1/src/Codeception/Module/Lumen.php">Help us to improve documentation. Edit module reference</a></div>
+<p>&nbsp;</p><div class="alert alert-warning">Module reference is taken from the source code. <a href="https://github.com/Codeception/Codeception/tree/2.2/src/Codeception/Module/Lumen.php">Help us to improve documentation. Edit module reference</a></div>

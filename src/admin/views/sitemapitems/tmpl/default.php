@@ -20,6 +20,8 @@ JHtml::stylesheet('media/com_osmap/css/admin.min.css');
 JHtml::stylesheet('media/jui/css/icomoon.css');
 
 JHtml::script('com_osmap/sitemapitems.min.js', false, true);
+
+$container = OSMap\Factory::getContainer();
 ?>
 
 <form
@@ -56,7 +58,7 @@ JHtml::script('com_osmap/sitemapitems.min.js', false, true);
 ;(function($) {
     $(function() {
         $.fn.osmap.loadSitemapItems({
-            baseUri: '<?php echo OSMap\Router::getFrontendBase(); ?>',
+            baseUri: '<?php echo $container->router->getFrontendBase(); ?>',
             sitemapId: '<?php echo $this->sitemapId; ?>',
             container: '#osmap-items-list',
             language: '<?php echo $this->language; ?>',

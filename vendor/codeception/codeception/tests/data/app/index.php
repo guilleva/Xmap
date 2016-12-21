@@ -26,7 +26,8 @@ $urls = array(
     '/redirect_params' => 'redirect_params',
     '/redirect_interval' => 'redirect_interval',
     '/redirect_header_interval' => 'redirect_header_interval',
-    '/redirect_self' => 'redirect_self',
+    '/redirect_meta_refresh' => 'redirect_meta_refresh',
+    '/location_201' => 'location_201',
     '/relative_redirect' => 'redirect_relative',
     '/relative/redirect' => 'redirect_relative',
     '/redirect_twice' => 'redirect_twice',
@@ -44,6 +45,7 @@ $urls = array(
     '/unset-cookie' => 'unsetCookie',
     '/external_url' => 'external_url',
     '/iframe' => 'iframe',
+    '/basehref' => 'basehref',
 );
 
 glue::stick($urls);

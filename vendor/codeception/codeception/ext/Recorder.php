@@ -8,7 +8,7 @@ use Codeception\Exception\ExtensionException;
 use Codeception\Lib\Interfaces\ScreenshotSaver;
 use Codeception\Module\WebDriver;
 use Codeception\Step\Comment as CommentStep;
-use Codeception\TestCase;
+use Codeception\Test\Descriptor;
 use Codeception\Util\FileSystem;
 use Codeception\Util\Template;
 
@@ -27,19 +27,24 @@ use Codeception\Util\Template;
  *
  * ``` yaml
  * extensions:
- *     enabled: [Codeception\Extension\Recorder]
+ *     enabled:
+ *         - Codeception\Extension\Recorder
  * ```
  *
  * #### Configuration
  *
  * * `delete_successful` (default: true) - delete records for successfully passed tests (log only failed and errored)
- * * `module` (default: WebDriver) - which module for screenshots to use. Module should implement `Codeception\Lib\Interfaces\ScreenshotSaver` interaface. Currently only WebDriver or any its children can be used.
+ * * `module` (default: WebDriver) - which module for screenshots to use. Set `AngularJS` if you want to use it with AngularJS module. Generally, module should implement `Codeception\Lib\Interfaces\ScreenshotSaver` interface.
+ *
+ *
+ * #### Examples:
  *
  * ``` yaml
  * extensions:
- *     config:
+ *     enabled:
  *         Codeception\Extension\Recorder:
- *             delete_successful: false
+ *             module: AngularJS # enable for Angular
+ *             delete_successful: false # show successful reports
  * ```
  *
  */
@@ -207,7 +212,7 @@ EOF;
 </div>
 EOF;
 
-    static $events = [
+    public static $events = [
         Events::SUITE_BEFORE => 'beforeSuite',
         Events::SUITE_AFTER  => 'afterSuite',
         Events::TEST_BEFORE  => 'before',
@@ -231,14 +236,21 @@ EOF;
     {
         $this->webDriverModule = null;
         if (!$this->hasModule($this->config['module'])) {
+            $this->writeln("Recorder is disabled, no available modules");
             return;
         }
         $this->seed = uniqid();
         $this->webDriverModule = $this->getModule($this->config['module']);
         if (!$this->webDriverModule instanceof ScreenshotSaver) {
-            throw new ExtensionException($this, 'You should pass module which implements Codeception\Lib\Interfaces\ScreenshotSaver interface');
+            throw new ExtensionException(
+                $this,
+                'You should pass module which implements Codeception\Lib\Interfaces\ScreenshotSaver interface'
+            );
         }
-        $this->writeln(sprintf("⏺ <bold>Recording</bold> ⏺ step-by-step screenshots will be saved to <info>%s</info>", codecept_output_dir()));
+        $this->writeln(sprintf(
+            "⏺ <bold>Recording</bold> ⏺ step-by-step screenshots will be saved to <info>%s</info>",
+            codecept_output_dir()
+        ));
         $this->writeln("Directory Format: <debug>record_{$this->seed}_{testname}</debug> ----");
     }
 
@@ -258,7 +270,6 @@ EOF;
 
         file_put_contents(codecept_output_dir().'records.html', $indexHTML);
         $this->writeln("⏺ Records saved into: <info>file://" . codecept_output_dir().'records.html</info>');
-
     }
 
     public function before(TestEvent $e)
@@ -269,7 +280,7 @@ EOF;
         $this->dir = null;
         $this->stepNum = 0;
         $this->slides = [];
-        $testName = str_replace(['::', '\\', '/'], ['.', '', ''], TestCase::getTestSignature($e->getTest()));
+        $testName = preg_replace('~\W~', '.', Descriptor::getTestAsString($e->getTest()));
         $this->dir = codecept_output_dir() . "record_{$this->seed}_$testName";
         @mkdir($this->dir);
     }
@@ -313,13 +324,13 @@ EOF;
             ->place('indicators', $indicatorHtml)
             ->place('slides', $slideHtml)
             ->place('feature', ucfirst($e->getTest()->getFeature()))
-            ->place('test', TestCase::getTestSignature($e->getTest()))
+            ->place('test', Descriptor::getTestSignature($e->getTest()))
             ->place('carousel_class', $this->config['animate_slides'] ? ' slide' : '')
             ->produce();
 
         $indexFile = $this->dir . DIRECTORY_SEPARATOR . 'index.html';
         file_put_contents($indexFile, $html);
-        $testName = TestCase::getTestSignature($e->getTest()). ' - '.ucfirst($e->getTest()->getFeature());
+        $testName = Descriptor::getTestSignature($e->getTest()). ' - '.ucfirst($e->getTest()->getFeature());
         $this->recordedTests[$testName] = substr($indexFile, strlen(codecept_output_dir()));
     }
 
@@ -337,5 +348,4 @@ EOF;
         $this->stepNum++;
         $this->slides[$filename] = $e->getStep();
     }
-
 }

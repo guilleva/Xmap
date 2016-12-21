@@ -14,16 +14,18 @@ use Alledia\OSMap;
 
 defined('_JEXEC') or die();
 
-if (file_exists(__DIR__ . '/../../../Installer/include.php')) {
-    $basePath = __DIR__ . '/../../..';
-} else {
-    $basePath = __DIR__ . '/../..';
+if (!defined('OSMAP_TEST')) {
+    if (file_exists(__DIR__ . '/../../../Installer/include.php')) {
+        $basePath = __DIR__ . '/../../..';
+    } else {
+        $basePath = __DIR__ . '/../..';
+    }
+
+    require_once $basePath . '/Installer/include.php';
+    require_once __DIR__ . '/XmapConverter.php';
+
+    require_once JPATH_ADMINISTRATOR . '/modules/mod_menu/helper.php';
 }
-
-require_once $basePath . '/Installer/include.php';
-require_once __DIR__ . '/XmapConverter.php';
-
-require_once JPATH_ADMINISTRATOR . '/modules/mod_menu/helper.php';
 
 
 /**

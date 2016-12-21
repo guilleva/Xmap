@@ -31,6 +31,7 @@
         "pimple/pimple": "v3.0.0"
     },
     "require-dev": {
-        "codeception/codeception": "~2.0"
+        "codeception/codeception": "~2.0",
+         "codeception/aspect-mock": "*"
     }
 }

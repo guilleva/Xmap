@@ -1,4 +1,5 @@
 <?php
+
 use \Codeception\Lib\Driver\Db;
 
 /**
@@ -14,7 +15,7 @@ class PostgresTest extends \PHPUnit_Framework_TestCase
 
     protected static $sql;
     protected $postgres;
-    
+
     public static function setUpBeforeClass()
     {
         if (!function_exists('pg_connect')) {
@@ -23,15 +24,18 @@ class PostgresTest extends \PHPUnit_Framework_TestCase
         if (getenv('APPVEYOR')) {
             self::$config['password'] = 'Password12!';
         }
-        $sql = file_get_contents(\Codeception\Configuration::dataDir() . '/dumps/postgres.sql');
-        $sql = preg_replace('%/\*(?:(?!\*/).)*\*/%s', "", $sql);
+        $dumpFile = 'dumps/postgres.sql';
+        if (defined('HHVM_VERSION')) {
+            $dumpFile = 'dumps/postgres-hhvm.sql';
+        }
+        $sql = file_get_contents(codecept_data_dir($dumpFile));
+        $sql = preg_replace('%/\*(?:(?!\*/).)*\*/%s', '', $sql);
         self::$sql = explode("\n", $sql);
         try {
             $postgres = Db::create(self::$config['dsn'], self::$config['user'], self::$config['password']);
             $postgres->cleanup();
         } catch (\Exception $e) {
         }
-        
     }
 
     public function setUp()
@@ -39,11 +43,11 @@ class PostgresTest extends \PHPUnit_Framework_TestCase
         try {
             $this->postgres = Db::create(self::$config['dsn'], self::$config['user'], self::$config['password']);
         } catch (\Exception $e) {
-            $this->markTestSkipped('Coudn\'t establish connection to database');
+            $this->markTestSkipped('Coudn\'t establish connection to database: ' . $e->getMessage());
         }
         $this->postgres->load(self::$sql);
     }
-    
+
     public function tearDown()
     {
         if (isset($this->postgres)) {
@@ -51,23 +55,34 @@ class PostgresTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-
     public function testCleanupDatabase()
     {
-        $this->assertNotEmpty($this->postgres->getDbh()->query("SELECT * FROM pg_tables where schemaname = 'public'")->fetchAll());
+        $this->assertNotEmpty(
+            $this->postgres->getDbh()->query("SELECT * FROM pg_tables where schemaname = 'public'")->fetchAll()
+        );
         $this->postgres->cleanup();
-        $this->assertEmpty($this->postgres->getDbh()->query("SELECT * FROM pg_tables where schemaname = 'public'")->fetchAll());
+        $this->assertEmpty(
+            $this->postgres->getDbh()->query("SELECT * FROM pg_tables where schemaname = 'public'")->fetchAll()
+        );
     }
 
     public function testCleanupDatabaseDeletesTypes()
     {
         $customTypes = ['composite_type', 'enum_type', 'range_type', 'base_type'];
         foreach ($customTypes as $customType) {
-            $this->assertNotEmpty($this->postgres->getDbh()->query("SELECT 1 FROM pg_type WHERE typname = '" . $customType . "';")->fetchAll());
+            $this->assertNotEmpty(
+                $this->postgres->getDbh()
+                    ->query("SELECT 1 FROM pg_type WHERE typname = '" . $customType . "';")
+                    ->fetchAll()
+            );
         }
         $this->postgres->cleanup();
         foreach ($customTypes as $customType) {
-            $this->assertEmpty($this->postgres->getDbh()->query("SELECT 1 FROM pg_type WHERE typname = '" . $customType . "';")->fetchAll());
+            $this->assertEmpty(
+                $this->postgres->getDbh()
+                    ->query("SELECT 1 FROM pg_type WHERE typname = '" . $customType . "';")
+                    ->fetchAll()
+            );
         }
     }
 
@@ -85,16 +100,17 @@ class PostgresTest extends \PHPUnit_Framework_TestCase
         $this->assertNotEquals(false, $res);
         $this->assertGreaterThan(0, $res->rowCount());
 
-        $res = $this->postgres->getDbh()->query("select * from anotherschema.users where email = 'schemauser@example.org'");
+        $res = $this->postgres->getDbh()
+            ->query("select * from anotherschema.users where email = 'schemauser@example.org'");
         $this->assertEquals(1, $res->rowCount());
     }
 
     public function testSelectWithEmptyCriteria()
     {
-      $emptyCriteria = [];
-      $generatedSql = $this->postgres->select('test_column', 'test_table', $emptyCriteria);
+        $emptyCriteria = [];
+        $generatedSql = $this->postgres->select('test_column', 'test_table', $emptyCriteria);
 
-      $this->assertNotContains('where', $generatedSql);
+        $this->assertNotContains('where', $generatedSql);
     }
 
     public function testGetSingleColumnPrimaryKey()
@@ -112,18 +128,23 @@ class PostgresTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals([], $this->postgres->getPrimaryKey('no_pk'));
     }
 
+    public function testLastInsertIdReturnsSequenceValueWhenNonStandardSequenceNameIsUsed()
+    {
+        $this->postgres->executeQuery('INSERT INTO seqnames(name) VALUES(?)',['test']);
+        $this->assertEquals(1, $this->postgres->lastInsertId('seqnames'));
+    }
+
     public function testGetPrimaryColumnOfTableUsingReservedWordAsTableName()
     {
         $this->assertEquals('id', $this->postgres->getPrimaryColumn('order'));
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage getPrimaryColumn method does not support composite primary keys, use getPrimaryKey instead
-     */
     public function testGetPrimaryColumnThrowsExceptionIfTableHasCompositePrimaryKey()
     {
+        $this->setExpectedException(
+            '\Exception',
+            'getPrimaryColumn method does not support composite primary keys, use getPrimaryKey instead'
+        );
         $this->postgres->getPrimaryColumn('composite_pk');
     }
-
 }

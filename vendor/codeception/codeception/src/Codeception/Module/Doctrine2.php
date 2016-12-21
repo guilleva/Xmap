@@ -1,12 +1,13 @@
 <?php
 namespace Codeception\Module;
 
+use Codeception\Lib\Interfaces\DataMapper;
 use Codeception\Module as CodeceptionModule;
 use Codeception\Exception\ModuleConfigException;
 use Codeception\Lib\Interfaces\DependsOnModule;
 use Codeception\Lib\Interfaces\DoctrineProvider;
-use Codeception\TestCase;
-use Doctrine\ORM\EntityManager;
+use Codeception\TestInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Codeception\Util\Stub;
 
 /**
@@ -14,14 +15,14 @@ use Codeception\Util\Stub;
  * Doctrine2 uses EntityManager to perform all database operations.
  *
  * When using with Zend Framework 2 or Symfony2 Doctrine connection is automatically retrieved from Service Locator.
- * In this case you should include either **Symfony2** or **ZF2** module and specify it as dependent for Doctrine:
+ * In this case you should include either **Symfony** or **ZF2** module and specify it as dependent for Doctrine:
  *
  * ```
  * modules:
  *     enabled:
- *         - Symfony2
+ *         - Symfony
  *         - Doctrine2:
- *             depends: Symfony2
+ *             depends: Symfony
  * ```
  *
  * If you don't use any of frameworks above, you should specify a callback function to receive entity manager:
@@ -64,7 +65,7 @@ use Codeception\Util\Stub;
  * * `em` - Entity Manager
  */
 
-class Doctrine2 extends CodeceptionModule implements DependsOnModule
+class Doctrine2 extends CodeceptionModule implements DependsOnModule, DataMapper
 {
 
     protected $config = [
@@ -81,16 +82,16 @@ modules:
         - Doctrine2:
             connection_callback: [My\ConnectionClass, getEntityManager]
 
-Or set a dependent module, which can be either Symfony2 or ZF2 to get EM from service locator:
+Or set a dependent module, which can be either Symfony or ZF2 to get EM from service locator:
 
 modules:
     enabled:
         - Doctrine2:
-            depends: Symfony2
+            depends: Symfony
 EOF;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var \Doctrine\ORM\EntityManagerInterface
      */
     public $em = null;
 
@@ -117,7 +118,7 @@ EOF;
         $this->retrieveEntityManager();
     }
 
-    public function _before(TestCase $test)
+    public function _before(TestInterface $test)
     {
         $this->retrieveEntityManager();
         if ($this->config['cleanup']) {
@@ -141,16 +142,16 @@ EOF;
                 "EntityManager can't be obtained.\n \n"
                 . "Please specify either `connection_callback` config option\n"
                 . "with callable which will return instance of EntityManager or\n"
-                . "pass a dependent module which are Symfony2 or ZF2\n"
+                . "pass a dependent module which are Symfony or ZF2\n"
                 . "to connect to Doctrine using Dependency Injection Container"
             );
         }
 
 
-        if (!($this->em instanceof \Doctrine\ORM\EntityManager)) {
+        if (!($this->em instanceof \Doctrine\ORM\EntityManagerInterface)) {
             throw new ModuleConfigException(
                 __CLASS__,
-                "Connection object is not an instance of \\Doctrine\\ORM\\EntityManager.\n"
+                "Connection object is not an instance of \\Doctrine\\ORM\\EntityManagerInterface.\n"
                 . "Use `connection_callback` or dependent framework modules to specify one"
             );
         }
@@ -158,9 +159,9 @@ EOF;
         $this->em->getConnection()->connect();
     }
 
-    public function _after(TestCase $test)
+    public function _after(TestInterface $test)
     {
-        if (!$this->em instanceof \Doctrine\ORM\EntityManager) {
+        if (!$this->em instanceof \Doctrine\ORM\EntityManagerInterface) {
             return;
         }
         if ($this->config['cleanup'] && $this->em->getConnection()->isTransactionActive()) {
@@ -212,7 +213,6 @@ EOF;
      */
     public function persistEntity($obj, $values = [])
     {
-
         if ($values) {
             $reflectedObj = new \ReflectionClass($obj);
             foreach ($values as $key => $val) {
@@ -241,7 +241,8 @@ EOF;
      *
      * ```
      *
-     * This creates a stub class for Entity\User repository with redefined method findByUsername, which will always return the NULL value.
+     * This creates a stub class for Entity\User repository with redefined method findByUsername,
+     * which will always return the NULL value.
      *
      * @param $classname
      * @param array $methods
@@ -258,7 +259,8 @@ EOF;
         }
 
         $mock = Stub::make(
-            $customRepositoryClassName, array_merge(
+            $customRepositoryClassName,
+            array_merge(
                 [
                     '_entityName' => $metadata->name,
                     '_em' => $em,
@@ -274,7 +276,10 @@ EOF;
             $property->setAccessible(true);
             $property->setValue($em, array_merge($property->getValue($em), [$classname => $mock]));
         } else {
-            $this->debugSection('Warning', 'Repository can\'t be mocked, the EventManager class doesn\'t have "repositories" property');
+            $this->debugSection(
+                'Warning',
+                'Repository can\'t be mocked, the EventManager class doesn\'t have "repositories" property'
+            );
         }
     }
 
@@ -429,5 +434,10 @@ EOF;
                 $qb->setParameter($paramname, $val);
             }
         }
+    }
+
+    public function _getEntityManager()
+    {
+        return $this->em;
     }
 }

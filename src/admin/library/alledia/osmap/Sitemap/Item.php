@@ -58,7 +58,8 @@ class Item extends BaseItem
         $this->rawLink = $this->fullLink;
 
         // Removes the hash segment from the Full link, if exists
-        $this->fullLink = OSMap\Router::removeHashFromURL($this->fullLink);
+        $container = OSMap\Factory::getContainer();
+        $this->fullLink = $container->router->removeHashFromURL($this->fullLink);
 
         // Make sure to have a unique hash for the settings
         $this->settingsHash = md5($this->fullLink . $currentMenuItemId);
@@ -123,7 +124,9 @@ class Item extends BaseItem
      */
     protected function checkLinkIsInternal()
     {
-        return OSMap\Router::isInternalURL($this->link)
+        $container = OSMap\Factory::getContainer();
+
+        return $container->router->isInternalURL($this->link)
             || in_array(
                 $this->type,
                 array(
@@ -236,7 +239,9 @@ class Item extends BaseItem
      */
     protected function sanitizeFullLink()
     {
-        $this->fullLink = OSMap\Router::sanitizeURL($this->fullLink);
+        $container = OSMap\Factory::getContainer();
+
+        $this->fullLink = $container->router->sanitizeURL($this->fullLink);
     }
 
     /**
@@ -249,9 +254,11 @@ class Item extends BaseItem
      */
     protected function setFullLink()
     {
+        $container = OSMap\Factory::getContainer();
+
         if ((bool)$this->home) {
             // Correct the URL for the home page.
-            $this->fullLink = OSMap\Router::getFrontendBase();
+            $this->fullLink = $container->router->getFrontendBase();
 
             // Check if multi-language is enabled to use the proper route
             if (\JLanguageMultilang::isEnabled()) {
@@ -272,13 +279,13 @@ class Item extends BaseItem
                 }
                 $homes = array();
 
-                $this->fullLink .= OSMap\Router::routeURL('index.php?Itemid=' . $home->id);
+                $this->fullLink .= $container->router->routeURL('index.php?Itemid=' . $home->id);
                 $home = null;
             }
 
             // Removes the /administrator from the URI if in the administrator
-            $this->fullLink = OSMap\Router::sanitizeURL(
-                OSMap\Router::forceFrontendURL($this->fullLink)
+            $this->fullLink = $container->router->sanitizeURL(
+                $container->router->forceFrontendURL($this->fullLink)
             );
 
             return;
@@ -306,9 +313,9 @@ class Item extends BaseItem
             }
 
             // Check if it is a relative URI
-            if (OSMap\Router::isRelativeUri($this->link)) {
-                $this->fullLink = OSMap\Router::sanitizeURL(
-                    OSMap\Router::convertRelativeUriToFullUri($this->link)
+            if ($container->router->isRelativeUri($this->link)) {
+                $this->fullLink = $container->router->sanitizeURL(
+                    $container->router->convertRelativeUriToFullUri($this->link)
                 );
 
                 return;
@@ -342,13 +349,13 @@ class Item extends BaseItem
 
         if ($this->isInternal) {
             // Route the full link
-            $this->fullLink = OSMap\Router::routeURL($this->fullLink);
+            $this->fullLink = $container->router->routeURL($this->fullLink);
 
             // Make sure the link has the base uri
-            $this->fullLink = OSMap\Router::forceFrontendURL($this->fullLink);
+            $this->fullLink = $container->router->forceFrontendURL($this->fullLink);
         }
 
-        $this->fullLink = OSMap\Router::sanitizeURL($this->fullLink);
+        $this->fullLink = $container->router->sanitizeURL($this->fullLink);
     }
 
     /**

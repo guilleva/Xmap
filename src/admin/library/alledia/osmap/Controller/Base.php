@@ -23,10 +23,11 @@ class Base extends \JControllerLegacy
     protected function checkToken()
     {
         if (!\JSession::checkToken()) {
-            $home = OSMap\Factory::getApplication()->getMenu()->getDefault();
+            $home      = OSMap\Factory::getApplication()->getMenu()->getDefault();
+            $container = OSMap\Factory::getContainer();
 
             OSMap\Factory::getApplication()->redirect(
-                OSMap\Router::routeURL('index.php?Itemid=' . $home->id),
+                $container->router->routeURL('index.php?Itemid=' . $home->id),
                 JText::_('JINVALID_TOKEN'),
                 'error'
             );

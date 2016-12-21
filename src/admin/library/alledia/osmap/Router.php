@@ -14,12 +14,12 @@ use Alledia\Framework;
 defined('_JEXEC') or die();
 
 
-abstract class Router
+class Router
 {
     /**
      * @var object
      */
-    protected static $router;
+    protected $joomlaRouter;
 
     /**
      * Route the given URL using the site application. If in admin, the result
@@ -27,15 +27,17 @@ abstract class Router
      * JRoute::_ method, but forcing to use the frontend routes. Required to
      * allow see correct routed URLs in the admin while editing a sitemap.
      */
-    public static function routeURL($url)
+    public function routeURL($url)
     {
-        if (!static::$router) {
+        $container = Factory::getContainer();
+
+        if (!$this->joomlaRouter) {
             // Get the router.
             $app = \JApplicationSite::getInstance('site');
-            static::$router = $app::getRouter('site');
+            $this->joomlaRouter = $app::getRouter('site');
 
             // Make sure that we have our router
-            if (!static::$router) {
+            if (!$this->joomlaRouter) {
                 return null;
             }
         }
@@ -46,14 +48,14 @@ abstract class Router
 
         // Build route
         $scheme = array('path', 'query', 'fragment');
-        $uri = static::$router->build($url);
+        $uri = $this->joomlaRouter->build($url);
         $url = $uri->toString($scheme);
 
         // Replace spaces.
         $url = preg_replace('/\s/u', '%20', $url);
 
         // Remove subfolders to return a relative frontend link
-        $url = preg_replace('#^' . \JUri::base(true) . '#', '', $url);
+        $url = preg_replace('#^' . $container->uri->base(true) . '#', '', $url);
 
         // Remove administrator folder
         $url = preg_replace('#^/administrator/#', '', $url);
@@ -69,10 +71,10 @@ abstract class Router
      *
      * @return string
      */
-    public static function forceFrontendURL($url)
+    public function forceFrontendURL($url)
     {
         if (!preg_match('#^[^:]+://#', $url)) {
-            $baseUri = static::getFrontendBase();
+            $baseUri = $this->getFrontendBase();
 
             if (!substr_count($url, $baseUri)) {
                 $url = $baseUri . $url;
@@ -91,26 +93,28 @@ abstract class Router
      *
      * @since   11.1
      */
-    public static function isInternalURL($url)
+    public function isInternalURL($url)
     {
-        $uri      = \JUri::getInstance($url);
+        $container = Factory::getContainer();
+
+        $uri      = $container->uri->getInstance($url);
         $base     = $uri->toString(array('scheme', 'host', 'port', 'path'));
         $host     = $uri->toString(array('scheme', 'host', 'port'));
         $path     = $uri->toString(array('path'));
-        $baseHost = \JUri::getInstance(static::getFrontendBase())->toString(array('host'));
+        $baseHost = $container->uri->getInstance($this->getFrontendBase())->toString(array('host'));
 
         // Check if we have a relative path as url, considering it will always be internal
         if ($path === $url) {
             return true;
         }
 
-        $jriBase  = static::getFrontendBase();
+        $jriBase  = $this->getFrontendBase();
 
         // @see JURITest
         if (empty($host) && strpos($path, 'index.php') === 0
             || !empty($host) && preg_match('#' . preg_quote($jriBase, '#') . '#', $base)
             || !empty($host) && $host === $baseHost && strpos($path, 'index.php') !== false
-            || !empty($host) && $base === $host && preg_match('#' . preg_quote($base, '#') . '#', static::getFrontendBase())) {
+            || !empty($host) && $base === $host && preg_match('#' . preg_quote($base, '#') . '#', $this->getFrontendBase())) {
 
             return true;
         }
@@ -126,9 +130,11 @@ abstract class Router
      *
      * @return string
      */
-    public static function getFrontendBase()
+    public function getFrontendBase()
     {
-        return preg_replace('#/administrator[/]?$#', '/', \JUri::base());
+        $container = Factory::getContainer();
+
+        return preg_replace('#/administrator[/]?$#', '/', $container->uri->base());
     }
 
     /**
@@ -138,9 +144,11 @@ abstract class Router
      *
      * @return bool
      */
-    public static function isRelativeUri($url)
+    public function isRelativeUri($url)
     {
-        $uri  = \JUri::getInstance($url);
+        $container = Factory::getContainer();
+
+        $uri  = $container->uri->getInstance($url);
 
         return $uri->toString(array('path')) === $url;
     }
@@ -152,11 +160,12 @@ abstract class Router
      *
      * @return string
      */
-    public static function convertRelativeUriToFullUri($path)
+    public function convertRelativeUriToFullUri($path)
     {
         $path = preg_replace('#^/#', '', $path);
+        $base = preg_replace('#/$#', '', $this->getFrontendBase());
 
-        return static::getFrontendBase() . '/' . $path;
+        return $base . '/' . $path;
     }
 
     /**
@@ -164,7 +173,7 @@ abstract class Router
      *
      * @return string
      */
-    public static function sanitizeURL($url)
+    public function sanitizeURL($url)
     {
         // Remove double slashes
         $url = preg_replace('#([^:])(/{2,})#', '$1/', $url);
@@ -180,7 +189,7 @@ abstract class Router
      *
      * @return string
      */
-    public static function removeHashFromURL($url)
+    public function removeHashFromURL($url)
     {
         // Check if the URL has a hash to remove it (XML sitemap shouldn't have hash on the URL)
         $hashPos = strpos($url, '#');
