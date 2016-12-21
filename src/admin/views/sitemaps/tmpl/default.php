@@ -98,10 +98,10 @@ $listDir   = $this->escape($this->state->get('list.direction'));
             </thead>
 
             <tbody>
-            <?php foreach ($this->items as $i => $item) : ?>
+            <?php foreach ($this->items as $i => $this->item) : ?>
                 <tr class="<?php echo 'row' . ($i % 2); ?>">
                     <td class="center">
-                        <?php echo JHtml::_('grid.id', $i, $item->id); ?>
+                        <?php echo JHtml::_('grid.id', $i, $this->item->id); ?>
                     </td>
 
                     <td class="center">
@@ -109,31 +109,31 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                             <?php
                             echo JHtml::_(
                                 'jgrid.published',
-                                $item->published,
+                                $this->item->published,
                                 $i,
                                 'sitemaps.'
                             );
                             ?>
                             <a href="#" onclick="return listItemTask('cb<?php echo $i; ?>','sitemap.setAsDefault')" class="btn btn-micro hasTooltip" title="" data-original-title="Toggle default status.">
-                                <span class="icon-<?php echo $item->is_default ? 'featured' : 'unfeatured'; ?>"></span>
+                                <span class="icon-<?php echo $this->item->is_default ? 'featured' : 'unfeatured'; ?>"></span>
                             </a>
                         </div>
                     </td>
 
                     <td>
-                        <a href="<?php echo JRoute::_('index.php?option=com_osmap&view=sitemap&layout=edit&id=' . $item->id);?>">
-                            <?php echo $this->escape($item->name); ?>
+                        <a href="<?php echo JRoute::_('index.php?option=com_osmap&view=sitemap&layout=edit&id=' . $this->item->id);?>">
+                            <?php echo $this->escape($this->item->name); ?>
                         </a>
                     </td>
 
                     <td class="<?php echo $editLinksClass; ?>">
                         <?php if (empty($this->languages)) : ?>
-                            <a href="<?php echo JRoute::_('index.php?option=com_osmap&view=sitemapitems&id=' . $item->id);?>">
+                            <a href="<?php echo JRoute::_('index.php?option=com_osmap&view=sitemapitems&id=' . $this->item->id);?>">
                                 <span class="icon-edit"></span>
                             </a>
                         <?php else : ?>
                             <?php foreach ($this->languages as $language) : ?>
-                                <a href="<?php echo JRoute::_('index.php?option=com_osmap&view=sitemapitems&id=' . $item->id . '&lang=' . $language->sef);?>">
+                                <a href="<?php echo JRoute::_('index.php?option=com_osmap&view=sitemapitems&id=' . $this->item->id . '&lang=' . $language->sef);?>">
                                     <span class="icon-edit"></span>
                                     <img src="/media/mod_languages/images/<?php echo $language->image; ?>.gif" />
                                     <?php echo $language->title; ?>
@@ -144,9 +144,9 @@ $listDir   = $this->escape($this->state->get('list.direction'));
 
                     <td class="center osmap-links">
                         <span class="osmap-link">
-                            <?php $link = isset($item->menuIdList['xml'])
-                                ? $container->router->routeURL('index.php?Itemid=' . $item->menuIdList['xml'])
-                                : '/index.php?option=com_osmap&amp;view=xml&id=' . $item->id;
+                            <?php $link = isset($this->item->menuIdList['xml'])
+                                ? $container->router->routeURL('index.php?Itemid=' . $this->item->menuIdList['xml'])
+                                : '/index.php?option=com_osmap&amp;view=xml&id=' . $this->item->id;
                             ?>
                             <a
                                 href="<?php echo $baseUrl . $link; ?>"
@@ -158,9 +158,9 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                             <span class="icon-new-tab"></span>
                         </span>
                         <span class="osmap-link">
-                            <?php $link = isset($item->menuIdList['html'])
-                                ? $container->router->routeURL('index.php?Itemid=' . $item->menuIdList['html'])
-                                : '/index.php?option=com_osmap&amp;view=html&id=' . $item->id;
+                            <?php $link = isset($this->item->menuIdList['html'])
+                                ? $container->router->routeURL('index.php?Itemid=' . $this->item->menuIdList['html'])
+                                : '/index.php?option=com_osmap&amp;view=html&id=' . $this->item->id;
                             ?>
                             <a
                                 href="<?php echo $baseUrl . $link; ?>"
@@ -172,9 +172,9 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                             <span class="icon-new-tab"></span>
                         </span>
                         <span class="osmap-link">
-                            <?php $link = isset($item->menuIdList['xml'])
-                                ? $container->router->routeURL('index.php?Itemid=' . $item->menuIdList['xml'] . '&news=1&id=' . $item->id)
-                                : '/index.php?option=com_osmap&amp;view=xml&news=1&id=' . $item->id;
+                            <?php $link = isset($this->item->menuIdList['xml'])
+                                ? $container->router->routeURL('index.php?Itemid=' . $this->item->menuIdList['xml'] . '&news=1&id=' . $this->item->id)
+                                : '/index.php?option=com_osmap&amp;view=xml&news=1&id=' . $this->item->id;
                             ?>
                             <a
                                 href="<?php echo $baseUrl . $link; ?>"
@@ -186,9 +186,9 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                             <span class="icon-new-tab"></span>
                         </span>
                         <span class="osmap-link">
-                            <?php $link = isset($item->menuIdList['xml'])
-                                ? $container->router->routeURL('index.php?Itemid=' . $item->menuIdList['xml'] . '&images=1&id=' . $item->id)
-                                : '/index.php?option=com_osmap&amp;view=xml&images=1&id=' . $item->id;
+                            <?php $link = isset($this->item->menuIdList['xml'])
+                                ? $container->router->routeURL('index.php?Itemid=' . $this->item->menuIdList['xml'] . '&images=1&id=' . $this->item->id)
+                                : '/index.php?option=com_osmap&amp;view=xml&images=1&id=' . $this->item->id;
                             ?>
                             <a
                                 href="<?php echo $baseUrl . $link; ?>"
@@ -202,11 +202,11 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                     </td>
 
                     <td class="center">
-                        <?php echo (int) $item->links_count; ?>
+                        <?php echo (int) $this->item->links_count; ?>
                     </td>
 
                     <td class="center">
-                        <?php echo (int) $item->id; ?>
+                        <?php echo (int) $this->item->id; ?>
                     </td>
                 </tr>
             <?php endforeach; ?>

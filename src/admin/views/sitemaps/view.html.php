@@ -15,18 +15,46 @@ defined('_JEXEC') or die();
 class OSMapViewSitemaps extends OSMap\View\Admin\Base
 {
     /**
+     * @var object[]
+     */
+    protected $items = null;
+
+    /**
+     * @var \Joomla\Registry\Registry
+     */
+    protected $state = null;
+
+    /**
+     * @var JForm
+     */
+    public $filterForm = null;
+
+    /**
      * @var array
      */
-    protected $items = array();
+    protected $activeFilters = null;
+
+    /**
+     * @var array
+     */
+    protected $languages = null;
+
+    /**
+     * @var object
+     */
+    protected $item = null;
 
     public function display($tpl = null)
     {
-        $this->items         = $this->get('Items');
-        $this->state         = $this->get('State');
-        $this->filterForm    = $this->get('FilterForm');
-        $this->activeFilters = $this->get('ActiveFilters');
+        /** @var OSMapModelSitemaps $model */
+        $model = $this->getModel();
 
-        if (count($errors = $this->get('Errors'))) {
+        $this->items         = $model->getItems();
+        $this->state         = $model->getState();
+        $this->filterForm    = $model->getFilterForm();
+        $this->activeFilters = $model->getActiveFilters();
+
+        if (count($errors = $model->getErrors())) {
             throw new Exception(implode("\n", $errors));
         }
 
@@ -54,7 +82,8 @@ class OSMapViewSitemaps extends OSMap\View\Admin\Base
         JToolBarHelper::custom('sitemap.edit', 'edit.png', 'edit_f2.png', 'JTOOLBAR_EDIT', true);
         JToolBarHelper::custom('sitemaps.publish', 'publish.png', 'publish_f2.png', 'JTOOLBAR_Publish', true);
         JToolBarHelper::custom('sitemaps.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
-        JToolBarHelper::custom('sitemap.setAsDefault', 'featured.png', 'featured_f2.png', 'COM_OSMAP_TOOLBAR_SET_DEFAULT', true);
+        JToolBarHelper::custom('sitemap.setAsDefault', 'featured.png', 'featured_f2.png',
+            'COM_OSMAP_TOOLBAR_SET_DEFAULT', true);
 
         if ($this->state->get('filter.published') == -2) {
             JToolBarHelper::deleteList('', 'sitemaps.delete', 'JTOOLBAR_DELETE');
