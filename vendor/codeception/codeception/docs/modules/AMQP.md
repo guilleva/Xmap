@@ -1,4 +1,4 @@
-
+# AMQP
 
 
 This module interacts with message broker software that implements
@@ -40,12 +40,14 @@ To use this module with Composer you need <em>"videlalvaro/php-amqplib": "*"</em
 
 ## Public Properties
 
-* connection - AMQPConnection - current connection
+* connection - AMQPStreamConnection - current connection
 
 @since 1.1.2
 @author tiger.seo@gmail.com
 @author davert
 
+
+## Actions
 
 ### grabMessageFromQueue
  
@@ -55,6 +57,28 @@ $message = $I->grabMessageFromQueue('queue.emails');
 
  * `param` $queue
  * `return` AMQPMessage
+
+
+### purgeAllQueues
+ 
+Purge all queues defined in config.
+
+``` php
+<?php
+$I->purgeAllQueues();
+?>
+```
+
+
+### purgeQueue
+ 
+Purge a specific queue defined in config.
+
+``` php
+<?php
+$I->purgeQueue('queue.emails');
+?>
+```
 
 
 ### pushToExchange
@@ -107,4 +131,4 @@ $I->seeMessageInQueueContainsText('queue.emails','davert');
  * `param` $queue
  * `param` $text
 
-<p>&nbsp;</p><div class="alert alert-warning">Module reference is taken from the source code. <a href="https://github.com/Codeception/Codeception/tree/2.1/src/Codeception/Module/AMQP.php">Help us to improve documentation. Edit module reference</a></div>
+<p>&nbsp;</p><div class="alert alert-warning">Module reference is taken from the source code. <a href="https://github.com/Codeception/Codeception/tree/2.2/src/Codeception/Module/AMQP.php">Help us to improve documentation. Edit module reference</a></div>

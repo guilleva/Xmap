@@ -139,6 +139,102 @@ EOF
     }
 
     /**
+     * @covers PHPUnit_Framework_Constraint_IsReadable
+     * @covers PHPUnit_Framework_Assert::isReadable
+     * @covers PHPUnit_Framework_Constraint::count
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     */
+    public function testConstraintIsReadable()
+    {
+        $constraint = PHPUnit_Framework_Assert::isReadable();
+
+        $this->assertFalse($constraint->evaluate('foo', '', true));
+        $this->assertEquals('is readable', $constraint->toString());
+        $this->assertEquals(1, count($constraint));
+
+        try {
+            $constraint->evaluate('foo');
+        } catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<EOF
+Failed asserting that "foo" is readable.
+
+EOF
+                ,
+                PHPUnit_Framework_TestFailure::exceptionToString($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_IsWritable
+     * @covers PHPUnit_Framework_Assert::isWritable
+     * @covers PHPUnit_Framework_Constraint::count
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     */
+    public function testConstraintIsWritable()
+    {
+        $constraint = PHPUnit_Framework_Assert::isWritable();
+
+        $this->assertFalse($constraint->evaluate('foo', '', true));
+        $this->assertEquals('is writable', $constraint->toString());
+        $this->assertEquals(1, count($constraint));
+
+        try {
+            $constraint->evaluate('foo');
+        } catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<EOF
+Failed asserting that "foo" is writable.
+
+EOF
+                ,
+                PHPUnit_Framework_TestFailure::exceptionToString($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_DirectoryExists
+     * @covers PHPUnit_Framework_Assert::directoryExists
+     * @covers PHPUnit_Framework_Constraint::count
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     */
+    public function testConstraintDirectoryExists()
+    {
+        $constraint = PHPUnit_Framework_Assert::directoryExists();
+
+        $this->assertFalse($constraint->evaluate('foo', '', true));
+        $this->assertEquals('directory exists', $constraint->toString());
+        $this->assertEquals(1, count($constraint));
+
+        try {
+            $constraint->evaluate('foo');
+        } catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<EOF
+Failed asserting that directory "foo" exists.
+
+EOF
+                ,
+                PHPUnit_Framework_TestFailure::exceptionToString($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
      * @covers PHPUnit_Framework_Constraint_FileExists
      * @covers PHPUnit_Framework_Assert::fileExists
      * @covers PHPUnit_Framework_Constraint::count
@@ -817,8 +913,8 @@ Failed asserting that two DateTime objects are equal.
 --- Expected
 +++ Actual
 @@ @@
--2013-03-29T04:13:35-0400
-+2013-03-29T04:13:35-0500
+-2013-03-29T04:13:35.000000-0400
++2013-03-29T04:13:35.000000-0500
 
 EOF
             ],
@@ -835,12 +931,14 @@ Failed asserting that two objects are equal.
 -        'obj' => stdClass Object &$ahash (
 -            'foo' => 'bar'
 -        )
+-        'inf' => null
+-    )
+-    '$bhash' => Array &1 (
 +SplObjectStorage Object &$storage2hash (
 +    '$bhash' => Array &0 (
-+        'obj' => stdClass Object &$bhash ()
+         'obj' => stdClass Object &$bhash ()
          'inf' => null
      )
--    '$bhash' => Array &0
  )
 
 EOF
@@ -856,12 +954,14 @@ Failed asserting that two objects are equal.
 -        'obj' => stdClass Object &$ahash (
 -            'foo' => 'bar'
 -        )
+-        'inf' => null
+-    )
+-    '$bhash' => Array &1 (
 +SplObjectStorage Object &$storage2hash (
 +    '$bhash' => Array &0 (
-+        'obj' => stdClass Object &$bhash ()
+         'obj' => stdClass Object &$bhash ()
          'inf' => null
      )
--    '$bhash' => Array &0
  )
 
 EOF

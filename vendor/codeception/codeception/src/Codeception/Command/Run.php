@@ -8,16 +8,48 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Executes tests.
  *
+ * Usage:
+ *
+ * * `codecept run acceptance`: run all acceptance tests
+ * * `codecept run tests/acceptance/MyCept.php`: run only MyCept
+ * * `codecept run acceptance MyCept`: same as above
+ * * `codecept run acceptance MyCest:myTestInIt`: run one test from a Cest
+ * * `codecept run acceptance checkout.feature`: run feature-file
+ * * `codecept run acceptance -g slow`: run tests from *slow* group
+ * * `codecept run unit,functional`: run only unit and functional suites
+ *
+ * Verbosity modes:
+ *
+ * * `codecept run -v`:
+ * * `codecept run --steps`: print step-by-step execution
+ * * `codecept run -vv`:
+ * * `codecept run --debug`: print steps and debug information
+ * * `codecept run -vvv`: print internal debug information
+ *
+ * Load config:
+ *
+ * * `codecept run -c path/to/another/config`: from another dir
+ * * `codecept run -c another_config.yml`: from another config file
+ *
+ * Override config values:
+ *
+ * * `codecept run -o "settings: shuffle: true"`: enable shuffle
+ * * `codecept run -o "settings: lint: false"`: disable linting
+ * * `codecept run -o "reporters: report: \Custom\Reporter" --report`: use custom reporter
+ *
+ * Full reference:
  * ```
  * Arguments:
  *  suite                 suite to be tested
  *  test                  test to be run
  *
  * Options:
+ *  -o, --override=OVERRIDE Override config values (multiple values allowed)
  *  --config (-c)         Use custom path for config
  *  --report              Show output in compact style
  *  --html                Generate html with results (default: "report.html")
@@ -51,6 +83,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class Run extends Command
 {
+    use Shared\Config;
     /**
      * @var Codecept
      */
@@ -74,32 +107,82 @@ class Run extends Command
 
     /**
      * Sets Run arguments
+     * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
      */
     protected function configure()
     {
         $this->setDefinition([
             new InputArgument('suite', InputArgument::OPTIONAL, 'suite to be tested'),
             new InputArgument('test', InputArgument::OPTIONAL, 'test to be run'),
-            new InputOption('config', 'c', InputOption::VALUE_REQUIRED, 'Use custom path for config'),
+            new InputOption('override', 'o', InputOption::VALUE_IS_ARRAY  | InputOption::VALUE_REQUIRED, 'Override config values'),
             new InputOption('report', '', InputOption::VALUE_NONE, 'Show output in compact style'),
             new InputOption('html', '', InputOption::VALUE_OPTIONAL, 'Generate html with results', 'report.html'),
             new InputOption('xml', '', InputOption::VALUE_OPTIONAL, 'Generate JUnit XML Log', 'report.xml'),
             new InputOption('tap', '', InputOption::VALUE_OPTIONAL, 'Generate Tap Log', 'report.tap.log'),
             new InputOption('json', '', InputOption::VALUE_OPTIONAL, 'Generate Json Log', 'report.json'),
             new InputOption('colors', '', InputOption::VALUE_NONE, 'Use colors in output'),
-            new InputOption('no-colors', '', InputOption::VALUE_NONE, 'Force no colors in output (useful to override config file)'),
+            new InputOption(
+                'no-colors',
+                '',
+                InputOption::VALUE_NONE,
+                'Force no colors in output (useful to override config file)'
+            ),
             new InputOption('silent', '', InputOption::VALUE_NONE, 'Only outputs suite names and final results'),
             new InputOption('steps', '', InputOption::VALUE_NONE, 'Show steps in output'),
             new InputOption('debug', 'd', InputOption::VALUE_NONE, 'Show debug and scenario output'),
-            new InputOption('coverage', '', InputOption::VALUE_OPTIONAL, 'Run with code coverage', 'coverage.serialized'),
-            new InputOption('coverage-html', '', InputOption::VALUE_OPTIONAL, 'Generate CodeCoverage HTML report in path', 'coverage'),
-            new InputOption('coverage-xml', '', InputOption::VALUE_OPTIONAL, 'Generate CodeCoverage XML report in file', 'coverage.xml'),
-            new InputOption('coverage-text', '', InputOption::VALUE_OPTIONAL, 'Generate CodeCoverage text report in file', 'coverage.txt'),
+            new InputOption(
+                'coverage',
+                '',
+                InputOption::VALUE_OPTIONAL,
+                'Run with code coverage',
+                'coverage.serialized'
+            ),
+            new InputOption(
+                'coverage-html',
+                '',
+                InputOption::VALUE_OPTIONAL,
+                'Generate CodeCoverage HTML report in path',
+                'coverage'
+            ),
+            new InputOption(
+                'coverage-xml',
+                '',
+                InputOption::VALUE_OPTIONAL,
+                'Generate CodeCoverage XML report in file',
+                'coverage.xml'
+            ),
+            new InputOption(
+                'coverage-text',
+                '',
+                InputOption::VALUE_OPTIONAL,
+                'Generate CodeCoverage text report in file',
+                'coverage.txt'
+            ),
             new InputOption('no-exit', '', InputOption::VALUE_NONE, 'Don\'t finish with exit code'),
-            new InputOption('group', 'g', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Groups of tests to be executed'),
-            new InputOption('skip', 's', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Skip selected suites'),
-            new InputOption('skip-group', 'x', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Skip selected groups'),
-            new InputOption('env', '', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Run tests in selected environments.'),
+            new InputOption(
+                'group',
+                'g',
+                InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
+                'Groups of tests to be executed'
+            ),
+            new InputOption(
+                'skip',
+                's',
+                InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
+                'Skip selected suites'
+            ),
+            new InputOption(
+                'skip-group',
+                'x',
+                InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
+                'Skip selected groups'
+            ),
+            new InputOption(
+                'env',
+                '',
+                InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
+                'Run tests in selected environments.'
+            ),
             new InputOption('fail-fast', 'f', InputOption::VALUE_NONE, 'Stop after first failure'),
             new InputOption('no-rebuild', '', InputOption::VALUE_NONE, 'Do not rebuild actor classes on start'),
         ]);
@@ -117,6 +200,7 @@ class Run extends Command
      *
      * @param \Symfony\Component\Console\Input\InputInterface $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @return int|null|void
      * @throws \RuntimeException
      */
     public function execute(InputInterface $input, OutputInterface $output)
@@ -125,24 +209,36 @@ class Run extends Command
         $this->options = $input->getOptions();
         $this->output = $output;
 
-        $config = Configuration::config($this->options['config']);
+        // load config
+        $config = $this->getGlobalConfig($this->options['config']);
+
+        // update config from options
+        if (count($this->options['override'])) {
+            $config = $this->overrideConfig($this->options['override']);
+        }
 
         if (!$this->options['colors']) {
             $this->options['colors'] = $config['settings']['colors'];
         }
         if (!$this->options['silent']) {
-            $this->output->writeln(Codecept::versionString() . "\nPowered by " . \PHPUnit_Runner_Version::getVersionString());
+            $this->output->writeln(
+                Codecept::versionString() . "\nPowered by " . \PHPUnit_Runner_Version::getVersionString()
+            );
         }
         if ($this->options['debug']) {
             $this->output->setVerbosity(OutputInterface::VERBOSITY_VERY_VERBOSE);
         }
 
         $userOptions = array_intersect_key($this->options, array_flip($this->passedOptionKeys($input)));
-        $userOptions = array_merge($userOptions, $this->booleanOptions($input, ['xml', 'html', 'json', 'tap', 'coverage', 'coverage-xml', 'coverage-html']));
+        $userOptions = array_merge(
+            $userOptions,
+            $this->booleanOptions($input, ['xml', 'html', 'json', 'tap', 'coverage', 'coverage-xml', 'coverage-html'])
+        );
         $userOptions['verbosity'] = $this->output->getVerbosity();
         $userOptions['interactive'] = !$input->hasParameterOption(['--no-interaction', '-n']);
+        $userOptions['ansi'] = (!$input->hasParameterOption('--no-ansi') xor $input->hasParameterOption('ansi'));
 
-        if ($this->options['no-colors']) {
+        if ($this->options['no-colors'] || !$userOptions['ansi']) {
             $userOptions['colors'] = false;
         }
         if ($this->options['group']) {
@@ -157,7 +253,9 @@ class Run extends Command
         if ($this->options['coverage-xml'] or $this->options['coverage-html'] or $this->options['coverage-text']) {
             $this->options['coverage'] = true;
         }
-
+        if (!$userOptions['ansi'] && $input->getOption('colors')) {
+            $userOptions['colors'] = true; // turn on colors even in non-ansi mode if strictly passed
+        }
 
         $suite = $input->getArgument('suite');
         $test = $input->getArgument('test');
@@ -279,9 +377,15 @@ class Run extends Command
 
     private function matchFilteredTestName(&$path)
     {
-        $test_parts = explode(':', $path);
+        $test_parts = explode(':', $path, 2);
         if (count($test_parts) > 1) {
             list($path, $filter) = $test_parts;
+            // use carat to signify start of string like in normal regex
+            // phpunit --filter matches against the fully qualified method name, so tests actually begin with :
+            $carat_pos = strpos($filter, '^');
+            if ($carat_pos !== false) {
+                $filter = substr_replace($filter, ':', $carat_pos, 1);
+            }
             return $filter;
         }
 
@@ -295,11 +399,18 @@ class Run extends Command
         $tokens = explode(' ', $request);
         foreach ($tokens as $token) {
             $token = preg_replace('~=.*~', '', $token); // strip = from options
-            if (strpos($token, '--') === 0 && $token !== '--') {
-                $options[] = substr($token, 2);
+            
+            if (empty($token)) {
                 continue;
             }
-            if (strpos($token, '-') === 0) {
+            
+            if ($token == '--') {
+                break; // there should be no options after ' -- ', only arguments
+            }
+
+            if (substr($token, 0, 2) === '--') {
+                $options[] = substr($token, 2);
+            } elseif ($token[0] === '-') {
                 $shortOption = substr($token, 1);
                 $options[] = $this->getDefinition()->getOptionForShortcut($shortOption)->getName();
             }
