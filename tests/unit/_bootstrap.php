@@ -17,7 +17,9 @@ define('OSMAP_TESTS_PATH', realpath(__DIR__ . '/../'));
 define('OSMAP_UNIT_TESTS_PATH', __DIR__);
 define('OSMAP_ROOT_PATH', realpath(OSMAP_UNIT_TESTS_PATH . '/../..'));
 define('OSMAP_SRC_PATH', OSMAP_ROOT_PATH . '/src');
+define('OSMAP_MOCK_PATH', OSMAP_TESTS_PATH . '/mock');
 define('OSMAP_TEST', 1);
+define('OSMAP_LICENSE', 'free');
 
 // Mock a minimal Joomla framework
 define('_JEXEC', 1);
@@ -46,3 +48,4 @@ $kernel->loadFile(__DIR__ . '/autoloader.php');
 $kernel->loadPhpFiles(OSMAP_TESTS_PATH . '/_support/mock');
 
 AutoLoader::register('\Alledia\OSMap', OSMAP_SRC_PATH . '/admin/library/alledia/osmap');
+AutoLoader::register('', OSMAP_MOCK_PATH);
