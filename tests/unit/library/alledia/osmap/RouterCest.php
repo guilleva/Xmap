@@ -6,6 +6,9 @@ use AspectMock\Test;
 use Codeception\Util\Stub;
 use \Codeception\Example;
 
+/**
+ * @coversDefaultClass \Alledia\OSMap\Router
+ */
 class RouterCest
 {
     protected $container;
@@ -21,6 +24,8 @@ class RouterCest
     }
 
     /**
+     * @covers: ::convertRelativeUriToFullUri
+     *
      * @example {"base": "http://example.com/test/", "input":"/images/test/myimage1.png", "expected":"http://example.com/test/images/test/myimage1.png"}
      * @example {"base": "http://example.com/test/", "input":"images/test/myimage1.png", "expected":"http://example.com/test/images/test/myimage1.png"}
      * @example {"base": "http://example.com/test", "input":"/images/test/myimage1.png", "expected":"http://example.com/test/images/test/myimage1.png"}
@@ -38,6 +43,8 @@ class RouterCest
     }
 
     /**
+     * @covers: ::getFrontendBase
+     *
      * @example ["http://example.com/subfolder/", "http://example.com/subfolder/"]
      * @example ["http://example.com/", "http://example.com/"]
      * @example ["http://example.com/administrator/", "http://example.com/"]
