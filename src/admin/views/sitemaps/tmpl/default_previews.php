@@ -20,7 +20,7 @@ $baseUrl = $router->sanitizeURL(JUri::root());
  *
  * @return string
  */
-$getLink = function ($type, $lang = null) use ($router, $baseUrl) {
+$getLink = function ($type, $lang = null) use ($router) {
     $linkId = in_array($type, array('news', 'images')) ? 'xml' : $type;
     if (!empty($this->item->menuIdList[$linkId])) {
         $query['Itemid'] = $this->item->menuIdList[$linkId];
