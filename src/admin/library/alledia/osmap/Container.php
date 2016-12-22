@@ -9,6 +9,9 @@
 
 namespace Alledia\OSMap;
 
+use Alledia\Framework\Profiler;
+use Alledia\OSMap\Joomla\Uri;
+
 defined('_JEXEC') or die();
 
 /**
@@ -16,11 +19,26 @@ defined('_JEXEC') or die();
  *
  * @package OSMap
  *
- * @property License      license
- * @property Events       events
+ * @property \JEventDispatcher $events
+ * @property \JApplicationWeb  $app
+ * @property \JDatabaseDriver  $db
+ * @property \JInput           $input
+ * @property \JUser            $user
+ * @property \JLanguage        $language
+ * @property Profiler          $profiler
+ * @property Router            $router
+ * @property Uri               $uri
  *
- * @method License        getLicense()
- * @method Events         getEvents()
+ * @method \JEventDispatcher getEvents()
+ * @method \JApplicationWeb  getApp()
+ * @method \JDatabaseDriver  getDb()
+ * @method \JInput           getInput()
+ * @method \JUser            getUser()
+ * @method \JLanguage        getLanguage()
+ * @method Profiler          getProfiler()
+ * @method Router            getRouter()
+ * @method Uri               getUri()
+ *
  */
 class Container extends \Pimple\Container
 {
@@ -92,7 +110,7 @@ class Container extends \Pimple\Container
      * @param bool             $require
      *
      * @return object|null
-     * @throws Exception
+     * @throws \Exception
      */
     protected function getServiceEntry(\ReflectionClass $class, $require = false)
     {
@@ -107,7 +125,7 @@ class Container extends \Pimple\Container
         }
 
         if ($require) {
-            throw new Exception($class->getName() . ' -  is not registered in the container');
+            throw new \Exception($class->getName() . ' -  is not registered in the container');
         }
 
         return null;
