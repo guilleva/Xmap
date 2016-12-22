@@ -66,4 +66,48 @@ class RouterCest
 
         $I->assertEquals($expected, $router->convertRelativeUriToFullUri($input));
     }
+
+    public function tryGetFrontendBaseUrlFromFrontendUrlInSubfolder(UnitTester $I)
+    {
+        $base     = 'http://example.com/subfolder/';
+        $expected = 'http://example.com/subfolder/';
+
+        Test::double('\JUri', ['base' => $base]);
+        $router = new \Alledia\OSMap\Router;
+
+        $I->assertEquals($expected, $router->getFrontendBase());
+    }
+
+    public function tryGetFrontendBaseUrlFromFrontendUrl(UnitTester $I)
+    {
+        $base     = 'http://example.com/';
+        $expected = 'http://example.com/';
+
+        Test::double('\JUri', ['base' => $base]);
+        $router = new \Alledia\OSMap\Router;
+
+        $I->assertEquals($expected, $router->getFrontendBase());
+    }
+
+    public function tryGetFrontendBaseUrlFromBackendUrl(UnitTester $I)
+    {
+        $base     = 'http://example.com/administrator/';
+        $expected = 'http://example.com/';
+
+        Test::double('\JUri', ['base' => $base]);
+        $router = new \Alledia\OSMap\Router;
+
+        $I->assertEquals($expected, $router->getFrontendBase());
+    }
+
+    public function tryGetFrontendBaseUrlFromBackendUrlInSubfolder(UnitTester $I)
+    {
+        $base     = 'http://example.com/subfolder/administrator/';
+        $expected = 'http://example.com/subfolder/';
+
+        Test::double('\JUri', ['base' => $base]);
+        $router = new \Alledia\OSMap\Router;
+
+        $I->assertEquals($expected, $router->getFrontendBase());
+    }
 }
