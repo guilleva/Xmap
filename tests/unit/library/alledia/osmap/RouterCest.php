@@ -4,6 +4,7 @@ namespace library\alledia\osmap;
 use \UnitTester;
 use AspectMock\Test;
 use Codeception\Util\Stub;
+use \Codeception\Example;
 
 class RouterCest
 {
@@ -19,91 +20,33 @@ class RouterCest
         Test::clean();
     }
 
-    public function tryConvertRelativeUriToFullUrlWithSlashOnBaseAndUri(UnitTester $I)
+    /**
+     * @example {"base": "http://example.com/test/", "input":"/images/test/myimage1.png", "expected":"http://example.com/test/images/test/myimage1.png"}
+     * @example {"base": "http://example.com/test/", "input":"images/test/myimage1.png", "expected":"http://example.com/test/images/test/myimage1.png"}
+     * @example {"base": "http://example.com/test", "input":"/images/test/myimage1.png", "expected":"http://example.com/test/images/test/myimage1.png"}
+     * @example {"base": "http://example.com/test", "input":"images/test/myimage1.png", "expected":"http://example.com/test/images/test/myimage1.png"}
+     */
+    public function tryConvertRelativeUriToFullUrl(UnitTester $I, Example $example)
     {
-        $base     = 'http://example.com/test/';
-        $input    = '/images/test/myimage1.png';
-        $expected = 'http://example.com/test/images/test/myimage1.png';
-
-        Test::double('\Alledia\OSMap\Router', ['getFrontendBase' => $base]);
+        Test::double('\Alledia\OSMap\Router', ['getFrontendBase' => $example->offsetGet('base')]);
         $router = new \Alledia\OSMap\Router;
 
-        $I->assertEquals($expected, $router->convertRelativeUriToFullUri($input));
+        $I->assertEquals(
+            $example->offsetGet('expected'),
+            $router->convertRelativeUriToFullUri($example->offsetGet('input'))
+        );
     }
 
-    public function tryConvertRelativeUriToFullUrlWithSlashOnBaseButNoneOnUri(UnitTester $I)
+    /**
+     * @example ["http://example.com/subfolder/", "http://example.com/subfolder/"]
+     * @example ["http://example.com/", "http://example.com/"]
+     * @example ["http://example.com/administrator/", "http://example.com/"]
+     * @example ["http://example.com/subfolder/administrator/", "http://example.com/subfolder/"]
+     */
+    public function tryGetFrontendBaseUrl(UnitTester $I, Example $example)
     {
-        $base     = 'http://example.com/test/';
-        $input    = 'images/test/myimage1.png';
-        $expected = 'http://example.com/test/images/test/myimage1.png';
-
-        Test::double('\Alledia\OSMap\Router', ['getFrontendBase' => $base]);
-        $router = new \Alledia\OSMap\Router;
-
-        $I->assertEquals($expected, $router->convertRelativeUriToFullUri($input));
-    }
-
-    public function tryConvertRelativeUriToFullUrlWithSlashOnUriButNoneOnBase(UnitTester $I)
-    {
-        $base     = 'http://example.com/test';
-        $input    = '/images/test/myimage1.png';
-        $expected = 'http://example.com/test/images/test/myimage1.png';
-
-        Test::double('\Alledia\OSMap\Router', ['getFrontendBase' => $base]);
-        $router = new \Alledia\OSMap\Router;
-
-        $I->assertEquals($expected, $router->convertRelativeUriToFullUri($input));
-    }
-
-    public function tryConvertRelativeUriToFullUrlWithoutSlashOnBaseAndUri(UnitTester $I)
-    {
-        $base     = 'http://example.com/test';
-        $input    = 'images/test/myimage1.png';
-        $expected = 'http://example.com/test/images/test/myimage1.png';
-
-        Test::double('\Alledia\OSMap\Router', ['getFrontendBase' => $base]);
-        $router = new \Alledia\OSMap\Router;
-
-        $I->assertEquals($expected, $router->convertRelativeUriToFullUri($input));
-    }
-
-    public function tryGetFrontendBaseUrlFromFrontendUrlInSubfolder(UnitTester $I)
-    {
-        $base     = 'http://example.com/subfolder/';
-        $expected = 'http://example.com/subfolder/';
-
-        Test::double('\JUri', ['base' => $base]);
-        $router = new \Alledia\OSMap\Router;
-
-        $I->assertEquals($expected, $router->getFrontendBase());
-    }
-
-    public function tryGetFrontendBaseUrlFromFrontendUrl(UnitTester $I)
-    {
-        $base     = 'http://example.com/';
-        $expected = 'http://example.com/';
-
-        Test::double('\JUri', ['base' => $base]);
-        $router = new \Alledia\OSMap\Router;
-
-        $I->assertEquals($expected, $router->getFrontendBase());
-    }
-
-    public function tryGetFrontendBaseUrlFromBackendUrl(UnitTester $I)
-    {
-        $base     = 'http://example.com/administrator/';
-        $expected = 'http://example.com/';
-
-        Test::double('\JUri', ['base' => $base]);
-        $router = new \Alledia\OSMap\Router;
-
-        $I->assertEquals($expected, $router->getFrontendBase());
-    }
-
-    public function tryGetFrontendBaseUrlFromBackendUrlInSubfolder(UnitTester $I)
-    {
-        $base     = 'http://example.com/subfolder/administrator/';
-        $expected = 'http://example.com/subfolder/';
+        $base     = $example[0];
+        $expected = $example[1];
 
         Test::double('\JUri', ['base' => $base]);
         $router = new \Alledia\OSMap\Router;
