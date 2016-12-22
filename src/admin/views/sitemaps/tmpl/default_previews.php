@@ -21,31 +21,23 @@ $baseUrl = $router->sanitizeURL(JUri::root());
  * @return string
  */
 $getLink = function ($type, $lang = null) use ($router, $baseUrl) {
-    switch ($type) {
-        case 'xml':
-        case 'html':
-            if (!empty($this->item->menuIdList[$type])) {
-                $query['Itemid'] = $this->item->menuIdList[$type];
-            }
-            break;
-
-        case 'news':
-        case 'images':
-            if (!empty($this->item->menuIdList['xml'])) {
-                $query['Itemid'] = $this->item->menuIdList['xml'];
-            }
-            $query[$type] = 1;
-            break;
-
+    $linkId = in_array($type, array('news', 'images')) ? 'xml' : $type;
+    if (!empty($this->item->menuIdList[$linkId])) {
+        $query['Itemid'] = $this->item->menuIdList[$linkId];
     }
 
     if (empty($query['Itemid'])) {
         $query = array(
             'option' => 'com_osmap',
-            'view'   => in_array($type, array('html', 'xml')) ? $type : 'xml',
+            'view'   => $linkId,
             'id'     => $this->item->id
         );
     }
+
+    if ($type != $linkId) {
+        $query[$type] = 1;
+    }
+
     if ($lang) {
         $query['lang'] = $lang;
     }
