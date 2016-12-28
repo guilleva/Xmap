@@ -81,25 +81,22 @@ class Html extends OSMap\View\Base
      * @param string $tpl
      *
      * @return void
+     * @throws \Exception
      */
     public function display($tpl = null)
     {
         $container = OSMap\Factory::getContainer();
 
-        try {
-            $id = $container->input->getInt('id');
+        $id = $container->input->getInt('id');
 
-            $this->osmapParams = \JComponentHelper::getParams('com_osmap');
+        $this->osmapParams = \JComponentHelper::getParams('com_osmap');
 
-            // Load the sitemap instance
-            $this->sitemap = OSMap\Factory::getSitemap($id, 'standard');
+        // Load the sitemap instance
+        $this->sitemap = OSMap\Factory::getSitemap($id, 'standard');
 
-            // Check if the sitemap is published
-            if (!$this->sitemap->isPublished) {
-                throw new \Exception(\JText::_('COM_OSMAP_MSG_SITEMAP_IS_UNPUBLISHED'));
-            }
-        } catch (\Exception $e) {
-            $this->message = $e->getMessage();
+        // Check if the sitemap is published
+        if (!$this->sitemap->isPublished) {
+            throw new \Exception(\JText::_('COM_OSMAP_MSG_SITEMAP_IS_UNPUBLISHED'));
         }
 
         parent::display($tpl);
