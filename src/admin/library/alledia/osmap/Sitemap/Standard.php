@@ -81,7 +81,7 @@ class Standard implements SitemapInterface
         $row = OSMap\Factory::getTable('Sitemap');
         $row->load($id);
 
-        if (empty($row)) {
+        if (empty($row) || !$row->id) {
             throw new \Exception(\JText::_('COM_OSMAP_SITEMAP_NOT_FOUND'));
         }
 

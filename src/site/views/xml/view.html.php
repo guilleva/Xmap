@@ -23,22 +23,18 @@ class OSMapViewXml extends JViewLegacy
         // Help to show a clean XML without other content
         $container->input->set('tmpl', 'component');
 
-        try {
-            $id = $container->input->getInt('id');
+        $id = $container->input->getInt('id');
 
-            $this->type        = OSMap\Helper\General::getSitemapTypeFromInput();
-            $this->params      = JFactory::getApplication()->getParams();
-            $this->osmapParams = JComponentHelper::getParams('com_osmap');
+        $this->type        = OSMap\Helper\General::getSitemapTypeFromInput();
+        $this->params      = JFactory::getApplication()->getParams();
+        $this->osmapParams = JComponentHelper::getParams('com_osmap');
 
-            // Load the sitemap instance
-            $this->sitemap = OSMap\Factory::getSitemap($id, $this->type);
+        // Load the sitemap instance
+        $this->sitemap = OSMap\Factory::getSitemap($id, $this->type);
 
-            // Check if the sitemap is published
-            if (!$this->sitemap->isPublished) {
-                throw new Exception(JText::_('COM_OSMAP_MSG_SITEMAP_IS_UNPUBLISHED'));
-            }
-        } catch (Exception $e) {
-            $this->message = $e->getMessage();
+        // Check if the sitemap is published
+        if (!$this->sitemap->isPublished) {
+            throw new Exception(JText::_('COM_OSMAP_MSG_SITEMAP_IS_UNPUBLISHED'));
         }
 
         parent::display($tpl);
