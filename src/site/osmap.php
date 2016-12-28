@@ -7,8 +7,6 @@
  * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
-use Alledia\OSMap;
-
 defined('_JEXEC') or die();
 
 jimport('legacy.controller.legacy');
