@@ -18,6 +18,11 @@ defined('_JEXEC') or die();
 class Html extends OSMap\View\Base
 {
     /**
+     * @var OSMap\Sitemap\Standard
+     */
+    protected $sitemap = null;
+
+    /**
      * @var Registry
      */
     protected $params;

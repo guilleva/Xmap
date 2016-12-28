@@ -16,6 +16,26 @@ jimport('joomla.application.component.view');
 
 class OSMapViewXml extends JViewLegacy
 {
+    /**
+     * @var string
+     */
+    protected $type = null;
+
+    /**
+     * @var \Joomla\Registry\Registry
+     */
+    protected $params = null;
+
+    /**
+     * @var \Joomla\Registry\Registry
+     */
+    protected $osmapParams = null;
+
+    /**
+     * @var Alledia\OSMap\Sitemap\Standard
+     */
+    protected $sitemap = null;
+
     public function display($tpl = null)
     {
         $container = OSMap\Factory::getContainer();
