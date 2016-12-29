@@ -20,10 +20,10 @@ $baseUrl = $router->sanitizeURL(JUri::root());
  *
  * @return string
  */
-$getLink = function ($type, $lang = null) use ($router) {
+$getLink = function ($item, $type, $lang = null) use ($router) {
     $linkId = in_array($type, array('news', 'images')) ? 'xml' : $type;
-    if (!empty($this->item->menuIdList[$linkId])) {
-        $query['Itemid'] = $this->item->menuIdList[$linkId];
+    if (!empty($item->menuIdList[$linkId])) {
+        $query['Itemid'] = $item->menuIdList[$linkId];
     }
 
     if (empty($query['Itemid'])) {
@@ -51,7 +51,7 @@ foreach ($languages as $language) :
     ?>
     <span class="osmap-link">
         <a
-            href="<?php echo $baseUrl . $getLink('xml', $langCode); ?>"
+            href="<?php echo $baseUrl . $getLink($this->item, 'xml', $langCode); ?>"
             target="_blank"
             title="<?php echo JText::_('COM_OSMAP_XML_LINK_TOOLTIP', true); ?>">
             <?php echo JText::_('COM_OSMAP_XML_LINK'); ?>
@@ -61,7 +61,7 @@ foreach ($languages as $language) :
 
     <span class="osmap-link">
         <a
-            href="<?php echo $baseUrl . $getLink('html', $langCode); ?>"
+            href="<?php echo $baseUrl . $getLink($this->item, 'html', $langCode); ?>"
             target="_blank"
             title="<?php echo JText::_('COM_OSMAP_HTML_LINK_TOOLTIP', true); ?>">
             <?php echo JText::_('COM_OSMAP_HTML_LINK'); ?>
@@ -71,7 +71,7 @@ foreach ($languages as $language) :
 
     <span class="osmap-link">
         <a
-            href="<?php echo $baseUrl . $getLink('news', $langCode); ?>"
+            href="<?php echo $baseUrl . $getLink($this->item, 'news', $langCode); ?>"
             target="_blank"
             title="<?php echo JText::_('COM_OSMAP_NEWS_LINK_TOOLTIP', true); ?>">
             <?php echo JText::_('COM_OSMAP_NEWS_LINK'); ?>
@@ -81,7 +81,7 @@ foreach ($languages as $language) :
 
     <span class="osmap-link">
         <a
-            href="<?php echo $baseUrl . $getLink('images', $langCode); ?>"
+            href="<?php echo $baseUrl . $getLink($this->item, 'images', $langCode); ?>"
             target="_blank"
             title="<?php echo JText::_('COM_OSMAP_IMAGES_LINK_TOOLTIP', true); ?>">
             <?php echo JText::_('COM_OSMAP_IMAGES_LINK'); ?>
