@@ -135,15 +135,15 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                             </div>
                         </td>
 
-                        <td>
+                        <td class="nowrap">
                             <?php echo JHtml::_('link', $editLink, $this->escape($this->item->name)); ?>
                         </td>
 
-                        <td class="<?php echo $editLinksClass; ?>">
+                        <td class="nowrap <?php echo $editLinksClass; ?>">
                             <?php echo $this->loadTemplate('editlinks'); ?>
                         </td>
 
-                        <td class="center osmap-links">
+                        <td class="nowrap center osmap-links">
                             <?php echo $this->loadTemplate('previews'); ?>
                         </td>
 
