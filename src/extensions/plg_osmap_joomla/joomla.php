@@ -455,6 +455,15 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
      * Returns an array of all contained content items.
      *
      * @since 2.0
+     *
+     * @param Collector  $collector
+     * @param object     $parent
+     * @param int|string $catid
+     * @param Registry   $params
+     * @param int        $itemid
+     * @param object     $prevnode
+     *
+     * @return bool
      */
     public static function includeCategoryContent($collector, $parent, $catid, &$params, $itemid, $prevnode = null)
     {
@@ -526,12 +535,14 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
             'a.modified',
             'a.publish_up',
             'a.hits',
-            'a.title'
+            'a.title',
+            'a.ordering'
         );
         $orderDirOptions = array(
             'ASC',
             'DESC'
         );
+
         $order    = ArrayHelper::getValue($orderOptions, $params->get('article_order', 0), 0);
         $orderDir = ArrayHelper::getValue($orderDirOptions, $params->get('article_orderdir', 0), 0);
 
@@ -591,8 +602,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                 }
                 $node->keywords = trim($keywords);
 
-                $node->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
-                //$node->catslug = $item->category_route ? ($catid . ':' . $item->category_route) : $catid;
+                $node->slug    = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
                 $node->catslug = $item->catid;
                 $node->link    = ContentHelperRoute::getArticleRoute($node->slug, $node->catslug);
 

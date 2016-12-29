@@ -127,6 +127,7 @@
                     <option value="2">PLG_OSMAP_JOOMLA_OPTION_PUBLISH</option>
                     <option value="3">PLG_OSMAP_JOOMLA_OPTION_HITS</option>
                     <option value="4">PLG_OSMAP_JOOMLA_OPTION_TITLE</option>
+                    <option value="5">PLG_OSMAP_JOOMLA_OPTION_ORDERING</option>
                 </field>
 
                 <field
