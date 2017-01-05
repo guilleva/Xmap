@@ -123,22 +123,18 @@ class Standard implements SitemapInterface
     public function traverse($callback, $triggerEvents = true)
     {
         if ($triggerEvents) {
-            // Prepare the plugins
+            // Call the plugins, allowing to interact or override the collector
             \JPluginHelper::importPlugin('osmap');
 
-            // Call the plugins, allowing to interact or override the collector
-            $eventParams = array(
-                &$this,
-                &$callback
-            );
-            $results = \JEventDispatcher::getInstance()->trigger('osmapOnBeforeCollectItems', $eventParams);
+            $eventParams = array(&$this, &$callback);
+            $results     = \JEventDispatcher::getInstance()->trigger('osmapOnBeforeCollectItems', $eventParams);
 
             // A plugin asked to stop the traverse
             if (in_array(true, $results)) {
                 return;
             }
 
-            $results     = null;
+            $results = null;
         }
 
         // Fetch the sitemap items
@@ -171,6 +167,6 @@ class Standard implements SitemapInterface
     public function cleanup()
     {
         $this->collector = null;
-        $this->params = null;
+        $this->params    = null;
     }
 }

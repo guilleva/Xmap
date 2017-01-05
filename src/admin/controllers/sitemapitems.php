@@ -45,7 +45,7 @@ class OSMapControllerSitemapItems extends OSMap\Controller\Form
 
         $sitemapId  = $app->input->getInt('id');
         $updateData = $app->input->getRaw('update-data');
-        $language   = $app->input->getRaw('language');
+        $language   = $app->input->getString('language');
 
         $model = $this->getModel();
 
