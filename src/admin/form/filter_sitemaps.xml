@@ -9,7 +9,7 @@
             name="published"
             type="status"
             onchange="this.form.submit();"
-            filter="0,1,*">
+            filter="0,1,-2,*">
             <option value="">COM_OSMAP_OPTION_SELECT_PUBLISHED</option>
         </field>
 
