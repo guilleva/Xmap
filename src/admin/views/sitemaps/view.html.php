@@ -82,8 +82,13 @@ class OSMapViewSitemaps extends OSMap\View\Admin\Base
         JToolBarHelper::custom('sitemap.edit', 'edit.png', 'edit_f2.png', 'JTOOLBAR_EDIT', true);
         JToolBarHelper::custom('sitemaps.publish', 'publish.png', 'publish_f2.png', 'JTOOLBAR_Publish', true);
         JToolBarHelper::custom('sitemaps.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
-        JToolBarHelper::custom('sitemap.setAsDefault', 'featured.png', 'featured_f2.png',
-            'COM_OSMAP_TOOLBAR_SET_DEFAULT', true);
+        JToolBarHelper::custom(
+            'sitemap.setAsDefault',
+            'featured.png',
+            'featured_f2.png',
+            'COM_OSMAP_TOOLBAR_SET_DEFAULT',
+            true
+        );
 
         if ($this->state->get('filter.published') == -2) {
             JToolBarHelper::deleteList('', 'sitemaps.delete', 'JTOOLBAR_DELETE');

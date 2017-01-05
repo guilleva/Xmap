@@ -17,7 +17,7 @@ JHtml::_('formbehavior.chosen', 'select');
 
 JHtml::stylesheet('media/com_osmap/css/admin.min.css');
 
-$function  = JRequest::getString('function', 'jSelectSitemap');
+$function  = JFactory::getApplication()->input->getString('function', 'jSelectSitemap');
 $baseUrl   = JUri::root();
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDir   = $this->escape($this->state->get('list.direction'));
