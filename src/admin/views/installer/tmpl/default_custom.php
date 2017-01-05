@@ -113,7 +113,7 @@ $app->enqueueMessage(JText::sprintf('COM_OSMAP_INSTALLER_GOTOPLUGINS', $link), '
             });
         });
 
-    })(jQueryAlledia);
+    })(jQuery);
     </script>
 
 <?php endif; ?>
