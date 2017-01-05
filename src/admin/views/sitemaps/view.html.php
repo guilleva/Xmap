@@ -32,7 +32,7 @@ class OSMapViewSitemaps extends OSMap\View\Admin\Base
     /**
      * @var array
      */
-    protected $activeFilters = null;
+    public $activeFilters = null;
 
     /**
      * @var array
