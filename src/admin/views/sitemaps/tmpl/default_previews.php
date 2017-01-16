@@ -22,6 +22,8 @@ $baseUrl = $router->sanitizeURL(JUri::root());
  */
 $getLink = function ($item, $type, $lang = null) use ($router) {
     $linkId = in_array($type, array('news', 'images')) ? 'xml' : $type;
+    $query  = array();
+
     if (!empty($item->menuIdList[$linkId])) {
         $query['Itemid'] = $item->menuIdList[$linkId];
     }
@@ -30,7 +32,7 @@ $getLink = function ($item, $type, $lang = null) use ($router) {
         $query = array(
             'option' => 'com_osmap',
             'view'   => $linkId,
-            'id'     => $this->item->id
+            'id'     => $item->id
         );
     }
 
