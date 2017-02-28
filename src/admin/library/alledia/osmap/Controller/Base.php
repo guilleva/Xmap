@@ -15,22 +15,22 @@ defined('_JEXEC') or die();
 
 class Base extends \JControllerLegacy
 {
-    /**
-     * Standard form token check and redirect
-     *
-     * @return void
-     */
-    protected function checkToken()
+    public function checkToken($method = 'post', $redirect = true)
     {
-        if (!\JSession::checkToken()) {
-            $home      = OSMap\Factory::getApplication()->getMenu()->getDefault();
-            $container = OSMap\Factory::getContainer();
+        $valid = \JSession::checkToken();
+        if (!$valid && $redirect) {
+            if ($redirect) {
+                $home      = OSMap\Factory::getApplication()->getMenu()->getDefault();
+                $container = OSMap\Factory::getContainer();
 
-            OSMap\Factory::getApplication()->redirect(
-                $container->router->routeURL('index.php?Itemid=' . $home->id),
-                JText::_('JINVALID_TOKEN'),
-                'error'
-            );
+                OSMap\Factory::getApplication()->redirect(
+                    $container->router->routeURL('index.php?Itemid=' . $home->id),
+                    \JText::_('JINVALID_TOKEN'),
+                    'error'
+                );
+            }
         }
+
+        return $valid;
     }
 }

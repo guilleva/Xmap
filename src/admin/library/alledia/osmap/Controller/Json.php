@@ -14,15 +14,18 @@ defined('_JEXEC') or die();
 class Json extends \JControllerLegacy
 {
     /**
-     * Standard token checking for json controllers
+     * @param string $method
+     * @param bool   $redirect
      *
-     * @return void
-     * @throws Exception
+     * @return bool
+     * @throws \Exception
      */
-    protected function checkToken()
+    public function checkToken($method = 'post', $redirect = true)
     {
         if (!\JSession::checkToken()) {
             throw new \Exception(\JText::_('JINVALID_TOKEN'), 403);
         }
+
+        return true;
     }
 }

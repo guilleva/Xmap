@@ -69,8 +69,14 @@ abstract class Admin extends \JControllerAdmin
         return $result;
     }
 
-    protected function checkToken()
+    public function checkToken($method = 'post', $redirect = true)
     {
+        if (is_callable('parent::checkToken')) {
+            return parent::checkToken($method, $redirect);
+        }
+
         \JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
+
+        return true;
     }
 }
