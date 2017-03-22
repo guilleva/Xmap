@@ -53,8 +53,7 @@
                     name="max_category_level"
                     type="list"
                     default="all"
-                    label="PLG_OSMAP_JOOMLA_SETTING_MAX_CATEG_LEVEL_LABEL"
-                    description="PLG_OSMAP_JOOMLA_SETTING_MAX_CATEG_LEVEL_DESC">
+                    label="PLG_OSMAP_JOOMLA_SETTING_MAX_CATEG_LEVEL_LABEL">
 
                     <option value="100">PLG_OSMAP_JOOMLA_OPTION_ALL</option>
                     <option value="1">1</option>
