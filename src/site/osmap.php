@@ -9,11 +9,6 @@
 
 defined('_JEXEC') or die();
 
-jimport('legacy.controller.legacy');
-
-// Load the frontend language
-JFactory::getLanguage()->load('com_osmap', JPATH_SITE . '/components/com_osmap');
-
 require_once JPATH_ADMINISTRATOR . '/components/com_osmap/include.php';
 
 $task = JFactory::getApplication()->input->getCmd('task');
