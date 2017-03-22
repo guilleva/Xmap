@@ -338,22 +338,18 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
      * @param int       $catid  the id of the category to be expanded
      * @param Registry  $params parameters for this plugin on Xmap
      * @param int       $itemid the itemid to use for this category's children
-     * @param Item      $prevnode
      * @param int       $curlevel
      *
      * @return bool
      */
-    public static function expandCategory(
+    protected static function expandCategory(
         $collector,
         $parent,
         $catid,
-        &$params,
+        $params,
         $itemid,
-        $prevnode = null,
         $curlevel = 0
     ) {
-        $paramExpandCategories = $params->get('expand_categories', 1);
-
         $db = OSMap\Factory::getDBO();
 
         $where = array(
@@ -400,22 +396,23 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                 $collector->changeLevel(1);
 
                 foreach ($items as $item) {
-                    $node                           = new stdClass;
-                    $node->id                       = $item->id;
-                    $node->uid                      = 'joomla.category.' . $item->id;
-                    $node->browserNav               = $parent->browserNav;
-                    $node->priority                 = $params->get('cat_priority');
-                    $node->changefreq               = $params->get('cat_changefreq');
-                    $node->name                     = $item->title;
-                    $node->expandible               = true;
-                    $node->secure                   = $parent->secure;
-                    $node->newsItem                 = 0;
-                    $node->adapterName              = 'JoomlaCategory';
-                    $node->pluginParams             = &$params;
-                    $node->parentIsVisibleForRobots = $parent->visibleForRobots;
-                    $node->created                  = $item->created;
-                    $node->modified                 = $item->modified;
-                    $node->publishUp                = $item->created;
+                    $node = (object)array(
+                        'id'                       => $item->id,
+                        'uid'                      => 'joomla.category.' . $item->id,
+                        'browserNav'               => $parent->browserNav,
+                        'priority'                 => $params->get('cat_priority'),
+                        'changefreq'               => $params->get('cat_changefreq'),
+                        'name'                     => $item->title,
+                        'expandible'               => true,
+                        'secure'                   => $parent->secure,
+                        'newsItem'                 => 0,
+                        'adapterName'              => 'JoomlaCategory',
+                        'pluginParams'             => &$params,
+                        'parentIsVisibleForRobots' => $parent->visibleForRobots,
+                        'created'                  => $item->created,
+                        'modified'                 => $item->modified,
+                        'publishUp'                => $item->created
+                    );
 
                     // Keywords
                     $paramKeywords = $params->get('keywords', 'metakey');
@@ -436,7 +433,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                     }
 
                     if ($collector->printNode($node)) {
-                        self::expandCategory($collector, $parent, $item->id, $params, $node->itemid, $node, $curlevel);
+                        self::expandCategory($collector, $parent, $item->id, $params, $node->itemid, $curlevel);
                     }
                 }
 
