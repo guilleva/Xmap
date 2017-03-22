@@ -664,7 +664,14 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
         return true;
     }
 
-    private static function printSubNodes($collector, $parent, &$params, &$subnodes, $item)
+    /**
+     * @param Collector $collector
+     * @param Item      $parent
+     * @param Registry  $params
+     * @param array     $subnodes
+     * @param Item      $item
+     */
+    protected static function printSubNodes($collector, $parent, &$params, &$subnodes, $item)
     {
         $collector->changeLevel(1);
 
