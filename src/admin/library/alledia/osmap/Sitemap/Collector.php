@@ -591,8 +591,6 @@ class Collector
         if (is_numeric($step)) {
             $this->currentLevel += (int)$step;
         }
-
-        return true;
     }
 
     /**
