@@ -424,13 +424,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
 
                     $node->slug = $item->route ? ($item->id . ':' . $item->route) : $item->id;
                     $node->link = ContentHelperRoute::getCategoryRoute($node->slug);
-
                     $node->itemid = $itemid;
-                    if (strpos($node->link, 'Itemid=') === false) {
-                        $node->link .= '&Itemid=' . $itemid;
-                    } else {
-                        $node->link = preg_replace('/Itemid=([0-9]+)/', 'Itemid=' . $itemid, $node->link);
-                    }
 
                     if ($collector->printNode($node)) {
                         self::expandCategory($collector, $parent, $item->id, $params, $node->itemid, $curlevel);
