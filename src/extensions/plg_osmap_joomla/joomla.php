@@ -540,12 +540,8 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
         $orderBy = ' ' . $order . ' ' . $orderDir;
         $query->order($orderBy);
 
-        $maxArt = $params->get('max_art');
-        if (!empty($maxArt)) {
-            $query->setLimit($maxArt);
-        }
-
-        $db->setQuery($query);
+        $maxArt = (int)$params->get('max_art');
+        $db->setQuery($query, 0, $maxArt);
 
         $items = $db->loadObjectList();
 
