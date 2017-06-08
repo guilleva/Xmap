@@ -178,9 +178,6 @@ class Router
         // Remove double slashes
         $url = preg_replace('#([^:])(/{2,})#', '$1/', $url);
 
-        // Remove trailing slash
-        $url = preg_replace('#/$#', '', $url);
-
         return $url;
     }
 
