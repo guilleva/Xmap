@@ -192,7 +192,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
      * @param Item      $menuItem
      * @param Registry  $params
      *
-     * @return bool
+     * @return void
      * @since  1.0
      */
     public static function getTree($collector, $menuItem, &$params)
@@ -204,7 +204,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
         $linkQuery = parse_url($menuItem->link);
 
         if (!isset($linkQuery['query'])) {
-            return false;
+            return;
         }
 
         parse_str(html_entity_decode($linkQuery['query']), $linkVars);
@@ -325,8 +325,6 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                     self::printSubNodes($collector, $menuItem, $params, $menuItem->subnodes, $item);
                 }
         }
-
-        return $result;
     }
 
     /**
@@ -422,8 +420,8 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                     }
                     $node->keywords = $keywords;
 
-                    $node->slug = $item->route ? ($item->id . ':' . $item->route) : $item->id;
-                    $node->link = ContentHelperRoute::getCategoryRoute($node->slug);
+                    $node->slug   = $item->route ? ($item->id . ':' . $item->route) : $item->id;
+                    $node->link   = ContentHelperRoute::getCategoryRoute($node->slug);
                     $node->itemid = $itemid;
 
                     if ($collector->printNode($node)) {
