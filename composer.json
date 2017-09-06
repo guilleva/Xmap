@@ -27,7 +27,7 @@
         }
     ],
     "require": {
-        "php": ">= 5.3",
+        "php": ">= 5.6",
         "pimple/pimple": "v3.0.0"
     },
     "require-dev": {
