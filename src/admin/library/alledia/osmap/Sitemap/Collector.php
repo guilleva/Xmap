@@ -537,7 +537,7 @@ class Collector
                     if ($plugin->isLegacy) {
                         $params = $plugin->params->toArray();
                     } else {
-                        $params =& $plugin->params;
+                        $params = $plugin->params;
                     }
 
                     $arguments = array(

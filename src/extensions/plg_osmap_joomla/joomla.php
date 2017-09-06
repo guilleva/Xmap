@@ -70,7 +70,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
      * @return bool
      * @since  1.2
      */
-    public static function prepareMenuItem($node, &$params)
+    public static function prepareMenuItem($node, $params)
     {
         $db        = OSMap\Factory::getDbo();
         $container = OSMap\Factory::getContainer();
@@ -195,7 +195,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
      * @return void
      * @since  1.0
      */
-    public static function getTree($collector, $menuItem, &$params)
+    public static function getTree($collector, $menuItem, $params)
     {
         $db = OSMap\Factory::getDbo();
 
