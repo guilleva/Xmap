@@ -4,6 +4,8 @@
 *~
 *.bak
 build.properties
+vendor/
+composer.lock
 
 !.gitignore
 !.gitkeep
