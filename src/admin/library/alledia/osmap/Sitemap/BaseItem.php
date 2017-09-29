@@ -219,15 +219,21 @@ class BaseItem extends \JObject
     public $subnodes = null;
 
     /**
+     * @var string
+     */
+    public $slug = null;
+
+    /**
      * The constructor
      *
      * @param array $itemData
      *
      * @return void
      */
-    public function __construct(&$itemData)
+    public function __construct($itemData)
     {
-        $this->setProperties($itemData);
+        parent::__construct($itemData);
+
         if (class_exists('\\Alledia\\OSMap\\Sitemap\\ItemAdapter\\GenericPro')) {
             $this->adapterName = 'GenericPro';
         }

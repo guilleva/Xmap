@@ -27,7 +27,7 @@ class Item extends BaseItem
      *
      * @return void
      */
-    public function __construct(&$itemData, $currentMenuItemId)
+    public function __construct($itemData, $currentMenuItemId)
     {
         parent::__construct($itemData);
 
