@@ -561,22 +561,22 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
 
             foreach ($items as $item) {
                 $node = (object)array(
-                    'id'                        => $item->id,
-                    'uid                      ' => 'joomla.article.' . $item->id,
-                    'browserNav               ' => $parent->browserNav,
-                    'priority                 ' => $params->get('art_priority'),
-                    'changefreq               ' => $params->get('art_changefreq'),
-                    'name                     ' => $item->title,
-                    'created                  ' => $item->created,
-                    'modified                 ' => $item->modified,
-                    'publishUp                ' => $item->publish_up,
-                    'expandible               ' => false,
-                    'secure                   ' => $parent->secure,
-                    'newsItem                 ' => 1,
-                    'language                 ' => $item->language,
-                    'adapterName              ' => 'JoomlaArticle',
-                    'pluginParams             ' => &$params,
-                    'parentIsVisibleForRobots ' => $parent->visibleForRobots
+                    'id'                       => $item->id,
+                    'uid'                      => 'joomla.article.' . $item->id,
+                    'browserNav'               => $parent->browserNav,
+                    'priority'                 => $params->get('art_priority'),
+                    'changefreq'               => $params->get('art_changefreq'),
+                    'name'                     => $item->title,
+                    'created'                  => $item->created,
+                    'modified'                 => $item->modified,
+                    'publishUp'                => $item->publish_up,
+                    'expandible'               => false,
+                    'secure'                   => $parent->secure,
+                    'newsItem'                 => 1,
+                    'language'                 => $item->language,
+                    'adapterName'              => 'JoomlaArticle',
+                    'pluginParams'             => &$params,
+                    'parentIsVisibleForRobots' => $parent->visibleForRobots
                 );
 
                 $keywords = array();
