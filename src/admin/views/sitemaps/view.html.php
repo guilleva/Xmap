@@ -130,4 +130,40 @@ class OSMapViewSitemaps extends OSMap\View\Admin\Base
         }
     }
 
+    /**
+     * @param string $type
+     * @param string $lang
+     *
+     * @return string
+     */
+    protected function getLink($item, $type, $lang = null)
+    {
+        $linkId = in_array($type, array('news', 'images')) ? 'xml' : $type;
+        $query  = array();
+
+        if (!empty($item->menuIdList[$linkId])) {
+            $query['Itemid'] = $item->menuIdList[$linkId];
+        }
+
+        if (empty($query['Itemid'])) {
+            $query = array(
+                'option' => 'com_osmap',
+                'view'   => $linkId,
+                'id'     => $item->id
+            );
+        }
+
+        if ($type != $linkId) {
+            $query[$type] = 1;
+        }
+
+        if ($lang) {
+            $query['lang'] = $lang;
+        }
+
+        $router = OSMap\Factory::getContainer()->router;
+
+        return $router->routeURL('index.php?' . http_build_query($query));
+    }
+
 }
