@@ -33,7 +33,8 @@ class Router
 
         if (!$this->joomlaRouter) {
             // Get the router.
-            $app = \JApplicationSite::getInstance('site');
+            $app = \JApplicationCms::getInstance('site');
+
             $this->joomlaRouter = $app::getRouter('site');
 
             // Make sure that we have our router
