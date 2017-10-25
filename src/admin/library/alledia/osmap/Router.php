@@ -26,6 +26,10 @@ class Router
      * needs to be the same as the frontend. Replicates partially the native
      * JRoute::_ method, but forcing to use the frontend routes. Required to
      * allow see correct routed URLs in the admin while editing a sitemap.
+     *
+     * @param string $url
+     *
+     * @return string
      */
     public function routeURL($url)
     {
@@ -49,8 +53,8 @@ class Router
 
         // Build route
         $scheme = array('path', 'query', 'fragment');
-        $uri = $this->joomlaRouter->build($url);
-        $url = $uri->toString($scheme);
+        $uri    = $this->joomlaRouter->build($url);
+        $url    = $uri->toString($scheme);
 
         // Replace spaces.
         $url = preg_replace('/\s/u', '%20', $url);
@@ -88,7 +92,7 @@ class Router
     /**
      * Checks if the supplied URL is internal
      *
-     * @param   string  $url  The URL to check.
+     * @param   string $url The URL to check.
      *
      * @return  boolean  True if Internal.
      *
@@ -109,14 +113,19 @@ class Router
             return true;
         }
 
-        $jriBase  = $this->getFrontendBase();
+        $jriBase = $this->getFrontendBase();
 
         // @see JURITest
-        if (empty($host) && strpos($path, 'index.php') === 0
-            || !empty($host) && preg_match('#' . preg_quote($jriBase, '#') . '#', $base)
-            || !empty($host) && $host === $baseHost && strpos($path, 'index.php') !== false
-            || !empty($host) && $base === $host && preg_match('#' . preg_quote($base, '#') . '#', $this->getFrontendBase())) {
-
+        if (empty($host)
+            && strpos($path, 'index.php') === 0
+            || !empty($host)
+            && preg_match('#' . preg_quote($jriBase, '#') . '#', $base)
+            || !empty($host)
+            && $host === $baseHost && strpos($path, 'index.php') !== false
+            || !empty($host)
+            && $base === $host
+            && preg_match('#' . preg_quote($base, '#') . '#', $this->getFrontendBase())
+        ) {
             return true;
         }
 
@@ -149,7 +158,7 @@ class Router
     {
         $container = Factory::getContainer();
 
-        $uri  = $container->uri->getInstance($url);
+        $uri = $container->uri->getInstance($url);
 
         return $uri->toString(array('path')) === $url;
     }
