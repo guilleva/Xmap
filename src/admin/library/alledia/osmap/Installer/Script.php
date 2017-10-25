@@ -45,6 +45,17 @@ class Script extends AbstractScript
      */
     public function postFlight($type, $parent)
     {
+        if (strpos($type, 'install') !== false) {
+            $app = \JFactory::getApplication();
+
+            $link = \JHtml::_(
+                'link',
+                'index.php?option=com_plugins&view=plugins&filter.search=OSMap',
+                \JText::_('COM_OSMAP_INSTALLER_PLUGINS_PAGE')
+            );
+            $app->enqueueMessage(\JText::sprintf('COM_OSMAP_INSTALLER_GOTOPLUGINS', $link), 'warning');
+        }
+
         // Check if XMap is installed, to start a migration
         $xmapConverter = new XmapConverter;
 
