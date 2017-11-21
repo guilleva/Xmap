@@ -11,6 +11,7 @@ namespace Alledia\OSMap\View\Sitemap;
 
 use Alledia\OSMap;
 use Joomla\Registry\Registry;
+use JText;
 
 defined('_JEXEC') or die();
 
@@ -25,7 +26,7 @@ class Html extends OSMap\View\Base
     /**
      * @var Registry
      */
-    protected $params;
+    protected $params = null;
 
     /**
      * @var bool
@@ -96,7 +97,7 @@ class Html extends OSMap\View\Base
 
         // Check if the sitemap is published
         if (!$this->sitemap->isPublished) {
-            throw new \Exception(\JText::_('COM_OSMAP_MSG_SITEMAP_IS_UNPUBLISHED'));
+            throw new \Exception(JText::_('COM_OSMAP_MSG_SITEMAP_IS_UNPUBLISHED'));
         }
 
         parent::display($tpl);
@@ -191,20 +192,20 @@ class Html extends OSMap\View\Base
     {
         echo '<div class="osmap-debug-box">';
         echo '<div><span>#:</span>&nbsp;' . $this->generalCounter . '</div>';
-        echo '<div><span>' . \JText::_('COM_OSMAP_UID') . ':</span>&nbsp;' . $node->uid . '</div>';
-        echo '<div><span>' . \JText::_('COM_OSMAP_FULL_LINK') . ':</span>&nbsp;' . htmlspecialchars($node->fullLink) . '</div>';
-        echo '<div><span>' . \JText::_('COM_OSMAP_RAW_LINK') . ':</span>&nbsp;' . htmlspecialchars($node->rawLink) . '</div>';
-        echo '<div><span>' . \JText::_('COM_OSMAP_LINK') . ':</span>&nbsp;' . htmlspecialchars($node->link) . '</div>';
-        echo '<div><span>' . \JText::_('COM_OSMAP_MODIFIED') . ':</span>&nbsp;' . htmlspecialchars($node->modified) . '</div>';
-        echo '<div><span>' . \JText::_('COM_OSMAP_LEVEL') . ':</span>&nbsp;' . $node->level . '</div>';
-        echo '<div><span>' . \JText::_('COM_OSMAP_DUPLICATE') . ':</span>&nbsp;' . \JText::_($node->duplicate ? 'JYES' : 'JNO') . '</div>';
-        echo '<div><span>' . \JText::_('COM_OSMAP_VISIBLE_FOR_ROBOTS') . ':</span>&nbsp;' . \JText::_($node->visibleForRobots ? 'JYES' : 'JNO') . '</div>';
-        echo '<div><span>' . \JText::_('COM_OSMAP_ADAPTER_CLASS') . ':</span>&nbsp;' . $node->adapter . '</div>';
+        echo '<div><span>' . JText::_('COM_OSMAP_UID') . ':</span>&nbsp;' . $node->uid . '</div>';
+        echo '<div><span>' . JText::_('COM_OSMAP_FULL_LINK') . ':</span>&nbsp;' . htmlspecialchars($node->fullLink) . '</div>';
+        echo '<div><span>' . JText::_('COM_OSMAP_RAW_LINK') . ':</span>&nbsp;' . htmlspecialchars($node->rawLink) . '</div>';
+        echo '<div><span>' . JText::_('COM_OSMAP_LINK') . ':</span>&nbsp;' . htmlspecialchars($node->link) . '</div>';
+        echo '<div><span>' . JText::_('COM_OSMAP_MODIFIED') . ':</span>&nbsp;' . htmlspecialchars($node->modified) . '</div>';
+        echo '<div><span>' . JText::_('COM_OSMAP_LEVEL') . ':</span>&nbsp;' . $node->level . '</div>';
+        echo '<div><span>' . JText::_('COM_OSMAP_DUPLICATE') . ':</span>&nbsp;' . JText::_($node->duplicate ? 'JYES' : 'JNO') . '</div>';
+        echo '<div><span>' . JText::_('COM_OSMAP_VISIBLE_FOR_ROBOTS') . ':</span>&nbsp;' . JText::_($node->visibleForRobots ? 'JYES' : 'JNO') . '</div>';
+        echo '<div><span>' . JText::_('COM_OSMAP_ADAPTER_CLASS') . ':</span>&nbsp;' . $node->adapter . '</div>';
 
         if (method_exists($node, 'getAdminNotesString')) {
             $adminNotes = $node->getAdminNotesString();
             if (!empty($adminNotes)) {
-                echo '<div><span>' . \JText::_('COM_OSMAP_ADMIN_NOTES') . ':</span>&nbsp;' . nl2br($adminNotes) . '</div>';
+                echo '<div><span>' . JText::_('COM_OSMAP_ADMIN_NOTES') . ':</span>&nbsp;' . nl2br($adminNotes) . '</div>';
             }
         }
         echo '</div>';
@@ -273,7 +274,7 @@ class Html extends OSMap\View\Base
                     if ($this->debug) {
                         $debug = sprintf(
                             '<div><span>%s:</span>&nbsp;%s: %s</div>',
-                            \JText::_('COM_OSMAP_MENUTYPE'),
+                            JText::_('COM_OSMAP_MENUTYPE'),
                             $menu->menuItemId,
                             $menu->menuItemType
                         );
