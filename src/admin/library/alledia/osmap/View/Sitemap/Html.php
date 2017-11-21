@@ -10,6 +10,7 @@
 namespace Alledia\OSMap\View\Sitemap;
 
 use Alledia\OSMap;
+use JFactory;
 use Joomla\Registry\Registry;
 use JText;
 
@@ -98,6 +99,32 @@ class Html extends OSMap\View\Base
         // Check if the sitemap is published
         if (!$this->sitemap->isPublished) {
             throw new \Exception(JText::_('COM_OSMAP_MSG_SITEMAP_IS_UNPUBLISHED'));
+        }
+
+        $app = JFactory::getApplication();
+        if ($title = $this->params->def('page_title')) {
+            if ($app->get('sitename_pagetitles', 0) == 1) {
+                $title = JText::sprintf('JPAGETITLE', $app->get('sitename'), $title);
+
+            } elseif ($app->get('sitename_pagetitles', 0) == 2) {
+                $title = JText::sprintf('JPAGETITLE', $title, $app->get('sitename'));
+            }
+            $this->document->setTitle($title);
+
+            $pathway = $app->getPathWay();
+            $pathway->addItem($title, '');
+        }
+
+        if ($description = $this->params->get('menu-meta_description')) {
+            $this->document->setDescription($description);
+        }
+
+        if ($keywords = $this->params->get('menu-meta_keywords')) {
+            $this->document->setMetadata('keywords', $keywords);
+        }
+
+        if ($robots = $this->params->get('robots')) {
+            $this->document->setMetadata('robots', $robots);
         }
 
         parent::display($tpl);
