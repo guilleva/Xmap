@@ -31,20 +31,21 @@ use Joomla\Utilities\ArrayHelper;
 
 class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentInterface
 {
+    /**
+     * @var PlgOSMapJoomla
+     */
     private static $instance = null;
 
     /**
      * Returns the unique instance of the plugin
      *
-     * @return object
+     * @return PlgOSMapJoomla
      */
     public static function getInstance()
     {
         if (empty(static::$instance)) {
-            $dispatcher = \JEventDispatcher::getInstance();
-            $instance   = new self($dispatcher);
-
-            static::$instance = $instance;
+            $dispatcher       = \JEventDispatcher::getInstance();
+            static::$instance = new self($dispatcher);
         }
 
         return static::$instance;
