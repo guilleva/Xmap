@@ -79,9 +79,11 @@ abstract class Base extends \JPlugin
      */
     protected static function checkMemory()
     {
-        if (static::$memoryLimit && (static::$memoryLimit - memory_get_usage(true) < static::$memoryMinimum)) {
-            $app = \JFactory::getApplication();
+        if (static::$memoryLimit === null) {
+            static::fixMemoryLimit();
+        }
 
+        if (static::$memoryLimit && (static::$memoryLimit - memory_get_usage(true) < static::$memoryMinimum)) {
             $message = \JText::sprintf('COM_OSMAP_WARNING_OOM', get_called_class());
             throw new Exception($message, 500);
         }
