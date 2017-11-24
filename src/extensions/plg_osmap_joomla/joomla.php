@@ -73,6 +73,8 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
      */
     public static function prepareMenuItem($node, $params)
     {
+        static::checkMemory();
+
         $db        = OSMap\Factory::getDbo();
         $container = OSMap\Factory::getContainer();
 
@@ -360,6 +362,8 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
         $itemid,
         $curlevel = 0
     ) {
+        static::checkMemory();
+
         $db = OSMap\Factory::getDBO();
 
         $where = array(
@@ -466,6 +470,8 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
      */
     public static function includeCategoryContent($collector, $parent, $catid, $params, $itemid, $prevnode = null)
     {
+        static::checkMemory();
+
         $db        = OSMap\Factory::getDbo();
         $container = OSMap\Factory::getContainer();
 
@@ -663,6 +669,8 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
      */
     protected static function printSubNodes($collector, $parent, $params, $subnodes, $item)
     {
+        static::checkMemory();
+
         $collector->changeLevel(1);
 
         $i = 0;
