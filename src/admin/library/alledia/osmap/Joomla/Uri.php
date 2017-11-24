@@ -20,6 +20,7 @@ class Uri
 {
     /**
      * Returns the base URI for the request.
+     * This will include any subfolders created via SEF
      *
      * @param   boolean  $pathonly  If false, prepend the scheme, host and port information. Default is false.
      *
@@ -28,6 +29,20 @@ class Uri
     public function base($pathonly = false)
     {
         return JUri::base($pathonly);
+    }
+
+    /**
+     * Returns the root URI for the site.
+     * This will never include any subfolders (including e.g. /administrator)
+     *
+     * @param   boolean  $pathonly  If false, prepend the scheme, host and port information. Default is false.
+     * @param   string   $path      The path
+     *
+     * @return  string  The root URI string.
+     */
+    public static function root($pathonly = false, $path = null)
+    {
+        return JUri::root($pathonly, $path);
     }
 
     /**
