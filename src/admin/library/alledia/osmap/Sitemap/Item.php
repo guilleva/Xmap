@@ -258,7 +258,7 @@ class Item extends BaseItem
 
         if ((bool)$this->home) {
             // Correct the URL for the home page.
-            $this->fullLink = $container->router->getFrontendBase();
+            $this->fullLink = $container->uri->root();
 
             // Check if multi-language is enabled to use the proper route
             if (\JLanguageMultilang::isEnabled()) {
@@ -273,10 +273,7 @@ class Item extends BaseItem
                 $this->fullLink .= $container->router->routeURL('index.php?Itemid=' . $home->id);
             }
 
-            // Removes the /administrator from the URI if in the administrator
-            $this->fullLink = $container->router->sanitizeURL(
-                $container->router->forceFrontendURL($this->fullLink)
-            );
+            $this->fullLink = $container->router->sanitizeURL($this->fullLink);
 
             return;
         }
@@ -340,9 +337,6 @@ class Item extends BaseItem
         if ($this->isInternal) {
             // Route the full link
             $this->fullLink = $container->router->routeURL($this->fullLink);
-
-            // Make sure the link has the base uri
-            $this->fullLink = $container->router->forceFrontendURL($this->fullLink);
         }
 
         $this->fullLink = $container->router->sanitizeURL($this->fullLink);

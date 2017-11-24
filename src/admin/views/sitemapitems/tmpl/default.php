@@ -58,7 +58,7 @@ $container = OSMap\Factory::getContainer();
 ;(function($) {
     $(function() {
         $.fn.osmap.loadSitemapItems({
-            baseUri: '<?php echo $container->router->getFrontendBase(); ?>',
+            baseUri: '<?php echo $container->uri->root(); ?>',
             sitemapId: '<?php echo $this->sitemapId; ?>',
             container: '#osmap-items-list',
             language: '<?php echo $this->language; ?>',

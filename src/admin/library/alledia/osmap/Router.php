@@ -59,32 +59,8 @@ class Router
         // Replace spaces.
         $url = preg_replace('/\s/u', '%20', $url);
 
-        // Remove subfolders to return a relative frontend link
-        $url = preg_replace('#^' . $container->uri->base(true) . '#', '', $url);
-
         // Remove administrator folder
-        $url = preg_replace('#^/administrator/#', '', $url);
-
-        return $url;
-    }
-
-    /**
-     * This method returns a full URL related to frontend router. Specially
-     * needed if the router is called by the admin
-     *
-     * @param string $url
-     *
-     * @return string
-     */
-    public function forceFrontendURL($url)
-    {
-        if (!preg_match('#^[^:]+://#', $url)) {
-            $baseUri = $this->getFrontendBase();
-
-            if (!substr_count($url, $baseUri)) {
-                $url = $baseUri . $url;
-            }
-        }
+        $url = preg_replace('#/administrator/#', '/', $url);
 
         return $url;
     }
@@ -106,45 +82,24 @@ class Router
         $base     = $uri->toString(array('scheme', 'host', 'port', 'path'));
         $host     = $uri->toString(array('scheme', 'host', 'port'));
         $path     = $uri->toString(array('path'));
-        $baseHost = $container->uri->getInstance($this->getFrontendBase())->toString(array('host'));
+        $baseHost = $container->uri->getInstance($uri->root())->toString(array('host'));
 
         // Check if we have a relative path as url, considering it will always be internal
         if ($path === $url) {
             return true;
         }
 
-        $jriBase = $this->getFrontendBase();
-
         // @see JURITest
-        if (empty($host)
-            && strpos($path, 'index.php') === 0
-            || !empty($host)
-            && preg_match('#' . preg_quote($jriBase, '#') . '#', $base)
-            || !empty($host)
-            && $host === $baseHost && strpos($path, 'index.php') !== false
-            || !empty($host)
-            && $base === $host
-            && preg_match('#' . preg_quote($base, '#') . '#', $this->getFrontendBase())
+        if (empty($host) && strpos($path, 'index.php') === 0
+            || !empty($host) && preg_match('#' . preg_quote($uri->root(), '#') . '#', $base)
+            || !empty($host) && $host === $baseHost && strpos($path, 'index.php') !== false
+            || !empty($host) && $base === $host
+            && preg_match('#' . preg_quote($base, '#') . '#', $uri->root())
         ) {
             return true;
         }
 
         return false;
-    }
-
-    /**
-     * Returns the result of JUri::base() from the site used in the sitemap.
-     * This is better than the JUri::base() because when we are editing a
-     * sitemap in the admin that method returns the /administrator and mess
-     * all the urls, which should point to the frontend only.
-     *
-     * @return string
-     */
-    public function getFrontendBase()
-    {
-        $container = Factory::getContainer();
-
-        return preg_replace('#/administrator[/]?$#', '/', $container->uri->base());
     }
 
     /**
@@ -173,7 +128,7 @@ class Router
     public function convertRelativeUriToFullUri($path)
     {
         $path = preg_replace('#^/#', '', $path);
-        $base = preg_replace('#/$#', '', $this->getFrontendBase());
+        $base = preg_replace('#/$#', '', Factory::getContainer()->uri->root());
 
         return $base . '/' . $path;
     }
