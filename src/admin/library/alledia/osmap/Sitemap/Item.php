@@ -266,21 +266,11 @@ class Item extends BaseItem
                 $tag  = $lang->getTag();
                 $lang = null;
 
-                if (version_compare(JVERSION, '3.5', '<')) {
-                    $homes = OSMap\Helper\Legacy::getSiteHomePages();
-                } else {
-                    $homes = \JLanguageMultilang::getSiteHomePages();
-                }
+                $homes = \JLanguageMultilang::getSiteHomePages();
 
-                if (isset($homes[$tag])) {
-                    $home = $homes[$tag];
-                } else {
-                    $home = $homes['*'];
-                }
-                $homes = array();
+                $home = isset($homes[$tag]) ? $homes[$tag] : $home = $homes['*'];
 
                 $this->fullLink .= $container->router->routeURL('index.php?Itemid=' . $home->id);
-                $home = null;
             }
 
             // Removes the /administrator from the URI if in the administrator
