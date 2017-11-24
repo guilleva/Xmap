@@ -58,7 +58,7 @@ class Item extends BaseItem
         $this->rawLink = $this->fullLink;
 
         // Removes the hash segment from the Full link, if exists
-        $container = OSMap\Factory::getContainer();
+        $container      = OSMap\Factory::getContainer();
         $this->fullLink = $container->router->removeHashFromURL($this->fullLink);
 
         // Make sure to have a unique hash for the settings
@@ -158,7 +158,7 @@ class Item extends BaseItem
 
         if (!OSMap\Helper\General::isEmptyDate($this->$attributeName)) {
             if (!is_numeric($this->$attributeName)) {
-                $date           = new \JDate($this->$attributeName);
+                $date                 = new \JDate($this->$attributeName);
                 $this->$attributeName = $date->toUnix();
             }
 
@@ -167,7 +167,7 @@ class Item extends BaseItem
                 if ($this->$attributeName < 0) {
                     $this->$attributeName = null;
                 } else {
-                    $date           = new \JDate($this->$attributeName);
+                    $date                 = new \JDate($this->$attributeName);
                     $this->$attributeName = $date->toISO8601();
                 }
             }
