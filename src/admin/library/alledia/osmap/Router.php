@@ -58,8 +58,31 @@ class Router
         // Replace spaces.
         $url = preg_replace('/\s/u', '%20', $url);
 
-        // Remove administrator folder
-        $url = preg_replace('#/administrator/#', '/', $url);
+        // Remove application subpaths (typically /administrator)
+        $adminPath = str_replace(\JUri::root(), '', \JUri::base());
+        $url       = str_replace($adminPath, '', $url);
+
+        return $url;
+    }
+
+    /**
+     * This method returns a full URL related to frontend router. Specially
+     * needed if the router is called by the admin
+     *
+     * @param string $url
+     *
+     * @return string
+     * @throws \Exception
+     */
+    public function forceFrontendURL($url)
+    {
+        if (!preg_match('#^[^:]+://#', $url)) {
+            $baseUri = $this->getFrontendBase();
+
+            if (!substr_count($url, $baseUri)) {
+                $url = $baseUri . $url;
+            }
+        }
 
         return $url;
     }
@@ -103,6 +126,20 @@ class Router
     }
 
     /**
+     * Returns the result of JUri::base() from the site used in the sitemap.
+     * This is better than the JUri::base() because when we are editing a
+     * sitemap in the admin that method returns the /administrator and mess
+     * all the urls, which should point to the frontend only.
+     *
+     * @return string
+     * @throws \Exception
+     */
+    public function getFrontendBase()
+    {
+        return Factory::getContainer()->uri->root();
+    }
+
+    /**
      * Check if the given URL is a relative URI. Returns true, if afirmative.
      *
      * @param string
@@ -129,10 +166,7 @@ class Router
      */
     public function convertRelativeUriToFullUri($path)
     {
-        $path = preg_replace('#^/#', '', $path);
-        $base = preg_replace('#/$#', '', Factory::getContainer()->uri->root());
-
-        return $base . '/' . $path;
+        return rtrim($this->getFrontendBase(), '/') . '/' . ltrim($path, '/');
     }
 
     /**

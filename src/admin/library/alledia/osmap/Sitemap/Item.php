@@ -341,6 +341,9 @@ class Item extends BaseItem
         if ($this->isInternal) {
             // Route the full link
             $this->fullLink = $container->router->routeURL($this->fullLink);
+
+            // Make sure the link has the base uri
+            $this->fullLink = $container->router->forceFrontendURL($this->fullLink);
         }
 
         $this->fullLink = $container->router->sanitizeURL($this->fullLink);
