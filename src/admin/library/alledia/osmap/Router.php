@@ -66,28 +66,6 @@ class Router
     }
 
     /**
-     * This method returns a full URL related to frontend router. Specially
-     * needed if the router is called by the admin
-     *
-     * @param string $url
-     *
-     * @return string
-     * @throws \Exception
-     */
-    public function forceFrontendURL($url)
-    {
-        if (!preg_match('#^[^:]+://#', $url)) {
-            $baseUri = $this->getFrontendBase();
-
-            if (!substr_count($url, $baseUri)) {
-                $url = $baseUri . $url;
-            }
-        }
-
-        return $url;
-    }
-
-    /**
      * Checks if the supplied URL is internal
      *
      * @param   string $url The URL to check.
@@ -166,7 +144,15 @@ class Router
      */
     public function convertRelativeUriToFullUri($path)
     {
-        return rtrim($this->getFrontendBase(), '/') . '/' . ltrim($path, '/');
+        if ($path[0] != '/') {
+            $path = $this->getFrontendBase() . $path;
+        } else {
+            $scheme = array('scheme', 'user', 'pass', 'host', 'port');
+            $path = Factory::getContainer()->uri->getInstance()->toString($scheme) . $path;
+
+        }
+
+        return $path;
     }
 
     /**

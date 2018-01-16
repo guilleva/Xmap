@@ -343,7 +343,7 @@ class Item extends BaseItem
             $this->fullLink = $container->router->routeURL($this->fullLink);
 
             // Make sure the link has the base uri
-            $this->fullLink = $container->router->forceFrontendURL($this->fullLink);
+            $this->fullLink = $container->router->convertRelativeUriToFullUri($this->fullLink);
         }
 
         $this->fullLink = $container->router->sanitizeURL($this->fullLink);
