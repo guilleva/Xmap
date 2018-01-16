@@ -34,8 +34,6 @@ class Router
      */
     public function routeURL($url)
     {
-        $container = Factory::getContainer();
-
         if (!$this->joomlaRouter) {
             // Get the router.
             $app = \JApplicationCms::getInstance('site');
