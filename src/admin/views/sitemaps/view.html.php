@@ -44,6 +44,12 @@ class OSMapViewSitemaps extends OSMap\View\Admin\Base
      */
     protected $item = null;
 
+    /**
+     * @param null $tpl
+     *
+     * @return void
+     * @throws Exception
+     */
     public function display($tpl = null)
     {
         /** @var OSMapModelSitemaps $model */
@@ -100,6 +106,10 @@ class OSMapViewSitemaps extends OSMap\View\Admin\Base
         parent::setToolBar($addDivider);
     }
 
+    /**
+     * @return void
+     * @throws Exception
+     */
     protected function displayAlerts()
     {
         $app = JFactory::getApplication();
@@ -135,6 +145,7 @@ class OSMapViewSitemaps extends OSMap\View\Admin\Base
      * @param string $lang
      *
      * @return string
+     * @throws \Exception
      */
     protected function getLink($item, $type, $lang = null)
     {

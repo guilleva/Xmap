@@ -30,6 +30,7 @@ class Router
      * @param string $url
      *
      * @return string
+     * @throws \Exception
      */
     public function routeURL($url)
     {
@@ -72,7 +73,8 @@ class Router
      *
      * @return  boolean  True if Internal.
      *
-     * @since   11.1
+     * @return bool
+     * @throws \Exception
      */
     public function isInternalURL($url)
     {
@@ -108,6 +110,7 @@ class Router
      * @param string
      *
      * @return bool
+     * @throws \Exception
      */
     public function isRelativeUri($url)
     {
@@ -121,9 +124,10 @@ class Router
     /**
      * Converts an internal relative URI into a full link.
      *
-     * @param string $url
+     * @param string $path
      *
      * @return string
+     * @throws \Exception
      */
     public function convertRelativeUriToFullUri($path)
     {

@@ -26,6 +26,7 @@ class Item extends BaseItem
      * @param int   $currentMenuItemId
      *
      * @return void
+     * @throws \Exception
      */
     public function __construct($itemData, $currentMenuItemId)
     {
@@ -121,6 +122,7 @@ class Item extends BaseItem
      * Check if the current link is an internal link.
      *
      * @return bool
+     * @throws \Exception
      */
     protected function checkLinkIsInternal()
     {
@@ -236,6 +238,7 @@ class Item extends BaseItem
      * Sanitize the link removing double slashes and trailing slash
      *
      * @return void
+     * @throws \Exception
      */
     protected function sanitizeFullLink()
     {
@@ -251,6 +254,7 @@ class Item extends BaseItem
      * URL, won't change the link.
      *
      * @return void
+     * @throws \Exception
      */
     protected function setFullLink()
     {

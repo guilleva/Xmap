@@ -69,7 +69,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
      * @param Registry $params The extension params
      *
      * @return bool
-     * @since  1.2
+     * @throws Exception
      */
     public static function prepareMenuItem($node, $params)
     {
@@ -204,7 +204,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
      * @param Registry  $params
      *
      * @return void
-     * @since  1.0
+     * @throws Exception
      */
     public static function getTree($collector, $menuItem, $params)
     {
@@ -353,6 +353,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
      * @param int       $curlevel
      *
      * @return void
+     * @throws Exception
      */
     protected static function expandCategory(
         $collector,
@@ -467,6 +468,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
      * @param object     $prevnode
      *
      * @return void
+     * @throws Exception
      */
     public static function includeCategoryContent($collector, $parent, $catid, $params, $itemid, $prevnode = null)
     {
@@ -666,6 +668,9 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
      * @param Registry  $params
      * @param array     $subnodes
      * @param object    $item
+     *
+     * @return void
+     * @throws Exception
      */
     protected static function printSubNodes($collector, $parent, $params, $subnodes, $item)
     {

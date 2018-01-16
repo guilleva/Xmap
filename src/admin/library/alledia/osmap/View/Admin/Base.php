@@ -32,8 +32,8 @@ class Base extends OSMap\View\Base
      *
      * @param null $tpl
      *
-     * @throws Exception
      * @return void
+     * @throws \Exception
      */
     public function display($tpl = null)
     {
