@@ -144,12 +144,12 @@ class Router
      */
     public function convertRelativeUriToFullUri($path)
     {
-        if ($path[0] != '/') {
-            $path = $this->getFrontendBase() . $path;
-        } else {
+        if ($path[0] == '/') {
             $scheme = array('scheme', 'user', 'pass', 'host', 'port');
             $path = Factory::getContainer()->uri->getInstance()->toString($scheme) . $path;
 
+        } elseif ($this->isRelativeUri($path)) {
+            $path = $this->getFrontendBase() . $path;
         }
 
         return $path;
