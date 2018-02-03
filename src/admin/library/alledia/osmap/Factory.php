@@ -10,6 +10,7 @@
 namespace Alledia\OSMap;
 
 use Alledia\Framework;
+use Alledia\OSMap\Sitemap\SitemapInterface;
 
 defined('_JEXEC') or die();
 
@@ -59,23 +60,24 @@ class Factory extends Framework\Factory
      * @param int    $id
      * @param string $type
      *
-     * @return mixed
+     * @return SitemapInterface
+     * @throws \Exception
      */
     public static function getSitemap($id, $type = 'standard')
     {
-        if ($type === 'standard') {
-            return new Sitemap\Standard($id);
-        }
+        switch ($type) {
+            case 'standard':
+                return new Sitemap\Standard($id);
 
-        if ($type === 'images') {
-            return new Sitemap\Images($id);
-        }
+            case 'images':
+                return new Sitemap\Images($id);
 
-        if ($type === 'news') {
-            return new Sitemap\News($id);
-        }
+            case 'news':
+                return new Sitemap\News($id);
 
-        return false;
+            default:
+                return null;
+        }
     }
 
     /**
