@@ -41,21 +41,11 @@ class Script extends AbstractScript
     /**
      * Post installation actions
      *
-     * @return bool
+     * @return void
+     * @throws \Exception
      */
     public function postFlight($type, $parent)
     {
-        if (strpos($type, 'install') !== false) {
-            $app = \JFactory::getApplication();
-
-            $link = \JHtml::_(
-                'link',
-                'index.php?option=com_plugins&view=plugins&filter.search=OSMap',
-                \JText::_('COM_OSMAP_INSTALLER_PLUGINS_PAGE')
-            );
-            $app->enqueueMessage(\JText::sprintf('COM_OSMAP_INSTALLER_GOTOPLUGINS', $link), 'warning');
-        }
-
         // Check if XMap is installed, to start a migration
         $xmapConverter = new XmapConverter;
 
@@ -75,11 +65,19 @@ class Script extends AbstractScript
 
         if ($type === 'update') {
             $this->migrateLegacySitemaps();
-        }
 
-        if ($type === 'install') {
-            // Check if we have any sitemap. If not, create a default one
+        } elseif (strpos($type, 'install') !== false) {
+            // New installation [discover_install|install]
             $this->createDefaultSitemap();
+
+            $app = \JFactory::getApplication();
+
+            $link = \JHtml::_(
+                'link',
+                'index.php?option=com_plugins&view=plugins&filter.search=OSMap',
+                \JText::_('COM_OSMAP_INSTALLER_PLUGINS_PAGE')
+            );
+            $app->enqueueMessage(\JText::sprintf('COM_OSMAP_INSTALLER_GOTOPLUGINS', $link), 'warning');
         }
 
         // Check if we have params from Xmap plugins to apply to OSMap plugins
@@ -88,7 +86,8 @@ class Script extends AbstractScript
         // Check if we have the correct database scheme
         $this->checkDbScheme();
 
-        return true;
+        // Show any additional messages we might have created.
+        $this->showMessages();
     }
 
     /**
@@ -158,6 +157,7 @@ class Script extends AbstractScript
      * the table.
      *
      * @return void
+     * @throws \Exception
      */
     protected function migrateLegacySitemaps()
     {
