@@ -444,7 +444,7 @@ class Collector
 
             // We need to make sure to have an URL free of hash chars
             $url  = $container->router->removeHashFromURL($item->fullLink);
-            $hash = md5($url);
+            $hash = $container->router->createUrlHash($url);
 
             if (isset($this->urlHashList[$hash])) {
                 $item->duplicate = true;

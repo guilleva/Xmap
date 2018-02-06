@@ -63,7 +63,7 @@ class Item extends BaseItem
         $this->fullLink = $container->router->removeHashFromURL($this->fullLink);
 
         // Make sure to have a unique hash for the settings
-        $this->settingsHash = md5($this->fullLink . $currentMenuItemId);
+        $this->settingsHash = $container->router->createUrlHash($this->fullLink . $currentMenuItemId);
 
         /*
          * Do not use a "prepare" method because we need to make sure it will

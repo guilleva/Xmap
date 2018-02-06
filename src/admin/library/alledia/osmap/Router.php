@@ -187,4 +187,17 @@ class Router
 
         return $url;
     }
+
+    /**
+     * Create a consistent url hash regardless of scheme or site root.
+     * 
+     * @param string $url
+     *
+     * @return string
+     * @throws \Exception
+     */
+    public function createUrlHash($url)
+    {
+        return md5(str_replace(Factory::getContainer()->uri->root(), '', $url));
+    }
 }
