@@ -157,6 +157,7 @@ class Collector
      * @param callable $callback
      *
      * @return int
+     * @throws \Exception
      */
     public function fetch($callback)
     {
@@ -222,7 +223,7 @@ class Collector
 
         $this->currentMenu            = null;
         $this->tmpItemDefaultSettings = array();
-        $callback = null;
+        $callback                     = null;
 
         return $this->counter;
     }
@@ -620,7 +621,12 @@ class Collector
                 ->select(
                     array(
                         '*',
-                        'IF (settings_hash IS NULL OR settings_hash = "", uid, CONCAT(uid, ":", settings_hash)) AS ' . $db->quoteName('key')
+                        sprintf(
+                            'IF (IFNULL(settings_hash, %1$s) = %1$s, uid, CONCAT(uid, %2$s, settings_hash)) AS %3$s',
+                            $db->quote(''),
+                            $db->quote(':'),
+                            $db->quoteName('key')
+                        )
                     )
                 )
                 ->from('#__osmap_items_settings')
