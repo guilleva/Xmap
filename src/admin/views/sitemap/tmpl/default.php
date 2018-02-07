@@ -18,7 +18,7 @@ $input = JFactory::getApplication()->input;
 ?>
 <script>
     ;(function(Joomla, document, $) {
-        Joomla.submitbutton = function (task) {
+        Joomla.submitbutton = function(task) {
             if (task == 'sitemap.cancel' || document.formvalidator.isValid(document.id('adminForm'))) {
                 // Convert the ordering of sortable in a serialized value to indentify the ordering of menus and values
                 var ordering = $('#ul_menus').sortable('toArray').toString();
@@ -45,22 +45,22 @@ $input = JFactory::getApplication()->input;
         <?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
 
         <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'details', JText::_('COM_OSMAP_SITEMAP_MENUS_LABEL', true)); ?>
-            <div class="row-fluid">
-                <div class="span9">
-                    <?php echo $this->form->getField('menus')->renderField(array('hiddenLabel' => true)); ?>
-                </div>
-
-                <div class="span3">
-                    <?php
-                    // Set main fields.
-                    $this->fields = array(
-                        'published',
-                        'is_default'
-                    );
-                    ?>
-                    <?php echo JLayoutHelper::render('joomla.edit.global', $this); ?>
-                </div>
+        <div class="row-fluid">
+            <div class="span9">
+                <?php echo $this->form->getField('menus')->renderField(array('hiddenLabel' => true)); ?>
             </div>
+
+            <div class="span3">
+                <?php
+                // Set main fields.
+                $this->fields = array(
+                    'published',
+                    'is_default'
+                );
+                ?>
+                <?php echo JLayoutHelper::render('joomla.edit.global', $this); ?>
+            </div>
+        </div>
         <?php echo JHtml::_('bootstrap.endTab'); ?>
 
         <?php echo JHtml::_('bootstrap.endTabSet'); ?>
