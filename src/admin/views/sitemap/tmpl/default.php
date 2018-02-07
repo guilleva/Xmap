@@ -13,7 +13,7 @@ JHtml::_('behavior.formvalidation');
 JHtml::_('behavior.keepalive');
 JHtml::_('formbehavior.chosen', 'select');
 
-JHtml::stylesheet('media/com_osmap/css/admin.min.css');
+JHtml::_('stylesheet', 'com_osmap/admin.min.css', array('relative' => true));
 $input = JFactory::getApplication()->input;
 ?>
 <script>

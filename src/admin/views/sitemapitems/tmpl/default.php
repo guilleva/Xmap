@@ -16,8 +16,8 @@ JHtml::_('behavior.core');
 JHtml::_('behavior.keepalive');
 JHtml::_('formbehavior.chosen', 'select');
 
-JHtml::stylesheet('media/com_osmap/css/admin.min.css');
-JHtml::stylesheet('media/jui/css/icomoon.css');
+JHtml::_('stylesheet', 'com_osmap/admin.min.css', array('relative' => true));
+JHtml::_('stylesheet', 'jui/icomoon.css', array('relative' => true));
 
 JHtml::script('com_osmap/sitemapitems.min.js', false, true);
 

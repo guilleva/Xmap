@@ -16,7 +16,7 @@ JHtml::addIncludePath(OSMAP_ADMIN_PATH . '/helpers/html');
 JHtml::_('bootstrap.tooltip');
 JHtml::_('formbehavior.chosen', 'select');
 
-JHtml::stylesheet('media/com_osmap/css/admin.min.css');
+JHtml::_('stylesheet', 'com_osmap/admin.min.css', array('relative' => true));
 
 $container = OSMap\Factory::getContainer();
 
