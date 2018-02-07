@@ -37,6 +37,10 @@
     font-size: 14px;
 }
 
+.icon-osmap:before {
+    content: '\e252';
+}
+
 #osmap-items-container .small.silver {
     color: silver;
 }
