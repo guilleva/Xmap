@@ -146,7 +146,7 @@ class Router
     {
         if ($path[0] == '/') {
             $scheme = array('scheme', 'user', 'pass', 'host', 'port');
-            $path = Factory::getContainer()->uri->getInstance()->toString($scheme) . $path;
+            $path   = Factory::getContainer()->uri->getInstance()->toString($scheme) . $path;
 
         } elseif ($this->isRelativeUri($path)) {
             $path = $this->getFrontendBase() . $path;
@@ -190,7 +190,7 @@ class Router
 
     /**
      * Create a consistent url hash regardless of scheme or site root.
-     * 
+     *
      * @param string $url
      *
      * @return string
