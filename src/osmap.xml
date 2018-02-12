@@ -133,6 +133,7 @@
             <file>components/com_osmap/views/html/tmpl/default_class.php</file>
             <file>components/com_osmap/views/xml/tmpl/default_class.php</file>
             <file>components/com_osmap/views/xml/tmpl/default_xsl.php</file>
+            <file>media/com_osmap/js/ractive.min.js</file>
         </obsolete>
     </alledia>
 </extension>
