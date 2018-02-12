@@ -47,6 +47,6 @@ class OSMapTableSitemapItems extends JTable
      */
     public function __construct($db)
     {
-        parent::__construct('#__osmap_items_settings', array('sitemap_id', 'uid'), $db);
+        parent::__construct('#__osmap_items_settings', array('sitemap_id', 'uid', 'settings_hash'), $db);
     }
 }
