@@ -9,9 +9,6 @@
 
 defined('_JEXEC') or die();
 
-// Declares global variables to be used into the callback
-global $count, $showItemUID, $showExternalLinks;
-
 $count             = 0;
 $showItemUID       = $this->osmapParams->get('show_item_uid', 0);
 $showExternalLinks = (int)$this->osmapParams->get('show_external_links', 0);
@@ -24,11 +21,9 @@ $showExternalLinks = (int)$this->osmapParams->get('show_external_links', 0);
  *
  * @param object $item
  *
- * @result void
+ * @return void
  */
-$printNodeCallback = function ($item) {
-    global $count, $showItemUID, $showExternalLinks;
-
+$printNodeCallback = function ($item) use (&$count, &$showItemUID, &$showExternalLinks) {
     // Check if is external URL and if should be ignored
     if (!$item->isInternal) {
         if ($showExternalLinks === 0) {
@@ -58,12 +53,8 @@ $printNodeCallback = function ($item) {
         $item->addAdminNote('COM_OSMAP_ADMIN_NOTE_PARENT_INVISIBLE_FOR_ROBOTS');
     }
 
-    if (!$item->hasCompatibleLanguage()) {
-        return false;
-    }
-
-    if ($item->ignore) {
-        return false;
+    if (!$item->hasCompatibleLanguage() || $item->ignore) {
+        return;
     }
 
     ?>
