@@ -56,6 +56,7 @@
         <languages folder="admin/language">
              <language tag="en-GB">en-GB/en-GB.com_osmap.ini</language>
              <language tag="en-GB">en-GB/en-GB.com_osmap.sys.ini</language>
+             <language tag="en-GB">en-GB/en-GB.lib_allediainstaller.sys.ini</language>
         </languages>
 
         <files folder="admin">
@@ -75,7 +76,7 @@
     </administration>
 
     <updateservers>
-        <server type="extension" priority="1" name="OSMap">https://deploy.ostraining.com/client/update/free/stable/com_osmap</server>
+        <server type="extension" priority="1" name="OSMap"><![CDATA[https://deploy.ostraining.com/client/update/free/stable/com_osmap]]></server>
     </updateservers>
 
     <alledia>
@@ -84,6 +85,10 @@
         <license>free</license>
         <targetplatform>3.7</targetplatform>
         <phpminimum>5.6</phpminimum>
+
+        <minify>
+            <!-- do not include sitemapitems.js here use yuicompressor manually -->
+        </minify>
 
         <relatedExtensions>
             <extension
@@ -118,21 +123,22 @@
                 group="xmap"
                 element="com_content">plg_xmap_com_content</extension>
 
+            <folder>administrator/components/com_osmap/library/Free</folder>
+            <folder>administrator/components/com_osmap/models/fields</folder>
+            <folder>administrator/components/com_osmap/models/forms</folder>
             <file>administrator/components/com_osmap/helpers/html/grid.php</file>
             <file>administrator/components/com_osmap/helpers/osmap.php</file>
-            <folder>administrator/components/com_osmap/models/forms</folder>
-            <folder>administrator/components/com_osmap/models/fields</folder>
-            <folder>administrator/components/com_osmap/library/Free</folder>
-            <file>administrator/components/com_osmap/views/sitemap/tmpl/edit_legacy.php</file>
             <file>administrator/components/com_osmap/views/sitemap/tmpl/edit.php</file>
+            <file>administrator/components/com_osmap/views/sitemap/tmpl/edit_legacy.php</file>
+            <file>administrator/components/com_osmap/views/sitemap/tmpl/navigator.php</file>
             <file>administrator/components/com_osmap/views/sitemap/tmpl/navigator_class.php</file>
             <file>administrator/components/com_osmap/views/sitemap/tmpl/navigator_links.php</file>
-            <file>administrator/components/com_osmap/views/sitemap/tmpl/navigator.php</file>
             <file>administrator/components/com_osmap/views/sitemaps/tmpl/default_legacy.php</file>
             <file>administrator/components/com_osmap/views/sitemaps/tmpl/form.php</file>
             <file>components/com_osmap/views/html/tmpl/default_class.php</file>
             <file>components/com_osmap/views/xml/tmpl/default_class.php</file>
             <file>components/com_osmap/views/xml/tmpl/default_xsl.php</file>
+            <file>media/com_osmap/js/jquery.js</file>
             <file>media/com_osmap/js/ractive.min.js</file>
         </obsolete>
     </alledia>
