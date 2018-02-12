@@ -17,15 +17,15 @@ class OSMapControllerSitemapItems extends OSMap\Controller\Form
     /**
      * Method override to check if the user can edit an existing record.
      *
-     * @param    array    An array of input data.
-     * @param    string   The name of the key for the primary key.
+     * @param array    An array of input data.
+     * @param string   The name of the key for the primary key.
      *
-     * @return   boolean
+     * @return boolean
      */
     protected function _allowEdit($data = array(), $key = 'id')
     {
         // Initialise variables.
-        $recordId = (int) isset($data[$key]) ? $data[$key] : 0;
+        $recordId = (int)isset($data[$key]) ? $data[$key] : 0;
 
         // Assets are being tracked, so no need to look into the category.
         return JFactory::getUser()->authorise('core.edit', 'com_osmap.sitemap.' . $recordId);
@@ -36,6 +36,13 @@ class OSMapControllerSitemapItems extends OSMap\Controller\Form
         $this->setRedirect('index.php?option=com_osmap&view=sitemaps');
     }
 
+    /**
+     * @param string $key
+     * @param null   $urlVar
+     *
+     * @return bool
+     * @throws Exception
+     */
     public function save($key = null, $urlVar = null)
     {
         // Check for request forgeries.
@@ -82,5 +89,7 @@ class OSMapControllerSitemapItems extends OSMap\Controller\Form
         } else {
             $this->setRedirect('index.php?option=com_osmap&view=sitemaps');
         }
+
+        return true;
     }
 }
