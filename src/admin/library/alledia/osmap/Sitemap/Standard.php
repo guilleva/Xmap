@@ -119,6 +119,7 @@ class Standard implements SitemapInterface
      * @param bool     $triggerEvents
      *
      * @return void
+     * @throws \Exception
      */
     public function traverse($callback, $triggerEvents = true)
     {

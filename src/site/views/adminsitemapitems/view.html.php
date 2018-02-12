@@ -16,6 +16,12 @@ jimport('joomla.application.component.view');
 
 class OSMapViewAdminSitemapItems extends JViewLegacy
 {
+    /**
+     * @param string $tpl
+     *
+     * @return void
+     * @throws Exception
+     */
     public function display($tpl = null)
     {
         $container = OSMap\Factory::getContainer();

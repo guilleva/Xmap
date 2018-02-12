@@ -14,6 +14,12 @@ defined('_JEXEC') or die();
 
 class OSMapViewSitemapItems extends OSMap\View\Admin\Base
 {
+    /**
+     * @param string $tpl
+     *
+     * @return void
+     * @throws Exception
+     */
     public function display($tpl = null)
     {
         $app             = OSMap\Factory::getApplication();
