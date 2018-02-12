@@ -39,7 +39,7 @@
                     $this.parents('tr').addClass('updated');
                 }
             );
-        };
+        }
 
         /**
          * Remove the field for priority and add it's value as text of the
@@ -76,13 +76,13 @@
                     $this.parents('tr').addClass('updated');
                 }
             );
-        };
+        }
 
         function removeChangeFreqField($tr) {
             $div = $tr.find('.sitemapitem-changefreq');
 
             $div.text($div.find('option:selected').text());
-        };
+        }
 
         // Adds the event for a hovered line
         $('#itemList .sitemapitem').hover(
