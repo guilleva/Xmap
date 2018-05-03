@@ -393,13 +393,10 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                 )
             )
             ->from('#__categories AS a')
-            ->where($where);
+            ->where($where)
+            ->order('a.lft');
 
-        $query->order('a.lft');
-
-        $db->setQuery($query);
-
-        $items = $db->loadObjectList();
+        $items = $db->setQuery($query)->loadObjectList();
 
         $curlevel++;
 
