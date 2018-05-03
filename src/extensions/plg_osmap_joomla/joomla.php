@@ -438,6 +438,11 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                     $node->link   = ContentHelperRoute::getCategoryRoute($node->slug);
                     $node->itemid = $itemid;
 
+                    // Correct for an issue in Joomla core with occasional empty variables
+                    $linkUri = new JUri($node->link);
+                    $linkUri->setQuery(array_filter((array)$linkUri->getQuery(true)));
+                    $node->link = $linkUri->toString();
+
                     if ($collector->printNode($node)) {
                         self::expandCategory($collector, $parent, $item->id, $params, $node->itemid, $curlevel);
                     }
