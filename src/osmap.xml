@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="3.7" method="upgrade">
     <name>COM_OSMAP</name>
-    <creationDate>March 20 2018</creationDate>
+    <creationDate>May 03 2018</creationDate>
     <copyright>Copyright (C) 2016-2017 Open Source Training, LLC. All rights reserved.</copyright>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <author>Joomlashack</author>
     <authorEmail>help@joomlashack.com</authorEmail>
     <authorUrl>https://www.joomlashack.com</authorUrl>
-    <version>4.2.17</version>
+    <version>4.2.18b1</version>
     <variant>FREE</variant>
     <description>COM_OSMAP_DESCRIPTION</description>
 
