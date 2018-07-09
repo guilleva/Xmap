@@ -9,8 +9,8 @@
 
 defined('_JEXEC') or die();
 
-require_once JPATH_SITE . '/components/com_content/helpers/route.php';
-require_once JPATH_SITE . '/components/com_content/helpers/query.php';
+JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
+JLoader::register('ContentHelperQuery', JPATH_SITE . '/components/com_content/helpers/query.php');
 
 /**
  * Handles standard Joomla's Content articles/categories
