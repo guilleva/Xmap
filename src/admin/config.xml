@@ -67,7 +67,7 @@
             type="customfooter"
             name="customfooter"
             media="com_osmap"
-            showgoproad="1"
-            jedurl="http://extensions.joomla.org/extensions/extension/structure-a-navigation/site-map/osmap" />
+            showgoproad="https://www.joomlashack.com/joomla-extensions/osmap/"
+            jedurl="https://extensions.joomla.org/extension/osmap/" />
     </fieldset>
 </config>
