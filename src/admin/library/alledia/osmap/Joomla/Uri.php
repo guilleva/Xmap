@@ -11,6 +11,8 @@ namespace Alledia\OSMap\Joomla;
 
 use \JUri;
 
+defined('_JEXEC') or die();
+
 /**
  * Class used to adapt JUri to a non-static context. Created to make tests viable
  * allowing to mock the JUri class and methods for better isolated tests on classes
