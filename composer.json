@@ -10,7 +10,7 @@
         "name"           : "OSMap",
         "client"         : "administrator",
         "package-license": "free",
-        "target-platform": "3.[78]"
+        "target-platform": "3.*"
     },
     "authors": [
         {
