@@ -19,9 +19,10 @@ class OSMapModelSitemaps extends JModelList
     {
         $config['filter_fields'] = array(
             'published',
-            'sitemap.published',
             'default',
-            'sitemap.default'
+            'sitemap.published',
+            'sitemap.name',
+            'sitemap.id'
         );
 
         parent::__construct($config);
@@ -59,14 +60,14 @@ class OSMapModelSitemaps extends JModelList
             $query->where('sitemap.name LIKE ' . $db->quote('%' . $search . '%'));
         }
 
-        $listOrder = $this->getState($this->context . '.list.ordering', 'sitemap.id');
-        $listDir   = $this->getState($this->context . '.list.direction', 'ASC');
-        $query->order($listOrder . ' ' . $listDir);
+        $ordering = $this->getState('list.ordering');
+        $direction   = $this->getState('list.direction');
+        $query->order($ordering . ' ' . $direction);
 
         return $query;
     }
 
-    protected function populateState($ordering = null, $direction = null)
+    protected function populateState($ordering = 'sitemap.id', $direction = 'asc')
     {
         $published = $this->getUserStateFromRequest($this->context . '.filter.published', 'filter_published');
         $this->setState('filter.published', $published);
@@ -74,7 +75,7 @@ class OSMapModelSitemaps extends JModelList
         $default = $this->getUserStateFromRequest($this->context . '.filter.default', 'filter_default');
         $this->setState('filter.default', $default);
 
-        parent::populateState('sitemap.id', 'ASC');
+        parent::populateState($ordering, $direction);
     }
 
     public function getItems()

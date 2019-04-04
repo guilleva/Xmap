@@ -21,8 +21,8 @@ JHtml::_('stylesheet', 'com_osmap/admin.min.css', array('relative' => true));
 $container = OSMap\Factory::getContainer();
 
 $baseUrl   = $container->router->sanitizeURL(JUri::root());
-$listOrder = $this->escape($this->state->get('list.ordering'));
-$listDir   = $this->escape($this->state->get('list.direction'));
+$listOrder = $this->state->get('list.ordering');
+$listDir   = $this->state->get('list.direction');
 ?>
 <form
     action="<?php echo JRoute::_('index.php?option=com_osmap&view=sitemaps'); ?>"
@@ -48,7 +48,7 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                     <th width="1%" style="min-width:55px" class="nowrap center">
                         <?php
                         echo JHtml::_(
-                            'grid.sort',
+                            'searchtools.sort',
                             'COM_OSMAP_HEADING_STATUS',
                             'sitemap.published',
                             $listDir,
@@ -60,7 +60,7 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                     <th class="title">
                         <?php
                         echo JHtml::_(
-                            'grid.sort',
+                            'searchtools.sort',
                             'COM_OSMAP_HEADING_NAME',
                             'sitemap.name',
                             $listDir,
@@ -89,7 +89,7 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                     <th width="1%" class="nowrap">
                         <?php
                         echo JHtml::_(
-                            'grid.sort',
+                            'searchtools.sort',
                             'COM_OSMAP_HEADING_ID',
                             'sitemap.id',
                             $listDir,
@@ -164,7 +164,5 @@ $listDir   = $this->escape($this->state->get('list.direction'));
     <?php endif; ?>
     <input type="hidden" name="task" value=""/>
     <input type="hidden" name="boxchecked" value="0"/>
-    <input type="hidden" name="filter_order" value="<?php echo $this->state->get('list.ordering'); ?>"/>
-    <input type="hidden" name="filter_order_Dir" value="<?php echo $this->state->get('list.direction'); ?>"/>
     <?php echo JHtml::_('form.token'); ?>
 </form>
