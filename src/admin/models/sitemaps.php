@@ -12,7 +12,6 @@ use Joomla\Utilities\ArrayHelper;
 
 defined('_JEXEC') or die();
 
-
 class OSMapModelSitemaps extends JModelList
 {
     public function __construct($config = array())
@@ -60,8 +59,8 @@ class OSMapModelSitemaps extends JModelList
             $query->where('sitemap.name LIKE ' . $db->quote('%' . $search . '%'));
         }
 
-        $ordering = $this->getState('list.ordering');
-        $direction   = $this->getState('list.direction');
+        $ordering  = $this->getState('list.ordering');
+        $direction = $this->getState('list.direction');
         $query->order($ordering . ' ' . $direction);
 
         return $query;
@@ -116,23 +115,23 @@ class OSMapModelSitemaps extends JModelList
     }
 
     /**
-     * Method to change the published state of one or more records.
+     * Publish/Unpublish method
      *
-     * @param   array   &$pks  A list of the primary keys to change.
-     * @param   integer $value The value of the published state.
+     * @param int[] $pks
+     * @param int   $value
      *
-     * @return  boolean  True on success.
-     *
-     * @since   12.2
+     * @return  bool
      */
-    public function publish(&$pks, $value = 1)
+    public function publish($pks, $value = 1)
     {
         $db = $this->getDbo();
+
+        $pks = array_filter(array_map('intval', $pks));
 
         $query = $db->getQuery(true)
             ->set('published = ' . $db->quote($value))
             ->update('#__osmap_sitemaps')
-            ->where('id IN (' . implode(',', $pks) . ')');
+            ->where(sprintf('id IN (%s)', join(',', $pks)));
 
         return $db->setQuery($query)->execute();
     }

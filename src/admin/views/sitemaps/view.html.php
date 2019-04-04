@@ -60,7 +60,7 @@ class OSMapViewSitemaps extends OSMap\View\Admin\Base
         $this->filterForm    = $model->getFilterForm();
         $this->activeFilters = $model->getActiveFilters();
 
-        if (count($errors = $model->getErrors())) {
+        if ($errors = $model->getErrors()) {
             throw new Exception(implode("\n", $errors));
         }
 
@@ -176,5 +176,4 @@ class OSMapViewSitemaps extends OSMap\View\Admin\Base
 
         return $router->routeURL('index.php?' . http_build_query($query));
     }
-
 }
