@@ -9,35 +9,35 @@
 
 defined('_JEXEC') or die();
 
-$linkQuery    = array(
-    'option' => 'com_osmap',
-    'view'   => 'sitemapitems',
-    'id'     => $this->item->id
-);
+$languages = $this->languages ?: array('');
 
-if (empty($this->languages)) :
+foreach ($languages as $language) :
+    $linkQuery = array(
+        'option' => 'com_osmap',
+        'view'   => 'sitemapitems',
+        'id'     => $this->item->id
+    );
+
+    if ($language) {
+        $linkQuery['lang'] = $language->sef;
+
+        $flag = JHtml::_(
+            'image',
+            'mod_languages/' . $language->image . '.gif',
+            $language->title,
+            null,
+            true
+        );
+        $flag .= ' ' . $language->title;
+    }
+
+
     echo JHtml::_(
         'link',
         JRoute::_('index.php?' . http_build_query($linkQuery)),
-        '<span class="icon-edit"></span>'
+        '<span class="icon-edit"></span>' . ($language ? $flag : '')
     );
-
-else :
-    foreach ($this->languages as $language) :
-        $linkQuery['lang'] = $language->sef;
-        $link = JRoute::_('index.php?' . http_build_query($linkQuery));
-
-        echo JHtml::_(
-            'link',
-            $link,
-            sprintf(
-                '<span class="icon-edit"></span>%s %s',
-                JHtml::_('image', 'mod_languages/' . $language->image . '.gif', $language->title, null, true),
-                $language->title
-            )
-        );
-        ?>
-        <br/>
-        <?php
-    endforeach;
-endif;
+    ?>
+    <br/>
+<?php
+endforeach;

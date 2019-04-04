@@ -118,20 +118,26 @@ $listDir   = $this->state->get('list.direction');
                                     $i,
                                     'sitemaps.'
                                 );
-                                ?>
-                                <a
-                                    href="#"
-                                    onclick="return listItemTask('cb<?php echo $i; ?>','sitemap.setAsDefault')"
-                                    class="btn btn-micro hasTooltip"
-                                    title=""
-                                    data-original-title="Toggle default status.">
-                                    <?php
-                                    echo sprintf(
+
+                                $defaultAttribs = array(
+                                    array(
+                                        'onclick'             => $this->item->is_default
+                                            ? 'javascript:void(0);'
+                                            : "return listItemTask('cb{$i}','sitemap.setAsDefault')",
+                                        'class'               => 'btn btn-micro hasTooltip',
+                                        'data-original-title' => JText::_('COM_OSMAP_SITEMAP_IS_DEFAULT_DESC')
+                                    )
+                                );
+                                echo JHtml::_(
+                                    'link',
+                                    '#',
+                                    sprintf(
                                         '<span class="icon-%s"></span>',
                                         $this->item->is_default ? 'featured' : 'unfeatured'
-                                    );
-                                    ?>
-                                </a>
+                                    ),
+                                    $defaultAttribs
+                                );
+                                ?>
                             </div>
                         </td>
 
@@ -155,7 +161,7 @@ $listDir   = $this->state->get('list.direction');
                             <?php echo (int)$this->item->id; ?>
                         </td>
                     </tr>
-                    <?php
+                <?php
                 endforeach;
                 ?>
                 </tbody>
