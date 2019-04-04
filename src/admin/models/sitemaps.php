@@ -7,7 +7,6 @@
  * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
-use Joomla\CMS\Application\CMSApplication;
 use Joomla\Utilities\ArrayHelper;
 
 defined('_JEXEC') or die();
@@ -80,7 +79,7 @@ class OSMapModelSitemaps extends JModelList
     public function getItems()
     {
         if ($items = parent::getItems()) {
-            $siteApp = CMSApplication::getInstance('site');
+            $siteApp = JApplicationCms::getInstance('site');
             $menus   = $siteApp->getMenu()->getItems('component', 'com_osmap');
             foreach ($items as $item) {
                 $item->menuIdList = array();
