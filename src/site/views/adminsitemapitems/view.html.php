@@ -11,9 +11,6 @@ defined('_JEXEC') or die();
 
 use Alledia\OSMap;
 
-jimport('joomla.application.component.view');
-
-
 class OSMapViewAdminSitemapItems extends JViewLegacy
 {
     /**
