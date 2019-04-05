@@ -49,9 +49,8 @@ if (!defined('OSMAP_LOADED')) {
     JTable::addIncludePath(OSMAP_ADMIN_PATH . '/tables');
     JForm::addFieldPath(OSMAP_ADMIN_PATH . '/fields');
     JForm::addFormPath(OSMAP_ADMIN_PATH . '/form');
+    JHtml::addIncludePath(OSMAP_ADMIN_PATH . '/helpers/html');
 
-    // Initialise the log
-    jimport('joomla.log.log');
     JLog::addLogger(
         array(
             // Sets file name
