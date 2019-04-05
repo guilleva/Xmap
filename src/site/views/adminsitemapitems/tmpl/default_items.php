@@ -142,10 +142,10 @@ $printNodeCallback = function ($item) use (&$count, &$showItemUID, &$showExterna
 
         <td class="center">
             <div class="sitemapitem-priority"
-                 data-original="<?php echo $item->priority; ?>"
-                 data-value="<?php echo sprintf('%03.1f', $item->priority); ?>">
+                data-original="<?php echo $item->priority; ?>"
+                data-value="<?php echo $item->priority; ?>">
 
-                <?php echo sprintf('%03.1f', $item->priority); ?>
+                <?php echo $item->priority; ?>
             </div>
         </td>
 

@@ -54,7 +54,7 @@ abstract class JHtmlOSMap
     {
         $priorities = array();
         for ($i = 0.1; $i <= 1; $i += 0.1) {
-            $priorities[] = sprintf('%03.1f', $i);
+            $priorities[] = $i;
         }
 
         return $priorities;

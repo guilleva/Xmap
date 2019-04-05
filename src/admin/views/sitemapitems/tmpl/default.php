@@ -19,23 +19,7 @@ JHtml::_('formbehavior.chosen', 'select');
 JHtml::_('stylesheet', 'com_osmap/admin.min.css', array('relative' => true));
 JHtml::_('stylesheet', 'jui/icomoon.css', array('relative' => true));
 
-$listFields = json_encode(
-    array(
-        'frequencies' =>JHtml::_('osmap.frequencyList'),
-        'priorities' => JHtml::_('osmap.priorityList')
-    )
-);
-
-$jscript = <<<JSCRIPT
-;(function($) {
-    $.osmap = $.extend({}, $.osmap);
-    
-    $.osmap.fields = {$listFields};
-})(jQuery);
-JSCRIPT;
-OSMap\Factory::getDocument()->addScriptDeclaration($jscript);
-
-JHtml::_('script', 'com_osmap/sitemapitems.min.js', array('relative' => true));
+JHtml::script('com_osmap/sitemapitems.min.js', false, true);
 
 $container = OSMap\Factory::getContainer();
 ?>
@@ -71,24 +55,24 @@ $container = OSMap\Factory::getContainer();
 
 
 <script>
-    ;(function($) {
-        $(function() {
-            $.fn.osmap.loadSitemapItems({
-                baseUri  : '<?php echo $container->uri->root(); ?>',
-                sitemapId: '<?php echo $this->sitemapId; ?>',
-                container: '#osmap-items-list',
-                language : '<?php echo $this->language; ?>',
-                lang     : {
-                    'COM_OSMAP_HOURLY'                    : '<?php echo JText::_('COM_OSMAP_HOURLY'); ?>',
-                    'COM_OSMAP_DAILY'                     : '<?php echo JText::_('COM_OSMAP_DAILY'); ?>',
-                    'COM_OSMAP_WEEKLY'                    : '<?php echo JText::_('COM_OSMAP_WEEKLY'); ?>',
-                    'COM_OSMAP_MONTHLY'                   : '<?php echo JText::_('COM_OSMAP_MONTHLY'); ?>',
-                    'COM_OSMAP_YEARLY'                    : '<?php echo JText::_('COM_OSMAP_YEARLY'); ?>',
-                    'COM_OSMAP_NEVER'                     : '<?php echo JText::_('COM_OSMAP_NEVER'); ?>',
-                    'COM_OSMAP_TOOLTIP_CLICK_TO_UNPUBLISH': '<?php echo JText::_('COM_OSMAP_TOOLTIP_CLICK_TO_UNPUBLISH'); ?>',
-                    'COM_OSMAP_TOOLTIP_CLICK_TO_PUBLISH'  : '<?php echo JText::_('COM_OSMAP_TOOLTIP_CLICK_TO_PUBLISH'); ?>'
-                }
-            });
+;(function($) {
+    $(function() {
+        $.fn.osmap.loadSitemapItems({
+            baseUri: '<?php echo $container->uri->root(); ?>',
+            sitemapId: '<?php echo $this->sitemapId; ?>',
+            container: '#osmap-items-list',
+            language: '<?php echo $this->language; ?>',
+            lang: {
+                'COM_OSMAP_HOURLY': '<?php echo JText::_('COM_OSMAP_HOURLY'); ?>',
+                'COM_OSMAP_DAILY': '<?php echo JText::_('COM_OSMAP_DAILY'); ?>',
+                'COM_OSMAP_WEEKLY': '<?php echo JText::_('COM_OSMAP_WEEKLY'); ?>',
+                'COM_OSMAP_MONTHLY': '<?php echo JText::_('COM_OSMAP_MONTHLY'); ?>',
+                'COM_OSMAP_YEARLY': '<?php echo JText::_('COM_OSMAP_YEARLY'); ?>',
+                'COM_OSMAP_NEVER': '<?php echo JText::_('COM_OSMAP_NEVER'); ?>',
+                'COM_OSMAP_TOOLTIP_CLICK_TO_UNPUBLISH': '<?php echo JText::_('COM_OSMAP_TOOLTIP_CLICK_TO_UNPUBLISH'); ?>',
+                'COM_OSMAP_TOOLTIP_CLICK_TO_PUBLISH': '<?php echo JText::_('COM_OSMAP_TOOLTIP_CLICK_TO_PUBLISH'); ?>'
+            }
         });
-    })(jQuery);
+    });
+})(jQuery);
 </script>

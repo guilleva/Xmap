@@ -87,7 +87,7 @@
         <phpminimum>5.6</phpminimum>
 
         <minify>
-            <script>media/js/sitemapitems.js</script>
+            <!-- do not include sitemapitems.js here use yuicompressor manually -->
         </minify>
 
         <relatedExtensions>
