@@ -31,12 +31,6 @@ class OSMapViewSitemap extends OSMap\View\Admin\Base
         $this->form = $this->get('Form');
         $this->item = $this->get('Item');
 
-        // Convert dates from UTC
-        $offset = $app->getCfg('offset');
-        if (intval($this->item->created_on)) {
-            $this->item->created_on = JHtml::date($this->item->created_on, '%Y-%m-%d %H-%M-%S', $offset);
-        }
-
         $this->setToolBar();
 
         parent::display($tpl);

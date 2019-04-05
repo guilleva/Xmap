@@ -9,14 +9,9 @@
 
 use Alledia\OSMap;
 use Joomla\Registry\Registry;
-use Joomla\Utilities\ArrayHelper;
 
 defined('_JEXEC') or die();
 
-/**
- * @package         OSMap
- * @subpackage      com_osmap
- */
 class OSMapTableSitemap extends JTable
 {
     /**
@@ -74,23 +69,11 @@ class OSMapTableSitemap extends JTable
      */
     public $menus_ordering = '';
 
-    /**
-     * @param    JDatabase    A database connector object
-     */
     public function __construct(&$db)
     {
         parent::__construct('#__osmap_sitemaps', 'id', $db);
     }
 
-    /**
-     * Overloaded bind function
-     *
-     * @access      public
-     * @param       array $hash named array
-     * @return      null|string  null is operation was satisfactory, otherwise returns an error
-     * @see         JTable:bind
-     * @since       2.0
-     */
     public function bind($array, $ignore = '')
     {
         if (isset($array['params']) && is_array($array['params'])) {
@@ -108,14 +91,6 @@ class OSMapTableSitemap extends JTable
         return parent::bind($array, $ignore);
     }
 
-    /**
-     * Overloaded check function
-     *
-     * @access      public
-     * @return      boolean
-     * @see         JTable::check
-     * @since       2.0
-     */
     public function check()
     {
         if (empty($this->name)) {
@@ -127,13 +102,6 @@ class OSMapTableSitemap extends JTable
         return true;
     }
 
-    /**
-     * Overriden JTable::store to set modified data and user id.
-     *
-     * @param       boolean True to update fields even if they are null.
-     * @return      boolean True on success.
-     * @since       2.0
-     */
     public function store($updateNulls = false)
     {
         $db   = OSMap\Factory::getDbo();
@@ -149,7 +117,9 @@ class OSMapTableSitemap extends JTable
             $query = $db->getQuery(true)
                 ->update('#__osmap_sitemaps')
                 ->set('is_default = 0');
+
             $db->setQuery($query)->execute();
+
         } else {
             // Check if we have another default sitemap. If not, force this as default
             $query = $db->getQuery(true)
@@ -157,10 +127,10 @@ class OSMapTableSitemap extends JTable
                 ->from('#__osmap_sitemaps')
                 ->where('is_default = 1')
                 ->where('id <> ' . $db->quote($this->id));
+
             $count = (int)$db->setQuery($query)->loadResult();
 
-            if ($count === 0) {
-                // Force as default
+            if ($count == 0) {
                 $this->is_default = 1;
 
                 OSMap\Factory::getApplication()->enqueueMessage(
@@ -195,80 +165,25 @@ class OSMapTableSitemap extends JTable
 
                     $query = $db->getQuery(true)
                         ->insert('#__osmap_sitemap_menus')
-                        ->set('sitemap_id = ' . $db->quote($this->id))
-                        ->set('menutype_id = ' . $db->quote($menuId))
-                        ->set('priority = ' . $db->quote($menusPriority[$index]))
-                        ->set('changefreq = ' . $db->quote($menusChangeFreq[$index]))
-                        ->set('ordering = ' . $ordering);
+                        ->set(
+                            array(
+                                'sitemap_id = ' . $db->quote($this->id),
+                                'menutype_id = ' . $db->quote($menuId),
+                                'priority = ' . $db->quote($menusPriority[$index]),
+                                'changefreq = ' . $db->quote($menusChangeFreq[$index]),
+                                'ordering = ' . $ordering
+                            )
+                        );
                     $db->setQuery($query)->execute();
 
                     $ordering++;
                 }
             }
+
+            return true;
         }
 
-        return $result;
-    }
-
-    /**
-     * Method to set the publishing state for a row or list of rows in the database
-     * table.
-     *
-     * @param       mixed   An optional array of primary key values to update.  If not
-     *                      set the instance property value is used.
-     * @param       integer The publishing state. eg. [0 = unpublished, 1 = published]
-     * @param       integer The user id of the user performing the operation.
-     * @return      boolean True on success.
-     * @since       2.0
-     */
-    public function publish($pks = null, $state = 1, $userId = 0)
-    {
-        // Initialize variables.
-        $k = $this->_tbl_key;
-
-        // Sanitize input.
-        ArrayHelper::toInteger($pks);
-        $userId = (int) $userId;
-        $state  = (int) $state;
-
-        // If there are no primary keys set check to see if the instance key is set.
-        if (empty($pks)) {
-            if ($this->$k) {
-                $pks = array($this->$k);
-            } else {
-                // Nothing to set publishing state on, return false.
-                $this->setError(JText::_('NO_ROWS_SELECTED'));
-
-                return false;
-            }
-        }
-
-        // Build the WHERE clause for the primary keys.
-        $where = $k . '=' . implode(' OR ' . $k . '=', $pks);
-
-        // Update the publishing state for rows with the given primary keys.
-        $query =  $this->_db->getQuery(true)
-            ->update($this->_db->quoteName('#__osmap_sitemaps'))
-            ->set($this->_db->quoteName('state') . ' = ' . (int) $state)
-            ->where($where);
-
-        $this->_db->setQuery($query);
-        $this->_db->query();
-
-        // Check for a database error.
-        if ($this->_db->getErrorNum()) {
-            $this->setError($this->_db->getErrorMsg());
-            return false;
-        }
-
-        // If the JTable instance value is in the list of primary keys that were set, set the instance.
-        if (in_array($this->$k, $pks)) {
-            $this->state = $state;
-        }
-
-        $this->setError('');
-
-        return true;
+        return false;
     }
 
     /**
@@ -285,41 +200,26 @@ class OSMapTableSitemap extends JTable
             $query = $db->getQuery(true)
                 ->delete('#__osmap_sitemap_menus')
                 ->where('sitemap_id = ' . $db->quote($this->id));
+
             $db->setQuery($query)->execute();
         }
     }
 
-    /**
-     * Method to load a row from the database by primary key and bind the fields to the JTable instance properties.
-     *
-     * @param   mixed    $keys   An optional primary key value to load the row by, or an array of fields to match.
-     *                           If not set the instance property value is used.
-     * @param   boolean  $reset  True to reset the default values before loading the new row.
-     *
-     * @return  boolean  True if successful. False if row not found.
-     *
-     * @since   11.1
-     * @throws  InvalidArgumentException
-     * @throws  RuntimeException
-     * @throws  UnexpectedValueException
-     */
     public function load($keys = null, $reset = true)
     {
-        $success = parent::load($keys, $reset);
-
-        if ($success) {
+        if (parent::load($keys, $reset)) {
             // Load the menus information
             $db       = OSMap\Factory::getDbo();
             $ordering = array();
 
-            $query = $db->getQuery(true)
+            $query     = $db->getQuery(true)
                 ->select('*')
                 ->from('#__osmap_sitemap_menus')
                 ->where('sitemap_id = ' . $db->quote($this->id))
                 ->order('ordering');
-            $menusRows = $db->setQuery($query)->loadObjectList();
 
-            if (!empty($menusRows)) {
+            $menusRows = $db->setQuery($query)->loadObjectList();
+            if ($menusRows) {
                 foreach ($menusRows as $menu) {
                     $this->menus[]            = $menu->menutype_id;
                     $this->menus_priority[]   = $menu->priority;
@@ -328,9 +228,11 @@ class OSMapTableSitemap extends JTable
                 }
             }
 
-            $this->menus_ordering = implode(',', $ordering);
+            $this->menus_ordering = join(',', $ordering);
+
+            return true;
         }
 
-        return $success;
+        return false;
     }
 }

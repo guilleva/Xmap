@@ -15,55 +15,45 @@ JHtml::_('formbehavior.chosen', 'select');
 
 JHtml::_('stylesheet', 'com_osmap/admin.min.css', array('relative' => true));
 $input = JFactory::getApplication()->input;
+
+$actionQuery = array(
+    'option' => 'com_osmap',
+    'view'   => 'sitemap',
+    'layout' => 'edit',
+    'id'     => (int)$this->item->id
+);
 ?>
 <script>
-    ;(function(Joomla, document, $) {
+    ;(function($) {
         Joomla.submitbutton = function(task) {
-            if (task == 'sitemap.cancel' || document.formvalidator.isValid(document.id('adminForm'))) {
-                // Convert the ordering of sortable in a serialized value to indentify the ordering of menus and values
+            if (task === 'sitemap.cancel' || document.formvalidator.isValid(document.id('adminForm'))) {
                 var ordering = $('#ul_menus').sortable('toArray').toString();
                 $('#menus_ordering').val(ordering);
 
                 Joomla.submitform(task, document.getElementById('adminForm'));
             }
         }
-    })(Joomla, document, jQuery);
+    })(jQuery);
 </script>
 
-<form
-    action="<?php echo JRoute::_('index.php?option=com_osmap&view=sitemap&layout=edit&id=' . (int)$this->item->id); ?>"
-    method="post"
-    name="adminForm"
-    id="adminForm"
-    class="form-validate sitemap">
+<form action="<?php echo JRoute::_('index.php?' . http_build_query($actionQuery)); ?>"
+      method="post"
+      name="adminForm"
+      id="adminForm"
+      class="form-validate sitemap">
 
-    <div class="form-inline form-inline-header">
-        <?php echo $this->form->renderField('name'); ?>
-    </div>
+    <?php echo JLayoutHelper::render('joomla.edit.title_alias', $this); ?>
 
     <div class="form-horizontal">
-        <?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
-
-        <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'details', JText::_('COM_OSMAP_SITEMAP_MENUS_LABEL', true)); ?>
         <div class="row-fluid">
             <div class="span9">
                 <?php echo $this->form->getField('menus')->renderField(array('hiddenLabel' => true)); ?>
             </div>
 
             <div class="span3">
-                <?php
-                // Set main fields.
-                $this->fields = array(
-                    'published',
-                    'is_default'
-                );
-                ?>
-                <?php echo JLayoutHelper::render('joomla.edit.global', $this); ?>
+                <?php echo $this->form->renderFieldset('params'); ?>
             </div>
         </div>
-        <?php echo JHtml::_('bootstrap.endTab'); ?>
-
-        <?php echo JHtml::_('bootstrap.endTabSet'); ?>
     </div>
 
     <input type="hidden" id="menus_ordering" name="jform[menus_ordering]" value=""/>
