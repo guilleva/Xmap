@@ -12,7 +12,7 @@
         "package-license": "free",
         "target-platform": "3.*"
     },
-    "authors": [
+    "authors"          : [
         {
             "name" : "Guillermo Vargas",
             "email": "guille@vargas.co.cr"
@@ -26,12 +26,13 @@
             "email": "anderson@ostraining.com"
         }
     ],
-    "require": {
-        "php": ">= 5.6",
-        "pimple/pimple": "v3.0.0"
+    "require"          : {
+        "php"          : ">= 5.6",
+        "pimple/pimple": "^v3",
+        "ext-json"     : "*"
     },
-    "require-dev": {
+    "require-dev"      : {
         "codeception/codeception": "~2.0",
-         "codeception/aspect-mock": "*"
+        "codeception/aspect-mock": "*"
     }
 }
