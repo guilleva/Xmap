@@ -58,22 +58,20 @@ $printNodeCallback = function ($item) use (&$count, &$showItemUID, &$showExterna
     }
 
     ?>
-    <tr class="sitemapitem row<?php echo $count; ?> <?php echo ($showItemUID) ? 'with-uid' : ''; ?>"
+    <tr
+        class="sitemapitem row<?php echo $count; ?> <?php echo ($showItemUID) ? 'with-uid' : ''; ?>"
         data-uid="<?php echo $item->uid; ?>"
         data-settings-hash="<?php echo $item->settingsHash; ?>">
 
         <td class="center">
-            <?php
-            if (!$item->ignore) :
-                ?>
+            <?php if (!$item->ignore) : ?>
                 <div class="sitemapitem-published"
-                     data-original="<?php echo $item->published ? '1' : '0'; ?>"
-                     data-value="<?php echo $item->published ? '1' : '0'; ?>">
+                    data-original="<?php echo $item->published ? '1' : '0'; ?>"
+                    data-value="<?php echo $item->published ? '1' : '0'; ?>">
+
                     <?php
                     $class = $item->published ? 'publish' : 'unpublish';
-                    $title = $item->published
-                        ? 'COM_OSMAP_TOOLTIP_CLICK_TO_UNPUBLISH'
-                        : 'COM_OSMAP_TOOLTIP_CLICK_TO_PUBLISH';
+                    $title = $item->published ? 'COM_OSMAP_TOOLTIP_CLICK_TO_UNPUBLISH' : 'COM_OSMAP_TOOLTIP_CLICK_TO_PUBLISH';
                     ?>
 
                     <span
@@ -81,59 +79,41 @@ $printNodeCallback = function ($item) use (&$count, &$showItemUID, &$showExterna
                         class="hasTooltip icon-<?php echo $class; ?>">
                     </span>
                 </div>
-                <?php
-            endif;
-
-            $notes = $item->getAdminNotesString();
-            if (!empty($notes)) :
-                ?>
+            <?php endif; ?>
+            <?php $notes = $item->getAdminNotesString(); ?>
+            <?php if (!empty($notes)) : ?>
                 <span class="icon-warning hasTooltip osmap-info" title="<?php echo $notes; ?>"></span>
-                <?php
-            endif;
-            ?>
+            <?php endif; ?>
         </td>
 
         <td class="sitemapitem-link">
-            <?php
-            if ($item->level > 0) :
-                ?>
+            <?php if ($item->level > 0) : ?>
                 <span class="level-mark">
                     <?php echo str_repeat('—', $item->level); ?>
                 </span>
-                <?php
-            endif;
+            <?php endif; ?>
 
-            if (!empty($item->rawLink) && $item->rawLink !== '#' && $item->link !== '#') :
-                echo JHtml::_(
-                    'link',
-                    $item->rawLink,
-                    $item->rawLink,
-                    array(
-                        'target' => '_blank',
-                        'class'  => 'hasTooltip',
-                        'title'  => $item->link
-                    )
-                );
-                ?>
+            <?php if (!empty($item->rawLink) && $item->rawLink !== '#' && $item->link !== '#') : ?>
+                <a
+                    href="<?php echo $item->rawLink; ?>"
+                    target="_blank"
+                    class="hasTooltip"
+                    title="<?php echo $item->link; ?>">
+                    <?php echo $item->rawLink; ?>
+                </a>
                 <span class="icon-new-tab"></span>
-                <?php
-            else :
-                ?>
+            <?php else : ?>
                 <span>
                     <?php echo isset($item->name) ? $item->name : ''; ?>
                 </span>
-                <?php
-            endif;
+            <?php endif; ?>
 
-            if ($showItemUID) :
-                ?>
+            <?php if ($showItemUID) : ?>
                 <br>
                 <div class="small osmap-item-uid">
                     <?php echo JText::_('COM_OSMAP_UID'); ?>: <?php echo $item->uid; ?>
                 </div>
-                <?php
-            endif;
-            ?>
+            <?php endif; ?>
         </td>
 
         <td class="sitemapitem-name">
@@ -151,20 +131,23 @@ $printNodeCallback = function ($item) use (&$count, &$showItemUID, &$showExterna
 
         <td class="center">
             <div class="sitemapitem-changefreq"
-                 data-original="<?php echo $item->changefreq; ?>"
-                 data-value="<?php echo $item->changefreq; ?>">
+                data-original="<?php echo $item->changefreq; ?>"
+                data-value="<?php echo $item->changefreq; ?>">
 
                 <?php echo JText::_('COM_OSMAP_' . strtoupper($item->changefreq)); ?>
             </div>
         </td>
     </tr>
     <?php
+
     $count++;
+
+    return true;
 };
-/**************** End Callback function *******************/
 ?>
-    <table class="adminlist table table-striped" id="itemList">
-        <thead>
+
+<table class="adminlist table table-striped" id="itemList">
+    <thead>
         <tr>
             <th width="1%" style="min-width:55px" class="nowrap center">
                 <?php echo JText::_('COM_OSMAP_HEADING_STATUS'); ?>
@@ -186,21 +169,18 @@ $printNodeCallback = function ($item) use (&$count, &$showItemUID, &$showExterna
                 <?php echo JText::_('COM_OSMAP_HEADING_CHANGE_FREQ'); ?>
             </th>
         </tr>
-        </thead>
+    </thead>
 
-        <tbody>
+    <tbody>
         <?php if (is_object($this->sitemap)) : ?>
             <?php $this->sitemap->traverse($printNodeCallback, false); ?>
         <?php endif; ?>
-        </tbody>
-    </table>
-    <div><?php echo JText::sprintf('COM_OSMAP_NUMBER_OF_ITEMS_FOUND', $count); ?></div>
+    </tbody>
+</table>
+<div><?php echo JText::sprintf('COM_OSMAP_NUMBER_OF_ITEMS_FOUND', $count); ?></div>
 
-<?php
-if (empty($count)) :
-    ?>
+<?php if (empty($count)) : ?>
     <div class="alert alert-warning">
         <?php echo JText::_('COM_OSMAP_NO_ITEMS'); ?>
     </div>
-<?php
-endif;
+<?php endif;
