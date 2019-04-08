@@ -191,15 +191,20 @@ $printNodeCallback = function ($item) use (&$count, &$showItemUID, &$showExterna
         </thead>
 
         <tbody>
-        <?php if (is_object($this->sitemap)) : ?>
-            <?php $this->sitemap->traverse($printNodeCallback, false, true); ?>
-        <?php endif; ?>
+        <?php
+        if (is_object($this->sitemap)) :
+            $this->sitemap->traverse($printNodeCallback, false, true);
+        endif;
+        ?>
         </tbody>
     </table>
     <div><?php echo JText::sprintf('COM_OSMAP_NUMBER_OF_ITEMS_FOUND', $count); ?></div>
 
-<?php if (empty($count)) : ?>
+<?php
+if (empty($count)) :
+    ?>
     <div class="alert alert-warning">
         <?php echo JText::_('COM_OSMAP_NO_ITEMS'); ?>
     </div>
-<?php endif;
+<?php
+endif;
