@@ -117,11 +117,12 @@ class Standard implements SitemapInterface
      *
      * @param callable $callback
      * @param bool     $triggerEvents
+     * @param bool     $updateCount
      *
      * @return void
      * @throws \Exception
      */
-    public function traverse($callback, $triggerEvents = true)
+    public function traverse($callback, $triggerEvents = true, $updateCount = false)
     {
         if ($triggerEvents) {
             // Call the plugins, allowing to interact or override the collector
@@ -141,8 +142,10 @@ class Standard implements SitemapInterface
         // Fetch the sitemap items
         $count = $this->collector->fetch($callback);
 
-        // Update the links count in the sitemap
-        $this->updateLinksCount($count);
+        if ($updateCount) {
+            // Update the links count in the sitemap
+            $this->updateLinksCount($count);
+        }
 
         // Cleanup
         $this->collector->cleanup();
@@ -158,11 +161,14 @@ class Standard implements SitemapInterface
      */
     protected function updateLinksCount($count)
     {
-        $row = OSMap\Factory::getTable('Sitemap');
-        $row->load($this->id);
+        $db = OSMap\Factory::getDbo();
 
-        $data = array('links_count' => (int)$count);
-        $row->save($data);
+        $updateObject = (object)array(
+            'id'          => $this->id,
+            'links_count' => (int)$count
+        );
+
+        $db->updateObject('#__osmap_sitemaps', $updateObject, array('id'));
     }
 
     public function cleanup()

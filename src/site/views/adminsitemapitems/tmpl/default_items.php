@@ -173,7 +173,7 @@ $printNodeCallback = function ($item) use (&$count, &$showItemUID, &$showExterna
 
     <tbody>
         <?php if (is_object($this->sitemap)) : ?>
-            <?php $this->sitemap->traverse($printNodeCallback, false); ?>
+            <?php $this->sitemap->traverse($printNodeCallback, false, true); ?>
         <?php endif; ?>
     </tbody>
 </table>
