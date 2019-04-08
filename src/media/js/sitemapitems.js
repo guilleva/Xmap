@@ -6,26 +6,26 @@
  * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
-;(function($, Joomla, document, JSON) {
+;(function($) {
     var configureForm = function(lang) {
+        var $frequencyField = $('<select>'),
+            $priorityField = $('<select>');
+
+        $.each($.osmap.fields.frequencies, function(value, text) {
+            $('<option>').attr('value', value).text(text).appendTo($frequencyField)
+        });
+
+        $.each($.osmap.fields.priorities, function(index, value) {
+            $('<option>').attr('value', value).text(value).appendTo($priorityField);
+        });
+
         /**
          * Add field to select priority of an item.
          */
         function createPriorityField($tr) {
             $div = $tr.find('.sitemapitem-priority');
 
-            $input = $('<select>');
-            $opt01 = $('<option>').attr('value', '0.1').text('0.1').appendTo($input);
-            $opt02 = $('<option>').attr('value', '0.2').text('0.2').appendTo($input);
-            $opt03 = $('<option>').attr('value', '0.3').text('0.3').appendTo($input);
-            $opt04 = $('<option>').attr('value', '0.4').text('0.4').appendTo($input);
-            $opt05 = $('<option>').attr('value', '0.5').text('0.5').appendTo($input);
-            $opt06 = $('<option>').attr('value', '0.6').text('0.6').appendTo($input);
-            $opt07 = $('<option>').attr('value', '0.7').text('0.7').appendTo($input);
-            $opt08 = $('<option>').attr('value', '0.8').text('0.8').appendTo($input);
-            $opt09 = $('<option>').attr('value', '0.9').text('0.9').appendTo($input);
-            $opt10 = $('<option>').attr('value', '1.0').text('1.0').appendTo($input);
-
+            $input = $priorityField.clone();
             $input.val($div.data('value'));
 
             $div.html('');
@@ -55,13 +55,7 @@
         function createChangeFreqField($tr) {
             $div = $tr.find('.sitemapitem-changefreq');
 
-            $input = $('<select>');
-            $opt01 = $('<option>').attr('value', 'hourly').text(lang.COM_OSMAP_HOURLY).appendTo($input);
-            $opt02 = $('<option>').attr('value', 'daily').text(lang.COM_OSMAP_DAILY).appendTo($input);
-            $opt03 = $('<option>').attr('value', 'weekly').text(lang.COM_OSMAP_WEEKLY).appendTo($input);
-            $opt04 = $('<option>').attr('value', 'monthly').text(lang.COM_OSMAP_MONTHLY).appendTo($input);
-            $opt05 = $('<option>').attr('value', 'yearly').text(lang.COM_OSMAP_YEARLY).appendTo($input);
-            $opt06 = $('<option>').attr('value', 'never').text(lang.COM_OSMAP_NEVER).appendTo($input);
+            $input = $frequencyField.clone();
 
             $input.val($div.data('value'));
 
@@ -189,4 +183,4 @@
             });
         }
     };
-})(jQuery, Joomla, document, JSON);
+})(jQuery);
