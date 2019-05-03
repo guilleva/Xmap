@@ -10,7 +10,8 @@
         "name"           : "OSMap",
         "client"         : "administrator",
         "package-license": "free",
-        "target-platform": "3.*"
+        "target-platform": "3.*",
+        "infourl"        : "/changelog/osmap/"
     },
     "authors"          : [
         {
