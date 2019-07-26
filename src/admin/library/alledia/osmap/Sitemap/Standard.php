@@ -82,7 +82,7 @@ class Standard implements SitemapInterface
         $row->load($id);
 
         if (empty($row) || !$row->id) {
-            throw new \Exception(\JText::_('COM_OSMAP_SITEMAP_NOT_FOUND'));
+            throw new \Exception(\JText::_('COM_OSMAP_SITEMAP_NOT_FOUND'), 404);
         }
 
         $this->id          = $row->id;
