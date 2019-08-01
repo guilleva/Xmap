@@ -48,12 +48,13 @@ abstract class Base extends \JPlugin
     protected static function fixMemoryLimit()
     {
         if (static::$memoryLimit === null) {
-            $limit = ini_set('memory_limit', -1);
+            $limit = @ini_set('memory_limit', -1);
 
-            if ($limit === false) {
+            if (empty($limit) || $limit === false) {
                 $mags  = array(
                     'K' => 1024,
-                    'M' => 1024 * 1024
+                    'M' => 1024 * 1024,
+                    'G' => 1024 * 1024 *1024
                 );
                 $limit = ini_get('memory_limit');
                 $regex = sprintf('/(\d*)([%s])/', join(array_keys($mags)));
@@ -62,7 +63,7 @@ abstract class Base extends \JPlugin
                 }
 
                 static::$memoryLimit   = $limit;
-                static::$memoryMinimum *= 1024 * 1024;
+                static::$memoryMinimum *= $mags['M'];
             }
         }
     }
