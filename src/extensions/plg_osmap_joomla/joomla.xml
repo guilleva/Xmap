@@ -2,8 +2,8 @@
 <extension type="plugin" group="osmap" version="3.4" method="upgrade">
     <name>PLG_OSMAP_JOOMLA</name>
     <creationDate>October 01 2019</creationDate>
-    <copyright>Copyright (C) 2016-2017 Open Source Training, LLC. All rights reserved.</copyright>
-    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <copyright>Copyright (C) 2016-2019 Joomlashack.com. All rights reserved</copyright>
+    <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
     <author>Joomlashack</author>
     <authorEmail>help@joomlashack.com</authorEmail>
     <authorUrl>https://www.joomlashack.com</authorUrl>
