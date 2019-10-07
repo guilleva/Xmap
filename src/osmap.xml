@@ -120,6 +120,7 @@
             <folder>administrator/components/com_osmap/library/Free</folder>
             <folder>administrator/components/com_osmap/models/fields</folder>
             <folder>administrator/components/com_osmap/models/forms</folder>
+
             <file>administrator/components/com_osmap/helpers/html/grid.php</file>
             <file>administrator/components/com_osmap/helpers/osmap.php</file>
             <file>administrator/components/com_osmap/views/sitemap/tmpl/edit.php</file>
@@ -129,7 +130,9 @@
             <file>administrator/components/com_osmap/views/sitemap/tmpl/navigator_links.php</file>
             <file>administrator/components/com_osmap/views/sitemaps/tmpl/default_legacy.php</file>
             <file>administrator/components/com_osmap/views/sitemaps/tmpl/form.php</file>
+            <file>components/com_osmap/views/html/metadata.xml</file>
             <file>components/com_osmap/views/html/tmpl/default_class.php</file>
+            <file>components/com_osmap/views/xml/metadata.xml</file>
             <file>components/com_osmap/views/xml/tmpl/default_class.php</file>
             <file>components/com_osmap/views/xml/tmpl/default_xsl.php</file>
             <file>media/com_osmap/js/jquery.js</file>
