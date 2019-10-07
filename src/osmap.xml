@@ -38,7 +38,6 @@
     <files folder="site">
         <filename>osmap.php</filename>
         <filename>controller.php</filename>
-        <filename>router.php</filename>
         <folder>helpers</folder>
         <folder>views</folder>
     </files>
