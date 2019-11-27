@@ -51,8 +51,8 @@ class XmapXmlDisplayer extends XmapDisplayer
             $this->defaultLanguage = $matches[1];
         }
 
-        $this->showTitle = JRequest::getBool('filter_showtitle', 0);
-        $this->showExcluded = JRequest::getBool('filter_showexcluded', 0);
+        $this->showTitle = XmapHelper::getBool('filter_showtitle', 0);
+        $this->showExcluded = XmapHelper::getBool('filter_showexcluded', 0);
 
         $db = JFactory::getDbo();
         $this->nullDate = $db->getNullDate();
@@ -83,7 +83,7 @@ class XmapXmlDisplayer extends XmapDisplayer
         }
 
         // Get the item's URL
-        $link = JRoute::_($node->link, true, @$node->secure == 0 ? (JFactory::getURI()->isSSL() ? 1 : -1) : $node->secure);
+        $link = JRoute::_($node->link, true, @$node->secure == 0 ? (XmapHelper::getURI()->isSSL() ? 1 : -1) : $node->secure);
 
         if (!isset($node->browserNav))
             $node->browserNav = 0;

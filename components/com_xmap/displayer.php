@@ -130,7 +130,7 @@ class XmapDisplayer {
     {
         $this->changeLevel(1);
 
-        $router = JSite::getRouter();
+        $router = XmapHelper::getRouter("site");//JSite::getRouter();
 
         foreach ( $items as $i => $item ) {                   // Add each menu entry to the root tree.
             $excludeExternal = false;
@@ -163,7 +163,6 @@ class XmapDisplayer {
             switch ($item->type)
             {
                 case 'separator':
-                case 'heading':
                     $node->browserNav=3;
                     break;
                 case 'url':
@@ -179,8 +178,8 @@ class XmapDisplayer {
                     $node->link = 'index.php?Itemid='.$item->params->get('aliasoptions');
                     break;
                 default:
-                    if ($router->getMode() == JROUTER_MODE_SEF) {
-                        $node->link = 'index.php?Itemid='.$node->id;
+				  if (XmapHelper::isAppSef()) {
+					$node->link = 'index.php?Itemid='.$node->id;
                     }
                     elseif (!$node->home) {
                         $node->link .= '&Itemid='.$node->id;

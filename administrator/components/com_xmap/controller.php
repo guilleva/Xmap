@@ -37,9 +37,9 @@ class XmapController extends JControllerLegacy
         $document = JFactory::getDocument();
 
         // Set the default view name and format from the Request.
-        $vName = JRequest::getWord('view', 'sitemaps');
+        $vName = XmapHelper::getWord('view', 'sitemaps');
         $vFormat = $document->getType();
-        $lName = JRequest::getWord('layout', 'default');
+        $lName = XmapHelper::getWord('layout', 'default');
 
         // Get and render the view.
         if ($view = $this->getView($vName, $vFormat)) {
@@ -51,7 +51,7 @@ class XmapController extends JControllerLegacy
             $view->setLayout($lName);
 
             // Push document object into the view.
-            $view->assignRef('document', $document);
+            $view->document = $document;
 
             $view->display();
 
@@ -64,16 +64,16 @@ class XmapController extends JControllerLegacy
         $document = JFactory::getDocument();
         $app = JFactory::getApplication('administrator');
 
-        $id = JRequest::getInt('sitemap', 0);
-        $link = urldecode(JRequest::getVar('link', ''));
-        $name = JRequest::getCmd('e_name', '');
+        $id = XmapHelper::getInt('sitemap', 0);
+        $link = urldecode(XmapHelper::getVar('link', ''));
+        $name = XmapHelper::getCmd('e_name', '');
         if (!$id) {
             $id = $this->getDefaultSitemapId();
         }
 
         if (!$id) {
-            JError::raiseWarning(500, JText::_('Xmap_Not_Sitemap_Selected'));
-            return false;
+			JFactory::getApplication()->enqueueMessage(500, JText::_('Xmap_Not_Sitemap_Selected'), 'warning');
+			return false;
         }
 
         $app->setUserState('com_xmap.edit.sitemap.id', $id);
@@ -96,15 +96,15 @@ class XmapController extends JControllerLegacy
         $document = JFactory::getDocument();
         $app = JFactory::getApplication('administrator');
 
-        $id = JRequest::getInt('sitemap', 0);
-        $link = urldecode(JRequest::getVar('link', ''));
-        $name = JRequest::getCmd('e_name', '');
+        $id = XmapHelper::getInt('sitemap', 0);
+        $link = urldecode(XmapHelper::getVar('link', ''));
+        $name = XmapHelper::getCmd('e_name', '');
         if (!$id) {
             $id = $this->getDefaultSitemapId();
         }
 
         if (!$id) {
-            JError::raiseWarning(500, JText::_('Xmap_Not_Sitemap_Selected'));
+            JFactory::getApplication()->enqueueMessage(500, JText::_('Xmap_Not_Sitemap_Selected'), 'warning');
             return false;
         }
 

@@ -9,19 +9,14 @@
 defined('_JEXEC') or die;
 
 jimport('joomla.application.component.view');
-
-# For compatibility with older versions of Joola 2.5
-if (!class_exists('JViewLegacy')){
-    class JViewLegacy extends JView {
-
-    }
-}
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 
 /**
  * @package    Xmap
  * @subpackage com_xmap
  */
-class XmapViewSitemap extends JViewLegacy
+class XmapViewSitemap extends BaseHtmlView
 {
 
     protected $item;
@@ -56,13 +51,13 @@ class XmapViewSitemap extends JViewLegacy
             $this->item->created = JHtml::date($this->item->created, '%Y-%m-%d %H-%M-%S', $offset);
         }
 
-        $this->_setToolbar();
+        $this->addToolbar();
 
         if (version_compare($version->getShortVersion(), '3.0.0', '<')) {
             $tpl = 'legacy';
         }
-        parent::display($tpl);
-        JRequest::setVar('hidemainmenu', true);
+	   // XmapHelper::setVar('hidemainmenu', true);
+        parent::display($tpl);        
     }
 
     /**
@@ -77,8 +72,8 @@ class XmapViewSitemap extends JViewLegacy
         $this->state = $this->get('State');
         $this->item = $this->get('Item');
 
-        # $menuItems = XmapHelper::getMenuItems($item->selections);
-        # $extensions = XmapHelper::getExtensions();
+        $menuItems = XmapHelper::getMenuItems($item->selections);
+        $extensions = XmapHelper::getExtensions();
         // Check for errors.
         if (count($errors = $this->get('Errors'))) {
             JError::raiseError(500, implode("\n", $errors));
@@ -96,11 +91,10 @@ class XmapViewSitemap extends JViewLegacy
 
     function navigatorLinks($tpl = null)
     {
-
         require_once(JPATH_COMPONENT_SITE . '/helpers/xmap.php');
-        $link = urldecode(JRequest::getVar('link', ''));
-        $name = JRequest::getCmd('e_name', '');
-        $Itemid = JRequest::getInt('Itemid');
+        $link = urldecode(XmapHelper::getVar('link', ''));
+        $name = XmapHelper::getCmd('e_name', '');
+        $Itemid = XmapHelper::getInt('Itemid');
 
         $this->item = $this->get('Item');
         $this->state = $this->get('State');
@@ -164,7 +158,6 @@ class XmapViewSitemap extends JViewLegacy
         }
 
         parent::display('links');
-        exit;
     }
 
     /**
@@ -172,20 +165,24 @@ class XmapViewSitemap extends JViewLegacy
      *
      * @access    private
      */
-    function _setToolbar()
+    function addToolbar()
     {
         $user = JFactory::getUser();
         $isNew = ($this->item->id == 0);
 
-        JToolBarHelper::title(JText::_('XMAP_PAGE_' . ($isNew ? 'ADD_SITEMAP' : 'EDIT_SITEMAP')), 'article-add.png');
-
-        JToolBarHelper::apply('sitemap.apply', 'JTOOLBAR_APPLY');
-        JToolBarHelper::save('sitemap.save', 'JTOOLBAR_SAVE');
-        JToolBarHelper::save2new('sitemap.save2new');
+		$title = JText::_('XMAP_PAGE_' . ($isNew ? 'ADD_SITEMAP' : 'EDIT_SITEMAP'));
+		ToolbarHelper::title($title,'article-add.png');
+		ToolBarHelper::apply('sitemap.apply', 'JTOOLBAR_APPLY');
+		ToolbarHelper::saveGroup(
+				[
+					['save', 'sitemap.save'],
+					['save2new', 'sitemap.save2new']
+				]);
         if (!$isNew) {
-            JToolBarHelper::save2copy('sitemap.save2copy');
+            ToolbarHelper::saveGroup(
+				['save2copy', 'sitemap.save2copy']);
         }
-        JToolBarHelper::cancel('sitemap.cancel', 'JTOOLBAR_CLOSE');
+        ToolBarHelper::cancel('sitemap.cancel', 'JTOOLBAR_CLOSE');
     }
 
 }

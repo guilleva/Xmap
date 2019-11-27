@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+    <layout
+        title="COM_XMAP_SITEMAP_XML_VIEW_DEFAULT_TITLE">
+        <message>
+            <![CDATA[COM_XMAP_SITEMAP_XML_VIEW_DEFAULT_DESC]]>
+        </message>
+    </layout>
+
+    <fields name="request">
+        <fieldset name="request"
+            addfieldpath="/administrator/components/com_xmap/models/fields">
+            <field
+                name="id"
+                type="modal_sitemaps"
+                default="0"
+                label="Xmap_Select_an_Sitemap"
+                description="A Sitemap" />
+        </fieldset>
+    </fields>
+</metadata>

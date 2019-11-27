@@ -80,7 +80,7 @@ class XmapNavigatorDisplayer extends XmapDisplayer {
             if ( preg_match('#^/?index.php.*option=(com_[^&]+)#',$parent->link,$matches) ) {
                 $option = $matches[1];
             }
-            $Itemid = JRequest::getInt('Itemid');
+            $Itemid = XmapHelper::getInt('Itemid');
             if (!$option && $Itemid) {
                 $item = $items->getItem($Itemid);
                 $link_query = parse_url( $item->link );

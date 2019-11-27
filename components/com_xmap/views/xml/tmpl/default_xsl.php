@@ -12,8 +12,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 header('Content-Type: text/xml; charset="utf-8"');
 header('Content-Disposition: inline');
 
-$showTitle = $this->canEdit && JRequest::getBool('filter_showtitle', 0);
-$showExcluded = $this->canEdit && JRequest::getBool('filter_showexcluded', 0);
+$showTitle = $this->canEdit && XmapHelper::getBool('filter_showtitle', 0);
+$showExcluded = $this->canEdit && XmapHelper::getBool('filter_showexcluded', 0);
 
 echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 ?>
@@ -375,7 +375,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 
 <?php endif; ?>
 
-    window.addEvent('domready',function(){
+    document.addEventListener("DOMContentLoaded", function(event) {
         $$('div.imagelist').each(function(div){
             div.slide = new Fx.Slide(div).hide();
         })

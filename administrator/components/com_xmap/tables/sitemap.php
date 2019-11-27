@@ -7,7 +7,7 @@
  */
 // no direct access
 defined('_JEXEC') or die;
-
+use Joomla\CMS\Application\ApplicationHelper;
 /**
  * @package         Xmap
  * @subpackage      com_xmap
@@ -161,7 +161,7 @@ class XmapTableSitemap extends JTable
         if (empty($this->alias)) {
             $this->alias = $this->title;
         }
-        $this->alias = JApplication::stringURLSafe($this->alias);
+        $this->alias = ApplicationHelper::stringURLSafe($this->alias);
 
         if (trim(str_replace('-', '', $this->alias)) == '') {
             $datenow = &JFactory::getDate();

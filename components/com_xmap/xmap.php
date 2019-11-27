@@ -19,7 +19,8 @@ if (!class_exists('JControllerLegacy')){
 }
 
 require_once(JPATH_COMPONENT.'/displayer.php');
+require_once(JPATH_COMPONENT.'/helpers/xmap.php');
 
 $controller = JControllerLegacy::getInstance('Xmap');
-$controller->execute(JRequest::getVar('task'));
+$controller->execute(XmapHelper::getVar('task'));
 $controller->redirect();

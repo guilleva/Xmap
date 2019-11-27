@@ -10,9 +10,9 @@
 defined('_JEXEC') or die;
 
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
-JHtml::_('behavior.tooltip');
+JHtml::_('bootstrap.tooltip');
 
-$function = JRequest::getVar('function', 'jSelectSitemap');
+$function = XmapHelper::getVar('function', 'jSelectSitemap');
 $n = count($this->items);
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_xmap&view=sitemaps');?>" method="post" name="adminForm">

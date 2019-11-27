@@ -24,7 +24,7 @@ if ($this->displayer->canEdit) {
     //$css .= "\n.".$this->item->classname .' li {float:left;}';
 
     $js = "
-        window.addEvent('domready',function (){
+        document.addEventListener("DOMContentLoaded", function(event) {
             $$('.xmapexcl').each(function(el){
                 el.onclick = function(){
                     if (this && this.rel) {

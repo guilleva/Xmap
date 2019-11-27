@@ -38,8 +38,8 @@ class XmapViewXml extends JViewLegacy
         // Initialise variables.
         $app = JFactory::getApplication();
         $this->user = JFactory::getUser();
-        $isNewsSitemap = JRequest::getInt('news',0);
-        $this->isImages = JRequest::getInt('images',0);
+        $isNewsSitemap = XmapHelper::getInt('news',0);
+        $this->isImages = XmapHelper::getInt('images',0);
 
         $model = $this->getModel('Sitemap');
         $this->setModel($model);

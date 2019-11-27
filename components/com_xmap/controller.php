@@ -34,9 +34,9 @@ class XmapController extends JControllerLegacy
     {
         $cachable = true;
 
-        $id         = JRequest::getInt('id');
-        $viewName   = JRequest::getCmd('view');
-        $viewLayout = JRequest::getCmd('layout', 'default');
+        $id         = XmapHelper::getInt('id');
+        $viewName   = XmapHelper::getCmd('view');
+        $viewLayout = XmapHelper::getCmd('layout', 'default');
 
         $user = JFactory::getUser();
 

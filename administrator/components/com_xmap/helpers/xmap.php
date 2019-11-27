@@ -50,4 +50,94 @@ class XmapHelper
                 $vName == 'extensions');
         }
     }
+	
+	public static function getpost() {
+		if (version_compare(JVERSION, '4.0', 'ge')){
+			return JFactory::getApplication()->input->getArray(array());
+		}
+		else {
+			return call_user_func_array('XmapHelper::get', ['post']);
+		}
+	}
+	
+	public static function get(...$params) {
+		if (version_compare(JVERSION, '4.0', 'ge')){
+			if ($params[0] == 'post '){
+				return JFactory::getApplication()->input->getInputForRequestMethod('POST');
+			} else {
+				return call_user_func_array(array(JFactory::getApplication()->input, 'get'), $params);
+			}
+		}
+		else {
+			return call_user_func_array('XmapHelper::get', $params);
+		}
+	}
+	
+	public static function getVar(...$params) {
+		if (version_compare(JVERSION, '4.0', 'ge')){
+			return call_user_func_array(array(JFactory::getApplication()->input, 'getVar'), $params);
+		}
+		else {
+			return call_user_func_array('XmapHelper::getVar', $params);
+		}
+	}
+	
+
+	public static function setVar(...$params) {
+		if (version_compare(JVERSION, '4.0', 'ge')){
+			call_user_func_array(array(JFactory::getApplication()->input, 'setVar'), $params);
+		}
+		else {
+			call_user_func_array('XmapHelper::setVar', $params);
+		}
+	}
+
+	public static function getCmd(...$params) {
+		if (version_compare(JVERSION, '4.0', 'ge')){
+			return call_user_func_array(array(JFactory::getApplication()->input, 'getCmd'), $params);
+		}
+		else {
+			return call_user_func_array('XmapHelper::getCmd', $params);
+		}
+	}
+
+	public static function getInt(...$params) {
+		if (version_compare(JVERSION, '4.0', 'ge')){
+			$recordId = call_user_func_array(array(JFactory::getApplication()->input, 'getInt'), $params);
+		}
+		else {
+			$recordId	= (int)call_user_func_array('XmapHelper::getInt', $params);
+		}
+	}
+	
+	
+	public static function getBool(...$params) {
+		if (version_compare(JVERSION, '4.0', 'ge')){
+			return call_user_func_array(array(JFactory::getApplication()->input, 'getBool'), $params);
+		}
+		else {
+			return (int)call_user_func_array('XmapHelper::getBool', $params);
+		}
+	}
+	public static function getWord(...$params) {
+		if (version_compare(JVERSION, '4.0', 'ge')){
+			return call_user_func_array(array(JFactory::getApplication()->input, 'getWord'), $params);
+		}
+		else {
+			return (int)call_user_func_array('XmapHelper::getWord', $params);
+		}
+	}
+	
+	public static function getURI() {
+		if (version_compare(JVERSION, '4.0', 'ge')){
+			return JUri::getInstance();
+		}
+		else {
+			return JFactory::getURI();
+		}
+	}
+	
+	public static function getShortVersion() {
+		return implode(".", array_slice(explode(".", JVERSION), 0,3));
+	}
 }

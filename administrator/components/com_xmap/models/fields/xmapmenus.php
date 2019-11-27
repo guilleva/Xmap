@@ -7,8 +7,11 @@
  */
 defined('_JEXEC') or die;
 
+
 jimport('joomla.html.html');
+if (version_compare(JVERSION, '4.0', '<')){
 require_once JPATH_LIBRARIES . '/joomla/form/fields/list.php';
+}
 
 /**
  * Menus Form Field class for the Xmap Component
@@ -65,10 +68,11 @@ class JFormFieldXmapmenus extends JFormFieldList
         }
 
         // Check for a database error.
+	if (version_compare(JVERSION, '4.0', '<')){
         if ($db->getErrorNum()) {
             JError::raiseWarning(500, $db->getErrorMsg());
         }
-
+	}
         $options = array_merge(
                        parent::getOptions(),
                        $options
@@ -109,8 +113,7 @@ class JFormFieldXmapmenus extends JFormFieldList
         }
 
         $doc = JFactory::getDocument();
-        $doc->addScriptDeclaration("
-        window.addEvent('domready',function(){
+        $doc->addScriptDeclaration("document.addEventListener('DOMContentLoaded', function(event) {
             \$\$('div.xmap-menu-options select').addEvent('mouseover',function(event){xmapMenusSortable.detach();})
             \$\$('div.xmap-menu-options select').addEvent('mouseout',function(event){xmapMenusSortable.attach();})
             var xmapMenusSortable = new Sortables(\$('ul_" . $this->inputId . "'),{
@@ -150,9 +153,16 @@ class JFormFieldXmapmenus extends JFormFieldList
             $return .= '<label for="' . $this->id . '_' . $i . '" class="menu_label">' . $option->text . '</label>';
             $return .= '<div class="xmap-menu-options" id="menu_options_' . $i . '">';
             $return .= '<label class="control-label">' . JText::_('XMAP_PRIORITY') . '</label>';
+	if (version_compare(JVERSION, '4.0', '<')){
+
             $return .= '<div class="controls">' . JHTML::_('xmap.priorities', $prioritiesName, ($selected ? $value[$option->value]['priority'] : '0.5'), $i) . '</div>';
+	}
             $return .= '<label class="control-label">' . JText::_('XMAP_CHANGE_FREQUENCY') . '</label>';
+	if (version_compare(JVERSION, '4.0', '<')){
+
             $return .= '<div class="controls">' . JHTML::_('xmap.changefrequency', $changefreqName, ($selected ? $value[$option->value]['changefreq'] : 'weekly'), $i) . '</div>';
+	}
+
             $return .= '</div>';
             $return .= '</li>';
         }

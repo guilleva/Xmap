@@ -6,26 +6,25 @@
  * @author           Guillermo Vargas (guille@vargas.co.cr)
  */
 defined('_JEXEC') or die;
-
-// Include the component HTML helpers.
-JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+use Joomla\CMS\HTML\HTMLHelper;
 
 // Load the tooltip behavior.
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
-if(version_compare(JVERSION,'3.0.0','ge')) {
-    JHtml::_('formbehavior.chosen', 'select');
-}
+JHtml::_('bootstrap.tooltip');
+//if (version_compare(JVERSION ,'4.0.0', 'ge')) {
+	//JHtml::_('behavior.formvalidation');
+	HTMLHelper::_('behavior.formvalidator');
+//}
+//if (version_compare(JVERSION, '3.0.0', 'ge')) {
+	JHtml::_('formbehavior.chosen', 'select');
+//}
 ?>
 <script type="text/javascript">
-<!--
     function submitbutton(task)
     {
         if (task == 'sitemap.cancel' || document.formvalidator.isValid($('adminForm'))) {
             submitform(task);
         }
     }
-// -->
 </script>
 <form action="<?php echo JRoute::_('index.php?option=com_xmap&layout=edit&id='.$this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
     <div class="row-fluid">

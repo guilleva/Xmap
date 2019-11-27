@@ -43,14 +43,16 @@ class XmapControllerSitemaps extends JControllerAdmin
     function setDefault()
     {
         // Check for request forgeries
-        JRequest::checkToken() or die('Invalid Token');
+        if (version_compare(JVERSION, '4.0', '<')){
+            JFactory::getApplication()->input->checkToken() or die('Invalid Token');
+        }
 
         // Get items to publish from the request.
-        $cid = JRequest::getVar('cid', 0, '', 'array');
+        $cid = XmapHelper::getVar('cid', 0, '', 'array');
         $id  = @$cid[0];
 
         if (!$id) {
-            JError::raiseWarning(500, JText::_('Select an item to set as default'));
+            JFactory::getApplication()->enqueueMessage(500, JText::_('Select an item to set as default'), 'warning');
         }
         else
         {
@@ -59,7 +61,7 @@ class XmapControllerSitemaps extends JControllerAdmin
 
             // Publish the items.
             if (!$model->setDefault($id)) {
-                JError::raiseWarning(500, $model->getError());
+                JFactory::getApplication()->enqueueMessage(500, $model->getError(), 'warning');
             }
         }
 

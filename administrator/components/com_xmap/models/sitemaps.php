@@ -61,7 +61,7 @@ class XmapModelSitemaps extends JModelList
     protected function populateState($ordering = null, $direction = null)
     {
         // Adjust the context to support modal layouts.
-        if ($layout = JRequest::getVar('layout')) {
+        if ($layout = XmapHelper::getVar('layout')) {
             $this->context .= '.'.$layout;
         }
 

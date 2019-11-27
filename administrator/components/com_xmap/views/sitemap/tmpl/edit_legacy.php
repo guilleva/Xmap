@@ -7,14 +7,20 @@
  */
 defined('_JEXEC') or die;
 
-// Include the component HTML helpers.
-JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+
 
 jimport('joomla.html.pane');
+use Joomla\CMS\HTML\HTMLHelper;
 
 // Load the tooltip behavior.
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
+JHtml::_('bootstrap.tooltip');
+if (version_compare(JVERSION ,'4.0.0', 'ge')) {
+	//JHtml::_('behavior.formvalidation');
+	HTMLHelper::_('behavior.formvalidator');
+}
+if (version_compare(JVERSION, '3.0.0', 'ge')) {
+	JHtml::_('formbehavior.chosen', 'select');
+}
 ?>
 <script type="text/javascript">
 <!--

@@ -7,7 +7,7 @@
 
 // No direct access
 defined('_JEXEC') or die;
-
+use Joomla\Utilities\ArrayHelper;
 jimport('joomla.application.component.modeladmin');
 
 /**
@@ -43,7 +43,7 @@ class XmapModelSitemap extends JModelAdmin
 
         // Load the User state.
         if (!($pk = (int) $app->getUserState('com_xmap.edit.sitemap.id'))) {
-            $pk = (int) JRequest::getInt('id');
+            $pk = (int) XmapHelper::getInt('id');
         }
         $this->setState('sitemap.id', $pk);
 
@@ -98,7 +98,11 @@ class XmapModelSitemap extends JModelAdmin
 
         // Convert to the JObject before adding other data.
         $value = $table->getProperties(1);
-        $value = JArrayHelper::toObject($value, 'JObject');
+		if (version_compare(JVERSION, '4.0', 'ge')){
+			$value = ArrayHelper::toObject($value, 'JObject');
+		} else {
+			$value = JArrayHelper::toObject($value, 'JObject');
+		}
 
         // Convert the params field to an array.
         $registry = new JRegistry;
@@ -156,7 +160,6 @@ class XmapModelSitemap extends JModelAdmin
     public function save($data)
     {
         // Initialise variables;
-        $dispatcher = JDispatcher::getInstance();
         $table      = $this->getTable();
         $pk         = (!empty($data['id'])) ? $data['id'] : (int)$this->getState('sitemap.id');
         $isNew      = true;
