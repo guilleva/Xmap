@@ -22,9 +22,9 @@
  * along with OSMap.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Controller\BaseController;
 
-jimport('joomla.application.component.controller');
+defined('_JEXEC') or die();
 
 /**
  * OSMap Component Controller
@@ -32,7 +32,7 @@ jimport('joomla.application.component.controller');
  * @package        OSMap
  * @subpackage     com_osmap
  */
-class OSMapController extends JControllerLegacy
+class OSMapController extends BaseController
 {
     protected $default_view = 'xml';
 }
