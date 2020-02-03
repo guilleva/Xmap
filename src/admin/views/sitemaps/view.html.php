@@ -8,6 +8,7 @@
  */
 
 use Alledia\OSMap;
+use Joomla\CMS\Application\CMSApplication;
 
 defined('_JEXEC') or die();
 
@@ -149,23 +150,33 @@ class OSMapViewSitemaps extends OSMap\View\Admin\Base
      */
     protected function getLink($item, $type, $lang = null)
     {
-        $linkId = in_array($type, array('news', 'images')) ? 'xml' : $type;
-        $query  = array();
+        $view   = in_array($type, array('news', 'images')) ? 'xml' : $type;
+        $menuId = empty($item->menuIdList[$view]) ? null : $item->menuIdList[$view];
 
-        if (!empty($item->menuIdList[$linkId])) {
-            $query['Itemid'] = $item->menuIdList[$linkId];
+        $query = array();
+
+        if ($menuId) {
+            $query['Itemid'] = $menuId;
         }
 
         if (empty($query['Itemid'])) {
             $query = array(
                 'option' => 'com_osmap',
-                'view'   => $linkId,
+                'view'   => $view,
                 'id'     => $item->id
             );
         }
 
-        if ($type != $linkId) {
+        if ($type != $view) {
             $query[$type] = 1;
+        }
+        if ($view == 'xml') {
+            $menu     = CMSApplication::getInstance('site')->getMenu()->getItem($menuId);
+            $menuView = empty($menu->query['view']) ? null : $menu->query['view'];
+
+            if ($view != $menuView) {
+                $query['format'] = 'xml';
+            }
         }
 
         if ($lang) {
