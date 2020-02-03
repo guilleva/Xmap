@@ -11,6 +11,7 @@ namespace Alledia\OSMap\View\Admin;
 
 use Alledia\OSMap;
 use Alledia\Framework\Joomla\Extension;
+use Joomla\CMS\Object\CMSObject;
 
 defined('_JEXEC') or die();
 
@@ -18,7 +19,7 @@ defined('_JEXEC') or die();
 class Base extends OSMap\View\Base
 {
     /**
-     * @var JObject
+     * @var CMSObject
      */
     protected $state = null;
 

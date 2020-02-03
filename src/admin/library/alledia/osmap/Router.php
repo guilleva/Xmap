@@ -46,7 +46,7 @@ class Router
             }
         }
 
-        if (!is_array($url) && (strpos($url, '&') !== 0) && (strpos($url, 'index.php') !== 0)) {
+        if (is_string($url) && (strpos($url, '&') !== 0) && (strpos($url, 'index.php') !== 0)) {
             return $url;
         }
 
