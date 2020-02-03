@@ -44,6 +44,9 @@ class OSMapViewXml extends JViewLegacy
      */
     public function display($tpl = null)
     {
+        $document = JFactory::getDocument();
+        $document->setMimeEncoding('text/xml');
+        
         $container = OSMap\Factory::getContainer();
 
         // Help to show a clean XML without other content
@@ -63,7 +66,5 @@ class OSMapViewXml extends JViewLegacy
 
         parent::display($tpl);
 
-        // Force to show a clean XML without other content or execution plugins
-        jexit();
     }
 }
