@@ -7,27 +7,28 @@
  * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
-use Alledia\OSMap;
+use Alledia\OSMap\Factory;
+use Alledia\OSMap\View\Admin\Base;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Object\CMSObject;
 
 defined('_JEXEC') or die();
 
 
-class OSMapViewSitemap extends OSMap\View\Admin\Base
+class OSMapViewSitemap extends Base
 {
     /**
-     * @var JObject
+     * @var CMSObject
      */
     protected $item = null;
 
     /**
-     * @var JForm
+     * @var Form
      */
     public $form = null;
 
     public function display($tpl = null)
     {
-        $app = OSMap\Factory::getApplication();
-
         $this->form = $this->get('Form');
         $this->item = $this->get('Item');
 
@@ -36,10 +37,16 @@ class OSMapViewSitemap extends OSMap\View\Admin\Base
         parent::display($tpl);
     }
 
+    /**
+     * @param bool $addDivider
+     *
+     * @return void
+     * @throws Exception
+     */
     protected function setToolBar($addDivider = true)
     {
         $isNew = ($this->item->id == 0);
-        OSMap\Factory::getApplication()->input->set('hidemainmenu', true);
+        Factory::getApplication()->input->set('hidemainmenu', true);
 
         $title = 'COM_OSMAP_PAGE_VIEW_SITEMAP_' . ($isNew ? 'ADD' : 'EDIT');
         $this->setTitle($title);

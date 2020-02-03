@@ -9,6 +9,9 @@
 
 use Alledia\OSMap;
 use Joomla\CMS\Application\CMSApplication;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die();
 
@@ -21,7 +24,7 @@ class OSMapViewSitemaps extends OSMap\View\Admin\Base
     protected $items = null;
 
     /**
-     * @var \Joomla\Registry\Registry
+     * @var Registry
      */
     protected $state = null;
 
@@ -86,11 +89,11 @@ class OSMapViewSitemaps extends OSMap\View\Admin\Base
 
         OSMap\Helper\General::addSubmenu('sitemaps');
 
-        JToolBarHelper::addNew('sitemap.add');
-        JToolBarHelper::custom('sitemap.edit', 'edit.png', 'edit_f2.png', 'JTOOLBAR_EDIT', true);
-        JToolBarHelper::custom('sitemaps.publish', 'publish.png', 'publish_f2.png', 'JTOOLBAR_Publish', true);
-        JToolBarHelper::custom('sitemaps.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
-        JToolBarHelper::custom(
+        ToolbarHelper::addNew('sitemap.add');
+        ToolbarHelper::custom('sitemap.edit', 'edit.png', 'edit_f2.png', 'JTOOLBAR_EDIT', true);
+        ToolbarHelper::custom('sitemaps.publish', 'publish.png', 'publish_f2.png', 'JTOOLBAR_Publish', true);
+        ToolbarHelper::custom('sitemaps.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
+        ToolbarHelper::custom(
             'sitemap.setAsDefault',
             'featured.png',
             'featured_f2.png',
@@ -99,9 +102,9 @@ class OSMapViewSitemaps extends OSMap\View\Admin\Base
         );
 
         if ($this->state->get('filter.published') == -2) {
-            JToolBarHelper::deleteList('', 'sitemaps.delete', 'JTOOLBAR_DELETE');
+            ToolbarHelper::deleteList('', 'sitemaps.delete', 'JTOOLBAR_DELETE');
         } else {
-            JToolBarHelper::trash('sitemaps.trash', 'JTOOLBAR_TRASH');
+            ToolbarHelper::trash('sitemaps.trash', 'JTOOLBAR_TRASH');
         }
 
         parent::setToolBar($addDivider);
@@ -130,12 +133,12 @@ class OSMapViewSitemaps extends OSMap\View\Admin\Base
             )->execute();
             $app->enqueueMessage(JText::_('COM_OSMAP_WARNING_CONFIRM_DISABLE_CACHE'));
 
-            $url = JUri::getInstance();
+            $url = Uri::getInstance();
             $url->delVar('disablecache');
             $app->redirect($url);
 
         } elseif (JLanguageMultilang::isEnabled() && JPluginHelper::getPlugin('osmap', 'cache')) {
-            $url = JUri::getInstance();
+            $url = Uri::getInstance();
             $url->setVar('disablecache', 1);
             $app->enqueueMessage(JText::sprintf('COM_OSMAP_WARNING_MULITLANGUAGE_CACHE', $url), 'warning');
         }
