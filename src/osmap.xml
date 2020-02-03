@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="component" version="3.7" method="upgrade">
+<extension type="component" version="3.9" method="upgrade">
     <name>COM_OSMAP</name>
     <creationDate>October 08 2019</creationDate>
-    <copyright>Copyright (C) 2016-2020 Joomlashack.com. All rights reserved</copyright>
+    <copyright>Copyright 2016-2020 Joomlashack.com. All rights reserved</copyright>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
     <author>Joomlashack</author>
     <authorEmail>help@joomlashack.com</authorEmail>
@@ -82,7 +82,7 @@
         <element>osmap</element>
         <namespace>OSMap</namespace>
         <license>free</license>
-        <targetplatform>3.7</targetplatform>
+        <targetplatform>3.(9|10)</targetplatform>
         <phpminimum>5.6</phpminimum>
 
         <minify>
