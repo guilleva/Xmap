@@ -8,56 +8,49 @@
 
     <fields name="request">
         <fieldset name="request"
-            addfieldpath="/administrator/components/com_osmap/form/fields">
+                  addfieldpath="/administrator/components/com_osmap/form/fields">
 
-            <field
-                name="id"
-                type="sitemaps"
-                default=""
-                required="true"
-                label="COM_OSMAP_SELECT_AN_SITEMAP"
-                description="COM_OSMAP_SELECT_A_SITEMAP" />
-            
-            <field
-                name="format"
-                type="hidden"
-                default="xml" />
+            <field name="id"
+                   type="sitemaps"
+                   default=""
+                   required="true"
+                   label="COM_OSMAP_SELECT_AN_SITEMAP"
+                   description="COM_OSMAP_SELECT_A_SITEMAP"/>
+
+            <field name="format"
+                   type="hidden"
+                   default="xml"/>
         </fieldset>
     </fields>
 
-    <!-- Add fields to the parameters object for the layout. -->
     <fields name="params">
-        <!-- Basic options. -->
         <fieldset name="basic"
-            label="COM_OSMAP_FIELDSET_SITEMAP_SETTINGS_LABEL">
+                  label="COM_OSMAP_FIELDSET_SITEMAP_SETTINGS_LABEL">
 
-            <field
-                name="add_styling"
-                label="COM_OSMAP_OPTION_ADD_STYLING_LABEL"
-                description="COM_OSMAP_OPTION_ADD_STYLING_DESC"
-                type="radio"
-                class="btn-group btn-group-yesno"
-                default="1">
+            <field name="add_styling"
+                   label="COM_OSMAP_OPTION_ADD_STYLING_LABEL"
+                   description="COM_OSMAP_OPTION_ADD_STYLING_DESC"
+                   type="radio"
+                   class="btn-group btn-group-yesno"
+                   default="1">
                 <option value="1">JYES</option>
                 <option value="0">JNO</option>
             </field>
 
-            <field
-                name="debug"
-                label="COM_OSMAP_OPTION_DEBUG_LABEL"
-                description="COM_OSMAP_OPTION_DEBUG_DESC"
-                type="radio"
-                class="btn-group btn-group-yesno"
-                default="0">
+            <field name="debug"
+                   label="COM_OSMAP_OPTION_DEBUG_LABEL"
+                   description="COM_OSMAP_OPTION_DEBUG_DESC"
+                   type="radio"
+                   class="btn-group btn-group-yesno"
+                   default="0">
                 <option value="1">JYES</option>
                 <option value="0">JNO</option>
             </field>
 
-            <field
-                name="news_publication_name"
-                type="text"
-                label="COM_OSMAP_NEWS_PUBLICATION_NAME_LABEL"
-                description="COM_OSMAP_NEWS_PUBLICATION_NAME_DESC" />
+            <field name="news_publication_name"
+                   type="text"
+                   label="COM_OSMAP_NEWS_PUBLICATION_NAME_LABEL"
+                   description="COM_OSMAP_NEWS_PUBLICATION_NAME_DESC"/>
         </fieldset>
     </fields>
 </metadata>
