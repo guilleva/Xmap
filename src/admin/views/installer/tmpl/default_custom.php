@@ -2,7 +2,7 @@
 /**
  * @package   OSMap
  * @copyright 2007-2014 XMap - Joomla! Vargas. All rights reserved.
- * @copyright 2016-2019 Joomlashack.com. All rights reserved..
+ * @copyright 2016-2020 Joomlashack.com. All rights reserved..
  * @author    Guillermo Vargas <guille@vargas.co.cr>
  * @author    Joomlashack <help@joomlashack.com>
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
