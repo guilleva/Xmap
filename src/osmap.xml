@@ -82,7 +82,7 @@
         <element>osmap</element>
         <namespace>OSMap</namespace>
         <license>free</license>
-        <targetplatform>3.(9|10)</targetplatform>
+        <targetplatform>3.9</targetplatform>
         <phpminimum>5.6</phpminimum>
 
         <minify>
