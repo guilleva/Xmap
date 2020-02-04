@@ -100,6 +100,7 @@ class Script extends AbstractScript
 
             case 'update':
                 $this->migrateLegacySitemaps();
+                $this->fixXMLMenus();
                 break;
 
 
@@ -527,6 +528,34 @@ class Script extends AbstractScript
                 ADD `format` TINYINT(1) UNSIGNED DEFAULT NULL
                 COMMENT \'Format of the setting: 1) Legacy Mode - UID Only; 2) Based on menu ID and UID\'');
             $db->execute();
+        }
+    }
+
+    /**
+     * Adds new format=xml to existing xml menus
+     * @since v4.2.25
+     */
+    protected function fixXMLMenus()
+    {
+        $db      = Factory::getDbo();
+        $siteApp = SiteApplication::getInstance('site');
+
+        $query = $db->getQuery(true)
+            ->select('id, link')
+            ->from('#__menu')
+            ->where(
+                array(
+                    'client_id = ' . $siteApp->getClientId(),
+                    sprintf('link LIKE %s', $db->quote('%com_osmap%')),
+                    sprintf('link LIKE %s', $db->quote('%view=xml%')),
+                    sprintf('link NOT LIKE %s', $db->quote('%format=xml%'))
+                )
+            );
+
+        $menus = $db->setQuery($query)->loadObjectList();
+        foreach ($menus as $menu) {
+            $menu->link .= '&format=xml';
+            $db->updateObject('#__menu', $menu, array('id'));
         }
     }
 }
