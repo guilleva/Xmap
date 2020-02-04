@@ -111,11 +111,11 @@
         <obsolete>
             <extension type="plugin"
                        group="osmap"
-                       element="com_content">plg_osmap_com_content</extension>
+                       element="com_content"/>
 
             <extension type="plugin"
                        group="xmap"
-                       element="com_content">plg_xmap_com_content</extension>
+                       element="com_content"/>
 
             <folder>administrator/components/com_osmap/library/Free</folder>
             <folder>administrator/components/com_osmap/models/fields</folder>
