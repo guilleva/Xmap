@@ -22,14 +22,16 @@
  * along with OSMap.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Alledia\OSMap\Factory;
+use Alledia\OSMap\Helper\General;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Uri\Uri;
+use Joomla\Registry\Registry;
+
 defined('_JEXEC') or die();
 
-use Alledia\OSMap;
-
-jimport('joomla.application.component.view');
-
-
-class OSMapViewXml extends JViewLegacy
+class OSMapViewXml extends HtmlView
 {
     /**
      * @var string
@@ -37,12 +39,12 @@ class OSMapViewXml extends JViewLegacy
     protected $type = null;
 
     /**
-     * @var \Joomla\Registry\Registry
+     * @var Registry
      */
     protected $params = null;
 
     /**
-     * @var \Joomla\Registry\Registry
+     * @var Registry
      */
     protected $osmapParams = null;
 
@@ -69,17 +71,16 @@ class OSMapViewXml extends JViewLegacy
 
         $id = $container->input->getInt('id');
 
-        $this->type        = OSMap\Helper\General::getSitemapTypeFromInput();
-        $this->params      = JFactory::getApplication()->getParams();
-        $this->osmapParams = JComponentHelper::getParams('com_osmap');
+        $this->type        = General::getSitemapTypeFromInput();
+        $this->params      = Factory::getApplication()->getParams();
+        $this->osmapParams = ComponentHelper::getParams('com_osmap');
 
-        $this->sitemap = OSMap\Factory::getSitemap($id, $this->type);
+        $this->sitemap = Factory::getSitemap($id, $this->type);
 
         if (!$this->sitemap->isPublished) {
             throw new Exception(JText::_('COM_OSMAP_MSG_SITEMAP_IS_UNPUBLISHED'));
         }
 
         parent::display($tpl);
-
     }
 }
