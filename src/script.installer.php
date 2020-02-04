@@ -22,7 +22,7 @@
  * along with OSMap.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Alledia\OSMap;
+use Alledia\OSMap\Installer\Script;
 
 defined('_JEXEC') or die();
 
@@ -33,6 +33,6 @@ if (file_exists(__DIR__ . '/admin/library/alledia/osmap/Installer/Script.php')) 
     require_once __DIR__ . '/library/alledia/osmap/Installer/Script.php';
 }
 
-class com_osmapInstallerScript extends OSMap\Installer\Script
+class com_osmapInstallerScript extends Script
 {
 }

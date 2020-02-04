@@ -25,7 +25,11 @@
 namespace Alledia\OSMap\Installer;
 
 use Alledia\Installer\AbstractScript;
-use Alledia\OSMap;
+use Joomla\CMS\Application\SiteApplication;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Table\Table;
 
 defined('_JEXEC') or die();
 
@@ -78,30 +82,32 @@ class Script extends AbstractScript
         // Load Alledia Framework
         require_once JPATH_ADMINISTRATOR . '/components/com_osmap/include.php';
 
-        if ($type === 'update') {
-            $this->migrateLegacySitemaps();
+        switch ($type) {
+            case 'install':
+            case 'discover_install':
+                // New installation [discover_install|install]
+                $this->createDefaultSitemap();
 
-        } elseif (strpos($type, 'install') !== false) {
-            // New installation [discover_install|install]
-            $this->createDefaultSitemap();
+                $app = Factory::getApplication();
 
-            $app = \JFactory::getApplication();
+                $link = HTMLHelper::_(
+                    'link',
+                    'index.php?option=com_plugins&view=plugins&filter.search=OSMap',
+                    Text::_('COM_OSMAP_INSTALLER_PLUGINS_PAGE')
+                );
+                $app->enqueueMessage(Text::sprintf('COM_OSMAP_INSTALLER_GOTOPLUGINS', $link), 'warning');
+                break;
 
-            $link = \JHtml::_(
-                'link',
-                'index.php?option=com_plugins&view=plugins&filter.search=OSMap',
-                \JText::_('COM_OSMAP_INSTALLER_PLUGINS_PAGE')
-            );
-            $app->enqueueMessage(\JText::sprintf('COM_OSMAP_INSTALLER_GOTOPLUGINS', $link), 'warning');
+            case 'update':
+                $this->migrateLegacySitemaps();
+                break;
+
+
         }
 
-        // Check if we have params from Xmap plugins to apply to OSMap plugins
         $xmapConverter->moveXmapPluginsParamsToOSMapPlugins();
-
-        // Check if we have the correct database scheme
         $this->checkDbScheme();
 
-        // Show any additional messages we might have created.
         $this->showMessages();
     }
 
@@ -112,7 +118,7 @@ class Script extends AbstractScript
      */
     protected function createDefaultSitemap()
     {
-        $db = OSMap\Factory::getDbo();
+        $db = Factory::getDbo();
 
         // Check if we have any sitemap, otherwise lets create a default one
         $query      = $db->getQuery(true)
@@ -131,8 +137,8 @@ class Script extends AbstractScript
                 );
 
                 // Create the sitemap
-                \JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_osmap/tables');
-                $row = \JTable::getInstance('Sitemap', 'OSMapTable');
+                Table::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_osmap/tables');
+                $row = Table::getInstance('Sitemap', 'OSMapTable');
                 $row->save($data);
 
                 $i = 0;
@@ -160,7 +166,7 @@ class Script extends AbstractScript
      */
     protected function cleanupDatabase()
     {
-        $db = OSMap\Factory::getDbo();
+        $db = Factory::getDbo();
 
         $db->setQuery('DELETE FROM ' . $db->quoteName('#__osmap_items_settings'))->execute();
         $db->setQuery('DELETE FROM ' . $db->quoteName('#__osmap_sitemap_menus'))->execute();
@@ -176,7 +182,7 @@ class Script extends AbstractScript
      */
     protected function migrateLegacySitemaps()
     {
-        $db = OSMap\Factory::getDbo();
+        $db = Factory::getDbo();
 
         if ($this->tableExists('#__osmap_sitemap')) {
             try {
@@ -206,7 +212,7 @@ class Script extends AbstractScript
                     foreach ($sitemaps as $sitemap) {
                         // Make sure we have a creation date
                         if ($sitemap->created === $db->getNullDate()) {
-                            $sitemap->created = OSMap\Factory::getDate()->toSql();
+                            $sitemap->created = Factory::getDate()->toSql();
                         }
 
                         $query = $db->getQuery(true)
@@ -432,8 +438,8 @@ class Script extends AbstractScript
 
                 $db->transactionCommit();
             } catch (\Exception $e) {
-                \JFactory::getApplication()->enqueueMessage(
-                    \JText::sprintf('COM_OSMAP_INSTALLER_ERROR_MIGRATING_DATA', $e->getMessage()),
+                Factory::getApplication()->enqueueMessage(
+                    Text::sprintf('COM_OSMAP_INSTALLER_ERROR_MIGRATING_DATA', $e->getMessage()),
                     'error'
                 );
                 $db->transactionRollback();
@@ -450,7 +456,7 @@ class Script extends AbstractScript
      */
     protected function getMenuTypeId($menuType)
     {
-        $db = OSMap\Factory::getDbo();
+        $db = Factory::getDbo();
 
         $query = $db->getQuery(true)
             ->select('id')
@@ -505,7 +511,7 @@ class Script extends AbstractScript
         // Table: #__osmap_items_settings
         $existentColumns = $this->getColumnsFromTable('#__osmap_items_settings');
 
-        $db = \JFactory::getDbo();
+        $db = Factory::getDbo();
 
         // URH Hash
         if (in_array('url_hash', $existentColumns)) {
