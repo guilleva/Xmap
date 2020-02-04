@@ -61,10 +61,19 @@ class OSMapViewXml extends HtmlView
      */
     public function display($tpl = null)
     {
-        $document = JFactory::getDocument();
-        $document->setMimeEncoding('text/xml');
+        $document = Factory::getDocument();
+        if ($document->getType() != 'xml') {
+            // There are ways to get here with a non-xml document, so we have to redirect
+            $uri = Uri::getInstance();
+            $uri->setVar('format', 'xml');
 
-        $container = OSMap\Factory::getContainer();
+            Factory::getApplication()->redirect($uri);
+
+            // Not strictly necessary, but makes the point :)
+            return;
+        }
+
+        $container = Factory::getContainer();
 
         // Help to show a clean XML without other content
         $container->input->set('tmpl', 'component');
