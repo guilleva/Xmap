@@ -9,7 +9,6 @@
 
 defined('_JEXEC') or die();
 
-
 /*
  * Having a view.xml.php file in views allows to add
  * a .xml suffix to the alias, if the sitemap is attached to

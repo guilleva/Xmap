@@ -24,7 +24,7 @@
 
 use Alledia\OSMap\Helper\General;
 use Alledia\OSMap\Sitemap\Item;
-use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Uri\Uri;
 
 defined('_JEXEC') or die();
 
@@ -56,13 +56,12 @@ $printNodeCallback = function (Item $node) use ($showExternalLinks, $ignoreDupli
 
     echo $debug;
 
-    // Print the item
     echo '<url>';
     echo '<loc><![CDATA[' . $node->fullLink . ']]></loc>';
 
-    if (!General::isEmptyDate($node->modified)) {
-        echo '<lastmod>' . $node->modified . '</lastmod>';
-    }
+    echo General::isEmptyDate($node->modified)
+        ? '<lastmod/>'
+        : '<lastmod>' . $node->modified . '</lastmod>';
 
     echo '<changefreq>' . $node->changefreq . '</changefreq>';
     echo '<priority>' . $node->priority . '</priority>';
@@ -73,38 +72,9 @@ $printNodeCallback = function (Item $node) use ($showExternalLinks, $ignoreDupli
     return true;
 };
 
-if ($this->params->get('add_styling', 1)) {
-    // Add stylesheet
-    $query = array(
-        'option' => 'com_osmap',
-        'view'   => 'xsl',
-        'format' => 'xsl',
-        'tmpl'   => 'component',
-        'layout' => 'standard',
-        'id'     => $this->sitemap->id
-    );
-    if ($this->params->get('show_page_heading', 1)) {
-        $query['title'] = urlencode($this->pageHeading);
-    }
+echo $this->addStylesheet();
 
-    echo sprintf(
-        '<?xml-stylesheet type="text/xsl" href="%s"?>',
-        JUri::base() . 'index.php?' . htmlentities(http_build_query($query))
-    );
-}
-
-// Add schema location
-$schemas = array(
-    'http://www.sitemaps.org/schemas/sitemap/0.9',
-    'http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd'
-);
-
-$attributes = array(
-    'xmlns:xsi'          => 'http://www.w3.org/2001/XMLSchema-instance',
-    'xsi:schemaLocation' => join(' ', $schemas),
-    'xmlns'              => 'http://www.sitemaps.org/schemas/sitemap/0.9'
-);
-echo sprintf($debug . '<urlset %s>' . $debug, ArrayHelper::toString($attributes));
+echo $debug . '<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">' . $debug;
 
 $this->sitemap->traverse($printNodeCallback);
 

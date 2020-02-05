@@ -26,22 +26,7 @@ use Alledia\OSMap\Factory;
 
 defined('_JEXEC') or die();
 
-$document = Factory::getDocument();
-
-if (isset($this->params) && $this->params->get('debug', 0)) {
-    $document->setMimeEncoding('text/plain');
-}
-
-// Check if we have parameters from a menu, acknowledging we have a menu
-if (!is_null($this->params->get('menu_text'))) {
-    // We have a menu, so let's use its params to display the heading
-    $this->pageHeading = $this->params->get('page_heading', $this->params->get('page_title'));
-} else {
-    // We don't have a menu, so lets use the sitemap name
-    $this->pageHeading = $this->sitemap->name;
-}
-
-echo sprintf('<?xml version="1.0" encoding="%s"?>' . "\n", $document->getCharset());
+echo sprintf('<?xml version="1.0" encoding="%s"?>' . "\n", $this->_charset);
 
 if (empty($this->message)) {
     echo $this->loadTemplate($this->type);

@@ -24,7 +24,9 @@
 
 use Alledia\OSMap\Factory;
 use Alledia\OSMap\Helper\General;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
@@ -54,6 +56,26 @@ class OSMapViewXml extends HtmlView
     protected $sitemap = null;
 
     /**
+     * @var string
+     */
+    protected $language = null;
+
+    /**
+     * @var DateTime
+     */
+    protected $newsCutoff = null;
+
+    /**
+     * @var int
+     */
+    protected $newsLimit = 1000;
+
+    /**
+     * @var string
+     */
+    protected $pageHeading = null;
+
+    /**
      * @param null $tpl
      *
      * @return void
@@ -73,26 +95,60 @@ class OSMapViewXml extends HtmlView
             return;
         }
 
-        $container = Factory::getContainer();
+        /** @var SiteApplication $app */
+        $app = Factory::getApplication();
 
-        // Help to show a clean XML without other content
-        $container->input->set('tmpl', 'component');
-
-        $id = $container->input->getInt('id');
-
-        $this->type        = General::getSitemapTypeFromInput();
-        $this->params      = Factory::getApplication()->getParams();
-        $this->osmapParams = ComponentHelper::getParams('com_osmap');
-
-        $this->sitemap = Factory::getSitemap($id, $this->type);
-
+        $this->type    = General::getSitemapTypeFromInput();
+        $this->sitemap = Factory::getSitemap($app->input->getInt('id'), $this->type);
         if (!$this->sitemap->isPublished) {
-            throw new Exception(JText::_('COM_OSMAP_MSG_SITEMAP_IS_UNPUBLISHED'));
+            throw new Exception(Text::_('COM_OSMAP_MSG_SITEMAP_IS_UNPUBLISHED'));
+        }
+
+        $this->params      = $app->getParams();
+        $this->osmapParams = ComponentHelper::getParams('com_osmap');
+        $this->language    = $document->getLanguage();
+        $this->newsCutoff  = new DateTime('-' . $this->sitemap->newsDateLimit . ' days');
+
+        if ($this->params->get('show_page_heading', 1)) {
+            $this->pageHeading = $this->params->get('page_heading')
+                ?: $this->params->get('page_title')
+                    ?: $this->sitemap->name;
+        }
+
+        if ($this->params->get('debug', 0)) {
+            $document->setMimeEncoding('text/plain');
         }
 
         parent::display($tpl);
 
+        // @TODO: Does this really help at all?
         $this->sitemap->cleanup();
         $this->sitemap = null;
+    }
+
+    /**
+     * @return string
+     */
+    protected function addStylesheet()
+    {
+        if ($this->params->get('add_styling', 1)) {
+            $query = array(
+                'option' => 'com_osmap',
+                'view'   => 'xsl',
+                'format' => 'xsl',
+                'layout' => $this->type,
+                'id'     => $this->sitemap->id
+            );
+            if ($this->params->get('show_page_heading', 1)) {
+                $query['title'] = urlencode($this->pageHeading);
+            }
+
+            return sprintf(
+                '<?xml-stylesheet type="text/xsl" href="%s"?>',
+                Uri::base() . 'index.php?' . htmlentities(http_build_query($query))
+            );
+        }
+
+        return '';
     }
 }
