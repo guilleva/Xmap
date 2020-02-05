@@ -22,20 +22,17 @@
  * along with OSMap.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Alledia\OSMap\Helper\General;
+use Alledia\OSMap\Sitemap\Item;
+use Joomla\Utilities\ArrayHelper;
+
 defined('_JEXEC') or die();
-
-use Alledia\OSMap;
-
-global $showExternalLinks, $ignoreDuplicatedUIDs, $debug;
 
 $showExternalLinks    = (int)$this->osmapParams->get('show_external_links', 0);
 $ignoreDuplicatedUIDs = (int)$this->osmapParams->get('ignore_duplicated_uids', 1);
-$debug                = (bool)$this->params->get('debug', 0);
+$debug                = $this->params->get('debug', 0) ? "\n" : '';
 
-
-$printNodeCallback = function ($node) {
-    global $showExternalLinks, $ignoreDuplicatedUIDs, $debug;
-
+$printNodeCallback = function (Item $node) use ($showExternalLinks, $ignoreDuplicatedUIDs, $debug) {
     $display = !$node->ignore
         && $node->published
         && (!$node->duplicate || ($node->duplicate && !$ignoreDuplicatedUIDs))
@@ -57,15 +54,13 @@ $printNodeCallback = function ($node) {
         return false;
     }
 
-    if ($debug) {
-        echo "\n";
-    }
+    echo $debug;
 
     // Print the item
     echo '<url>';
     echo '<loc><![CDATA[' . $node->fullLink . ']]></loc>';
 
-    if (!OSMap\Helper\General::isEmptyDate($node->modified)) {
+    if (!General::isEmptyDate($node->modified)) {
         echo '<lastmod>' . $node->modified . '</lastmod>';
     }
 
@@ -73,29 +68,44 @@ $printNodeCallback = function ($node) {
     echo '<priority>' . $node->priority . '</priority>';
     echo '</url>';
 
-    if ($debug) {
-        echo "\n";
-    }
+    echo $debug;
 
     return true;
 };
 
-// Do we need to apply XSL?
 if ($this->params->get('add_styling', 1)) {
-    $title = '';
+    // Add stylesheet
+    $query = array(
+        'option' => 'com_osmap',
+        'view'   => 'xsl',
+        'format' => 'xsl',
+        'tmpl'   => 'component',
+        'layout' => 'standard',
+        'id'     => $this->sitemap->id
+    );
     if ($this->params->get('show_page_heading', 1)) {
-        $title = '&amp;title=' . urlencode($this->pageHeading);
+        $query['title'] = urlencode($this->pageHeading);
     }
 
-    echo '<?xml-stylesheet type="text/xsl" href="' . JUri::base() . 'index.php?option=com_osmap&amp;view=xsl&amp;format=xsl&amp;tmpl=component&amp;layout=standard&amp;id=' . $this->sitemap->id . $title . '"?>';
+    echo sprintf(
+        '<?xml-stylesheet type="text/xsl" href="%s"?>',
+        JUri::base() . 'index.php?' . htmlentities(http_build_query($query))
+    );
 }
 
-// Start the URL set
-echo '<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+// Add schema location
+$schemas = array(
+    'http://www.sitemaps.org/schemas/sitemap/0.9',
+    'http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd'
+);
+
+$attributes = array(
+    'xmlns:xsi'          => 'http://www.w3.org/2001/XMLSchema-instance',
+    'xsi:schemaLocation' => join(' ', $schemas),
+    'xmlns'              => 'http://www.sitemaps.org/schemas/sitemap/0.9'
+);
+echo sprintf($debug . '<urlset %s>' . $debug, ArrayHelper::toString($attributes));
 
 $this->sitemap->traverse($printNodeCallback);
 
-$printNodeCallback = null;
-$this->sitemap->cleanup();
-$this->sitemap = null;
 echo '</urlset>';

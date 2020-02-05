@@ -22,13 +22,14 @@
  * along with OSMap.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Alledia\OSMap\Factory;
+
 defined('_JEXEC') or die();
 
-// If debug is enabled, use text content type
+$document = Factory::getDocument();
+
 if (isset($this->params) && $this->params->get('debug', 0)) {
-    header('Content-type: text/plain; charset=utf-8');
-} else {
-    header('Content-type: text/xml; charset=utf-8');
+    $document->setMimeEncoding('text/plain');
 }
 
 // Check if we have parameters from a menu, acknowledging we have a menu
@@ -40,14 +41,11 @@ if (!is_null($this->params->get('menu_text'))) {
     $this->pageHeading = $this->sitemap->name;
 }
 
-echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+echo sprintf('<?xml version="1.0" encoding="%s"?>' . "\n", $document->getCharset());
 
-// Only display the message in the XML
-if (!empty($this->message)) {
-    echo $this->loadTemplate('message');
-}
-
-// Load the template of sitemap according to the requested type
 if (empty($this->message)) {
     echo $this->loadTemplate($this->type);
+
+} else {
+    echo '<message>' . $this->message . '</message>';
 }

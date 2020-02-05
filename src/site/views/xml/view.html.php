@@ -91,5 +91,8 @@ class OSMapViewXml extends HtmlView
         }
 
         parent::display($tpl);
+
+        $this->sitemap->cleanup();
+        $this->sitemap = null;
     }
 }
