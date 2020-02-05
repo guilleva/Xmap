@@ -24,7 +24,6 @@
 
 use Alledia\OSMap\Helper\General;
 use Alledia\OSMap\Sitemap\Item;
-use Joomla\CMS\Uri\Uri;
 
 defined('_JEXEC') or die();
 

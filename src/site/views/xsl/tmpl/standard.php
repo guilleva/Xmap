@@ -26,8 +26,6 @@ use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die();
 
-$countTitle = Text::_('COM_OSMAP_NUMBER_OF_URLS');
-
 ?>
 <xsl:stylesheet
     version="1.0"
