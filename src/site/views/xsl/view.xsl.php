@@ -22,28 +22,52 @@
  * along with OSMap.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Alledia\OSMap\Factory;
+use Joomla\CMS\MVC\View\HtmlView;
+
 defined('_JEXEC') or die();
 
-use Alledia\OSMap;
-
-jimport('joomla.application.component.view');
-
-
-class OSMapViewXsl extends JViewLegacy
+class OSMapViewXsl extends HtmlView
 {
+    public function __construct($config = array())
+    {
+        parent::__construct($config);
+    }
+
+    /**
+     * @var string
+     */
+    protected $pageHeading = null;
+
+    /**
+     * @var string
+     */
+    protected $language = null;
+
+    /**
+     * @param string $tpl
+     *
+     * @return void
+     * @throws Exception
+     */
     public function display($tpl = null)
     {
-        $container = OSMap\Factory::getContainer();
+        $document = Factory::getDocument();
 
-        // Help to show a clean XSL without other content
-        $container->input->set('tmpl', 'component');
+        $this->language = $document->getLanguage();
 
-        // Get the title
-        $this->pageHeading = htmlspecialchars(urldecode(JFactory::getApplication()->input->getRaw('title')));
+        $this->pageHeading = htmlspecialchars(
+            urldecode(
+                Factory::getApplication()->input->getString('title')
+            )
+        );
+
+        // We're going to cheat Joomla here because some referenced urls MUST remain http/insecure
+        header(sprintf('Content-Type: text/xsl; charset="%s"', $this->_charset));
+        header('Content-Disposition: inline');
 
         parent::display($tpl);
 
-        // Force to show a clean XSL without other content
         jexit();
     }
 }
