@@ -103,6 +103,7 @@
                        group="osmap"
                        publish="true"
                        element="joomla"
+                       downgrade="true"
                        uninstall="true">plg_osmap_joomla</extension>
         </relatedExtensions>
 
