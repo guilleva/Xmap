@@ -51,9 +51,9 @@ $printNodeCallback = function (Item $node) {
         echo '<news:news>';
 
         echo '<news:publication>';
-        if ($publicationName = $this->params->get('news_publication_name', '')) {
-            echo '<news:name><![CDATA[' . $publicationName . ']]></news:name>';
-        }
+        echo ($publicationName = $this->params->get('news_publication_name', ''))
+            ? '<news:name><![CDATA[' . $publicationName . ']]></news:name>'
+            : '<news:name/>';
 
         if (empty($node->language) || $node->language == '*') {
             $node->language = $this->language;
@@ -65,7 +65,7 @@ $printNodeCallback = function (Item $node) {
         echo '<news:title><![CDATA[' . $node->name . ']]></news:title>';
 
         if (!empty($node->keywords)) {
-            echo '<news:keywords>' . htmlspecialchars($node->keywords) . '</news:keywords>';
+            echo '<news:keywords><![CDATA[' . $node->keywords . ']]></news:keywords>';
         }
 
         echo "</news:news>";
