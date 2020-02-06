@@ -22,15 +22,14 @@
  * along with OSMap.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-defined('_JEXEC') or die();
+use Alledia\OSMap\Sitemap\Item;
+use Joomla\Utilities\ArrayHelper;
 
-global $ignoreDuplicatedUIDs;
+defined('_JEXEC') or die();
 
 $ignoreDuplicatedUIDs = (int)$this->osmapParams->get('ignore_duplicated_uids', 1);
 
-$printNodeCallback = function ($node) {
-    global $ignoreDuplicatedUIDs;
-
+$printNodeCallback = function (Item $node) use ($ignoreDuplicatedUIDs) {
     $display = !$node->ignore
         && $node->published
         && (!$node->duplicate || ($node->duplicate && !$ignoreDuplicatedUIDs))
@@ -38,61 +37,46 @@ $printNodeCallback = function ($node) {
         && $node->parentIsVisibleForRobots
         && $node->visibleForXML
         && $node->isInternal
-        && trim($node->fullLink) != '';
+        && trim($node->fullLink) != ''
+        && $node->hasCompatibleLanguage();
 
-    if (!$node->hasCompatibleLanguage()) {
-        $display = false;
-    }
+    if ($display) {
+        echo '<url>';
+        echo '<loc><![CDATA[' . $node->fullLink . ']]></loc>';
 
-    // If the item would be displayed, but doesn't have images, we return true to still get it's child items images.
-    if ($display && (!isset($node->images) || empty($node->images))) {
-        return true;
-    }
+        foreach ($node->images as $image) {
+            if (!empty($image->src)) {
+                echo '<image:image>';
+                echo '<image:loc><![CDATA[' . $image->src . ']]></image:loc>';
+                echo empty($image->title)
+                    ? '<image:title/>'
+                    : '<image:title><![CDATA[' . $image->title . ']]></image:title>';
 
-    if (!$display) {
-        return false;
-    }
+                if (!empty($image->license)) {
+                    echo '<image:license><![CDATA[' . $image->license . ']]></image:license>';
+                }
 
-    // Print the item
-    echo '<url>';
-    echo '<loc><![CDATA[' . $node->fullLink . ']]></loc>';
-
-    foreach ($node->images as $image) {
-        if (!empty($image->src)) {
-            echo '<image:image>';
-            // Link
-            echo '<image:loc><![CDATA[' . $image->src . ']]></image:loc>';
-            // Title
-            echo '<image:title>';
-            if (!empty($image->title)) {
-                echo '<![CDATA[' . $image->title . ']]>';
+                echo '</image:image>';
             }
-            echo '</image:title>';
-            // License
-            if (isset($image->license) && !empty($image->license)) {
-                echo '<image:license><![CDATA[' . $image->license . ']]></image:license>';
-            }
-
-            echo '</image:image>';
         }
+
+        echo '</url>';
     }
 
-    echo '</url>';
-
-    return true;
+    /*
+     * Return true if there were no images
+     * so any child nodes will get checked
+     */
+    return $display || empty($node->images);
 };
 
-// Do we need to apply XSL?
-if ($this->params->get('add_styling', 1)) {
-    $title = '';
-    if ($this->params->get('show_page_heading', 1)) {
-        $title = '&amp;title=' . urlencode($this->pageHeading);
-    }
+echo $this->addStylesheet();
 
-    echo '<?xml-stylesheet type="text/xsl" href="' . JUri::base() . 'index.php?option=com_osmap&amp;view=xsl&amp;format=xsl&amp;tmpl=component&amp;layout=images&amp;id=' . $this->sitemap->id . $title . '"?>';
-}
-
-echo '<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">';
+$attributes = array(
+    'xmlns'       => 'https://www.sitemaps.org/schemas/sitemap/0.9',
+    'xmlns:image' => 'https://www.google.com/schemas/sitemap-image/1.1'
+);
+echo sprintf('<urlset %s>', ArrayHelper::toString($attributes));
 
 $this->sitemap->traverse($printNodeCallback);
 

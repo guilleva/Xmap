@@ -23,6 +23,7 @@
  */
 
 use Alledia\OSMap\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\View\HtmlView;
 
 defined('_JEXEC') or die();
@@ -45,6 +46,11 @@ class OSMapViewXsl extends HtmlView
     protected $language = null;
 
     /**
+     * @var string
+     */
+    protected $icoMoonUri = null;
+
+    /**
      * @param string $tpl
      *
      * @return void
@@ -54,7 +60,12 @@ class OSMapViewXsl extends HtmlView
     {
         $document = Factory::getDocument();
 
-        $this->language = $document->getLanguage();
+        $this->language   = $document->getLanguage();
+        $this->icoMoonUri = HTMLHelper::_(
+            'stylesheet',
+            'jui/icomoon.css',
+            array('relative' => true, 'pathOnly' => true)
+        );
 
         $this->pageHeading = htmlspecialchars(
             urldecode(

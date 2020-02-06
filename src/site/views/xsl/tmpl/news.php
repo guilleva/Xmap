@@ -28,7 +28,8 @@ defined('_JEXEC') or die();
 
 ?>
 <xsl:stylesheet
-    version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:xna="https://www.sitemaps.org/schemas/sitemap/0.9"
     xmlns:news="https://www.google.com/schemas/sitemap-news/0.9"
     exclude-result-prefixes="xna">
@@ -38,11 +39,11 @@ defined('_JEXEC') or die();
 <html lang="<?php echo $this->language; ?>">
 <head>
 <title><?php echo Text::_('COM_OSMAP_XML_SITEMAP_FILE'); ?></title>
-<link rel="stylesheet" type="text/css" href="<?php echo JUri::base(); ?>media/jui/css/icomoon.css" />
+<link rel="stylesheet" type="text/css" href="<?php echo $this->icoMoonUri; ?>" />
 <style type="text/css">
     <![CDATA[
     body {
-        font-family: tahoma;
+        font-family: tahoma, sans-serif;
         position: relative;
     }
 

@@ -22,23 +22,27 @@
  * along with OSMap.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-defined('_JEXEC') or die();
+use Joomla\CMS\Language\Text;
 
-header('Content-Type: text/xsl; charset="utf-8"');
-header('Content-Disposition: inline');
+defined('_JEXEC') or die();
 ?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xna="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" exclude-result-prefixes="xna">
+<xsl:stylesheet
+    version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:xna="https://www.sitemaps.org/schemas/sitemap/0.9"
+    xmlns:image="https://www.google.com/schemas/sitemap-image/1.1"
+    exclude-result-prefixes="xna">
 
 <xsl:output indent="yes" method="html" omit-xml-declaration="yes"/>
 <xsl:template match="/">
-<html>
+<html lang="<?php echo $this->language; ?>">
 <head>
-<title><?php echo JText::_('COM_OSMAP_XML_SITEMAP_FILE'); ?></title>
-<link rel="stylesheet" type="text/css" href="<?php echo JUri::base(); ?>media/jui/css/icomoon.css" />
+<title><?php echo Text::_('COM_OSMAP_XML_SITEMAP_FILE'); ?></title>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->icoMoonUri; ?>" />
 <style type="text/css">
     <![CDATA[
     body {
-        font-family: tahoma;
+        font-family: tahoma, sans-serif;
         position: relative;
     }
 
@@ -98,10 +102,13 @@ header('Content-Disposition: inline');
     <div class="header">
         <div class="title">
             <?php if (!empty($this->pageHeading)) : ?>
-                <h1><?php echo JText::_($this->pageHeading); ?></h1>
+                <h1><?php echo Text::_($this->pageHeading); ?></h1>
             <?php endif; ?>
             <div class="count">
-                <?php echo JText::_('COM_OSMAP_NUMBER_OF_URLS'); ?>: <xsl:value-of select="count(xna:urlset/xna:url)"></xsl:value-of> (<xsl:value-of select="count(xna:urlset/xna:url/image:image/image:loc)"></xsl:value-of> <?php echo JText::_('COM_OSMAP_IMAGES'); ?>)
+                <?php echo Text::_('COM_OSMAP_NUMBER_OF_URLS'); ?>:
+                <xsl:value-of select="count(xna:urlset/xna:url)"/>
+                (<xsl:value-of select="count(xna:urlset/xna:url/image:image/image:loc)"/>
+                <?php echo Text::_('COM_OSMAP_IMAGES'); ?>)
             </div>
         </div>
     </div>
@@ -109,21 +116,26 @@ header('Content-Disposition: inline');
     <table class="data">
         <thead>
             <tr>
-                <th><?php echo JText::_('COM_OSMAP_HEADING_URL'); ?></th>
-                <th><?php echo JText::_('COM_OSMAP_HEADING_TITLE'); ?></th>
+                <th><?php echo Text::_('COM_OSMAP_HEADING_URL'); ?></th>
+                <th><?php echo Text::_('COM_OSMAP_HEADING_TITLE'); ?></th>
             </tr>
         </thead>
         <tbody>
             <xsl:for-each select="xna:urlset/xna:url">
-                <xsl:variable name="sitemapURL"><xsl:value-of select="xna:loc"/></xsl:variable>
+                <xsl:variable name="sitemapURL">
+                    <xsl:value-of select="xna:loc"/>
+                </xsl:variable>
                 <tr class="sitemap-url">
                     <td>
-                        <a href="{$sitemapURL}" target="_blank" ref="nofollow" class="url"><xsl:value-of select="$sitemapURL"></xsl:value-of></a>
+                        <a href="{$sitemapURL}" target="_blank" class="url">
+                            <xsl:value-of select="$sitemapURL"/>
+                        </a>
                         <span class="icon-new-tab"></span>
-                        (<xsl:value-of select="count(./image:image/image:loc)"></xsl:value-of> <?php echo JText::_('COM_OSMAP_IMAGES'); ?>)
+                        (<xsl:value-of select="count(./image:image/image:loc)"/>
+                        <?php echo Text::_('COM_OSMAP_IMAGES'); ?>)
                     </td>
                     <td>
-                        <xsl:value-of select="./title"></xsl:value-of>
+                        <xsl:value-of select="./title"/>
                     </td>
                 </tr>
 
@@ -131,17 +143,15 @@ header('Content-Disposition: inline');
                     <xsl:variable name="imageURL"><xsl:value-of select="image:loc"/></xsl:variable>
                     <tr class="image-url">
                         <td>
-                            <a
-                                href="{$imageURL}"
+                            <a href="{$imageURL}"
                                 target="_blank"
-                                ref="nofollow"
                                 class="image-url">
-                                <xsl:value-of select="$imageURL"></xsl:value-of>
+                                <xsl:value-of select="$imageURL"/>
                             </a>
                             <span class="icon-new-tab"></span>
                         </td>
                         <td>
-                            <xsl:value-of select="image:title"></xsl:value-of>
+                            <xsl:value-of select="image:title"/>
                         </td>
                     </tr>
                 </xsl:for-each>
