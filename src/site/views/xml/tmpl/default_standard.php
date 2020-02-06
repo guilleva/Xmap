@@ -58,9 +58,9 @@ $printNodeCallback = function (Item $node) use ($showExternalLinks, $ignoreDupli
     echo '<url>';
     echo '<loc><![CDATA[' . $node->fullLink . ']]></loc>';
 
-    echo General::isEmptyDate($node->modified)
-        ? '<lastmod/>'
-        : '<lastmod>' . $node->modified . '</lastmod>';
+    if (!General::isEmptyDate($node->modified)) {
+        echo '<lastmod>' . $node->modified . '</lastmod>';
+    }
 
     echo '<changefreq>' . $node->changefreq . '</changefreq>';
     echo '<priority>' . $node->priority . '</priority>';
