@@ -22,18 +22,22 @@
  * along with OSMap.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Joomla\CMS\Language\Text;
+
 defined('_JEXEC') or die();
 
-header('Content-Type: text/xsl; charset="utf-8"');
-header('Content-Disposition: inline');
 ?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xna="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" exclude-result-prefixes="xna">
+<xsl:stylesheet
+    version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:xna="https://www.sitemaps.org/schemas/sitemap/0.9"
+    xmlns:news="https://www.google.com/schemas/sitemap-news/0.9"
+    exclude-result-prefixes="xna">
 
 <xsl:output indent="yes" method="html" omit-xml-declaration="yes"/>
 <xsl:template match="/">
-<html>
+<html lang="<?php echo $this->language; ?>">
 <head>
-<title><?php echo JText::_('COM_OSMAP_XML_SITEMAP_FILE'); ?></title>
+<title><?php echo Text::_('COM_OSMAP_XML_SITEMAP_FILE'); ?></title>
 <link rel="stylesheet" type="text/css" href="<?php echo JUri::base(); ?>media/jui/css/icomoon.css" />
 <style type="text/css">
     <![CDATA[
@@ -98,10 +102,11 @@ header('Content-Disposition: inline');
     <div class="header">
         <div class="title">
             <?php if (!empty($this->pageHeading)) : ?>
-                <h1><?php echo JText::_($this->pageHeading); ?></h1>
+                <h1><?php echo Text::_($this->pageHeading); ?></h1>
             <?php endif; ?>
             <div class="count">
-                <?php echo JText::_('COM_OSMAP_NUMBER_OF_URLS'); ?>: <xsl:value-of select="count(xna:urlset/xna:url)"></xsl:value-of>
+                <?php echo Text::_('COM_OSMAP_NUMBER_OF_URLS'); ?>:
+                <xsl:value-of select="count(xna:urlset/xna:url)"/>
             </div>
         </div>
     </div>
@@ -109,17 +114,21 @@ header('Content-Disposition: inline');
     <table class="data">
         <thead>
             <tr>
-                <th><?php echo JText::_('COM_OSMAP_HEADING_URL'); ?></th>
-                <th><?php echo JText::_('COM_OSMAP_HEADING_TITLE'); ?></th>
-                <th><?php echo JText::_('COM_OSMAP_HEADING_PUBLICATION_DATE'); ?></th>
+                <th><?php echo Text::_('COM_OSMAP_HEADING_URL'); ?></th>
+                <th><?php echo Text::_('COM_OSMAP_HEADING_TITLE'); ?></th>
+                <th><?php echo Text::_('COM_OSMAP_HEADING_PUBLICATION_DATE'); ?></th>
             </tr>
         </thead>
         <tbody>
             <xsl:for-each select="xna:urlset/xna:url">
-                <xsl:variable name="sitemapURL"><xsl:value-of select="xna:loc"/></xsl:variable>
+                <xsl:variable name="sitemapURL">
+                    <xsl:value-of select="xna:loc"/>
+                </xsl:variable>
                 <tr>
                     <td>
-                        <a href="{$sitemapURL}" target="_blank" ref="nofollow" class="url"><xsl:value-of select="$sitemapURL"></xsl:value-of></a>
+                        <a href="{$sitemapURL}" target="_blank" class="url">
+                            <xsl:value-of select="$sitemapURL"/>
+                        </a>
                         <span class="icon-new-tab"></span>
                     </td>
                     <td>

@@ -24,6 +24,7 @@
 
 use Alledia\OSMap\Factory;
 use Alledia\OSMap\Helper\General;
+use Alledia\OSMap\Sitemap\Item;
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
@@ -150,5 +151,33 @@ class OSMapViewXml extends HtmlView
         }
 
         return '';
+    }
+
+    /**
+     * @param Item $node
+     *
+     * @return DateTime
+     * @throws Exception
+     */
+    protected function isNewsPublication(Item $node)
+    {
+        $publicationDate = (
+            !empty($node->publishUp)
+            && $node->publishUp != Factory::getDbo()->getNullDate()
+            && $node->publishUp != -1
+        ) ? $node->publishUp : null;
+
+        if ($publicationDate) {
+            $publicationDate = new DateTime($publicationDate);
+
+            if ($this->newsCutoff <= $publicationDate) {
+                $this->newsLimit--;
+                if ($this->newsLimit >= 0) {
+                    return $publicationDate;
+                }
+            }
+        }
+
+        return null;
     }
 }

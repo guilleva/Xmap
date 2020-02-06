@@ -22,18 +22,15 @@
  * along with OSMap.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Alledia\OSMap;
+use Alledia\OSMap\Factory;
+use Alledia\OSMap\Sitemap\Item;
+use Joomla\Utilities\ArrayHelper;
 
 defined('_JEXEC') or die();
 
-$params = $this->params;
+$debug = $this->params->get('debug', 0) ? "\n" : '';
 
-$params->set('cutoff_date', new DateTime('-' . $this->sitemap->newsDateLimit . ' days'));
-
-$printNodeCallback = function ($node) use ($params) {
-    // Limit to Google requirements
-    static $limit = 1000;
-
+$printNodeCallback = function (Item $node) {
     $display = !$node->ignore
         && $node->published
         && (!$node->duplicate || ($node->duplicate && !$this->osmapParams->get('ignore_duplicated_uids', 1)))
@@ -43,89 +40,49 @@ $printNodeCallback = function ($node) use ($params) {
         && $node->parentIsVisibleForRobots
         && $node->visibleForXML
         && $node->isInternal
-        && trim($node->fullLink) != '';
+        && trim($node->fullLink) != ''
+        && $node->hasCompatibleLanguage();
 
-    if (!$node->hasCompatibleLanguage()) {
-        $display = false;
-    }
+    /** @var DateTime $publicationDate */
+    $publicationDate = $this->isNewsPublication($node);
+    if ($display && $publicationDate) {
+        echo '<url>';
+        echo '<loc><![CDATA[' . $node->fullLink . ']]></loc>';
+        echo '<news:news>';
 
-    if (!$display) {
-        return false;
-    }
+        echo '<news:publication>';
+        echo ($publicationName = $this->params->get('news_publication_name', ''))
+            ? '<news:name><![CDATA[' . $publicationName . ']]></news:name>'
+            : '<news:name/>';
 
-    if (--$limit < 0) {
-        return false;
-    }
-
-    // Publication date
-    $publicationDate = (
-        isset($node->publishUp)
-        && !empty($node->publishUp)
-        && $node->publishUp != OSMap\Factory::getDbo()->getNullDate()
-        && $node->publishUp != -1
-    ) ? $node->publishUp : null;
-
-    $publicationDate = new JDate($publicationDate);
-    if ($params->get('cutoff_date') > $publicationDate) {
-        return false;
-    }
-
-    // Publication name
-    $publicationName = $params->get('news_publication_name', '');
-
-    // Print the item
-    echo '<url>';
-    echo '<loc>' . htmlspecialchars($node->fullLink) . '</loc>';
-    echo "<news:news>";
-    echo '<news:publication>';
-    echo '<news:name>' . htmlspecialchars($publicationName) . '</news:name>';
-
-    // Language
-    if (!isset($node->language) || $node->language == '*') {
-        $defaultLanguage = strtolower(JFactory::getLanguage()->getTag());
-
-        // Legacy code. Not sure why the hardcoded zh-cn and zh-tw
-        if (preg_match('/^([a-z]+)-.*/', $defaultLanguage, $matches)
-
-            && !in_array($defaultLanguage, array(' zh-cn', ' zh-tw'))
-        ) {
-            $defaultLanguage = $matches[1];
+        if (empty($node->language) || $node->language == '*') {
+            $node->language = $this->language;
         }
+        echo '<news:language>' . $node->language . '</news:language>';
+        echo '</news:publication>';
 
-        $node->language = $defaultLanguage;
+        echo '<news:publication_date>' . $publicationDate->format('Y-m-d\TH:i:s\Z') . '</news:publication_date>';
+        echo '<news:title><![CDATA[' . $node->name . ']]></news:title>';
+
+        echo empty($node->keywords)
+            ? '<news:keywords/>'
+            : '<news:keywords>' . htmlspecialchars($node->keywords) . '</news:keywords>';
+
+        echo "</news:news>";
+        echo '</url>';
     }
 
-    echo '<news:language>' . $node->language . '</news:language>';
-
-    echo '</news:publication>';
-
-    echo '<news:publication_date>' . $publicationDate->format('Y-m-d\TH:i:s\Z') . '</news:publication_date>';
-
-    // Title
-    echo '<news:title>' . htmlspecialchars($node->name) . '</news:title>';
-
-    // Keywords
-    if (isset($node->keywords)) {
-        echo '<news:keywords>' . htmlspecialchars($node->keywords) . '</news:keywords>';
-    }
-
-    echo "</news:news>";
-    echo '</url>';
-
-    return true;
+    return $display;
 };
 
-// Do we need to apply XSL?
-if ($this->params->get('add_styling', 1)) {
-    $title = '';
-    if ($this->params->get('show_page_heading', 1)) {
-        $title = '&amp;title=' . urlencode($this->pageHeading);
-    }
+echo $this->addStylesheet();
 
-    echo '<?xml-stylesheet type="text/xsl" href="' . JUri::base() . 'index.php?option=com_osmap&amp;view=xsl&amp;format=xsl&amp;tmpl=component&amp;layout=news&amp;id=' . $this->sitemap->id . $title . '"?>';
-}
+$attribs = array(
+    'xmlns'      => 'https://www.sitemaps.org/schemas/sitemap/0.9',
+    'xmlns:news' => 'https://www.google.com/schemas/sitemap-news/0.9'
+);
 
-echo '<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">';
+echo sprintf($debug . '<urlset %s>' . $debug, ArrayHelper::toString($attribs));
 
 $this->sitemap->traverse($printNodeCallback);
 
