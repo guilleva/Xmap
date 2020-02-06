@@ -40,7 +40,7 @@ $printNodeCallback = function (Item $node) use ($ignoreDuplicatedUIDs) {
         && trim($node->fullLink) != ''
         && $node->hasCompatibleLanguage();
 
-    if ($display) {
+    if ($display && !empty($node->images)) {
         echo '<url>';
         echo '<loc><![CDATA[' . $node->fullLink . ']]></loc>';
 
