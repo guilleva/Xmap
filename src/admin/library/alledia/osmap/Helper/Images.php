@@ -24,7 +24,7 @@
 
 namespace Alledia\OSMap\Helper;
 
-use Alledia\OSMap;
+use Alledia\OSMap\Factory;
 
 defined('_JEXEC') or die();
 
@@ -38,18 +38,28 @@ class Images
      * @param int    $max
      *
      * @return array
+     * @throws \Exception
      */
     public function getImagesFromText($text, $max = 9999)
     {
-        $container = OSMap\Factory::getContainer();
+        $container = Factory::getContainer();
         $images    = array();
-        $matches   = $matches1 = $matches2 = array();
 
         // Look <img> tags
-        preg_match_all('/<img[^>]*?(?:(?:[^>]*src="(?P<src>[^"]+)")|(?:[^>]*alt="(?P<alt>[^"]+)")|(?:[^>]*title="(?P<title>[^"]+)"))+[^>]*>/i', $text, $matches1, PREG_SET_ORDER);
+        preg_match_all(
+            '/<img[^>]*?(?:(?:[^>]*src="(?P<src>[^"]+)")|(?:[^>]*alt="(?P<alt>[^"]+)")|(?:[^>]*title="(?P<title>[^"]+)"))+[^>]*>/i',
+            $text,
+            $matches1,
+            PREG_SET_ORDER
+        );
 
         // Look for <a> tags with href to images
-        preg_match_all('/<a[^>]*?(?:(?:[^>]*href="(?P<src>[^"]+\.(gif|png|jpg|jpeg))")|(?:[^>]*alt="(?P<alt>[^"]+)")|(?:[^>]*title="(?P<title>[^"]+)"))+[^>]*>/i', $text, $matches2, PREG_SET_ORDER);
+        preg_match_all(
+            '/<a[^>]*?(?:(?:[^>]*href="(?P<src>[^"]+\.(gif|png|jpg|jpeg))")|(?:[^>]*alt="(?P<alt>[^"]+)")|(?:[^>]*title="(?P<title>[^"]+)"))+[^>]*>/i',
+            $text,
+            $matches2,
+            PREG_SET_ORDER
+        );
 
         $matches = array_merge($matches1, $matches2);
 
@@ -66,9 +76,14 @@ class Images
                             $src = $container->router->convertRelativeUriToFullUri($src);
                         }
 
-                        $image = new \stdClass;
-                        $image->src   = $src;
-                        $image->title = (isset($matches[$i]['title']) ? $matches[$i]['title'] : @$matches[$i]['alt']);
+                        $image = (object)array(
+                            'src'   => $src,
+                            'title' => empty($matches[$i]['title'])
+                                ? (empty($matches[$i]['alt'])
+                                    ? ''
+                                    : $matches[$i]['alt'])
+                                : $matches[$i]['title']
+                        );
 
                         $images[] = $image;
 
@@ -84,13 +99,14 @@ class Images
     /**
      * Return an array of images found in the content image params.
      *
-     * @param stdClass $item
+     * @param object $item
      *
      * @return array
+     * @throws \Exception
      */
     public function getImagesFromParams($item)
     {
-        $container   = OSMap\Factory::getContainer();
+        $container   = Factory::getContainer();
         $imagesParam = json_decode($item->images);
         $images      = array();
 
