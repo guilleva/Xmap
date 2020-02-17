@@ -25,6 +25,7 @@
 namespace Alledia\OSMap\Helper;
 
 use Alledia\OSMap\Factory;
+use Exception;
 
 defined('_JEXEC') or die();
 
@@ -38,7 +39,7 @@ class Images
      * @param int    $max
      *
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     public function getImagesFromText($text, $max = 9999)
     {
@@ -102,7 +103,7 @@ class Images
      * @param object $item
      *
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     public function getImagesFromParams($item)
     {
