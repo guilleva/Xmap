@@ -159,14 +159,6 @@ class OSMapModelSitemaps extends JModelList
                 '#__osmap_items_settings'
             );
 
-            $extension = new \Alledia\Framework\Joomla\Extension\Licensed('OSMap', 'Component');
-            if ($extension->isPro()) {
-                $relatedTables = array_merge(
-                    $relatedTables,
-                    array('#__osmap_itemscache', '#__osmap_itemscacheimg')
-                );
-            }
-
             foreach ($relatedTables as $table) {
                 $db->setQuery(
                     $db->getQuery(true)

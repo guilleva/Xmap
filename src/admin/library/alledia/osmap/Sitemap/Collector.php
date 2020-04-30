@@ -63,7 +63,7 @@ class Collector
      * The current view: xml or html. Kept for backward compatibility with
      * the legacy plugins. It is always XML since the collector is generic now
      * and needs to have the information about the item's level even for the
-     * XML view in the Pro version, to store that info in the cache.
+     * XML view in the Pro version
      *
      * @var string
      */
@@ -258,7 +258,7 @@ class Collector
     {
         $currentMenuItemId = $this->getCurrentMenuItemId();
 
-        // Add the menu information, specially used when caching
+        // Add the menu information
         if (is_array($item)) {
             $item['menuItemId']    = $this->currentMenu->id;
             $item['menuItemTitle'] = $this->currentMenu->name;
@@ -595,8 +595,7 @@ class Collector
      * This method is used for backward compatibility. The plugins will call
      * it. In the legacy XMap its behavior depends on the sitemap view type,
      * only changing the level in the HTML view. Now, it always consider the
-     * level of the item, even for XML view. That allows to store that info
-     * in a cache for both view types. XML will just ignore that.
+     * level of the item, even for XML view. XML will just ignore that.
      *
      * @param int $step
      *

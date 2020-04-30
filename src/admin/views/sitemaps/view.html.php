@@ -94,7 +94,6 @@ class OSMapViewSitemaps extends OSMap\View\Admin\Base
             $this->languages = JLanguageHelper::getLanguages();
         }
 
-        $this->displayAlerts();
         parent::display($tpl);
     }
 
@@ -123,40 +122,6 @@ class OSMapViewSitemaps extends OSMap\View\Admin\Base
         }
 
         parent::setToolBar($addDivider);
-    }
-
-    /**
-     * @return void
-     * @throws Exception
-     */
-    protected function displayAlerts()
-    {
-        $app = JFactory::getApplication();
-        if ($app->input->getInt('disablecache')) {
-            $db = JFactory::getDbo();
-            $db->setQuery(
-                $db->getQuery(true)
-                    ->update('#__extensions')
-                    ->set('enabled = 0')
-                    ->where(
-                        array(
-                            'type = ' . $db->quote('plugin'),
-                            'element = ' . $db->quote('cache'),
-                            'folder = ' . $db->quote('osmap')
-                        )
-                    )
-            )->execute();
-            $app->enqueueMessage(JText::_('COM_OSMAP_WARNING_CONFIRM_DISABLE_CACHE'));
-
-            $url = Uri::getInstance();
-            $url->delVar('disablecache');
-            $app->redirect($url);
-
-        } elseif (JLanguageMultilang::isEnabled() && JPluginHelper::getPlugin('osmap', 'cache')) {
-            $url = Uri::getInstance();
-            $url->setVar('disablecache', 1);
-            $app->enqueueMessage(JText::sprintf('COM_OSMAP_WARNING_MULITLANGUAGE_CACHE', $url), 'warning');
-        }
     }
 
     /**
