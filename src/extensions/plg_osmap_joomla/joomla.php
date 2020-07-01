@@ -41,6 +41,7 @@ JLoader::register('ContentHelperQuery', JPATH_SITE . '/components/com_content/he
 use Alledia\OSMap;
 use Alledia\OSMap\Sitemap\Collector;
 use Alledia\OSMap\Sitemap\Item;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Registry\Registry;
 use Joomla\Utilities\ArrayHelper;
 
@@ -50,6 +51,11 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
      * @var PlgOSMapJoomla
      */
     protected static $instance = null;
+
+    /**
+     * @var bool
+     */
+    protected static $prepareContent = null;
 
     /**
      * Returns the unique instance of the plugin
@@ -176,6 +182,8 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
                     if (isset($item->introtext) && isset($item->fulltext)) {
                         $text = $item->introtext . $item->fulltext;
                     }
+
+                    static::prepareContent($text, $params);
 
                     if ($paramAddImages) {
                         $maxImages = $params->get('max_images', 1000);
@@ -714,5 +722,24 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
         }
 
         $collector->changeLevel(-1);
+    }
+
+    /**
+     * @param string   $text
+     * @param Registry $params
+     */
+    protected static function prepareContent(&$text, Registry $params)
+    {
+        if (static::$prepareContent === null) {
+            $isPro   = OSMap\Factory::getExtension('osmap', 'component')->isPro();
+            $isHtml  = OSMap\Factory::getDocument()->getType() == 'html';
+            $prepare = $params->get('prepare_content', true);
+
+            static::$prepareContent = $isPro && $prepare && $isHtml;
+        }
+
+        if (static::$prepareContent) {
+            $text = HTMLHelper::_('content.prepare', $text);
+        }
     }
 }
