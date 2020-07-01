@@ -32,37 +32,39 @@
     </update>
 
     <files folder="site">
-        <filename>osmap.php</filename>
-        <filename>controller.php</filename>
         <folder>helpers</folder>
         <folder>language</folder>
         <folder>views</folder>
+
+        <filename>controller.php</filename>
+        <filename>osmap.php</filename>
     </files>
 
     <media destination="com_osmap" folder="media">
         <folder>css</folder>
-        <folder>js</folder>
-        <folder>images</folder>
         <folder>fonts</folder>
+        <folder>images</folder>
+        <folder>js</folder>
     </media>
 
     <administration>
         <menu>COM_OSMAP_TITLE</menu>
 
         <files folder="admin">
-            <filename>osmap.php</filename>
-            <filename>include.php</filename>
-            <filename>controller.php</filename>
             <filename>config.xml</filename>
-            <folder>sql</folder>
+            <filename>controller.php</filename>
+            <filename>include.php</filename>
+            <filename>osmap.php</filename>
+
             <folder>controllers</folder>
-            <folder>tables</folder>
-            <folder>views</folder>
-            <folder>models</folder>
-            <folder>library</folder>
             <folder>form</folder>
             <folder>helpers</folder>
             <folder>language</folder>
+            <folder>library</folder>
+            <folder>models</folder>
+            <folder>sql</folder>
+            <folder>tables</folder>
+            <folder>views</folder>
         </files>
     </administration>
 
