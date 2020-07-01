@@ -49,7 +49,7 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
     /**
      * @var PlgOSMapJoomla
      */
-    private static $instance = null;
+    protected static $instance = null;
 
     /**
      * Returns the unique instance of the plugin
