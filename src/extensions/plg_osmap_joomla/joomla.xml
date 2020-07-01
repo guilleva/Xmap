@@ -12,13 +12,10 @@
     <description>PLG_OSMAP_JOOMLA_PLUGIN_DESCRIPTION</description>
 
     <files>
+        <folder>language</folder>
+
         <filename plugin="joomla">joomla.php</filename>
     </files>
-
-    <languages folder="language">
-        <language tag="en-GB">en-GB/en-GB.plg_osmap_joomla.ini</language>
-        <language tag="en-GB">en-GB/en-GB.plg_osmap_joomla.sys.ini</language>
-    </languages>
 
     <config>
         <fields name="params">
