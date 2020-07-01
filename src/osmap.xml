@@ -118,6 +118,8 @@
 
             <file>administrator/components/com_osmap/helpers/html/grid.php</file>
             <file>administrator/components/com_osmap/helpers/osmap.php</file>
+            <file>administrator/components/com_osmap/library/alledia/osmap/Helper/ImagesPro.php</file>
+            <file>administrator/components/com_osmap/library/alledia/osmap/Services/Pro.php</file>
             <file>administrator/components/com_osmap/views/sitemap/tmpl/edit.php</file>
             <file>administrator/components/com_osmap/views/sitemap/tmpl/edit_legacy.php</file>
             <file>administrator/components/com_osmap/views/sitemap/tmpl/navigator.php</file>

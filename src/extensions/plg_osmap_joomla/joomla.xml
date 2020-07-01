@@ -12,6 +12,7 @@
     <description>PLG_OSMAP_JOOMLA_PLUGIN_DESCRIPTION</description>
 
     <files>
+        <folder>field</folder>
         <folder>language</folder>
 
         <filename plugin="joomla">joomla.php</filename>
@@ -117,6 +118,16 @@
                        description="PLG_OSMAP_JOOMLA_SETTING_ARTICLE_ORDER_DIR_DESC">
                     <option value="0">PLG_OSMAP_JOOMLA_OPTION_ASC</option>
                     <option value="1">PLG_OSMAP_JOOMLA_OPTION_DESC</option>
+                </field>
+
+                <field name="prepare_content"
+                       type="shack.radio"
+                       label="PLG_OSMAP_JOOMLA_SETTING_PREPARE_CONTENT_LABEL"
+                       description="PLG_OSMAP_JOOMLA_SETTING_PREPARE_CONTENT_DESC"
+                       class="btn-group btn-group-yesno"
+                       default="1">
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
                 </field>
             </fieldset>
 
