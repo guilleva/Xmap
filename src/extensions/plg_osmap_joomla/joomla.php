@@ -475,8 +475,6 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
      * Get all content items within a content category.
      * Returns an array of all contained content items.
      *
-     * @since 2.0
-     *
      * @param Collector  $collector
      * @param Item       $parent
      * @param int|string $catid
@@ -486,6 +484,8 @@ class PlgOSMapJoomla extends OSMap\Plugin\Base implements OSMap\Plugin\ContentIn
      *
      * @return void
      * @throws Exception
+     * @since 2.0
+     *
      */
     public static function includeCategoryContent($collector, $parent, $catid, $params, $itemid, $prevnode = null)
     {
