@@ -571,7 +571,7 @@ class Script extends AbstractScript
     {
         $files = array_merge(
             Folder::files(JPATH_ADMINISTRATOR . '/language', 'com_osmap|plg_osmap_joomla', true, true),
-            Folder::files(JPATH_SITE . '/language', 'com_jcalpro', true, true)
+            Folder::files(JPATH_SITE . '/language', 'com_osmap', true, true)
         );
 
         foreach ($files as $file) {
