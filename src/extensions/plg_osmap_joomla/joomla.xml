@@ -1,60 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension type="plugin" group="osmap" version="3.4" method="upgrade">
     <name>PLG_OSMAP_JOOMLA</name>
-    <creationDate>June 30 2020</creationDate>
+    <creationDate>July 01 2020</creationDate>
     <copyright>Copyright 2016-2020 Joomlashack.com. All rights reserved</copyright>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
     <author>Joomlashack</author>
     <authorEmail>help@joomlashack.com</authorEmail>
     <authorUrl>https://www.joomlashack.com</authorUrl>
-    <version>4.2.30</version>
+    <version>4.2.31b1</version>
     <variant>FREE</variant>
     <description>PLG_OSMAP_JOOMLA_PLUGIN_DESCRIPTION</description>
 
     <files>
+        <folder>field</folder>
+        <folder>language</folder>
+
         <filename plugin="joomla">joomla.php</filename>
     </files>
-
-    <languages folder="language">
-        <language tag="en-GB">en-GB/en-GB.plg_osmap_joomla.ini</language>
-        <language tag="en-GB">en-GB/en-GB.plg_osmap_joomla.sys.ini</language>
-    </languages>
 
     <config>
         <fields name="params">
             <fieldset name="basic">
-                <field
-                    name="expand_categories"
-                    type="list"
-                    default="1"
-                    label="PLG_OSMAP_JOOMLA_SETTING_EXPAND_CATEGORIES"
-                    description="PLG_OSMAP_JOOMLA_SETTING_EXPAND_CATEGORIES_DESC">
-
+                <field name="expand_categories"
+                       type="list"
+                       default="1"
+                       label="PLG_OSMAP_JOOMLA_SETTING_EXPAND_CATEGORIES"
+                       description="PLG_OSMAP_JOOMLA_SETTING_EXPAND_CATEGORIES_DESC">
                     <option value="0">PLG_OSMAP_JOOMLA_OPTION_NEVER</option>
                     <option value="1">PLG_OSMAP_JOOMLA_OPTION_ALWAYS</option>
                     <option value="2">PLG_OSMAP_JOOMLA_OPTION_XML_ONLY</option>
                     <option value="3">PLG_OSMAP_JOOMLA_OPTION_HTML_ONLY</option>
                 </field>
 
-                <field
-                    name="expand_featured"
-                    type="list"
-                    default="1"
-                    label="PLG_OSMAP_JOOMLA_SETTING_EXPAND_FEATURED"
-                    description="PLG_OSMAP_JOOMLA_SETTING_EXPAND_FEATURED_DESC">
-
+                <field name="expand_featured"
+                       type="list"
+                       default="1"
+                       label="PLG_OSMAP_JOOMLA_SETTING_EXPAND_FEATURED"
+                       description="PLG_OSMAP_JOOMLA_SETTING_EXPAND_FEATURED_DESC">
                     <option value="0">PLG_OSMAP_JOOMLA_OPTION_NEVER</option>
                     <option value="1">PLG_OSMAP_JOOMLA_OPTION_ALWAYS</option>
                     <option value="2">PLG_OSMAP_JOOMLA_OPTION_XML_ONLY</option>
                     <option value="3">PLG_OSMAP_JOOMLA_OPTION_HTML_ONLY</option>
                 </field>
 
-                <field
-                    name="max_category_level"
-                    type="list"
-                    default="all"
-                    label="PLG_OSMAP_JOOMLA_SETTING_MAX_CATEG_LEVEL_LABEL">
-
+                <field name="max_category_level"
+                       type="list"
+                       default="all"
+                       label="PLG_OSMAP_JOOMLA_SETTING_MAX_CATEG_LEVEL_LABEL">
                     <option value="100">PLG_OSMAP_JOOMLA_OPTION_ALL</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -68,59 +60,49 @@
                     <option value="10">10</option>
                 </field>
 
-                <field
-                    name="include_archived"
-                    type="list"
-                    default="2"
-                    label="PLG_OSMAP_JOOMLA_SETTING_INCLUDE_ARCHIVED"
-                    description="PLG_OSMAP_JOOMLA_SETTING_INCLUDE_ARCHIVED_DESC">
-
+                <field name="include_archived"
+                       type="list"
+                       default="2"
+                       label="PLG_OSMAP_JOOMLA_SETTING_INCLUDE_ARCHIVED"
+                       description="PLG_OSMAP_JOOMLA_SETTING_INCLUDE_ARCHIVED_DESC">
                     <option value="0">PLG_OSMAP_JOOMLA_OPTION_NEVER</option>
                     <option value="1">PLG_OSMAP_JOOMLA_OPTION_ALWAYS</option>
                     <option value="2">PLG_OSMAP_JOOMLA_OPTION_XML_ONLY</option>
                     <option value="3">PLG_OSMAP_JOOMLA_OPTION_HTML_ONLY</option>
                 </field>
 
-                <field
-                    name="show_unauth"
-                    type="list"
-                    default="0"
-                    label="PLG_OSMAP_JOOMLA_SETTING_SHOW_UNAUTH_LINKS"
-                    description="PLG_OSMAP_JOOMLA_SETTING_SHOW_UNAUTH_LINKS_DESC">
-
+                <field name="show_unauth"
+                       type="list"
+                       default="0"
+                       label="PLG_OSMAP_JOOMLA_SETTING_SHOW_UNAUTH_LINKS"
+                       description="PLG_OSMAP_JOOMLA_SETTING_SHOW_UNAUTH_LINKS_DESC">
                     <option value="0">PLG_OSMAP_JOOMLA_OPTION_NEVER</option>
                     <option value="1">PLG_OSMAP_JOOMLA_OPTION_ALWAYS</option>
                     <option value="2">PLG_OSMAP_JOOMLA_OPTION_XML_ONLY</option>
                     <option value="3">PLG_OSMAP_JOOMLA_OPTION_HTML_ONLY</option>
                 </field>
 
-                <field
-                    name="add_pagebreaks"
-                    type="list"
-                    default="1"
-                    label="PLG_OSMAP_JOOMLA_SETTING_ADD_PAGEBREAKS_LABEL"
-                    description="PLG_OSMAP_JOOMLA_SETTING_ADD_PAGEBREAKS_DESC">
-
+                <field name="add_pagebreaks"
+                       type="list"
+                       default="1"
+                       label="PLG_OSMAP_JOOMLA_SETTING_ADD_PAGEBREAKS_LABEL"
+                       description="PLG_OSMAP_JOOMLA_SETTING_ADD_PAGEBREAKS_DESC">
                     <option value="0">PLG_OSMAP_JOOMLA_OPTION_NEVER</option>
                     <option value="1">PLG_OSMAP_JOOMLA_OPTION_ALWAYS</option>
                     <option value="2">PLG_OSMAP_JOOMLA_OPTION_XML_ONLY</option>
                     <option value="3">PLG_OSMAP_JOOMLA_OPTION_HTML_ONLY</option>
                 </field>
 
-                <field
-                    name="max_art"
-                    type="text"
-                    default="0"
-                    label="PLG_OSMAP_JOOMLA_SETTING_MAX_ART_CAT"
-                    description="PLG_OSMAP_JOOMLA_SETTING_MAX_ART_CAT_DESC" />
-
-                <field
-                    name="article_order"
-                    type="list"
-                    default="0"
-                    label="PLG_OSMAP_JOOMLA_SETTING_ARTICLE_ORDER_LABEL"
-                    description="PLG_OSMAP_JOOMLA_SETTING_ARTICLE_ORDER_DESC">
-
+                <field name="max_art"
+                       type="text"
+                       default="0"
+                       label="PLG_OSMAP_JOOMLA_SETTING_MAX_ART_CAT"
+                       description="PLG_OSMAP_JOOMLA_SETTING_MAX_ART_CAT_DESC"/>
+                <field name="article_order"
+                       type="list"
+                       default="0"
+                       label="PLG_OSMAP_JOOMLA_SETTING_ARTICLE_ORDER_LABEL"
+                       description="PLG_OSMAP_JOOMLA_SETTING_ARTICLE_ORDER_DESC">
                     <option value="0">PLG_OSMAP_JOOMLA_OPTION_CREATED</option>
                     <option value="1">PLG_OSMAP_JOOMLA_OPTION_MODIFIED</option>
                     <option value="2">PLG_OSMAP_JOOMLA_OPTION_PUBLISH</option>
@@ -129,37 +111,41 @@
                     <option value="5">PLG_OSMAP_JOOMLA_OPTION_ORDERING</option>
                 </field>
 
-                <field
-                    name="article_orderdir"
-                    type="list"
-                    default="0"
-                    label="PLG_OSMAP_JOOMLA_SETTING_ARTICLE_ORDER_DIR_LABEL"
-                    description="PLG_OSMAP_JOOMLA_SETTING_ARTICLE_ORDER_DIR_DESC">
-
+                <field name="article_orderdir"
+                       type="list"
+                       default="0"
+                       label="PLG_OSMAP_JOOMLA_SETTING_ARTICLE_ORDER_DIR_LABEL"
+                       description="PLG_OSMAP_JOOMLA_SETTING_ARTICLE_ORDER_DIR_DESC">
                     <option value="0">PLG_OSMAP_JOOMLA_OPTION_ASC</option>
                     <option value="1">PLG_OSMAP_JOOMLA_OPTION_DESC</option>
+                </field>
+
+                <field name="prepare_content"
+                       type="shack.radio"
+                       label="PLG_OSMAP_JOOMLA_SETTING_PREPARE_CONTENT_LABEL"
+                       description="PLG_OSMAP_JOOMLA_SETTING_PREPARE_CONTENT_DESC"
+                       class="btn-group btn-group-yesno"
+                       default="1">
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
                 </field>
             </fieldset>
 
             <fieldset name="xml">
-                <field
-                    name="add_images"
-                    type="list"
-                    default="1"
-                    label="PLG_OSMAP_JOOMLA_SETTING_ADD_IMAGES_LABEL"
-                    description="PLG_OSMAP_JOOMLA_SETTING_ADD_IMAGES_DESC">
-
+                <field name="add_images"
+                       type="list"
+                       default="1"
+                       label="PLG_OSMAP_JOOMLA_SETTING_ADD_IMAGES_LABEL"
+                       description="PLG_OSMAP_JOOMLA_SETTING_ADD_IMAGES_DESC">
                     <option value="1">JYES</option>
                     <option value="0">JNO</option>
                 </field>
 
-                <field
-                    name="cat_priority"
-                    type="list"
-                    default="-1"
-                    label="PLG_OSMAP_JOOMLA_SETTING_CAT_PRIORITY"
-                    description="PLG_OSMAP_JOOMLA_SETTING_CAT_PRIORITY_DESC">
-
+                <field name="cat_priority"
+                       type="list"
+                       default="-1"
+                       label="PLG_OSMAP_JOOMLA_SETTING_CAT_PRIORITY"
+                       description="PLG_OSMAP_JOOMLA_SETTING_CAT_PRIORITY_DESC">
                     <option value="-1">PLG_OSMAP_JOOMLA_OPTION_USE_PARENT_MENU</option>
                     <option value="0.0">0.0</option>
                     <option value="0.1">0.1</option>
@@ -174,13 +160,11 @@
                     <option value="1">1.0</option>
                 </field>
 
-                <field
-                    name="cat_changefreq"
-                    type="list"
-                    default="-1"
-                    label="PLG_OSMAP_JOOMLA_SETTING_CAT_CHANCE_FREQ"
-                    description="PLG_OSMAP_JOOMLA_SETTING_CAT_CHANCE_FREQ_DESC">
-
+                <field name="cat_changefreq"
+                       type="list"
+                       default="-1"
+                       label="PLG_OSMAP_JOOMLA_SETTING_CAT_CHANCE_FREQ"
+                       description="PLG_OSMAP_JOOMLA_SETTING_CAT_CHANCE_FREQ_DESC">
                     <option value="-1">PLG_OSMAP_JOOMLA_OPTION_USE_PARENT_MENU</option>
                     <option value="always">PLG_OSMAP_JOOMLA_OPTION_ALWAYS</option>
                     <option value="hourly">PLG_OSMAP_JOOMLA_OPTION_HOURLY</option>
@@ -191,13 +175,11 @@
                     <option value="never">PLG_OSMAP_JOOMLA_OPTION_NEVER</option>
                 </field>
 
-                <field
-                    name="art_priority"
-                    type="list"
-                    default="-1"
-                    label="PLG_OSMAP_JOOMLA_SETTING_ART_PRIORITY"
-                    description="PLG_OSMAP_JOOMLA_SETTING_ART_PRIORITY_DESC">
-
+                <field name="art_priority"
+                       type="list"
+                       default="-1"
+                       label="PLG_OSMAP_JOOMLA_SETTING_ART_PRIORITY"
+                       description="PLG_OSMAP_JOOMLA_SETTING_ART_PRIORITY_DESC">
                     <option value="-1">PLG_OSMAP_JOOMLA_OPTION_USE_PARENT_MENU</option>
                     <option value="0.0">0.0</option>
                     <option value="0.1">0.1</option>
@@ -212,13 +194,11 @@
                     <option value="1">1.0</option>
                 </field>
 
-                <field
-                    name="art_changefreq"
-                    type="list"
-                    default="-1"
-                    label="PLG_OSMAP_JOOMLA_SETTING_ART_CHANCE_FREQ"
-                    description="PLG_OSMAP_JOOMLA_SETTING_ART_CHANCE_FREQ_DESC">
-
+                <field name="art_changefreq"
+                       type="list"
+                       default="-1"
+                       label="PLG_OSMAP_JOOMLA_SETTING_ART_CHANCE_FREQ"
+                       description="PLG_OSMAP_JOOMLA_SETTING_ART_CHANCE_FREQ_DESC">
                     <option value="-1">PLG_OSMAP_JOOMLA_OPTION_USE_PARENT_MENU</option>
                     <option value="always">PLG_OSMAP_JOOMLA_OPTION_ALWAYS</option>
                     <option value="hourly">PLG_OSMAP_JOOMLA_OPTION_HOURLY</option>
@@ -231,19 +211,17 @@
             </fieldset>
 
             <fieldset name="news">
-                <field
-                    name="keywords"
-                    type="list"
-                    default="metakey"
-                    label="PLG_OSMAP_JOOMLA_SETTING_NEWS_KEYWORDS_LABEL"
-                    description="PLG_OSMAP_JOOMLA_SETTING_NEWS_KEYWORDS_DESC">
-
+                <field name="keywords"
+                       type="list"
+                       default="metakey"
+                       label="PLG_OSMAP_JOOMLA_SETTING_NEWS_KEYWORDS_LABEL"
+                       description="PLG_OSMAP_JOOMLA_SETTING_NEWS_KEYWORDS_DESC">
                     <option value="metakey">PLG_OSMAP_JOOMLA_SETTING_NEWS_KEYWORDS_METAKEYS</option>
                     <option value="category">PLG_OSMAP_JOOMLA_SETTING_NEWS_KEYWORDS_CATTITLE</option>
                     <option value="both">PLG_OSMAP_JOOMLA_SETTING_NEWS_KEYWORDS_METAKEYS_CATTITLE</option>
                     <option value="none">PLG_OSMAP_JOOMLA_SETTING_NEWS_KEYWORDS_NONE</option>
                 </field>
-             </fieldset>
+            </fieldset>
         </fields>
     </config>
 </extension>

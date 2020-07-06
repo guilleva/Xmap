@@ -27,6 +27,7 @@ namespace Alledia\OSMap\Installer;
 use Alledia\Installer\AbstractScript;
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
@@ -101,6 +102,7 @@ class Script extends AbstractScript
             case 'update':
                 $this->migrateLegacySitemaps();
                 $this->fixXMLMenus();
+                $this->clearLanguageFiles();
                 break;
 
 
@@ -533,6 +535,7 @@ class Script extends AbstractScript
 
     /**
      * Adds new format=xml to existing xml menus
+     *
      * @since v4.2.25
      */
     protected function fixXMLMenus()
@@ -556,6 +559,23 @@ class Script extends AbstractScript
         foreach ($menus as $menu) {
             $menu->link .= '&format=xml';
             $db->updateObject('#__menu', $menu, array('id'));
+        }
+    }
+
+    /**
+     * Clear localized language files from core folders
+     *
+     * @return void
+     */
+    protected function clearLanguageFiles()
+    {
+        $files = array_merge(
+            Folder::files(JPATH_ADMINISTRATOR . '/language', 'com_osmap|plg_osmap_joomla', true, true),
+            Folder::files(JPATH_SITE . '/language', 'com_jcalpro', true, true)
+        );
+
+        foreach ($files as $file) {
+            @unlink($file);
         }
     }
 }

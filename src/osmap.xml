@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="3.9" method="upgrade">
     <name>COM_OSMAP</name>
-    <creationDate>June 30 2020</creationDate>
+    <creationDate>July 01 2020</creationDate>
     <copyright>Copyright 2016-2020 Joomlashack.com. All rights reserved</copyright>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
     <author>Joomlashack</author>
     <authorEmail>help@joomlashack.com</authorEmail>
     <authorUrl>https://www.joomlashack.com</authorUrl>
-    <version>4.2.30</version>
+    <version>4.2.31b1</version>
     <variant>FREE</variant>
     <description>COM_OSMAP_DESCRIPTION</description>
 
@@ -31,46 +31,40 @@
         </schemas>
     </update>
 
-    <languages folder="site/language">
-         <language tag="en-GB">en-GB/en-GB.com_osmap.ini</language>
-    </languages>
-
     <files folder="site">
-        <filename>osmap.php</filename>
-        <filename>controller.php</filename>
         <folder>helpers</folder>
+        <folder>language</folder>
         <folder>views</folder>
+
+        <filename>controller.php</filename>
+        <filename>osmap.php</filename>
     </files>
 
     <media destination="com_osmap" folder="media">
         <folder>css</folder>
-        <folder>js</folder>
-        <folder>images</folder>
         <folder>fonts</folder>
+        <folder>images</folder>
+        <folder>js</folder>
     </media>
 
     <administration>
         <menu>COM_OSMAP_TITLE</menu>
 
-        <languages folder="admin/language">
-             <language tag="en-GB">en-GB/en-GB.com_osmap.ini</language>
-             <language tag="en-GB">en-GB/en-GB.com_osmap.sys.ini</language>
-             <language tag="en-GB">en-GB/en-GB.lib_allediainstaller.sys.ini</language>
-        </languages>
-
         <files folder="admin">
-            <filename>osmap.php</filename>
-            <filename>include.php</filename>
-            <filename>controller.php</filename>
             <filename>config.xml</filename>
-            <folder>sql</folder>
+            <filename>controller.php</filename>
+            <filename>include.php</filename>
+            <filename>osmap.php</filename>
+
             <folder>controllers</folder>
-            <folder>tables</folder>
-            <folder>views</folder>
-            <folder>models</folder>
-            <folder>library</folder>
             <folder>form</folder>
             <folder>helpers</folder>
+            <folder>language</folder>
+            <folder>library</folder>
+            <folder>models</folder>
+            <folder>sql</folder>
+            <folder>tables</folder>
+            <folder>views</folder>
         </files>
     </administration>
 
@@ -124,6 +118,8 @@
 
             <file>administrator/components/com_osmap/helpers/html/grid.php</file>
             <file>administrator/components/com_osmap/helpers/osmap.php</file>
+            <file>administrator/components/com_osmap/library/alledia/osmap/Helper/ImagesPro.php</file>
+            <file>administrator/components/com_osmap/library/alledia/osmap/Services/Pro.php</file>
             <file>administrator/components/com_osmap/views/sitemap/tmpl/edit.php</file>
             <file>administrator/components/com_osmap/views/sitemap/tmpl/edit_legacy.php</file>
             <file>administrator/components/com_osmap/views/sitemap/tmpl/navigator.php</file>
