@@ -29,6 +29,7 @@ use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
 
@@ -146,7 +147,7 @@ class OSMapViewXml extends HtmlView
 
             return sprintf(
                 '<?xml-stylesheet type="text/xsl" href="%s"?>',
-                Uri::base() . 'index.php?' . htmlentities(http_build_query($query))
+                Route::_('index.php?' . http_build_query($query))
             );
         }
 

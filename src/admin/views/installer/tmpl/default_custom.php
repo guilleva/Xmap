@@ -26,6 +26,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 if ($this->isXmapDataFound) :
+    $updateLink = Route::_('index.php?option=com_osmap&task=sitemaps.migrateXMapData&format=json');
     ?>
     <div class="alledia-xmap-import">
         <div id="alledia-installer-xmap-import-message">
@@ -78,8 +79,8 @@ if ($this->isXmapDataFound) :
                     if (goAhead) {
                         button.text('<?php echo JText::_("COM_OSMAP_INSTALLER_IMPORTING"); ?>').off('click', this).css('cursor', 'default');
 
-                        $.post('<?php echo JURI::root(); ?>/administrator/index.php?option=com_osmap&task=sitemaps.migrateXMapData&format=json',
                             {},
+                        $.post('<?php echo $updateLink; ?>',
                             function(data) {
                                 message.hide();
 

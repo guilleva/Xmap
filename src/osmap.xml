@@ -112,6 +112,7 @@
                        group="xmap"
                        element="com_content"/>
 
+            <folder>administrator/componentes/com_osmap/library/alledia/osmap/Joomla</folder>
             <folder>administrator/components/com_osmap/library/Free</folder>
             <folder>administrator/components/com_osmap/models/fields</folder>
             <folder>administrator/components/com_osmap/models/forms</folder>

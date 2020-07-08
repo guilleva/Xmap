@@ -22,10 +22,12 @@
  * along with OSMap.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die();
 
+$icoMoon = HTMLHelper::_('stylesheet', 'jui/icomoon.css', ['relative' => true, 'pathOnly' => true]);
 ?>
 <xsl:stylesheet
     version="1.0"
@@ -38,7 +40,7 @@ defined('_JEXEC') or die();
         <html lang="<?php echo $this->language; ?>">
         <head>
             <title><?php echo Text::_('COM_OSMAP_XML_SITEMAP_FILE'); ?></title>
-            <link rel="stylesheet" type="text/css" href="<?php echo JUri::base(); ?>media/jui/css/icomoon.css"/>
+            <link rel="stylesheet" type="text/css" href="<?php echo $icoMoon; ?>"/>
             <style type="text/css">
                 <![CDATA[
                 body {

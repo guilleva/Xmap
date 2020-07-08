@@ -24,6 +24,7 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Uri\Uri;
 
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
@@ -33,7 +34,7 @@ JHtml::_('formbehavior.chosen', 'select');
 JHtml::_('stylesheet', 'com_osmap/admin.min.css', array('relative' => true));
 
 $function  = JFactory::getApplication()->input->getString('function', 'jSelectSitemap');
-$baseUrl   = JUri::root();
+$baseUrl   = Uri::root();
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDir   = $this->escape($this->state->get('list.direction'));
 ?>
