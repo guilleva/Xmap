@@ -22,31 +22,35 @@
  * along with OSMap.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// no direct access
-defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 
-JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+defined('_JEXEC') or die();
 
-JHtml::_('behavior.tooltip');
-JHtml::_('formbehavior.chosen', 'select');
+HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
-JHtml::_('stylesheet', 'com_osmap/admin.min.css', array('relative' => true));
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('formbehavior.chosen', 'select');
 
-$function  = JFactory::getApplication()->input->getString('function', 'jSelectSitemap');
+HTMLHelper::_('stylesheet', 'com_osmap/admin.min.css', array('relative' => true));
+
+$function  = Factory::getApplication()->input->getString('function', 'jSelectSitemap');
 $baseUrl   = Uri::root();
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDir   = $this->escape($this->state->get('list.direction'));
 ?>
 <form
-    action="<?php echo JRoute::_('index.php?option=com_osmap&view=sitemaps');?>"
+    action="<?php echo Route::_('index.php?option=com_osmap&view=sitemaps');?>"
     method="post"
     name="adminForm"
     id="adminForm">
 
 <?php if (empty($this->items)) : ?>
     <div class="alert alert-no-items">
-        <?php echo JText::_('COM_OSMAP_NO_MATCHING_RESULTS'); ?>
+        <?php echo Text::_('COM_OSMAP_NO_MATCHING_RESULTS'); ?>
     </div>
 <?php else : ?>
     <div id="j-main-container">
@@ -55,7 +59,7 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                 <tr>
                     <th class="title">
                         <?php
-                        echo JHtml::_(
+                        echo HTMLHelper::_(
                             'grid.sort',
                             'COM_OSMAP_HEADING_NAME',
                             'sitemap.name',
@@ -66,7 +70,7 @@ $listDir   = $this->escape($this->state->get('list.direction'));
 
                     <th width="1%" style="min-width:55px" class="nowrap center">
                         <?php
-                        echo JHtml::_(
+                        echo HTMLHelper::_(
                             'grid.sort',
                             'COM_OSMAP_HEADING_STATUS',
                             'sitemap.published',
@@ -77,12 +81,12 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                     </th>
 
                     <th width="8%" class="nowrap center">
-                        <?php echo JText::_('COM_OSMAP_HEADING_NUM_LINKS'); ?>
+                        <?php echo Text::_('COM_OSMAP_HEADING_NUM_LINKS'); ?>
                     </th>
 
                     <th width="1%" class="nowrap">
                         <?php
-                        echo JHtml::_(
+                        echo HTMLHelper::_(
                             'grid.sort',
                             'COM_OSMAP_HEADING_ID',
                             'sitemap.id',
@@ -94,12 +98,19 @@ $listDir   = $this->escape($this->state->get('list.direction'));
             </thead>
 
             <tbody>
-            <?php foreach ($this->items as $i => $item) : ?>
+            <?php foreach ($this->items as $i => $item) :
+                $onClick = sprintf(
+                    "if (window.parent) window.parent.%s('%s', '%s');",
+                    $function,
+                    $item->id,
+                    $this->escape($item->name)
+                );
+                ?>
                 <tr class="<?php echo 'row' . ($i % 2); ?>">
                     <td>
                          <a
                             style="cursor: pointer;"
-                            onclick="if (window.parent) window.parent.<?php echo $function;?>('<?php echo $item->id; ?>', '<?php echo $this->escape($item->name); ?>');">
+                            onclick="<?php echo $onClick; ?>">
 
                             <?php echo $this->escape($item->name); ?>
                         </a>
@@ -112,7 +123,6 @@ $listDir   = $this->escape($this->state->get('list.direction'));
                             <?php else : ?>
                                 <i class="icon-remove"></i>
                             <?php endif; ?>
-                            &nbsp;
 
                             <?php if ($item->is_default) : ?>
                                 <i class="icon-star"></i>
@@ -138,5 +148,5 @@ $listDir   = $this->escape($this->state->get('list.direction'));
     <input type="hidden" name="layout" value="modal" />
     <input type="hidden" name="task" value="" />
     <input type="hidden" name="boxchecked" value="0" />
-    <?php echo JHtml::_('form.token'); ?>
+    <?php echo HTMLHelper::_('form.token'); ?>
 </form>

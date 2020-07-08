@@ -25,6 +25,8 @@
 namespace Alledia\OSMap;
 
 use Alledia\Framework;
+use Joomla\CMS\Application\CMSApplication;
+use Joomla\CMS\Uri\Uri;
 
 defined('_JEXEC') or die();
 
@@ -51,7 +53,7 @@ class Router
     {
         if (!$this->joomlaRouter) {
             // Get the router.
-            $app = \JApplicationCms::getInstance('site');
+            $app = CMSApplication::getInstance('site');
 
             $this->joomlaRouter = $app::getRouter('site');
 
@@ -83,9 +85,9 @@ class Router
     /**
      * Checks if the supplied URL is internal
      *
-     * @param   string $url The URL to check.
+     * @param string $url
      *
-     * @return  boolean  True if Internal.
+     * @return boolean
      *
      * @return bool
      * @throws \Exception
