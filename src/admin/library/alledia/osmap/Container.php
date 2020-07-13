@@ -25,7 +25,7 @@
 namespace Alledia\OSMap;
 
 use Alledia\Framework\Profiler;
-use Alledia\OSMap\Joomla\Uri;
+use Joomla\CMS\Uri\Uri;
 
 defined('_JEXEC') or die();
 

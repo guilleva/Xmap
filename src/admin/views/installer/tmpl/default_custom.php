@@ -23,34 +23,38 @@
  */
 
 // No direct access
-defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+
+defined('_JEXEC') or die();
 
 if ($this->isXmapDataFound) :
+    $updateLink = Route::_('index.php?option=com_osmap&task=sitemaps.migrateXMapData&format=json');
     ?>
     <div class="alledia-xmap-import">
         <div id="alledia-installer-xmap-import-message">
             <div id="alledia-installer-xmap-import-wipe-warning" class="alert alert-warning">
-                <h4 class="alert-heading"><?php echo JText::_('COM_OSMAP_INSTALLER_IMPORT_XMAP_TITLE'); ?></h4>
-                <p><?php echo JText::_('COM_OSMAP_INSTALLER_IMPORT_XMAP_DESCRIPTION'); ?></p>
+                <h4 class="alert-heading"><?php echo Text::_('COM_OSMAP_INSTALLER_IMPORT_XMAP_TITLE'); ?></h4>
+                <p><?php echo Text::_('COM_OSMAP_INSTALLER_IMPORT_XMAP_DESCRIPTION'); ?></p>
                 <p>
-                    <strong><?php echo JText::_('COM_OSMAP_INSTALLER_IMPORT_XMAP_WIPE_WARNING'); ?></strong>
+                    <strong><?php echo Text::_('COM_OSMAP_INSTALLER_IMPORT_XMAP_WIPE_WARNING'); ?></strong>
                 </p>
 
                 <a href="javascript:void(0);" id="alledia-installer-xmap-import-button" class="alledia-button">
-                    <?php echo JText::_('COM_OSMAP_INSTALLER_IMPORT_XMAP_BUTTON'); ?>
+                    <?php echo Text::_('COM_OSMAP_INSTALLER_IMPORT_XMAP_BUTTON'); ?>
                 </a>
             </div>
         </div>
 
         <div id="alledia-installer-xmap-import-success" class="alert alert-success" style="display: none">
             <p>
-                <?php echo JText::_('COM_OSMAP_INSTALLER_IMPORT_XMAP_SUCCESS'); ?>
+                <?php echo Text::_('COM_OSMAP_INSTALLER_IMPORT_XMAP_SUCCESS'); ?>
             </p>
         </div>
 
         <div id="alledia-installer-xmap-import-error" class="alert alert-error" style="display: none">
             <p>
-                <?php echo JText::_('COM_OSMAP_INSTALLER_IMPORT_XMAP_ERROR'); ?>
+                <?php echo Text::_('COM_OSMAP_INSTALLER_IMPORT_XMAP_ERROR'); ?>
             </p>
         </div>
     </div>
@@ -73,13 +77,15 @@ if ($this->isXmapDataFound) :
                 };
 
                 button.on('click', function() {
-                    var goAhead = confirm('<?php echo JText::_("COM_OSMAP_INSTALLER_WIPE_CONFIRMATION"); ?>');
+                    var goAhead = confirm('<?php echo Text::_("COM_OSMAP_INSTALLER_WIPE_CONFIRMATION"); ?>');
 
                     if (goAhead) {
-                        button.text('<?php echo JText::_("COM_OSMAP_INSTALLER_IMPORTING"); ?>').off('click', this).css('cursor', 'default');
+                        button.text('<?php echo Text::_("COM_OSMAP_INSTALLER_IMPORTING"); ?>')
+                            .off('click', this)
+                            .css('cursor', 'default');
 
-                        $.post('<?php echo JURI::root(); ?>/administrator/index.php?option=com_osmap&task=sitemaps.migrateXMapData&format=json',
                             {},
+                        $.post('<?php echo $updateLink; ?>',
                             function(data) {
                                 message.hide();
 

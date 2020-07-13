@@ -23,6 +23,7 @@
  */
 
 use Alledia\OSMap;
+use Joomla\CMS\Uri\Uri;
 
 defined('_JEXEC') or die();
 
@@ -35,7 +36,7 @@ JHtml::_('stylesheet', 'com_osmap/admin.min.css', array('relative' => true));
 
 $container = OSMap\Factory::getContainer();
 
-$baseUrl   = $container->router->sanitizeURL(JUri::root());
+$baseUrl   = $container->router->sanitizeURL(Uri::root());
 $listOrder = $this->state->get('list.ordering');
 $listDir   = $this->state->get('list.direction');
 ?>

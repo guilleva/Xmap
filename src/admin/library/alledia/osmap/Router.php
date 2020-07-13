@@ -25,6 +25,8 @@
 namespace Alledia\OSMap;
 
 use Alledia\Framework;
+use Joomla\CMS\Application\CMSApplication;
+use Joomla\CMS\Uri\Uri;
 
 defined('_JEXEC') or die();
 
@@ -51,7 +53,7 @@ class Router
     {
         if (!$this->joomlaRouter) {
             // Get the router.
-            $app = \JApplicationCms::getInstance('site');
+            $app = CMSApplication::getInstance('site');
 
             $this->joomlaRouter = $app::getRouter('site');
 
@@ -74,7 +76,7 @@ class Router
         $url = preg_replace('/\s/u', '%20', $url);
 
         // Remove application subpaths (typically /administrator)
-        $adminPath = str_replace(\JUri::root(), '', \JUri::base());
+        $adminPath = str_replace(Uri::root(), '', Uri::base());
         $url       = str_replace($adminPath, '', $url);
 
         return $url;
@@ -83,30 +85,25 @@ class Router
     /**
      * Checks if the supplied URL is internal
      *
-     * @param   string $url The URL to check.
+     * @param string $url
      *
-     * @return  boolean  True if Internal.
+     * @return boolean
      *
      * @return bool
      * @throws \Exception
      */
     public function isInternalURL($url)
     {
-        $container = Factory::getContainer();
-
-        $uri      = $container->uri->getInstance($url);
+        $uri      = Uri::getInstance($url);
         $base     = $uri->toString(array('scheme', 'host', 'port', 'path'));
         $host     = $uri->toString(array('scheme', 'host', 'port'));
         $path     = $uri->toString(array('path'));
-        $baseHost = $container->uri->getInstance($uri->root())->toString(array('host'));
+        $baseHost = Uri::getInstance($uri->root())->toString(array('host'));
 
-        // Check if we have a relative path as url, considering it will always be internal
         if ($path === $url) {
             return true;
-        }
 
-        // @see JURITest
-        if (empty($host) && strpos($path, 'index.php') === 0
+        } elseif (empty($host) && strpos($path, 'index.php') === 0
             || !empty($host) && preg_match('#' . preg_quote($uri->root(), '#') . '#', $base)
             || !empty($host) && $host === $baseHost && strpos($path, 'index.php') !== false
             || !empty($host) && $base === $host

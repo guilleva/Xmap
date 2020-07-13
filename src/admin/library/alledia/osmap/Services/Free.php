@@ -24,6 +24,7 @@
 
 namespace Alledia\OSMap\Services;
 
+use Joomla\CMS\Uri\Uri;
 use Pimple\Container as Pimple;
 use Pimple\ServiceProviderInterface;
 use Alledia\OSMap;
@@ -91,7 +92,7 @@ class Free implements ServiceProviderInterface
         };
 
         $pimple['uri'] = function (OSMap\Container $c) {
-            return new OSMap\Joomla\Uri;
+            return new Uri();
         };
 
 
