@@ -18,9 +18,9 @@ header('Content-type: text/xml; charset=utf-8');
 
 echo '<?xml version="1.0" encoding="UTF-8"?>',"\n";
 if (($this->item->params->get('beautify_xml', 1) == 1) && !$this->displayer->isNews) {
-    $params  = '&amp;filter_showtitle='.JRequest::getBool('filter_showtitle',0);
-    $params .= '&amp;filter_showexcluded='.JRequest::getBool('filter_showexcluded',0);
-    $params .= (JRequest::getCmd('lang')?'&amp;lang='.JRequest::getCmd('lang'):'');
+    $params  = '&amp;filter_showtitle='.XmapHelper::getBool('filter_showtitle',0);
+    $params .= '&amp;filter_showexcluded='.XmapHelper::getBool('filter_showexcluded',0);
+    $params .= (XmapHelper::getCmd('lang')?'&amp;lang='.XmapHelper::getCmd('lang'):'');
     echo '<?xml-stylesheet type="text/xsl" href="'. $live_site.'/index.php?option=com_xmap&amp;view=xml&amp;layout=xsl&amp;tmpl=component&amp;id='.$this->item->id.($this->isImages?'&amp;images=1':'').$params.'"?>'."\n";
 }
 ?>

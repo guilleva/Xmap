@@ -206,9 +206,15 @@ class XmapModelSitemap extends JModelAdmin
                            ->where($this->_db->quoteName('id').' <> '.$table->id);
 
             $this->_db->setQuery($query);
-            if (!$this->_db->query()) {
-                $this->setError($table->_db->getErrorMsg());
-                return false;
+            if (version_compare(JVERSION, '4.0', 'ge')) {
+               if (!$this->_db->execute()) {
+                  $this->setError($table->_db->getErrorMsg());
+                 }
+            } else {
+                if (!$this->_db->query()) {
+                    $this->setError($table->_db->getErrorMsg());
+                    return false;
+                }
             }
         }
 
@@ -245,10 +251,16 @@ class XmapModelSitemap extends JModelAdmin
                         ->set($db->quoteName('is_default').' = 0')
                         ->where($db->quoteName('id').' <> '.$table->id);
             $this->_db->setQuery($query);
-            if (!$this->_db->query()) {
-                $this->setError($table->_db->getErrorMsg());
-                return false;
-            }
+            if (version_compare(JVERSION, '4.0', 'ge')) {
+              if (!$this->_db->execute()) {
+                  $this->setError($table->_db->getErrorMsg());
+              }
+            } else {
+                if (!$this->_db->query()) {
+                    $this->setError($table->_db->getErrorMsg());
+                    return false;
+                }
+           }
             $table->is_default = 1;
             $table->store();
 

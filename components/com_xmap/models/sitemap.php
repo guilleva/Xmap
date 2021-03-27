@@ -262,11 +262,16 @@ class XmapModelSitemap extends JModelItem
         }
         $db->setQuery($query);
         //echo $db->getQuery();exit;
-        if ($db->query()) {
-            return true;
-        } else {
-            return false;
-        }
+       if (version_compare(JVERSION, '4.0', 'ge')){	
+            if ($db->execute()) {
+                return true;
+            }
+       } else {
+           if ($db->query()) {
+               return true;
+           } 
+       }
+       return false;
     }
 
     function toggleItem($uid, $itemid)
@@ -299,7 +304,11 @@ class XmapModelSitemap extends JModelItem
         $db = JFactory::getDBO();
         $query = "UPDATE #__xmap_sitemap set excluded_items='" . $db->escape($str) . "' where id=" . $sitemap->id;
         $db->setQuery($query);
-        $db->query();
+        if (version_compare(JVERSION, '4.0', 'ge')){
+            $db->execute();
+        } else {
+            $db->query();
+        }
         return $state;
     }
 

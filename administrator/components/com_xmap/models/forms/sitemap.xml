@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- $Id$ -->
-<form>
-    <fields addpath="administrator/components/com_xmap/elements">
+<form  name="adminForm" class="form-validate">
+    <fieldset addpath="administrator/components/com_xmap/elements"
+              name="general" label="XMAP_FIELDSET_GENERAL">
         <field
             id="id"
             name="id"
@@ -94,8 +95,8 @@
 
         <field
             id="count_html"
-            name="hits"
-            type="text"
+            name="count_html"
+            type="hidden"
             label="XMAP_HITSHTML_LABEL"
             description="XMAP_HITS_DESC"
             class="readonly"
@@ -106,8 +107,8 @@
 
         <field
             id="count_xml"
-            name="hits"
-            type="text"
+            name="count_xml"
+            type="hidden"
             label="XMAP_HITSXML_LABEL"
             description="XMAP_HITS_DESC"
             class="readonly"
@@ -118,8 +119,8 @@
 
         <field
             id="visits_html"
-            name="visits_html"
-            type="text"
+            name="lastvisit_html"
+            type="hidden"
             label="XMAP_VISITSHTML_LABEL"
             description="XMAP_HITS_DESC"
             class="readonly"
@@ -130,8 +131,8 @@
 
         <field
             id="visits_xml"
-            name="visits_xml"
-            type="text"
+            name="lastvisit_xml"
+            type="hidden"
             label="XMAP_VISITSXML_LABEL"
             description="XMAP_HITS_DESC"
             class="readonly"
@@ -139,12 +140,13 @@
             size="6"
             readonly="true"
             filter="unset"/>
-
-        <field
+    </fieldset>
+    <fieldset name="menus"  label="XMAP_FIELDSET_MENUS">
+        <field 
             id="selections"
             name="selections"
             type="xmapmenus"
-            label="XMAP_MENUASSIGMENT_LABEL"
+            label=""
             description="XMAP_MENUASSIGMENT_DESC"
             class="inputbox"
             labelclass="control-label"
@@ -169,15 +171,15 @@
             labelclass="control-label"
             multiple="multiple"
             size="5"/>
-    </fields>
-
-    <fields name="attribs">
-        <fieldset name="general" label="XMAP_FIELDSET_OPTIONS">
-
+    </fieldset>
+    <fieldset name="options" addpath="administrator/components/com_xmap/elements" label="XMAP_FIELDSET_OPTIONS">
+        <fields name="attribs">
             <field
                 name="showintro"
                 type="radio"
                 class="btn-group"
+                filter="integer"
+                layout="joomla.form.field.radio.switcher"
                 labelclass="control-label"
                 label="XMAP_ATTRIBS_SHOW_INTRO_LABEL"
                 description="XMAP_ATTRIBS_SHOW_INTRO_DESC"
@@ -187,11 +189,12 @@
                 <option
                     value="1">Yes</option>
             </field>
-
             <field
                 name="show_menutitle"
                 type="radio"
                 class="btn-group"
+                filter="integer"
+                layout="joomla.form.field.radio.switcher"
                 label="XMAP_ATTRIBS_SHOW_MENU_TITLE_LABEL"
                 description="XMAP_ATTRIBS_SHOW_MENU_TITLE_DESC"
                 labelclass="control-label"
@@ -222,6 +225,8 @@
                 name="exlinks"
                 type="radio"
                 class="btn-group"
+                filter="integer"
+                layout="joomla.form.field.radio.switcher"
                 labelclass="control-label"
                 label="XMAP_ATTRIBS_EXTERNAL_LINKS_LABEL"
                 description="XMAP_ATTRIBS_EXTERNAL_LINKS_DESC"
@@ -265,6 +270,8 @@
                 name="compress_xml"
                 type="radio"
                 class="btn-group"
+                filter="integer"
+                layout="joomla.form.field.radio.switcher"
                 label="XMAP_ATTRIBS_COMPRESS_XML_LABEL"
                 description="XMAP_ATTRIBS_COMPRESS_XML_DESC"
                 labelclass="control-label"
@@ -278,7 +285,7 @@
             <field
                 name="beautify_xml"
                 type="radio"
-                class="btn-group"
+                layout="joomla.form.field.radio.switcher"
                 label="XMAP_ATTRIBS_BEAUTIFY_XML_LABEL"
                 description="XMAP_ATTRIBS_BEAUTIFY_XML_DESC"
                 labelclass="control-label"
@@ -292,7 +299,7 @@
             <field
                 name="include_link"
                 type="radio"
-                class="btn-group"
+                layout="joomla.form.field.radio.switcher"
                 label="XMAP_ATTRIBS_INCLUDE_LINK_LABEL"
                 description="XMAP_ATTRIBS_INCLUDE_LINK_DESC"
                 labelclass="control-label"
@@ -302,7 +309,8 @@
                 <option
                     value="1">Yes</option>
             </field>
-        </fieldset>
+	    </fields>
+      </fieldset>
 
         <fieldset name="news" label="XMAP_FIELDSET_NEWS_OPTIONS">
           <field
@@ -312,7 +320,7 @@
               labelclass="control-label"
               label="XMAP_ATTRIBS_NEWS_PUBLICATION_NAME_LABEL"
               description="XMAP_ATTRIBS_NEWS_PUBLICATION_NAME_DESC" />
-<!--
+<!-- 
           <field
               name="news_posts_keywords"
               type="text"
@@ -321,6 +329,6 @@
               description="XMAP_ATTRIBS_NEWS_POSTS_KEYWORDS_DESC" />
 -->
         </fieldset>
-    </fields>
+
 
 </form>

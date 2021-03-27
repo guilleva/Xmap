@@ -112,10 +112,10 @@ class JFormFieldXmapmenus extends JFormFieldList
             $value = $registry->toArray();
         }
 
-        $doc = JFactory::getDocument();
-        $doc->addScriptDeclaration("document.addEventListener('DOMContentLoaded', function(event) {
-            \$\$('div.xmap-menu-options select').addEvent('mouseover',function(event){xmapMenusSortable.detach();})
-            \$\$('div.xmap-menu-options select').addEvent('mouseout',function(event){xmapMenusSortable.attach();})
+        /*$doc = JFactory::getDocument();
+        $doc->addScriptDeclaration("jQuery(document).ready(function($) {
+            \$('.xmap-menu-options select').mouseover(function(event){xmapMenusSortable.detach();});
+            \$('.xmap-menu-options select').mouseout(function(event){xmapMenusSortable.attach();});
             var xmapMenusSortable = new Sortables(\$('ul_" . $this->inputId . "'),{
                 clone:true,
                 revert: true,
@@ -127,7 +127,7 @@ class JFormFieldXmapmenus extends JFormFieldList
                     el.setStyle('background','#eee');
                 }
             });
-        });");
+        });");*/
 
         if ($disabled || $readonly) {
             $attributes .= 'disabled="disabled"';

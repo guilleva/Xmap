@@ -8,7 +8,7 @@
 defined('_JEXEC') or die;
 
 jimport('joomla.form.field');
-
+use Joomla\CMS\HTML\HTMLHelper;
 /**
  * Supports a modal sitemap picker.
  *
@@ -39,7 +39,11 @@ class JFormFieldModal_Sitemaps extends JFormField
 
 
         // Load the modal behavior.
-        if (version_compare(JVERSION, '4.0', '<')){
+        if (version_compare(JVERSION, '4.0', '>'))
+        {
+            HTMLHelper::_('bootstrap.renderModal', 'moderateModal');
+        } else
+        {
             JHTML::_('behavior.modal', 'a.modal');
         }
 

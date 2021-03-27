@@ -10,11 +10,13 @@
             addfieldpath="/administrator/components/com_xmap/models/fields">
             <field
                 name="id"
-                type="modal_sitemaps"
-                default=""
-                required="true"
+                type="sql"
+                position="left"
                 label="COM_XMAP_SELECT_AN_SITEMAP"
-                description="COM_XMAP_SELECT_A_SITEMAP" />
+                description="COM_XMAP_SELECT_A_SITEMAP" 
+                query="SELECT title,id FROM #__xmap_sitemap" 
+                key_field="id" value_field="title"
+            />
         </fieldset>
     </fields>
 

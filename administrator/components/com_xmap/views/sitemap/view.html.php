@@ -35,7 +35,7 @@ class XmapViewSitemap extends BaseHtmlView
         $this->state = $this->get('State');
         $this->item = $this->get('Item');
         $this->form = $this->get('Form');
-
+        $this->fieldsets   =  $this->form ?  $this->form->getFieldsets() : null;
         $version = new JVersion;
 
         // Check for errors.
@@ -56,7 +56,11 @@ class XmapViewSitemap extends BaseHtmlView
         if (version_compare($version->getShortVersion(), '3.0.0', '<')) {
             $tpl = 'legacy';
         }
-	   // XmapHelper::setVar('hidemainmenu', true);
+        $versionshort = $version->getShortVersion();
+        if (version_compare($version->getShortVersion(), '4.0.0-beta', '>')) {
+            $tpl = 'new';
+        }
+        // XmapHelper::setVar('hidemainmenu', true);
         parent::display($tpl);        
     }
 

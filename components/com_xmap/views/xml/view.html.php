@@ -71,7 +71,11 @@ class XmapViewXml extends JViewLegacy
 
         // Check for errors.
         if (count($errors = $this->get('Errors'))) {
+        if (version_compare(JVERSION, '4.0', 'ge')){
+           JFactory::getApplication()->enqueueMessage(implode("\n", $errors), 'warning');
+        } else {
             JError::raiseWarning(500, implode("\n", $errors));
+        }
             return false;
         }
 
