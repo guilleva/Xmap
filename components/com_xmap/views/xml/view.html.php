@@ -131,9 +131,17 @@ class XmapViewXml extends JViewLegacy
 
         if ($doCompression) {
             $data = ob_get_contents();
-            JResponse::setBody($data);
+            if (version_compare(JVERSION, '4.0', 'ge')){
+                $app->setBody($data);
+             } else {
+                JResponse::setBody($data);
+            }
             @ob_end_clean();
-            echo JResponse::toString(true);
+            if (version_compare(JVERSION, '4.0', 'ge')){
+                echo $app->toString(true);
+            } else {
+                echo JResponse::toString(true);
+            }
         }
         $this->recreateBuffering();
         exit;
