@@ -392,8 +392,10 @@ class xmap_com_content
                . ($catid =='featured'? 'LEFT JOIN #__content_frontpage AS fp ON a.id = fp.content_id ' : ' ')
                . 'WHERE ' . implode(' AND ',$where) . ' AND '
                . '      (a.publish_up = ' . $params['nullDate']
+               . ' OR a.publish_up IS NULL'
                . ' OR a.publish_up <= ' . $params['nowDate'] . ') AND '
                . '      (a.publish_down = ' . $params['nullDate']
+               . ' OR    a.publish_down IS  NULL'
                . ' OR a.publish_down >= ' . $params['nowDate'] . ') '
                . ( $xmap->view != 'xml' ? "\n ORDER BY $orderby  " : '' )
                . ( $params['max_art'] ? "\n LIMIT {$params['max_art']}" : '');
