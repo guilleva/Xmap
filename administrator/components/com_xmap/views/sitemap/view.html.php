@@ -61,7 +61,7 @@ class XmapViewSitemap extends BaseHtmlView
             $tpl = 'new';
         }
         // XmapHelper::setVar('hidemainmenu', true);
-        parent::display($tpl);        
+        parent::display($tpl);
     }
 
     /**

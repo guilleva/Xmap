@@ -12,6 +12,7 @@ use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
+JLoader::import('components.com_xmap.helpers.html.xmap', JPATH_ADMINISTRATOR);
 
 $app = Factory::getApplication();
 $template = $app->getTemplate();

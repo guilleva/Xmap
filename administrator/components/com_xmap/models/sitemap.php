@@ -98,11 +98,11 @@ class XmapModelSitemap extends JModelAdmin
 
         // Convert to the JObject before adding other data.
         $value = $table->getProperties(1);
-		if (version_compare(JVERSION, '4.0', 'ge')){
-			$value = ArrayHelper::toObject($value, 'JObject');
-		} else {
-			$value = JArrayHelper::toObject($value, 'JObject');
-		}
+        if (version_compare(JVERSION, '4.0', 'ge')){
+            $value = ArrayHelper::toObject($value, 'JObject');
+        } else {
+            $value = JArrayHelper::toObject($value, 'JObject');
+        }
 
         // Convert the params field to an array.
         $registry = new JRegistry;
@@ -209,7 +209,7 @@ class XmapModelSitemap extends JModelAdmin
             if (version_compare(JVERSION, '4.0', 'ge')) {
                if (!$this->_db->execute()) {
                   $this->setError($table->_db->getErrorMsg());
-                 }
+               }
             } else {
                 if (!$this->_db->query()) {
                     $this->setError($table->_db->getErrorMsg());

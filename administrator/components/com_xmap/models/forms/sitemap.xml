@@ -153,7 +153,8 @@
             multiple="multiple"
             array="true"
             size="5"/>
-
+    </fieldset>
+    <fields>
         <field
             id="selections_priority"
             name="selections_priority"
@@ -171,7 +172,7 @@
             labelclass="control-label"
             multiple="multiple"
             size="5"/>
-    </fieldset>
+    </fields>
     <fieldset name="options" addpath="administrator/components/com_xmap/elements" label="XMAP_FIELDSET_OPTIONS">
         <fields name="attribs">
             <field
