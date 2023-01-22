@@ -63,7 +63,7 @@ class XmapXmlDisplayer extends XmapDisplayer
      *
      * @param stdclass $node
      */
-    function printNode($node)
+    function printNode(&$node)
     {
         $node->isExcluded = false;
         if ($this->isExcluded($node->id,$node->uid)) {
@@ -216,7 +216,7 @@ class XmapXmlDisplayer extends XmapDisplayer
      * @param stdclass $menu The menu node item
      * @return boolean
      */
-    function startMenu($menu)
+    function startMenu(&$menu)
     {
         return true;
     }
@@ -227,7 +227,7 @@ class XmapXmlDisplayer extends XmapDisplayer
      * @param stdclass $menu The menu node item
      * @return boolean
      */
-    function endMenu($menu)
+    function endMenu(&$menu)
     {
         return true;
     }
