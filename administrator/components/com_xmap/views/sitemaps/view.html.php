@@ -10,13 +10,11 @@
 defined('_JEXEC') or die;
 
 jimport('joomla.application.component.view');
-
-# For compatibility with older versions of Joola 2.5
-if (!class_exists('JViewLegacy')){
-    class JViewLegacy extends JView {
-
-    }
-}
+use Joomla\CMS\Factory as JFactory;
+use Joomla\CMS\MVC\View\HtmlView as JViewLegacy;
+use Joomla\CMS\Toolbar\ToolbarHelper as JToolbarHelper;
+use Joomla\CMS\Version as JVersion;
+use Joomla\CMS\Language\Text as JText; 	 
 
 /**
  * @package     Xmap

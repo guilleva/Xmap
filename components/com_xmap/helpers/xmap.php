@@ -8,7 +8,13 @@
  */
 // No direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
+use Joomla\CMS\Factory as JFactory; 	 
+use Joomla\Registry\Registry as JRegistry;
+use Joomla\CMS\Component\ComponentHelper as JComponentHelper;
+use Joomla\CMS\Uri\Uri as JURI;
+use Joomla\CMS\Router\Router as JRouter;
+use Joomla\CMS\Router\SiteRouter as JRouterSite;
+use Joomla\CMS\Application\SiteApplication;
 jimport('joomla.database.query');
 
 /**
@@ -323,7 +329,9 @@ class XmapHelper
 	
 	public static function getRouter() {
 		if (version_compare(JVERSION, '4.0', 'ge')){
-			return JRouter::getInstance("site");
+            $app    = SiteApplication::getInstance('site'); 
+            return $app->getRouter();     
+			//return JRouter::getInstance("site");
 		}
 		else {
 			return JSite::getRouter();

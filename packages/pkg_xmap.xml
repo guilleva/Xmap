@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<extension type="package" version="1.6">
+    <name>Xmap Package</name>
+    <packagename>xmap</packagename>
+    <version>4.0.0</version>
+    <url>http://www.jltryoen.fr</url>
+    <packager>Joomla! Vargas/ JLTryoen</packager>
+    <packagerurl>http://www.jooxmap.com</packagerurl>
+    <description>The Site Map generator for Joomla!</description>
+    <files>
+        <file type="component" id="com_xmap">xmap_component.zip</file>
+        <file type="plugin" id="com_content" group="xmap">xmap_plugin.zip</file>       
+    </files>
+</extension>

@@ -11,12 +11,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport('joomla.application.component.view');
 
-# For compatibility with older versions of Joola 2.5
-if (!class_exists('JViewLegacy')){
-    class JViewLegacy extends JView {
-
-    }
-}
+use Joomla\CMS\MVC\View\HtmlView as JViewLegacy;
+use Joomla\CMS\Factory as JFactory;
+use Joomla\CMS\Router\Route as JRoute; 	 
 
 /**
  * XML Sitemap View class for the Xmap component

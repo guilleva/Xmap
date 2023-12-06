@@ -9,6 +9,10 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 require_once(JPATH_COMPONENT . '/displayer.php');
+use Joomla\CMS\Factory as JFactory;
+use Joomla\CMS\Uri\Uri as JURI;
+use Joomla\CMS\Router\Route as JRoute;
+use Joomla\CMS\Date\Date as JDate;
 
 class XmapXmlDisplayer extends XmapDisplayer
 {

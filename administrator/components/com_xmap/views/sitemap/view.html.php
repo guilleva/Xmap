@@ -11,6 +11,10 @@ defined('_JEXEC') or die;
 jimport('joomla.application.component.view');
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\CMS\Factory as JFactory;
+use Joomla\CMS\Version as JVersion;
+use Joomla\CMS\HTML\HTMLHelper as JHTML;
+use Joomla\CMS\Language\Text as JText;
 
 /**
  * @package    Xmap

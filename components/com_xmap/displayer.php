@@ -8,6 +8,11 @@
 
 // No direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory as JFactory;
+use Joomla\CMS\Date\Date as JDate;
+use Joomla\CMS\User\UserHelper as JUserHelper;
+use Joomla\CMS\Uri\Uri as JURI;
+use Joomla\Registry\Registry as JRegistry;
 
 class XmapDisplayer {
 
@@ -130,7 +135,7 @@ class XmapDisplayer {
     {
         $this->changeLevel(1);
 
-        $router = XmapHelper::getRouter("site");//JSite::getRouter();
+        //$router = XmapHelper::getRouter("site");//JSite::getRouter();
 
         foreach ( $items as $i => $item ) {                   // Add each menu entry to the root tree.
             $excludeExternal = false;

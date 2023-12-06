@@ -11,6 +11,10 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modelitem');
 jimport('joomla.database.query');
+use Joomla\CMS\MVC\Model\ItemModel as JModelItem;
+use Joomla\CMS\Factory as JFactory;
+use Joomla\Registry\Registry as JRegistry; 	 
+
 require_once(JPATH_COMPONENT . '/helpers/xmap.php');
 
 /**

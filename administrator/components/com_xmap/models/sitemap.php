@@ -7,9 +7,16 @@
 
 // No direct access
 defined('_JEXEC') or die;
-use Joomla\Utilities\ArrayHelper;
-jimport('joomla.application.component.modeladmin');
 
+jimport('joomla.application.component.modeladmin');
+use Joomla\CMS\Factory as JFactory; 
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\MVC\Model\AdminModel as JModelAdmin;
+use Joomla\CMS\Table\Table as JTable;
+use Joomla\CMS\Object\CMSObject;
+use Joomla\Registry\Registry as JRegistry;
+
+ 
 /**
  * Sitemap model.
  *
@@ -99,7 +106,7 @@ class XmapModelSitemap extends JModelAdmin
         // Convert to the JObject before adding other data.
         $value = $table->getProperties(1);
         if (version_compare(JVERSION, '4.0', 'ge')){
-            $value = ArrayHelper::toObject($value, 'JObject');
+            $value = ArrayHelper::toObject($value, 'Joomla\CMS\Object\CMSObject');
         } else {
             $value = JArrayHelper::toObject($value, 'JObject');
         }

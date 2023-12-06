@@ -9,6 +9,8 @@
 defined('_JEXEC') or die;
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Table\Table as JTable;
+
 /**
  * @package         Xmap
  * @subpackage      com_xmap

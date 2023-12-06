@@ -9,8 +9,8 @@
 // No direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-jimport('joomla.application.component.controller');
-
+use Joomla\CMS\MVC\Controller\BaseController as JControllerLegacy;
+use Joomla\CMS\Factory as JFactory;
 /**
  * Xmap Component Controller
  *

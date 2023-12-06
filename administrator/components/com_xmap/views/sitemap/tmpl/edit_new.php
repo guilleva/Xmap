@@ -11,7 +11,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Router\Route;
+use Joomla\CMS\Router\Route as JRoute;
 JLoader::import('components.com_xmap.helpers.html.xmap', JPATH_ADMINISTRATOR);
 
 $app = Factory::getApplication();
@@ -130,6 +130,6 @@ $xml = $this->form->getXml();
 
     <input type="hidden" name="task" value="" />
     <?php echo $this->form->getInput('is_default'); ?>
-    <?php echo JHtml::_('form.token'); ?>
+    <?php echo HTMLHelper::_('form.token'); ?>
 </form>
 <div class="clr"></div>

@@ -10,7 +10,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 //require_once JPATH_SITE . '/components/com_content/helpers/route.php';
 //require_once JPATH_SITE . '/components/com_content/helpers/query.php';
 use Joomla\Utilities\ArrayHelper;
-
+use Joomla\CMS\Factory as JFactory;
+use Joomla\Component\Content\Site\Helper\RouteHelper as JRouteHelper;
 /**
  * Handles standard Joomla's Content articles/categories
  *
@@ -253,7 +254,7 @@ class xmap_com_content
                     $row = $db->loadObject();
 
                     $parent->slug = $row->alias ? ($id . ':' . $row->alias) : $id;
-                    $parent->link = ContentHelperRoute::getArticleRoute($parent->slug, $row->catid);
+                    $parent->link = JRouteHelper::getArticleRoute($parent->slug, $row->catid);
 
                     $subnodes = XmapHelper::getPagebreaks($row->introtext.$row->fulltext,$parent->link);
                     self::printNodes($xmap, $parent, $params, $subnodes);
@@ -320,7 +321,7 @@ class xmap_com_content
                     $item->modified = $item->created;
 
                 $node->slug = $item->route ? ($item->id . ':' . $item->route) : $item->id;
-                $node->link = ContentHelperRoute::getCategoryRoute($node->slug);
+                $node->link = JRouteHelper::getCategoryRoute($node->slug);
                 if (strpos($node->link,'Itemid=')===false) {
                     $node->itemid = $itemid;
                     $node->link .= '&Itemid='.$itemid;
@@ -430,7 +431,7 @@ class xmap_com_content
                 $node->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
                 //$node->catslug = $item->category_route ? ($catid . ':' . $item->category_route) : $catid;
                 $node->catslug = $item->catid;
-                $node->link = ContentHelperRoute::getArticleRoute($node->slug, $node->catslug);
+                $node->link = JRouteHelper::getArticleRoute($node->slug, $node->catslug);
 
                 // Add images to the article
                 $text = @$item->introtext . @$item->fulltext;

@@ -10,7 +10,7 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modellist');
 jimport('joomla.database.query');
-
+use Joomla\CMS\MVC\Model\ListModel as JModelList;
 /**
  * Sitemaps Model Class
  *

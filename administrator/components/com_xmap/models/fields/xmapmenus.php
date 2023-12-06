@@ -9,9 +9,17 @@ defined('_JEXEC') or die;
 
 
 jimport('joomla.html.html');
+use Joomla\CMS\Version as JVersion; 	
+use Joomla\CMS\Language\Text as JText;
+use Joomla\CMS\HTML\HTMLHelper as JHTML;
+use Joomla\CMS\Factory as JFactory;
+use Joomla\CMS\Form\Field\ListField as JFormFieldList;
+ 
 if (version_compare(JVERSION, '4.0', '<')){
-require_once JPATH_LIBRARIES . '/joomla/form/fields/list.php';
+    require_once JPATH_LIBRARIES . '/joomla/form/fields/list.php';
 }
+JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
+
 
 /**
  * Menus Form Field class for the Xmap Component

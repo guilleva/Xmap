@@ -9,6 +9,10 @@
 
 // No direct access
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory as JFactory;
+use Joomla\CMS\Version as JVersion;
+use Joomla\CMS\HTML\Helpers\Sidebar as JHtmlSidebar;
+use Joomla\CMS\Language\Text as JText; 	 
 
 /**
  * Xmap component helper.
