@@ -8,7 +8,7 @@
 
 // No direct access
 defined('_JEXEC') or die;
-
+use Joomla\CMS\MVC\Controller\FormController as JControllerForm;
 jimport('joomla.application.component.controllerform');
 
 /**

@@ -9,7 +9,7 @@
  * @description Xmap plugin for Joomla's web links component
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
+use Joomla\Utilities\ArrayHelper;
 class xmap_com_weblinks
 {
 
@@ -23,9 +23,9 @@ class xmap_com_weblinks
     {
         $link_query = parse_url($node->link);
         parse_str(html_entity_decode($link_query['query']), $link_vars);
-        $view = JArrayHelper::getValue($link_vars, 'view', '');
+        $view = ArrayHelper::getValue($link_vars, 'view', '');
         if ($view == 'weblink') {
-            $id = intval(JArrayHelper::getValue($link_vars, 'id', 0));
+            $id = intval(ArrayHelper::getValue($link_vars, 'id', 0));
             if ($id) {
                 $node->uid = 'com_weblinksi' . $id;
                 $node->expandible = false;
@@ -34,7 +34,7 @@ class xmap_com_weblinks
             $node->uid = 'com_weblinkscategories';
             $node->expandible = true;
         } elseif ($view == 'category') {
-            $catid = intval(JArrayHelper::getValue($link_vars, 'id', 0));
+            $catid = intval(ArrayHelper::getValue($link_vars, 'id', 0));
             $node->uid = 'com_weblinksc' . $catid;
             $node->expandible = true;
         }
@@ -49,29 +49,29 @@ class xmap_com_weblinks
 
         $link_query = parse_url($parent->link);
         parse_str(html_entity_decode($link_query['query']), $link_vars);
-        $view = JArrayHelper::getValue($link_vars, 'view', 0);
+        $view = ArrayHelper::getValue($link_vars, 'view', 0);
 
         $app = JFactory::getApplication();
         $menu = $app->getMenu();
         $menuparams = $menu->getParams($parent->id);
 
         if ($view == 'category') {
-            $catid = intval(JArrayHelper::getValue($link_vars, 'id', 0));
+            $catid = intval(ArrayHelper::getValue($link_vars, 'id', 0));
         } elseif ($view == 'categories') {
             $catid = 0;
         } else { // Only expand category menu items
             return;
         }
 
-        $include_links = JArrayHelper::getValue($params, 'include_links', 1, '');
+        $include_links = ArrayHelper::getValue($params, 'include_links', 1, '');
         $include_links = ( $include_links == 1
             || ( $include_links == 2 && $xmap->view == 'xml')
             || ( $include_links == 3 && $xmap->view == 'html')
             || $xmap->view == 'navigator');
         $params['include_links'] = $include_links;
 
-        $priority = JArrayHelper::getValue($params, 'cat_priority', $parent->priority, '');
-        $changefreq = JArrayHelper::getValue($params, 'cat_changefreq', $parent->changefreq, '');
+        $priority = ArrayHelper::getValue($params, 'cat_priority', $parent->priority, '');
+        $changefreq = ArrayHelper::getValue($params, 'cat_changefreq', $parent->changefreq, '');
         if ($priority == '-1')
             $priority = $parent->priority;
         if ($changefreq == '-1')
@@ -80,8 +80,8 @@ class xmap_com_weblinks
         $params['cat_priority'] = $priority;
         $params['cat_changefreq'] = $changefreq;
 
-        $priority = JArrayHelper::getValue($params, 'link_priority', $parent->priority, '');
-        $changefreq = JArrayHelper::getValue($params, 'link_changefreq', $parent->changefreq, '');
+        $priority = ArrayHelper::getValue($params, 'link_priority', $parent->priority, '');
+        $changefreq = ArrayHelper::getValue($params, 'link_changefreq', $parent->changefreq, '');
         if ($priority == '-1')
             $priority = $parent->priority;
 
@@ -126,7 +126,7 @@ class xmap_com_weblinks
         if ($params['include_links']) { //view=category&catid=...
             $linksModel = new WeblinksModelCategory();
             $linksModel->getState(); // To force the populate state
-            $linksModel->setState('list.limit', JArrayHelper::getValue($params, 'max_links', NULL));
+            $linksModel->setState('list.limit', ArrayHelper::getValue($params, 'max_links', NULL));
             $linksModel->setState('list.start', 0);
             $linksModel->setState('list.ordering', 'ordering');
             $linksModel->setState('list.direction', 'ASC');

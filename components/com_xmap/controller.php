@@ -9,8 +9,8 @@
 // No direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-jimport('joomla.application.component.controller');
-
+use Joomla\CMS\MVC\Controller\BaseController as JControllerLegacy;
+use Joomla\CMS\Factory as JFactory;
 /**
  * Xmap Component Controller
  *
@@ -34,9 +34,9 @@ class XmapController extends JControllerLegacy
     {
         $cachable = true;
 
-        $id         = JRequest::getInt('id');
-        $viewName   = JRequest::getCmd('view');
-        $viewLayout = JRequest::getCmd('layout', 'default');
+        $id         = XmapHelper::getInt('id');
+        $viewName   = XmapHelper::getCmd('view');
+        $viewLayout = XmapHelper::getCmd('layout', 'default');
 
         $user = JFactory::getUser();
 

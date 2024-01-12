@@ -30,7 +30,7 @@ class XmapControllerAjax extends JControllerLegacy
         $user = JFactory::getUser();
         $groups = array_keys(JUserHelper::getUserGroups($user->get('id')));
         $result = new JRegistry('_default');
-        $sitemapId = JREquest::getInt('id');
+        $sitemapId = XmapHelper::getInt('id');
 
         if (!$user->authorise('core.edit', 'com_xmap.sitemap.'.$sitemapId)) {
             $result->setValue('result', 'KO');
@@ -38,9 +38,9 @@ class XmapControllerAjax extends JControllerLegacy
         } else {
             $model = $this->getModel('sitemap');
             if ($model->getItem()) {
-                $action = JRequest::getCmd('action', '');
-                $uid = JRequest::getCmd('uid', '');
-                $itemid = JRequest::getInt('itemid', '');
+                $action = XmapHelper::getCmd('action', '');
+                $uid = XmapHelper::getCmd('uid', '');
+                $itemid = XmapHelper::getInt('itemid', '');
                 switch ($action) {
                     case 'toggleElement':
                         if ($uid && $itemid) {
@@ -48,9 +48,9 @@ class XmapControllerAjax extends JControllerLegacy
                         }
                         break;
                     case 'changeProperty':
-                        $uid = JRequest::getCmd('uid', '');
-                        $property = JRequest::getCmd('property', '');
-                        $value = JRequest::getCmd('value', '');
+                        $uid = XmapHelper::getCmd('uid', '');
+                        $property = XmapHelper::getCmd('property', '');
+                        $value = XmapHelper::getCmd('value', '');
                         if ($uid && $itemid && $uid && $property) {
                             $state = $model->chageItemPropery($uid, $itemid, 'xml', $property, $value);
                         }

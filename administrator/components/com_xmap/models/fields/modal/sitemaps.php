@@ -8,7 +8,7 @@
 defined('_JEXEC') or die;
 
 jimport('joomla.form.field');
-
+use Joomla\CMS\HTML\HTMLHelper;
 /**
  * Supports a modal sitemap picker.
  *
@@ -37,8 +37,15 @@ class JFormFieldModal_Sitemaps extends JFormField
         $db  = JFactory::getDBO();
         $doc = JFactory::getDocument();
 
+
         // Load the modal behavior.
-        JHtml::_('behavior.modal', 'a.modal');
+        if (version_compare(JVERSION, '4.0', '>'))
+        {
+            HTMLHelper::_('bootstrap.renderModal', 'moderateModal');
+        } else
+        {
+            JHTML::_('behavior.modal', 'a.modal');
+        }
 
         // Get the title of the linked chart
         if ($this->value) {
@@ -48,9 +55,10 @@ class JFormFieldModal_Sitemaps extends JFormField
                     ' WHERE id = ' . (int) $this->value
             );
             $title = $db->loadResult();
-
-            if ($error = $db->getErrorMsg()) {
-                JError::raiseWarning(500, $error);
+            if (version_compare(JVERSION, '4.0', '<')){
+                if ($error = $db->getErrorMsg()) {
+                    JFactory::getApplication()->enqueueMessage(500, $error, 'warning');
+                }
             }
         } else {
             $title = '';
@@ -69,8 +77,9 @@ class JFormFieldModal_Sitemaps extends JFormField
         );
 
         $link = 'index.php?option=com_xmap&amp;view=sitemaps&amp;layout=modal&amp;tmpl=component&amp;function=jSelectSitemap_' . $this->id;
-
-        JHTML::_('behavior.modal', 'a.modal');
+        if (version_compare(JVERSION, '4.0', '<')){
+            JHTML::_('behavior.modal', 'a.modal');
+        }
         $html = '<span class="input-append">';
         $html .= "\n" . '<input class="input-medium" type="text" id="' . $this->id . '_name" value="' . htmlspecialchars($title, ENT_QUOTES, 'UTF-8') . '" disabled="disabled" />';
         if(version_compare(JVERSION,'3.0.0','ge'))

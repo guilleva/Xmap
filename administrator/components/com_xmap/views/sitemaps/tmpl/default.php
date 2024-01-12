@@ -8,7 +8,14 @@
 
 // no direct access
 defined('_JEXEC') or die;
-
+use Joomla\CMS\HTML\HTMLHelper as JHtml;
+use Joomla\CMS\Language\Text as JText; 
+use Joomla\CMS\Uri\Uri as JUri; 	 
+use Joomla\CMS\Version as JVersion;
+use Joomla\CMS\Router\Route as JRoute; 	 
+use Joomla\CMS\Factory as JFactory;
+use Joomla\CMS\Date\Date as JDate;
+ 
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 JHtml::_('bootstrap.tooltip');
 if(version_compare(JVERSION,'3.0.0','ge')) {

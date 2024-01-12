@@ -10,7 +10,6 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport('joomla.application.component.view');
-
 # For compatibility with older versions of Joola 2.5
 if (!class_exists('JViewLegacy')){
     class JViewLegacy extends JView {
@@ -39,7 +38,7 @@ class XmapViewHtml extends JViewLegacy
         $doc = JFactory::getDocument();
 
         // Get view related request variables.
-        $this->print = JRequest::getBool('print');
+        $this->print = XmapHelper::getBool('print');
 
         // Get model data.
         $this->state = $this->get('State');
@@ -72,7 +71,7 @@ class XmapViewHtml extends JViewLegacy
         if (!$this->item->params->get('access-view')) {
             if ($user->get('guest')) {
                 // Redirect to login
-                $uri = JFactory::getURI();
+                $uri = XmapHelper::getURI();
                 $app->redirect(
                     'index.php?option=com_users&view=login&return=' . base64_encode($uri),
                     JText::_('Xmap_Error_Login_to_view_sitemap')
@@ -128,7 +127,7 @@ class XmapViewHtml extends JViewLegacy
                     }
                     // set meta description and keywords from menu item's params
                     $params = new JRegistry();
-                    $params->loadString($menu->params);
+                    $params->loadString($menu->getParams());
                     $this->document->setDescription($params->get('menu-meta_description'));
                     $this->document->setMetadata('keywords', $params->get('menu-meta_keywords'));
                 }

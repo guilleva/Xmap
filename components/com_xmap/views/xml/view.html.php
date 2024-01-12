@@ -11,12 +11,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport('joomla.application.component.view');
 
-# For compatibility with older versions of Joola 2.5
-if (!class_exists('JViewLegacy')){
-    class JViewLegacy extends JView {
-
-    }
-}
+use Joomla\CMS\MVC\View\HtmlView as JViewLegacy;
+use Joomla\CMS\Factory as JFactory;
+use Joomla\CMS\Router\Route as JRoute; 	 
 
 /**
  * XML Sitemap View class for the Xmap component
@@ -38,8 +35,8 @@ class XmapViewXml extends JViewLegacy
         // Initialise variables.
         $app = JFactory::getApplication();
         $this->user = JFactory::getUser();
-        $isNewsSitemap = JRequest::getInt('news',0);
-        $this->isImages = JRequest::getInt('images',0);
+        $isNewsSitemap = XmapHelper::getInt('news',0);
+        $this->isImages = XmapHelper::getInt('images',0);
 
         $model = $this->getModel('Sitemap');
         $this->setModel($model);
@@ -71,7 +68,11 @@ class XmapViewXml extends JViewLegacy
 
         // Check for errors.
         if (count($errors = $this->get('Errors'))) {
+        if (version_compare(JVERSION, '4.0', 'ge')){
+           JFactory::getApplication()->enqueueMessage(implode("\n", $errors), 'warning');
+        } else {
             JError::raiseWarning(500, implode("\n", $errors));
+        }
             return false;
         }
 
@@ -127,9 +128,17 @@ class XmapViewXml extends JViewLegacy
 
         if ($doCompression) {
             $data = ob_get_contents();
-            JResponse::setBody($data);
+            if (version_compare(JVERSION, '4.0', 'ge')){
+                $app->setBody($data);
+             } else {
+                JResponse::setBody($data);
+            }
             @ob_end_clean();
-            echo JResponse::toString(true);
+            if (version_compare(JVERSION, '4.0', 'ge')){
+                echo $app->toString(true);
+            } else {
+                echo JResponse::toString(true);
+            }
         }
         $this->recreateBuffering();
         exit;

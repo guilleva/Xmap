@@ -10,9 +10,9 @@
 defined('_JEXEC') or die;
 
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
-JHtml::_('behavior.tooltip');
+JHtml::_('bootstrap.tooltip');
 
-$function = JRequest::getVar('function', 'jSelectSitemap');
+$function = XmapHelper::getVar('function', 'jSelectSitemap');
 $n = count($this->items);
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_xmap&view=sitemaps');?>" method="post" name="adminForm">
@@ -92,7 +92,7 @@ $n = count($this->items);
                 $htmlDate = JText::sprintf('Date_Days_Hours_Ago',$days,intval(($now-($days*86400)-$item->lastvisit_html)/3600));
             } else {
                 $date = new JDate($item->lastvisit_html);
-                $htmlDate = $date->toFormat('%Y-%m-%d %H:%M');
+                $htmlDate = $date->Format('%Y-%m-%d %H:%M');
             }
 
             if ( !$item->lastvisit_xml ) {
@@ -107,7 +107,7 @@ $n = count($this->items);
                 $xmlDate = JText::sprintf('Date_Days_Hours_Ago',$days,intval(($now-($days*86400)-$item->lastvisit_xml)/3600));
             } else {
                 $date = new JDate($item->lastvisit_xml);
-                $xmlDate = $date->toFormat('%Y-%m-%d %H:%M');
+                $xmlDate = $date->Format('%Y-%m-%d %H:%M');
             }
 
         ?>

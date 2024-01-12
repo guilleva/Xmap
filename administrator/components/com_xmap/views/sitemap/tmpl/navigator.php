@@ -8,7 +8,7 @@
 
 defined('_JEXEC') or die;
 
-$name = JRequest::getCmd('e_name');
+$name = XmapHelper::getCmd('e_name');
 
 $doc =& JFactory::getDocument();
 $doc->addScriptDeclaration('
@@ -36,7 +36,7 @@ $doc->addScriptDeclaration('
         }
         window.parent.SqueezeBox.close();
     };
-    window.addEvent("domready",function(){
+    document.addEventListener("DOMContentLoaded", function(event) {
         tree =  new MooTreeControl({ 
         div: \'xmap-nav_tree\', 
         mode: \'files\',

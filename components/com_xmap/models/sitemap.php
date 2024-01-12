@@ -11,6 +11,10 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modelitem');
 jimport('joomla.database.query');
+use Joomla\CMS\MVC\Model\ItemModel as JModelItem;
+use Joomla\CMS\Factory as JFactory;
+use Joomla\Registry\Registry as JRegistry; 	 
+
 require_once(JPATH_COMPONENT . '/helpers/xmap.php');
 
 /**
@@ -42,20 +46,10 @@ class XmapModelSitemap extends JModelItem
         $app = JFactory::getApplication('site');
 
         // Load state from the request.
-        $pk = JRequest::getInt('id');
-
-        // If not sitemap specified, select the default one
-        if (!$pk) {
-            $db = $this->getDbo();
-            $query = $db->getQuery(true);
-            $query->select('id')->from('#__xmap_sitemap')->where('is_default=1');
-            $db->setQuery($query);
-            $pk = $db->loadResult();
-        }
-
+        $pk = JFactory::getApplication()->input->getInt('id');
         $this->setState('sitemap.id', $pk);
 
-        $offset = JRequest::getInt('limitstart');
+        $offset = XmapHelper::getInt('limitstart');
         $this->setState('list.offset', $offset);
 
         // Load the parameters.
@@ -79,6 +73,14 @@ class XmapModelSitemap extends JModelItem
         // Initialize variables.
         $db = $this->getDbo();
         $pk = (!empty($pk)) ? $pk : (int) $this->getState('sitemap.id');
+
+        // If not sitemap specified, select the default one
+        if (!$pk) {
+            $query = $db->getQuery(true);
+            $query->select('id')->from('#__xmap_sitemap')->where('is_default=1');
+            $db->setQuery($query);
+            $pk = $db->loadResult();
+        }
 
         if ($this->_item === null) {
             $this->_item = array();
@@ -110,9 +112,9 @@ class XmapModelSitemap extends JModelItem
 
                 $data = $this->_db->loadObject();
 
-                if ($error = $this->_db->getErrorMsg()) {
-                    throw new Exception($error);
-                }
+                // if ($error = $this->_db->getErrorMsg()) {
+                    // throw new Exception($error);
+                // }
 
                 if (empty($data)) {
                     throw new Exception(JText::_('COM_XMAP_ERROR_SITEMAP_NOT_FOUND'));
@@ -182,7 +184,7 @@ class XmapModelSitemap extends JModelItem
         // Initialize variables.
         $pk = (int) $this->getState('sitemap.id');
 
-        $view = JRequest::getCmd('view', 'html');
+        $view = XmapHelper::getCmd('view', 'html');
         if ($view != 'xml' && $view != 'html') {
             return false;
         }
@@ -193,10 +195,20 @@ class XmapModelSitemap extends JModelItem
             ' WHERE id = ' . (int) $pk
         );
 
+	if (version_compare(JVERSION, '4.0', 'ge')){
+        if (!$this->_db->execute()) {
+            $this->setError($this->_db->getErrorMsg());
+            return false;
+        }
+	} else {
         if (!$this->_db->query()) {
             $this->setError($this->_db->getErrorMsg());
             return false;
         }
+	}
+
+
+
 
         return true;
     }
@@ -204,7 +216,7 @@ class XmapModelSitemap extends JModelItem
     public function getSitemapItems($view=null)
     {
         if (!isset($view)) {
-            $view = JRequest::getCmd('view');
+            $view =XmapHelper::getCmd('view');
         }
         $db = JFactory::getDBO();
         $pk = (int) $this->getState('sitemap.id');
@@ -254,11 +266,16 @@ class XmapModelSitemap extends JModelItem
         }
         $db->setQuery($query);
         //echo $db->getQuery();exit;
-        if ($db->query()) {
-            return true;
-        } else {
-            return false;
-        }
+       if (version_compare(JVERSION, '4.0', 'ge')){	
+            if ($db->execute()) {
+                return true;
+            }
+       } else {
+           if ($db->query()) {
+               return true;
+           } 
+       }
+       return false;
     }
 
     function toggleItem($uid, $itemid)
@@ -291,7 +308,11 @@ class XmapModelSitemap extends JModelItem
         $db = JFactory::getDBO();
         $query = "UPDATE #__xmap_sitemap set excluded_items='" . $db->escape($str) . "' where id=" . $sitemap->id;
         $db->setQuery($query);
-        $db->query();
+        if (version_compare(JVERSION, '4.0', 'ge')){
+            $db->execute();
+        } else {
+            $db->query();
+        }
         return $state;
     }
 

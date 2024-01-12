@@ -10,7 +10,7 @@ defined('_JEXEC') or die;
 
 header('Content-type: text/xml');
 
-$name = JRequest::getCmd('e_name');
+$name = XmapHelper::getCmd('e_name');
 ?>
 <?xml version="1.0" encoding="UTF-8" ?>
 <nodes>

@@ -10,16 +10,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 // Include dependencies
 jimport('joomla.application.component.controller');
-
-# For compatibility with older versions of Joola 2.5
-if (!class_exists('JControllerLegacy')){
-    class JControllerLegacy extends JController {
-
-    }
-}
+use Joomla\CMS\MVC\Controller\BaseController as JControllerLegacy;
 
 require_once(JPATH_COMPONENT.'/displayer.php');
+require_once(JPATH_COMPONENT.'/helpers/xmap.php');
 
 $controller = JControllerLegacy::getInstance('Xmap');
-$controller->execute(JRequest::getVar('task'));
+$controller->execute(XmapHelper::getVar('task'));
 $controller->redirect();

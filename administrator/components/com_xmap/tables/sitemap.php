@@ -7,6 +7,9 @@
  */
 // no direct access
 defined('_JEXEC') or die;
+use Joomla\CMS\Application\ApplicationHelper;
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Table\Table as JTable;
 
 /**
  * @package         Xmap
@@ -161,7 +164,7 @@ class XmapTableSitemap extends JTable
         if (empty($this->alias)) {
             $this->alias = $this->title;
         }
-        $this->alias = JApplication::stringURLSafe($this->alias);
+        $this->alias = ApplicationHelper::stringURLSafe($this->alias);
 
         if (trim(str_replace('-', '', $this->alias)) == '') {
             $datenow = &JFactory::getDate();
@@ -204,7 +207,11 @@ class XmapTableSitemap extends JTable
         $k = $this->_tbl_key;
 
         // Sanitize input.
-        JArrayHelper::toInteger($pks);
+        if (version_compare(JVERSION, '4.0', 'ge')){
+            ArrayHelper::toInteger($pks);
+        } else {
+            JArrayHelper::toInteger($pks);
+        }
         $userId = (int) $userId;
         $state = (int) $state;
 
@@ -231,13 +238,20 @@ class XmapTableSitemap extends JTable
                        ->where($where);
 
         $this->_db->setQuery($query);
-        $this->_db->query();
-
-        // Check for a database error.
-        if ($this->_db->getErrorNum()) {
-            $this->setError($this->_db->getErrorMsg());
+        if (version_compare(JVERSION, '4.0', 'ge')) {
+            if (!$this->_db->execute()) {
+               return false;
+            }
+        } else {
+            $this->_db->query();
+           // Check for a database error.
+           if ($this->_db->getErrorNum()) {
+              $this->setError($this->_db->getErrorMsg());
             return false;
+           }
         }
+
+
 
         // If the JTable instance value is in the list of primary keys that were set, set the instance.
         if (in_array($this->$k, $pks)) {

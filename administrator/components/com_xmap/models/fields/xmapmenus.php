@@ -7,8 +7,19 @@
  */
 defined('_JEXEC') or die;
 
+
 jimport('joomla.html.html');
-require_once JPATH_LIBRARIES . '/joomla/form/fields/list.php';
+use Joomla\CMS\Version as JVersion; 	
+use Joomla\CMS\Language\Text as JText;
+use Joomla\CMS\HTML\HTMLHelper as JHTML;
+use Joomla\CMS\Factory as JFactory;
+use Joomla\CMS\Form\Field\ListField as JFormFieldList;
+ 
+if (version_compare(JVERSION, '4.0', '<')){
+    require_once JPATH_LIBRARIES . '/joomla/form/fields/list.php';
+}
+JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
+
 
 /**
  * Menus Form Field class for the Xmap Component
@@ -65,10 +76,11 @@ class JFormFieldXmapmenus extends JFormFieldList
         }
 
         // Check for a database error.
-        if ($db->getErrorNum()) {
-            JError::raiseWarning(500, $db->getErrorMsg());
+        if (version_compare(JVERSION, '4.0', '<')){
+            if ($db->getErrorNum()) {
+                JError::raiseWarning(500, $db->getErrorMsg());
+            }
         }
-
         $options = array_merge(
                        parent::getOptions(),
                        $options
@@ -107,12 +119,12 @@ class JFormFieldXmapmenus extends JFormFieldList
             $registry->loadString($value);
             $value = $registry->toArray();
         }
-
-        $doc = JFactory::getDocument();
-        $doc->addScriptDeclaration("
-        window.addEvent('domready',function(){
-            \$\$('div.xmap-menu-options select').addEvent('mouseover',function(event){xmapMenusSortable.detach();})
-            \$\$('div.xmap-menu-options select').addEvent('mouseout',function(event){xmapMenusSortable.attach();})
+        $version = new JVersion;
+        if (version_compare($version->getShortVersion(), '4.0.0-beta', '<')) {
+         $doc = JFactory::getDocument();
+         $doc->addScriptDeclaration("jQuery(document).ready(function($) {
+            \$('.xmap-menu-options select').mouseover(function(event){xmapMenusSortable.detach();});
+            \$('.xmap-menu-options select').mouseout(function(event){xmapMenusSortable.attach();});
             var xmapMenusSortable = new Sortables(\$('ul_" . $this->inputId . "'),{
                 clone:true,
                 revert: true,
@@ -124,7 +136,7 @@ class JFormFieldXmapmenus extends JFormFieldList
                     el.setStyle('background','#eee');
                 }
             });
-        });");
+        });"); }
 
         if ($disabled || $readonly) {
             $attributes .= 'disabled="disabled"';
@@ -150,9 +162,9 @@ class JFormFieldXmapmenus extends JFormFieldList
             $return .= '<label for="' . $this->id . '_' . $i . '" class="menu_label">' . $option->text . '</label>';
             $return .= '<div class="xmap-menu-options" id="menu_options_' . $i . '">';
             $return .= '<label class="control-label">' . JText::_('XMAP_PRIORITY') . '</label>';
-            $return .= '<div class="controls">' . JHTML::_('xmap.priorities', $prioritiesName, ($selected ? $value[$option->value]['priority'] : '0.5'), $i) . '</div>';
+            $return .= '<div class="controls">' . JHTML::_('xmap.priorities', $prioritiesName, ($selected ? $value[$option->value]->priority : '0.5'), $i) . '</div>';
             $return .= '<label class="control-label">' . JText::_('XMAP_CHANGE_FREQUENCY') . '</label>';
-            $return .= '<div class="controls">' . JHTML::_('xmap.changefrequency', $changefreqName, ($selected ? $value[$option->value]['changefreq'] : 'weekly'), $i) . '</div>';
+            $return .= '<div class="controls">' . JHTML::_('xmap.changefrequency', $changefreqName, ($selected ? $value[$option->value]->changefreq : 'weekly'), $i) . '</div>';
             $return .= '</div>';
             $return .= '</li>';
         }

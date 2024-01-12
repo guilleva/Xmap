@@ -9,7 +9,14 @@
 defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modeladmin');
+use Joomla\CMS\Factory as JFactory; 
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\MVC\Model\AdminModel as JModelAdmin;
+use Joomla\CMS\Table\Table as JTable;
+use Joomla\CMS\Object\CMSObject;
+use Joomla\Registry\Registry as JRegistry;
 
+ 
 /**
  * Sitemap model.
  *
@@ -43,7 +50,7 @@ class XmapModelSitemap extends JModelAdmin
 
         // Load the User state.
         if (!($pk = (int) $app->getUserState('com_xmap.edit.sitemap.id'))) {
-            $pk = (int) JRequest::getInt('id');
+            $pk = (int) XmapHelper::getInt('id');
         }
         $this->setState('sitemap.id', $pk);
 
@@ -98,7 +105,11 @@ class XmapModelSitemap extends JModelAdmin
 
         // Convert to the JObject before adding other data.
         $value = $table->getProperties(1);
-        $value = JArrayHelper::toObject($value, 'JObject');
+        if (version_compare(JVERSION, '4.0', 'ge')){
+            $value = ArrayHelper::toObject($value, 'Joomla\CMS\Object\CMSObject');
+        } else {
+            $value = JArrayHelper::toObject($value, 'JObject');
+        }
 
         // Convert the params field to an array.
         $registry = new JRegistry;
@@ -156,7 +167,6 @@ class XmapModelSitemap extends JModelAdmin
     public function save($data)
     {
         // Initialise variables;
-        $dispatcher = JDispatcher::getInstance();
         $table      = $this->getTable();
         $pk         = (!empty($data['id'])) ? $data['id'] : (int)$this->getState('sitemap.id');
         $isNew      = true;
@@ -203,9 +213,15 @@ class XmapModelSitemap extends JModelAdmin
                            ->where($this->_db->quoteName('id').' <> '.$table->id);
 
             $this->_db->setQuery($query);
-            if (!$this->_db->query()) {
-                $this->setError($table->_db->getErrorMsg());
-                return false;
+            if (version_compare(JVERSION, '4.0', 'ge')) {
+               if (!$this->_db->execute()) {
+                  $this->setError($table->_db->getErrorMsg());
+               }
+            } else {
+                if (!$this->_db->query()) {
+                    $this->setError($table->_db->getErrorMsg());
+                    return false;
+                }
             }
         }
 
@@ -242,10 +258,16 @@ class XmapModelSitemap extends JModelAdmin
                         ->set($db->quoteName('is_default').' = 0')
                         ->where($db->quoteName('id').' <> '.$table->id);
             $this->_db->setQuery($query);
-            if (!$this->_db->query()) {
-                $this->setError($table->_db->getErrorMsg());
-                return false;
-            }
+            if (version_compare(JVERSION, '4.0', 'ge')) {
+              if (!$this->_db->execute()) {
+                  $this->setError($table->_db->getErrorMsg());
+              }
+            } else {
+                if (!$this->_db->query()) {
+                    $this->setError($table->_db->getErrorMsg());
+                    return false;
+                }
+           }
             $table->is_default = 1;
             $table->store();
 

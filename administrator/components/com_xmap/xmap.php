@@ -9,6 +9,11 @@
 // no direct access
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Table\Table as JTable;
+use Joomla\CMS\Form\Form as JForm;
+use Joomla\CMS\MVC\Controller\AdminController as JController;
+use Joomla\CMS\Factory as JFactory;
+ 
 JTable::addIncludePath( JPATH_COMPONENT.'/tables' );
 
 jimport('joomla.form.form');

@@ -9,13 +9,17 @@
 // no direct access
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Table\Table as JTable; 	 
+use Joomla\CMS\HTML\HTMLHelper as JHTML;
+
 JTable::addIncludePath( JPATH_COMPONENT . '/tables' );
+JHTML::addIncludePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_xmap' . DS . 'helpers' .DS . 'html');
 
 /**
  * @package       Xmap
  * @subpackage    com_xmap
  */
-abstract class JHtmlXmap
+abstract class HTMLHelperXmap
 {
 
     /**
@@ -48,5 +52,13 @@ abstract class JHtmlXmap
         $options[] = JHTML::_('select.option','never','never');
         return JHtml::_('select.genericlist', $options, $name, null, 'value', 'text', $value, $name.$j);
     }
+}
 
+
+if (!JHTML::isRegistered('xmap.priorities')) {
+    JHTML::register('xmap.priorities', ['HTMLHelperXmap', 'priorities']);
+}
+
+if (!JHTML::isRegistered('xmap.changefrequency')) {
+    JHTML::register('xmap.changefrequency', ['HTMLHelperXmap', 'priorities']);
 }

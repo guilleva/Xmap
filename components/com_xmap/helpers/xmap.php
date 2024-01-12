@@ -8,7 +8,13 @@
  */
 // No direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
+use Joomla\CMS\Factory as JFactory; 	 
+use Joomla\Registry\Registry as JRegistry;
+use Joomla\CMS\Component\ComponentHelper as JComponentHelper;
+use Joomla\CMS\Uri\Uri as JURI;
+use Joomla\CMS\Router\Router as JRouter;
+use Joomla\CMS\Router\SiteRouter as JRouterSite;
+use Joomla\CMS\Application\SiteApplication;
 jimport('joomla.database.query');
 
 /**
@@ -61,10 +67,13 @@ class XmapHelper
             $list[$menutype] = array();
 
             // Check for a database error.
+		if (version_compare(JVERSION, '4.0', '<')){
+
             if ($db->getErrorNum()) {
                 JError::raiseWarning(021, $db->getErrorMsg());
                 return array();
             }
+	}
 
             // Set some values to make nested HTML rendering easier.
             foreach ($tmpList as $id => $item) {
@@ -231,4 +240,110 @@ class XmapHelper
         }
         return $subnodes;
     }
+
+	public static function getpost() {
+		if (version_compare(JVERSION, '4.0', 'ge')){
+			return JFactory::getApplication()->input->getArray(array());
+		}
+		else {
+			return call_user_func_array('JRequest::get', ['post']);
+		}
+	}
+	
+	public static function get(...$params) {
+		if (version_compare(JVERSION, '4.0', 'ge')){
+			if ($params[0] == 'post '){
+				return JFactory::getApplication()->input->getInputForRequestMethod('POST');
+			} else {
+				return call_user_func_array(array(JFactory::getApplication()->input, 'get'), $params);
+			}
+		}
+		else {
+			return call_user_func_array('JRequest::get', $params);
+		}
+	}
+	
+	public static function getVar(...$params) {
+		if (version_compare(JVERSION, '4.0', 'ge')){
+			return call_user_func_array(array(JFactory::getApplication()->input, 'getVar'), $params);
+		}
+		else {
+			return call_user_func_array('JRequest::getVar', $params);
+		}
+	}
+	
+
+	public static function setVar(...$params) {
+		if (version_compare(JVERSION, '4.0', 'ge')){
+			call_user_func_array(array(JFactory::getApplication()->input, 'setVar'), $params);
+		}
+		else {
+			call_user_func_array('JRequest::setVar', $params);
+		}
+	}
+
+	public static function getCmd(...$params) {
+		if (version_compare(JVERSION, '4.0', 'ge')){
+			return call_user_func_array(array(JFactory::getApplication()->input, 'getCmd'), $params);
+		}
+		else {
+			return call_user_func_array('JRequest::getCmd', $params);
+		}
+	}
+
+	public static function getInt(...$params) {
+		if (version_compare(JVERSION, '4.0', 'ge')){
+			$recordId = call_user_func_array(array(JFactory::getApplication()->input, 'getInt'), $params);
+		}
+		else {
+			$recordId	= (int)call_user_func_array('JRequest::getInt', $params);
+		}
+	}
+	
+	
+	public static function getBool(...$params) {
+		if (version_compare(JVERSION, '4.0', 'ge')){
+			return call_user_func_array(array(JFactory::getApplication()->input, 'getBool'), $params);
+		}
+		else {
+			return (int)call_user_func_array('JRequest::getBool', $params);
+		}
+	}
+	public static function getWord(...$params) {
+		if (version_compare(JVERSION, '4.0', 'ge')){
+			return call_user_func_array(array(JFactory::getApplication()->input, 'getWord'), $params);
+		}
+		else {
+			return (int)call_user_func_array('JRequest::getWord', $params);
+		}
+	}
+	
+	public static function getURI() {
+		if (version_compare(JVERSION, '4.0', 'ge')){
+			return JUri::getInstance();
+		}
+		else {
+			return JFactory::getURI();
+		}
+	}
+	
+	public static function getRouter() {
+		if (version_compare(JVERSION, '4.0', 'ge')){
+            $app    = SiteApplication::getInstance('site'); 
+            return $app->getRouter();     
+			//return JRouter::getInstance("site");
+		}
+		else {
+			return JSite::getRouter();
+		}
+	}
+	
+	public static function isAppSef() {
+		if (version_compare(JVERSION, '4.0', 'ge')){
+			return JFactory::getApplication()->get('sef', 1);
+		} else {
+			return $router->getMode() == JROUTER_MODE_SEF;
+		}
+	}
+
 }

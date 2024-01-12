@@ -9,6 +9,10 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 require_once(JPATH_COMPONENT . '/displayer.php');
+use Joomla\CMS\Factory as JFactory;
+use Joomla\CMS\Uri\Uri as JURI;
+use Joomla\CMS\Router\Route as JRoute;
+use Joomla\CMS\Date\Date as JDate;
 
 class XmapXmlDisplayer extends XmapDisplayer
 {
@@ -51,8 +55,8 @@ class XmapXmlDisplayer extends XmapDisplayer
             $this->defaultLanguage = $matches[1];
         }
 
-        $this->showTitle = JRequest::getBool('filter_showtitle', 0);
-        $this->showExcluded = JRequest::getBool('filter_showexcluded', 0);
+        $this->showTitle = XmapHelper::getBool('filter_showtitle', 0);
+        $this->showExcluded = XmapHelper::getBool('filter_showexcluded', 0);
 
         $db = JFactory::getDbo();
         $this->nullDate = $db->getNullDate();
@@ -63,7 +67,7 @@ class XmapXmlDisplayer extends XmapDisplayer
      *
      * @param stdclass $node
      */
-    function printNode($node)
+    function printNode(&$node)
     {
         $node->isExcluded = false;
         if ($this->isExcluded($node->id,$node->uid)) {
@@ -83,7 +87,7 @@ class XmapXmlDisplayer extends XmapDisplayer
         }
 
         // Get the item's URL
-        $link = JRoute::_($node->link, true, @$node->secure == 0 ? (JFactory::getURI()->isSSL() ? 1 : -1) : $node->secure);
+        $link = JRoute::_($node->link, true, @$node->secure == 0 ? (XmapHelper::getURI()->isSSL() ? 1 : -1) : $node->secure);
 
         if (!isset($node->browserNav))
             $node->browserNav = 0;
@@ -216,7 +220,7 @@ class XmapXmlDisplayer extends XmapDisplayer
      * @param stdclass $menu The menu node item
      * @return boolean
      */
-    function startMenu($menu)
+    function startMenu(&$menu)
     {
         return true;
     }
@@ -227,7 +231,7 @@ class XmapXmlDisplayer extends XmapDisplayer
      * @param stdclass $menu The menu node item
      * @return boolean
      */
-    function endMenu($menu)
+    function endMenu(&$menu)
     {
         return true;
     }
